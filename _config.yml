@@ -84,6 +84,14 @@ pandoc:
   mathEngine:
   extensions:
     - -implicit_figures
+feed:
+  type: atom
+  path: atom.xml
+  limit: false
+  hub:
+  content: true
+  content_limit: 140
+  content_limit_delim: ' '
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:

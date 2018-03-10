@@ -1,0 +1,6 @@
+[submodule "themes/hueman"]
+	path = themes/hueman
+	url = git@github.com:WEAFTeam/hexo-theme-hueman.git
+[submodule "source/_posts"]
+	path = source/_posts
+	url = https://github.com/WEAFTeam/weekly
