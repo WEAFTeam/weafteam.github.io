@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>rsync的使用与配置 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="Linux运维" />
+    
+    <meta name="description" content="rsync的使用与配置">
+<meta name="keywords" content="Linux运维">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rsync的使用与配置">
+<meta property="og:url" content="http://weafteam.github.io/posts/cfc65600/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="rsync的使用与配置">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://us-forever.com/img/linux-icon.jpg">
+<meta property="og:updated_time" content="2018-03-25T17:06:12.039Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="rsync的使用与配置">
+<meta name="twitter:description" content="rsync的使用与配置">
+<meta name="twitter:image" content="http://us-forever.com/img/linux-icon.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Linux/">Linux</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-03-19/rsync-configuration-and-use" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        rsync的使用与配置
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/cfc65600/" class="article-date">
+            <time datetime="2018-03-25T13:08:56.000Z" itemprop="datePublished">2018-03-25</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        earth
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Linux运维/">Linux运维</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h2 id="一什么是rsync">一、什么是rsync</h2>
+<p><strong>rsync</strong>，remote synchronize顾名思意就知道它是一款实现远程同步功能的软件，它在同步文件的同时，可以保持原来文件的权限、时间、软硬链接等附加信息。 rsync是用 “rsync 算法”提供了一个客户机和远程文件服务器的文件同步的快速方法，而且可以通过ssh方式来传输文件，这样其保密性也非常好，另外它还是免费的软件。</p>
+<h2 id="二rsync的安装">二、rsync的安装</h2>
+<p>rysnc的官方网站：http://rsync.samba.org 可以从上面得到最新的版本。目前最新版是3.1.2。当然，因为rsync是一款如此有用的软件，所以很多Linux的发行版本都将它收录在内了。</p>
+<a id="more"></a>
+<p>　　软件包安装</p>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>平台</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td># sudo apt-get install rsync</td>
+<td>注：在debian、ubuntu 等在线安装方法；</td>
+</tr>
+<tr class="even">
+<td># yum install rsync</td>
+<td>注：Fedora、Redhat 等在线安装方法；</td>
+</tr>
+<tr class="odd">
+<td># rpm -ivh rsync</td>
+<td>注：Fedora、Redhat 等rpm包安装方法；</td>
+</tr>
+</tbody>
+</table>
+<p>　　其它Linux发行版，请用相应的软件包管理方法来安装。</p>
+<p>　　源码包安装 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">　　tar xvf  rsync-xxx.tar.gz</span><br><span class="line">　　cd rsync-xxx</span><br><span class="line">　　./configure --prefix=/usr  ;make ;make install   注：在用源码</span><br></pre></td></tr></table></figure></p>
+<p>包编译安装之前，您得安装gcc等编译开具才行； 三、rsync的配置 ———– rsync的主要有以下三个配置文件<strong>rsyncd.conf</strong>(主配置文件)、<strong>rsyncd.secrets</strong>(密码文件)、<strong>rsyncd.motd</strong>(rysnc服务器信息) 比如我们要备份服务器上的/home和/opt，在/home中我想把easylife和samba目录排除在外； <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">　　# Distributed under the terms of the GNU General Public License v2</span><br><span class="line">　　# Minimal configuration file for rsync daemon</span><br><span class="line">　　# See rsync(1) and rsyncd.conf(5) man pages for help</span><br><span class="line"></span><br><span class="line">　　# This line is required by the /etc/init.d/rsyncd script</span><br><span class="line">　　pid file = /var/run/rsyncd.pid   </span><br><span class="line">　　port = 873</span><br><span class="line">　　address = 192.168.1.171  </span><br><span class="line">　　#uid = nobody </span><br><span class="line">　　#gid = nobody    </span><br><span class="line">　　uid = root   </span><br><span class="line">　　gid = root  </span><br><span class="line"></span><br><span class="line">　　use chroot = yes  </span><br><span class="line">　　read only = yes </span><br><span class="line"></span><br><span class="line">　　#limit access to private LANs</span><br><span class="line">　　hosts allow=192.168.1.0/255.255.255.0 10.0.1.0/255.255.255.0  </span><br><span class="line">　　hosts deny=*</span><br><span class="line"></span><br><span class="line">　　max connections = 5 </span><br><span class="line">　　motd file = /etc/rsyncd.motd</span><br><span class="line"></span><br><span class="line">　　#This will give you a separate log file</span><br><span class="line">　　#log file = /var/log/rsync.log</span><br><span class="line"></span><br><span class="line">　　#This will log every file transferred - up to 85,000+ per user, per sync</span><br><span class="line">　　#transfer logging = yes</span><br><span class="line"></span><br><span class="line">　　log format = %t %a %m %f %b</span><br><span class="line">　　syslog facility = local3</span><br><span class="line">　　timeout = 300</span><br><span class="line"></span><br><span class="line">　　[rhel4home]   </span><br><span class="line">　　path = /home    </span><br><span class="line">　　list=yes </span><br><span class="line">　　ignore errors </span><br><span class="line">　　auth users = root</span><br><span class="line">　　secrets file = /etc/rsyncd.secrets  </span><br><span class="line">　　comment = This is RHEL 4 data  </span><br><span class="line">　　exclude = easylife/  samba/     </span><br><span class="line"></span><br><span class="line">　　[rhel4opt]</span><br><span class="line">　　path = /opt </span><br><span class="line">　　list=no</span><br><span class="line">　　ignore errors</span><br><span class="line">　　comment = This is RHEL 4 opt </span><br><span class="line">　　auth users = easylife</span><br><span class="line">　　secrets file = /etc/rsyncd/rsyncd.secrets</span><br></pre></td></tr></table></figure></p>
+<p>　　注：关于auth users是必须在服务器上存在的真实的系统用户，如果你想用多个用户以,号隔开，比如auth users = easylife,root 　　设定密码文件</p>
+<p>　　密码文件格式很简单，rsyncd.secrets的内容格式为：</p>
+<p>　　用户名:密码</p>
+<p>　　我们在例子中rsyncd.secrets的内容如下类似的；在文档中说，有些系统不支持长密码，自己尝试着设置一下吧。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">　　easylife:keer</span><br><span class="line">　　root:mike</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">　　chown root.root rsyncd.secrets 　#修改属主</span><br><span class="line">　　chmod 600 rsyncd.secrets     #修改权限</span><br></pre></td></tr></table></figure>
+<p>　　注：1、将rsyncd.secrets这个密码文件的文件属性设为root拥有, 且权限要设为600, 否则无法备份成功! 出于安全目的，文件的属性必需是只有属主可读。 　　　　2、这里的密码值得注意，为了安全你不能把系统用户的密码写在这里。比如你的系统用户easylife密码是000000，为了安全你可以让rsync中的easylife为keer。这和samba的用户认证的密码原理是差不多的。</p>
+<p>　　设定rsyncd.motd 文件;</p>
+<p>　 　它是定义rysnc服务器信息的，也就是用户登录信息。比如让用户知道这个服务器是谁提供的等；类似ftp服务器登录时，我们所看到的 linuxsir.org ftp ……。 当然这在全局定义变量时，并不是必须的，你可以用#号注掉，或删除；我在这里写了一个 rsyncd.motd的内容为： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">　　++++++++++++++++++++++++++++++++++++++++++++++</span><br><span class="line">　　Welcome to use the mike.org.cn rsync services!</span><br><span class="line">2002------2009</span><br><span class="line">　　++++++++++++++++++++++++++++++++++++++++++++++</span><br></pre></td></tr></table></figure></p>
+<h2 id="四启动rsync服务器">四、启动rsync服务器</h2>
+<p>相当简单，有以下几种方法</p>
+<p>　　A、–daemon参数方式，是让rsync以服务器模式运行 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　#/usr/bin/rsync --daemon  --config=/etc/rsyncd/rsyncd.conf 　#--config用于指定rsyncd.conf的位置,如果在/etc下可以不写</span><br></pre></td></tr></table></figure></p>
+<p>　　B、xinetd方式 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">　　修改services加入如下内容</span><br><span class="line">　　# nano -w /etc/services</span><br><span class="line"></span><br><span class="line">　　rsync　　873/tcp　　# rsync </span><br><span class="line">　　rsync　　873/udp　　# rsync</span><br></pre></td></tr></table></figure></p>
+<p>　　这一步一般可以不做，通常都有这两行(我的RHEL4和GENTOO默认都有)。修改的目的是让系统知道873端口对应的服务名为rsync。如没有的话就自行加入。</p>
+<p>　　设定 /etc/xinetd.d/rsync, 简单例子如下: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">　　# default: off</span><br><span class="line">　　# description: The rsync server is a good addition to am ftp server, as it \</span><br><span class="line">　　#       allows crc checksumming etc.</span><br><span class="line">　　service rsync</span><br><span class="line">　　&#123;</span><br><span class="line">disable = no</span><br><span class="line">socket_type     = stream</span><br><span class="line">wait            = no</span><br><span class="line">user            = root</span><br><span class="line">server          = /usr/bin/rsync</span><br><span class="line">server_args     = --daemon</span><br><span class="line">log_on_failure  += USERID</span><br><span class="line">　　&#125;</span><br></pre></td></tr></table></figure></p>
+<p>　　上述, 主要是要打开rsync這個daemon, 一旦有rsync client要连接時, xinetd会把它转介給 rsyncd(port 873)。然后service xinetd restart, 使上述设定生效.</p>
+<p>　　rsync服务器和防火墙</p>
+<p>　　Linux 防火墙是用iptables，所以我们至少在服务器端要让你所定义的rsync 服务器端口通过，客户端上也应该让通过。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">　　#iptables -A INPUT -p tcp -m state --state NEW  -m tcp --dport 873 -j ACCEPT</span><br><span class="line">　　#iptables -L  查看一下防火墙是不是打开了 873端口</span><br></pre></td></tr></table></figure></p>
+<p>　　如果你不太懂防火墙的配置，可以先service iptables stop 将防火墙关掉。当然在生产环境这是很危险的，做实验才可以这么做哟！</p>
+<h2 id="五通过rsync客户端来同步数据">五、通过rsync客户端来同步数据</h2>
+<h3 id="b1列出rsync-服务器上的所提供的同步内容">B1、列出rsync 服务器上的所提供的同步内容；</h3>
+<p>　　首先：我们看看rsync服务器上提供了哪些可用的数据源</p>
+<p>　　# rsync –list-only root@192.168.145.5:: 　　++++++++++++++++++++++++++++++++++++++++++++++ 　　Welcome to use the mike.org.cn rsync services! 　　 2002——2009 　　++++++++++++++++++++++++++++++++++++++++++++++</p>
+<p>　　rhel4home This is RHEL 4 data</p>
+<p>　 　注：前面是rsync所提供的数据源，也就是我们在rsyncd.conf中所写的[rhel4home]模块。而“This is RHEL 4 data”是由[rhel4home]模块中的 comment = This is RHEL 4 data 提供的；为什么没有把rhel4opt数据源列出来呢？因为我们在[rhel4opt]中已经把list=no了。</p>
+<p>　　$ rsync –list-only root@192.168.145.5::rhel4home</p>
+<p>　　++++++++++++++++++++++++++++++++++++++++++++++ 　　Welcome to use the mike.org.cn rsync services! 　　 2002——2009 　　++++++++++++++++++++++++++++++++++++++++++++++</p>
+<p>　　Password: 　　drwxr-xr-x 4096 2009/03/15 21:33:13 . 　　-rw-r–r– 1018 2009/03/02 02:33:41 ks.cfg 　　-rwxr-xr-x 21288 2009/03/15 21:33:13 wgetpaste 　　drwxrwxr-x 4096 2008/10/28 21:04:05 cvsroot 　　drwx—— 4096 2008/11/30 16:30:58 easylife 　　drwsr-sr-x 4096 2008/09/20 22:18:05 giddir 　　drwx—— 4096 2008/09/29 14:18:46 quser1 　　drwx—— 4096 2008/09/27 14:38:12 quser2 　　drwx—— 4096 2008/11/14 06:10:19 test 　　drwx—— 4096 2008/09/22 16:50:37 vbird1 　　drwx—— 4096 2008/09/19 15:28:45 vbird2</p>
+<p>　　后面的root@ip中，root是指定密码文件中的用户名，之后的::rhel4home这是rhel4home模块名 ### B2、rsync客户端同步数据；</p>
+<p>　　#rsync -avzP root@192.168.145.5::rhel4home rhel4home 　　Password: 这里要输入root的密码，是服务器端rsyncd.secrets提供的。在前面的例子中我们用的是mike，输入的密码并不回显，输好就回车。</p>
+<p>　 　注： 这个命令的意思就是说，用root用户登录到服务器上，把rhel4home数据，同步到本地当前目录rhel4home上。当然本地的目录是可以你自己 定义的。如果当你在客户端上当前操作的目录下没有rhel4home这个目录时，系统会自动为你创建一个；当存在rhel4home这个目录中，你要注意 它的写权限。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　#rsync -avzP  --delete linuxsir@linuxsir.org::rhel4home   rhel4home</span><br></pre></td></tr></table></figure></p>
+<p>　 　这回我们引入一个–delete 选项，表示客户端上的数据要与服务器端完全一致，如果 linuxsirhome目录中有服务器上不存在的文件，则删除。最终目的是让linuxsirhome目录上的数据完全与服务器上保持一致；用的时候要 小心点，最好不要把已经有重要数所据的目录，当做本地更新目录，否则会把你的数据全部删除；</p>
+<p>　　設定 rsync client</p>
+<p>　　设定密码文件 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　#rsync -avzP  --delete  --password-file=rsyncd.secrets   root@192.168.145.5::rhel4home rhel4home</span><br></pre></td></tr></table></figure></p>
+<p>　　这次我们加了一个选项 –password-file=rsyncd.secrets，这是当我们以root用户登录rsync服务器同步数据时，密码将读取rsyncd.secrets这个文件。这个文件内容只是root用户的密码。我们要如下做；</p>
+<p>　　# touch rsyncd.secrets 　　# chmod 600 rsyncd.secrets 　　# echo “mike”&gt; rsyncd.secrets</p>
+<p>　　# rsync -avzP –delete –password-file=rsyncd.secrets root@192.168.145.5::rhel4home rhel4home</p>
+<p>　　注：这里需要注意的是这份密码文件权限属性要设得只有属主可读。</p>
+<p>　　　　这样就不需要密码了；其实这是比较重要的，因为服务器通过crond 计划任务还是有必要的； ### B3、让rsync客户端自动与服务器同步数据</p>
+<p>　 　服务器是重量级应用，所以数据的网络备份还是极为重要的。我们可以在生产型服务器上配置好rsync 服务器。我们可以把一台装有rysnc机器当做是备份服务器。让这台备份服务器，每天在早上4点开始同步服务器上的数据；并且每个备份都是完整备份。有时 硬盘坏掉，或者服务器数据被删除，完整备份还是相当重要的。这种备份相当于每天为服务器的数据做一个镜像，当生产型服务器发生事故时，我们可以轻松恢复数 据，能把数据损失降到最低；是不是这么回事？？</p>
+<p>　　step1：创建同步脚本和密码文件 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">　　#mkdir   /etc/cron.daily.rsync</span><br><span class="line">　　#cd  /etc/cron.daily.rsync </span><br><span class="line">　　#touch rhel4home.sh  rhel4opt.sh </span><br><span class="line">　　#chmod 755 /etc/cron.daily.rsync/*.sh  </span><br><span class="line">　　#mkdir /etc/rsyncd/</span><br><span class="line">　　#touch /etc/rsyncd/rsyncrhel4root.secrets</span><br><span class="line">　　#touch /etc/rsyncd/rsyncrhel4easylife.secrets</span><br><span class="line">　　#chmod 600  /etc/rsyncd/rsync.*</span><br></pre></td></tr></table></figure></p>
+<p>　 　注： 我们在 /etc/cron.daily/中创建了两个文件rhel4home.sh和rhel4opt.sh ，并且是权限是755的。创建了两个密码文件root用户用的是rsyncrhel4root.secrets ，easylife用户用的是 rsyncrhel4easylife.secrets，权限是600；</p>
+<p>　　我们编辑rhel4home.sh，内容是如下的： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">　　#!/bin/sh</span><br><span class="line">　　#backup 192.168.145.5:/home </span><br><span class="line">　　/usr/bin/rsync   -avzP  --password-file=/etc/rsyncd/rsyncrhel4root.secrets    root@192.168.145.5::rhel4home   /home/rhel4homebak/$(date +&apos;%m-%d-%y&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>　　我们编辑 rhel4opt.sh ，内容是： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">　　#!/bin/sh</span><br><span class="line">　　#backup 192.168.145.5:/opt </span><br><span class="line">　　/usr/bin/rsync   -avzP  --password-file=/etc/rsyncd/rsyncrhel4easylife.secrets    easylife@192.168.145.5::rhel4opt   /home/rhel4hoptbak/$(date +&apos;%m-%d-%y&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>　　注：你可以把rhel4home.sh和rhel4opt.sh的内容合并到一个文件中，比如都写到rhel4bak.sh中；</p>
+<p>　　接着我们修改 /etc/rsyncd/rsyncrhel4root.secrets和rsyncrhel4easylife.secrets的内容； <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">　　# echo &quot;mike&quot; &gt; /etc/rsyncd/rsyncrhel4root.secrets</span><br><span class="line">　　# echo &quot;keer&quot;&gt; /etc/rsyncd/rsyncrhel4easylife.secrets</span><br></pre></td></tr></table></figure></p>
+<p>　 　然后我们再/home目录下创建rhel4homebak 和rhel4optbak两个目录，意思是服务器端的rhel4home数据同步到备份服务器上的/home/rhel4homebak 下，rhel4opt数据同步到 /home/rhel4optbak/目录下。并按年月日归档创建目录；每天备份都存档； <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">　　#mkdir /home/rhel4homebak</span><br><span class="line">　　#mkdir /home/rhel4optbak</span><br></pre></td></tr></table></figure></p>
+<p>　　step2：修改crond服务器的配置文件 加入到计划任务 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　#crontab  -e</span><br></pre></td></tr></table></figure></p>
+<p>　　加入下面的内容：</p>
+<p>　　# Run daily cron jobs at 4:10 every day backup rhel4 data:<br>
+　　10 4 * * * /usr/bin/run-parts /etc/cron.daily.rsync 1&gt; /dev/null</p>
+<p>　　注：第一行是注释，是说明内容，这样能自己记住。 　　　　第二行表示在每天早上4点10分的时候，运行 /etc/cron.daily.rsync 下的可执行脚本任务； 　　　　 　　配置好后，要重启crond 服务器； <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">　　# killall crond    注：杀死crond 服务器的进程；</span><br><span class="line">　　# ps aux |grep crond  注：查看一下是否被杀死；</span><br><span class="line">　　# /usr/sbin/crond    注：启动 crond 服务器；</span><br><span class="line">　　# ps aux  |grep crond  注：查看一下是否启动了？</span><br><span class="line">　　root      3815  0.0  0.0   1860   664 ?        S    14:44   0:00 /usr/sbin/crond</span><br><span class="line">　　root      3819  0.0  0.0   2188   808 pts/1    S+   14:45   0:00 grep crond</span><br></pre></td></tr></table></figure></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/b0821049/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            TensorFlow 初体验 （Fashion-mnist）
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/931939a5/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">文本聚类系列教程：（二）jieba中文分词工具进阶</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/233074e6/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="修改pip全局镜像" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/233074e6/" class="title">修改pip全局镜像</a></p>
+                            <p class="item-date"><time datetime="2018-03-27T12:29:36.000Z" itemprop="datePublished">2018-03-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5dd0238f/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-3-26/44097355.jpg)" alt="如何理解描述符" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/5dd0238f/" class="title">如何理解描述符</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T15:52:32.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b0821049/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow 初体验 （Fashion-mnist）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/b0821049/" class="title">TensorFlow 初体验 （Fashion-mnist）</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:18:37.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cfc65600/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://us-forever.com/img/linux-icon.jpg)" alt="rsync的使用与配置" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/posts/cfc65600/" class="title">rsync的使用与配置</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:08:56.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/931939a5/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/03/18/5aae7476a5f07.png)" alt="文本聚类系列教程：（二）jieba中文分词工具进阶" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/文本聚类/">文本聚类</a></p>
+                            <p class="item-title"><a href="/posts/931939a5/" class="title">文本聚类系列教程：（二）jieba中文分词工具进阶</a></p>
+                            <p class="item-date"><time datetime="2018-03-19T11:57:19.000Z" itemprop="datePublished">2018-03-19</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">9</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

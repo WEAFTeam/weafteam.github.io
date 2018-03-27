@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>如何理解描述符 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="前言 上篇文章中挖了 property 和描述符的坑，这篇就把它填上好了_(:з)∠)_ property 是用描述符实现的，所以先说说 property。 property property 本身是一个实现了描述符协议的类，在不改变类接口的情况下，提供了一组对实例属性的读取、写入和删除操作。下面举个例子，一个银行账户的抽象，很容易实现： 12345class Account:    d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何理解描述符">
+<meta property="og:url" content="http://weafteam.github.io/posts/5dd0238f/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="前言 上篇文章中挖了 property 和描述符的坑，这篇就把它填上好了_(:з)∠)_ property 是用描述符实现的，所以先说说 property。 property property 本身是一个实现了描述符协议的类，在不改变类接口的情况下，提供了一组对实例属性的读取、写入和删除操作。下面举个例子，一个银行账户的抽象，很容易实现： 12345class Account:    d">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ourm7pfm2.bkt.clouddn.com/18-3-26/44097355.jpg">
+<meta property="og:updated_time" content="2018-03-25T17:04:23.529Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何理解描述符">
+<meta name="twitter:description" content="前言 上篇文章中挖了 property 和描述符的坑，这篇就把它填上好了_(:з)∠)_ property 是用描述符实现的，所以先说说 property。 property property 本身是一个实现了描述符协议的类，在不改变类接口的情况下，提供了一组对实例属性的读取、写入和删除操作。下面举个例子，一个银行账户的抽象，很容易实现： 12345class Account:    d">
+<meta name="twitter:image" content="http://ourm7pfm2.bkt.clouddn.com/18-3-26/44097355.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    未分类
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-03-19/how-to-understand-descriptor" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        如何理解描述符
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/5dd0238f/" class="article-date">
+            <time datetime="2018-03-25T15:52:32.000Z" itemprop="datePublished">2018-03-25</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        MisLink
+    </div>
+
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h2 id="前言">前言</h2>
+<p>上篇文章中挖了 property 和描述符的坑，这篇就把它填上好了_(:з)∠)_</p>
+<p>property 是用描述符实现的，所以先说说 property。</p>
+<h2 id="property">property</h2>
+<p>property 本身是一个实现了描述符协议的类，在不改变类接口的情况下，提供了一组对实例属性的读取、写入和删除操作。下面举个例子，一个银行账户的抽象，很容易实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, balance)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.balance = balance</span><br></pre></td></tr></table></figure>
+<p>银行账户最常见的操作就是存款和取款了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: account = Account(<span class="string">'zhang'</span>, <span class="number">100</span>)  <span class="comment"># 创建一个有 100 块存款的账户</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: account.balance</span><br><span class="line">Out[<span class="number">2</span>]: <span class="number">100</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: account.balance -= <span class="number">90</span>  <span class="comment"># 取 90 块</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: account.balance  <span class="comment"># 还剩 10 块</span></span><br><span class="line">Out[<span class="number">4</span>]: <span class="number">10</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: account.balance += <span class="number">30</span>  <span class="comment"># 存 30 块</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: account.balance  <span class="comment"># 现在有 40 块</span></span><br><span class="line">Out[<span class="number">6</span>]: <span class="number">40</span></span><br></pre></td></tr></table></figure>
+<p>但是这里有个问题：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: account.balance -= <span class="number">50</span>  <span class="comment"># 再取 50 块</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: account.balance  <span class="comment"># 存款变成了负数！</span></span><br><span class="line">Out[<span class="number">8</span>]: <span class="number">-10</span></span><br></pre></td></tr></table></figure>
+<p>当然这种操作是不该被允许的，我们需要对 <code>balance</code> 的写入做限制。Jawa 之类的语言会创建一组 getter、setter 方法来管理属性，但是这并不 Python，也对现有的代码不友好。正确的方式是使用 property。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, balance)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.balance = balance</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">balance</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._balance</span><br><span class="line"></span><br><span class="line"><span class="meta">    @balance.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">balance</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> value &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'balance must greater than 0.'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self._balance = value</span><br></pre></td></tr></table></figure>
+<p>现在 <code>balance</code> 被禁止设为小于 0 的数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: account = Account(<span class="string">'zhang'</span>, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: account.balance</span><br><span class="line">Out[<span class="number">2</span>]: <span class="number">100</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: account.balance += <span class="number">40</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: account.balance -= <span class="number">200</span></span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">ValueError                                Traceback (most recent call last)</span><br><span class="line">...</span><br><span class="line">ValueError: balance must greater than <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: account.balance</span><br><span class="line">Out[<span class="number">5</span>]: <span class="number">140</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: account = Account(<span class="string">'zhang'</span>, <span class="number">-1</span>)  <span class="comment"># 初始化的时候也不行！</span></span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">ValueError                                Traceback (most recent call last)</span><br><span class="line">...</span><br><span class="line">ValueError: balance must greater than <span class="number">0.</span></span><br></pre></td></tr></table></figure>
+<p>可以看到我们使用 <code>balance</code> 的方式没有发生变化，但是对值的限制已经生效了。</p>
+<p>property 还有一个 <code>deleter</code> 装饰器，处理应用于属性的 <code>del</code>；当然，<code>del</code> 本身用的也不多，大多数时候把销毁操作交给 Python 就可以了。不过如果涉及到复杂对象的引用，要做到 RAII（误，还是要手动实现的。</p>
+<h3 id="property-是类">property 是类</h3>
+<p>property 本身是用 C 实现的，<a href="https://docs.python.org/3/howto/descriptor.html#properties" target="_blank" rel="noopener">这里</a>有一个纯 Python 的实现。正如上文所说，它本身是一个类，构造方法的签名如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">property</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fget=None, fset=None, fdel=None, doc=None)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>熟悉一点装饰器用法的话就可以看出上面的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">balance</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>实际上就是</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_balance</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    balance = property(fget=get_balance)</span><br></pre></td></tr></table></figure>
+<p>如果不熟悉的话，下一篇就讲装饰器好了（误</p>
+<h3 id="property-的实例是类属性">property 的实例是类属性</h3>
+<p>上面的代码段同时展示了这样一个事实：property 的实例是类属性。这就涉及到了属性查找顺序的问题，简单试一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>:</span></span><br><span class="line">    data = <span class="string">'data!'</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'bar!'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: f = Foo()</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: f.data</span><br><span class="line">Out[<span class="number">2</span>]: <span class="string">'data!'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: f.data = <span class="string">'f.data!'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: f.data</span><br><span class="line">Out[<span class="number">4</span>]: <span class="string">'f.data!'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: Foo.data</span><br><span class="line">Out[<span class="number">5</span>]: <span class="string">'data!'</span></span><br></pre></td></tr></table></figure>
+<p>实例属性覆盖了类属性，符合直觉。那么对 property 的实例来说呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">6</span>]: f.bar</span><br><span class="line">Out[<span class="number">6</span>]: <span class="string">'bar!'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: f.bar = <span class="string">'bar'</span></span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">AttributeError                            Traceback (most recent call last)</span><br><span class="line">...</span><br><span class="line">AttributeError: can<span class="string">'t set attribute</span></span><br></pre></td></tr></table></figure>
+<p>尝试给 <code>bar</code> 赋值，失败了，也符合 property 的工作方式：执行赋值时，如果没有 setter 方法就抛出异常。那么直接修改 <code>f.__dict__</code> 呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">8</span>]: f.__dict__[<span class="string">'bar'</span>] = <span class="string">'bar'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: f.bar</span><br><span class="line">Out[<span class="number">9</span>]: <span class="string">'bar!'</span></span><br></pre></td></tr></table></figure>
+<p>也不行，property 的实例完全覆盖了实例属性。但是，它是一个类属性，所以我们可以这样做：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">10</span>]: Foo.bar</span><br><span class="line">Out[<span class="number">10</span>]: &lt;property at <span class="number">0x29c44800408</span>&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">11</span>]: Foo.bar = <span class="string">'bar'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">12</span>]: f.bar</span><br><span class="line">Out[<span class="number">12</span>]: <span class="string">'bar'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">13</span>]: f.bar = <span class="string">'ba'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">14</span>]: f.bar</span><br><span class="line">Out[<span class="number">14</span>]: <span class="string">'ba'</span></span><br></pre></td></tr></table></figure>
+<p>对类属性的覆盖使 <code>bar</code> 不再是一个 property 的实例，所以也就不会覆盖后续的赋值了。</p>
+<p>当然我们仍然可以用一个 property 的实例再次覆盖 <code>Foo.bar</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">15</span>]: Foo.bar = property(fget=<span class="keyword">lambda</span> self: <span class="string">'bar!'</span>)</span><br><span class="line"></span><br><span class="line">In [<span class="number">16</span>]: f.bar</span><br><span class="line">Out[<span class="number">16</span>]: <span class="string">'bar!'</span></span><br></pre></td></tr></table></figure>
+<p>恢复原样。 property 的实例这种先从类中开始属性查找的方式，是一类描述符的工作模式。接下来就说说描述符。</p>
+<h2 id="描述符">描述符</h2>
+<p>描述符是指实现了描述符协议的类，这个协议包含四个方法，分别是 <code>__get__</code>，<code>__set__</code>，<code>__delete__</code> 和 Python 3.6 新增的 <code>__set_name__</code>。通常，只要实现了 <code>__get__</code> 或 <code>__set__</code>，就可以被称之为描述符。在某个角度上说，描述符的作用相当于抽象的 property，可以为一组属性提供相同的读取、写入和删除逻辑。接下来，还是从数据验证的例子开始。</p>
+<p>下面是商店中一项商品的抽象，包含商品名、数量和单价：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Item</span>:</span></span><br><span class="line">    amount = Storage(<span class="string">'amount'</span>)</span><br><span class="line">    price = Storage(<span class="string">'price'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, amount, price)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.amount = amount</span><br><span class="line">        self.price = price</span><br></pre></td></tr></table></figure>
+<p>其中的 <code>amount</code> 和 <code>price</code> 都必须大于 0，所以可以用统一的描述符实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Storage</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> value &gt; <span class="number">0</span>:</span><br><span class="line">            instance.__dict__[self.name] = value</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">f'<span class="subst">&#123;self.name&#125;</span> must greater than 0.'</span>)</span><br></pre></td></tr></table></figure>
+<p>由于我们并没有对读取方法有特别的需求，所以不用实现 <code>__get__</code> 方法。</p>
+<p>试一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: item = Item(<span class="string">'orange'</span>, <span class="number">100</span>, <span class="number">0</span>)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">ValueError                                Traceback (most recent call last)</span><br><span class="line">...</span><br><span class="line">ValueError: price must greater than <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: item = Item(<span class="string">'orange'</span>, <span class="number">0</span>, <span class="number">100</span>)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">ValueError                                Traceback (most recent call last)</span><br><span class="line">...</span><br><span class="line">ValueError: amount must greater than <span class="number">0.</span></span><br></pre></td></tr></table></figure>
+<p>如果 <code>amount</code> 或 <code>price</code> 中的任何一个不大于 0，都会被禁止。</p>
+<p>这里需要解释一下 <code>__set__</code> 的签名中的 <code>instance</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p><code>instance</code> 是 <code>Item</code> 的实例。因为描述符应该管理实例的属性，所以需要额外的参数提供相应的实例。这也是为什么我们不能这样写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">    self.__dict__[self.name] = value</span><br></pre></td></tr></table></figure>
+<p>这实际上是为描述符实例设置了值，而描述符实例是<code>Item</code> 类的类属性，所有的 <code>Item</code> 实例都共享相同的描述符实例。修改了某个描述符实例，相当于修改了所有的 <code>Item</code> 实例。</p>
+<p>上面的例子有个缺点，初始化描述符实例的时候需要重复属性的名字。我们希望可以简单的写成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Item</span>:</span></span><br><span class="line">    amount = Storage()</span><br><span class="line">    price = Storage()</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>而不需要在描述符的构造方法中重复属性名。这就是 Python 3.6 新增的 <code>__set_name__</code> 方法的作用。只要实现 <code>__set_name__</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Storage</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set_name__</span><span class="params">(self, owner, name)</span>:</span></span><br><span class="line">        self.name = name</span><br></pre></td></tr></table></figure>
+<p>同样解释一下函数签名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__set_name__</span><span class="params">(self, owner, name)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p><code>owner</code> 是 <code>Item</code> 类本身，<code>name</code> 是引用描述符实例的变量的名字。</p>
+<p>如果使用的 Python 版本在 3.6 以下呢？有两个方法：第一个是用元类接管<code>Item</code>类的创建过程，这个不在这篇文章的内容之内（可能又挖了一个坑；第二个就是为每个描述符实例生成与属性名无关但是唯一字符串，用来代替属性名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Storage</span>:</span></span><br><span class="line"></span><br><span class="line">    _counter = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        cls = self.__class__</span><br><span class="line">        self.name = <span class="string">f'_<span class="subst">&#123;cls.__name__&#125;</span>#<span class="subst">&#123;cls._counter&#125;</span>'</span></span><br><span class="line">        cls._counter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> getattr(instance, self.name)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> value &gt; <span class="number">0</span>:</span><br><span class="line">            setattr(instance, self.name, value)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'must greater than 0.'</span>)</span><br></pre></td></tr></table></figure>
+<p>由于 <code>Item</code> 中的属性名和我们实际保存的属性名不同，所以需要实现 <code>__get__</code> 方法。与 <code>__set_name__</code> 签名中的 <code>owner</code> 含义相同，<code>__get__</code> 方法签名中的 <code>owner</code> 也是 <code>Item</code> 类本身。</p>
+<p>现在，我们使用 <code>_Storage#N</code> 这样的名称在 <code>Item</code> 实例中保存属性。当然，这样的名称会让人有点困惑，特别是以类属性访问的时候：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: Item.amount</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">AttributeError                            Traceback (most recent call last)</span><br><span class="line">...</span><br><span class="line">AttributeError: <span class="string">'NoneType'</span> object has no attribute <span class="string">'_Storage#0'</span></span><br></pre></td></tr></table></figure>
+<p>为了避免在如此明显的地方暴露我们的实现细节，我们可以修改异常的错误消息，或者，内省描述符实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> instance <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> getattr(instance, self.name)</span><br></pre></td></tr></table></figure>
+<h3 id="两类描述符">两类描述符</h3>
+<p>上述例子中对数据属性的控制和管理是描述符的典型用途之一。这种实现了 <code>__set__</code> 方法，接管了设置属性行为的描述符，被称为覆盖型描述符，没有定义 <code>__set__</code> 方法的描述符，被称为非覆盖型描述符。由于 Python 中对实例属性和类属性的处理方式不同，这两类描述符也有不同的行为。</p>
+<h4 id="覆盖型描述符">覆盖型描述符</h4>
+<p>实现了 <code>__set__</code> 方法的描述符就是覆盖型描述符。这类描述符虽然是类属性，但是会覆盖实例属性的赋值操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Override</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        print(<span class="string">'get!'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        print(<span class="string">'set!'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Manager</span>:</span></span><br><span class="line"></span><br><span class="line">    override = Override()</span><br></pre></td></tr></table></figure>
+<p>下面做一些实验：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: m = Manager()</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: m.override</span><br><span class="line">get!</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: m.override = <span class="number">1</span></span><br><span class="line">set!</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: Manager.override</span><br><span class="line">get!</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: m.__dict__[<span class="string">'override'</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: m.__dict__</span><br><span class="line">Out[<span class="number">6</span>]: &#123;<span class="string">'override'</span>: <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: m.override</span><br><span class="line">get!</span><br></pre></td></tr></table></figure>
+<p>可以看出，无论以实例属性还是类属性访问 <code>override</code>，都会触发 <code>__get__</code> 方法；为实例属性 <code>override</code> 赋值会触发 <code>__set__</code> 方法；即使跳过描述符直接为 <code>m.__dict__</code> 赋值，读取 <code>override</code> 的操作仍然会被描述符覆盖。</p>
+<h5 id="没有-__get__-方法的覆盖型描述符">没有 <code>__get__</code> 方法的覆盖型描述符</h5>
+<p>如果只实现了 <code>__set__</code> 会发生什么呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OverrideNoGet</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        print(<span class="string">'set!'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Manager</span>:</span></span><br><span class="line"></span><br><span class="line">    override_no_get = OverrideNoGet()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: m = Manager()</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: m.override_no_get</span><br><span class="line">Out[<span class="number">2</span>]: &lt;__main__.OverrideNoGet at <span class="number">0x29c44a97668</span>&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: Manager.override_no_get</span><br><span class="line">Out[<span class="number">3</span>]: &lt;__main__.OverrideNoGet at <span class="number">0x29c44a97668</span>&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: m.override_no_get = <span class="number">1</span></span><br><span class="line">set!</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: m.override_no_get</span><br><span class="line">Out[<span class="number">5</span>]: &lt;__main__.OverrideNoGet at <span class="number">0x29c44a97668</span>&gt;</span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: m.__dict__[<span class="string">'override_no_get'</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: m.override_no_get</span><br><span class="line">Out[<span class="number">7</span>]: <span class="number">1</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: m.override_no_get = <span class="number">2</span></span><br><span class="line">set!</span><br><span class="line"></span><br><span class="line">In [<span class="number">9</span>]: m.override_no_get</span><br><span class="line">Out[<span class="number">9</span>]: <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，没实现 <code>__get__</code> 方法，无论以实例属性还是类属性访问 <code>override_no_get</code>，都会返回描述符实例；而赋值操作可以触发 <code>__set__</code> 方法；由于我们的 <code>__set__</code> 方法并没有真正修改实例属性，所以再次访问 <code>override_no_get</code> 仍然会得到描述符实例；通过 <code>m.__dict__</code> 修改实例属性后，实例属性就会覆盖描述符；不过只有访问实例属性时才是如此，赋值仍然由 <code>__set__</code> 处理。</p>
+<h4 id="非覆盖型描述符">非覆盖型描述符</h4>
+<p>没有实现 <code>__set__</code> 方法的描述符就是非覆盖型描述符：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NonOverride</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        print(<span class="string">'get!'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Manager</span>:</span></span><br><span class="line"></span><br><span class="line">    non_override = NonOverride()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: m = Manager()</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: m.non_override</span><br><span class="line">get!</span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: Manager.non_override</span><br><span class="line">get!</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: m.non_override = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: m.non_override</span><br><span class="line">Out[<span class="number">5</span>]: <span class="number">1</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: Manager.non_override</span><br><span class="line">get!</span><br><span class="line"></span><br><span class="line">In [<span class="number">7</span>]: <span class="keyword">del</span> m.non_override</span><br><span class="line"></span><br><span class="line">In [<span class="number">8</span>]: m.non_override</span><br><span class="line">get!</span><br></pre></td></tr></table></figure>
+<p>无论访问实例属性还是类属性，都会触发 <code>__get__</code> 方法；由于没有 <code>__set__</code> 方法，对属性的赋值不会被干涉；对属性复制之后，实例属性就会覆盖同名的描述符，但是访问类属性仍然可以触发 <code>__get__</code> 方法；如果把 <code>non_override</code> 从实例中删除，访问 <code>non_override</code> 的操作又会交给 <code>__get__</code>。</p>
+<p>当然，描述符都是定义在类上的，如果对同名的类属性进行赋值，就会完全替换掉描述符。这里表现出读、写属性时的不对等：对类属性的读操作可以被 <code>__get__</code> 处理，但是写操作不会。当然，了解一些 Python 的话就会知道还存在着另一种不对等：读取实例属性时，会返回实例属性，如果实例属性不存在，会返回类属性；但是为实例属性赋值时，如果实例属性不存在，会在实例中创建属性，不会影响到类属性。</p>
+<h2 id="结语">结语</h2>
+<p>描述符充斥在 Python 底层（举个例子：Python 中的方法是怎么实现的？）与各种框架中，理解描述符是体会 Python 世界工作原理和设计美学的重要方式。</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/233074e6/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            修改pip全局镜像
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/b0821049/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">TensorFlow 初体验 （Fashion-mnist）</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/233074e6/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="修改pip全局镜像" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/233074e6/" class="title">修改pip全局镜像</a></p>
+                            <p class="item-date"><time datetime="2018-03-27T12:29:36.000Z" itemprop="datePublished">2018-03-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5dd0238f/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-3-26/44097355.jpg)" alt="如何理解描述符" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/5dd0238f/" class="title">如何理解描述符</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T15:52:32.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b0821049/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow 初体验 （Fashion-mnist）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/b0821049/" class="title">TensorFlow 初体验 （Fashion-mnist）</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:18:37.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cfc65600/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://us-forever.com/img/linux-icon.jpg)" alt="rsync的使用与配置" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/posts/cfc65600/" class="title">rsync的使用与配置</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:08:56.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/931939a5/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/03/18/5aae7476a5f07.png)" alt="文本聚类系列教程：（二）jieba中文分词工具进阶" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/文本聚类/">文本聚类</a></p>
+                            <p class="item-title"><a href="/posts/931939a5/" class="title">文本聚类系列教程：（二）jieba中文分词工具进阶</a></p>
+                            <p class="item-date"><time datetime="2018-03-19T11:57:19.000Z" itemprop="datePublished">2018-03-19</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">9</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>文本聚类系列教程：（二）jieba中文分词工具进阶 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="文本聚类" />
+    
+    <meta name="description" content="jieba中文分词工具使用进阶篇，废话不多说吗，我们开始本次的学习吧~   如何让分词的更加准确 我们之前举得例子有些文本其实很简单，我们后来确实换了官方的测试文本《围城》，但是均没避免一个问题，这些测试例都十分地中规中矩。在实际中需要我们做分词的文本可能是多种多样的，这时候的切词有可能会不太特别理想，导致分词的不准确。 那我们不妨下一个别的电子书（这里我下载的是《斗破苍穹》，为了测">
+<meta name="keywords" content="文本聚类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文本聚类系列教程：（二）jieba中文分词工具进阶">
+<meta property="og:url" content="http://weafteam.github.io/posts/931939a5/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="jieba中文分词工具使用进阶篇，废话不多说吗，我们开始本次的学习吧~   如何让分词的更加准确 我们之前举得例子有些文本其实很简单，我们后来确实换了官方的测试文本《围城》，但是均没避免一个问题，这些测试例都十分地中规中矩。在实际中需要我们做分词的文本可能是多种多样的，这时候的切词有可能会不太特别理想，导致分词的不准确。 那我们不妨下一个别的电子书（这里我下载的是《斗破苍穹》，为了测">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2018/03/18/5aae7476a5f07.png">
+<meta property="og:updated_time" content="2018-03-25T16:50:46.086Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文本聚类系列教程：（二）jieba中文分词工具进阶">
+<meta name="twitter:description" content="jieba中文分词工具使用进阶篇，废话不多说吗，我们开始本次的学习吧~   如何让分词的更加准确 我们之前举得例子有些文本其实很简单，我们后来确实换了官方的测试文本《围城》，但是均没避免一个问题，这些测试例都十分地中规中矩。在实际中需要我们做分词的文本可能是多种多样的，这时候的切词有可能会不太特别理想，导致分词的不准确。 那我们不妨下一个别的电子书（这里我下载的是《斗破苍穹》，为了测">
+<meta name="twitter:image" content="https://i.loli.net/2018/03/18/5aae7476a5f07.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/文本聚类/">文本聚类</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-03-19/文本聚类系列教程：（二）jieba中文分词工具进阶" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        文本聚类系列教程：（二）jieba中文分词工具进阶
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/931939a5/" class="article-date">
+            <time datetime="2018-03-19T11:57:19.000Z" itemprop="datePublished">2018-03-19</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        Leno
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/文本聚类/">文本聚类</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <blockquote>
+<p>jieba中文分词工具使用进阶篇，废话不多说吗，我们开始本次的学习吧~</p>
+</blockquote>
+<hr>
+<h1 id="如何让分词的更加准确">如何让分词的更加准确</h1>
+<p>我们之前举得例子有些文本其实很简单，我们后来确实换了官方的测试文本《围城》，但是均没避免一个问题，这些测试例都十分地中规中矩。在实际中需要我们做分词的文本可能是多种多样的，这时候的切词有可能会不太特别理想，导致分词的不准确。</p>
+<p>那我们不妨下一个别的电子书（这里我下载的是《斗破苍穹》，为了测试我只用了第一章的文本），然后再进行切词，看下是否存在这样的问题。这里我们稍微改改上次的去停用词的代码，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line">d = path.dirname(__file__) <span class="comment"># 获取当前文件的dir路径</span></span><br><span class="line"></span><br><span class="line">text_path = <span class="string">'txt/chapter2.txt'</span> <span class="comment">#《斗破苍穹》第一章的文本路径</span></span><br><span class="line">text = open(path.join(d, text_path),<span class="string">'rb'</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CutWords</span><span class="params">(text)</span>:</span></span><br><span class="line">    mywordlist = []</span><br><span class="line">    seg_list = jieba.cut(text, cut_all=<span class="keyword">False</span>)</span><br><span class="line">    liststr=<span class="string">"/ "</span>.join(seg_list) <span class="comment"># 添加切分符</span></span><br><span class="line">    <span class="keyword">for</span> myword <span class="keyword">in</span> liststr.split(<span class="string">'/'</span>):</span><br><span class="line">        <span class="keyword">if</span> len(myword.strip())&gt;<span class="number">1</span>:</span><br><span class="line">            mywordlist.append(myword)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(mywordlist) <span class="comment">#返回一个字符串</span></span><br><span class="line"></span><br><span class="line">txt5 = CutWords(text)</span><br><span class="line">text_write = <span class="string">'txt/5.txt'</span></span><br><span class="line"><span class="keyword">with</span> open(text_write,<span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(txt5)</span><br><span class="line">    print(<span class="string">"Success"</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>结果如下：</strong></p>
+<p><img src="https://i.loli.net/2018/03/20/5ab12557a30b9.png" alt="result_cutwords.png"></p>
+<p>终于被我们找到了一个切词错误，原文是这样的：</p>
+<p>萧媚脑中忽然浮现出三年前那意气风发的少年</p>
+<p>按照我们正常的断句，应为：</p>
+<p>萧媚/脑中/忽然/浮现….，而jieba却认为“萧媚脑”是一个单词，从而导致此处分词不理想。</p>
+<p>jieba考虑了这种情况，而且有很多的应对方案，下面我们先说最简单的。</p>
+<h1 id="调整词典">调整词典</h1>
+<h2 id="方法1动态修改词典">方法1：动态修改词典</h2>
+<p>使用add_word(word,freq=None,tag=None)和del_word(word)可在程序中动态的修改词典，具体操作如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line">d = path.dirname(__file__) <span class="comment"># 获取当前文件的dir路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 此处增加代码</span></span><br><span class="line">jieba.add_word(<span class="string">'脑中'</span>)</span><br><span class="line"></span><br><span class="line">  ····</span><br></pre></td></tr></table></figure>
+<p><strong>结果如下：</strong></p>
+<p><img src="https://i.loli.net/2018/03/22/5ab3a2f27d481.png" alt="add_word_test.png"></p>
+<p>果然，这样的方法很直接的把我们原来切错的词变成了正确的词。与add_word()相对应的是delete_word()方法，根据字面意思我们也很容易理解delete_word()方法的作用，这里我就不做过多的演示了，大家在实际场景中直接运用就好了。</p>
+<h2 id="方法2调节词频">方法2：调节词频</h2>
+<p>使用suggest_freq(segment, tune=True)调节单个词语的词频，使得它更容易被分出来，或者不被分出来。</p>
+<p>但是需要注意的是：<strong>自动计算的词频在使用 HMM 新词发现功能时可能无效。</strong></p>
+<p>所以此时我们在做切词的时候需要把是HMM置为False。我们看下官方给的Demo（如果关闭HMM，很多新发现的词都消失了，所以‘萧媚脑’也消失了，无法做测试，我们的例子也是为了方便大家理解，所以也没必要非得针对这一个词做词频调节），具体的做法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"></span><br><span class="line">print(<span class="string">'/'</span>.join(jieba.cut(<span class="string">'如果放到post中将出错。'</span>, HMM=<span class="keyword">False</span>)))</span><br><span class="line"></span><br><span class="line">jieba.suggest_freq((<span class="string">'中'</span>, <span class="string">'将'</span>), <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'/'</span>.join(jieba.cut(<span class="string">'如果放到post中将出错。'</span>, HMM=<span class="keyword">False</span>)))</span><br><span class="line"></span><br><span class="line">print(<span class="string">'/'</span>.join(jieba.cut(<span class="string">'「台中」正确应该不会被切开'</span>, HMM=<span class="keyword">False</span>)))</span><br><span class="line"></span><br><span class="line">jieba.suggest_freq(<span class="string">'台中'</span>, <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'/'</span>.join(jieba.cut(<span class="string">'「台中」正确应该不会被切开'</span>, HMM=<span class="keyword">False</span>)))</span><br></pre></td></tr></table></figure>
+<p><strong>结果：</strong></p>
+<p><img src="https://i.loli.net/2018/03/22/5ab3b191d1bfd.png" alt="suggest_freq.png"></p>
+<p>对比下结果，不难发现suggest_freq()的使用方法，通过这样的强调高频词和低频词的方法可以做到分词更准确。</p>
+<h1 id="添加自定义词典">添加自定义词典</h1>
+<p>比起默认的词典，我们自定义的词典更适合我们自己的文本，这一点是毋庸置疑的。</p>
+<p>词典格式和 dict.txt 一样，一个词占一行；每一行分三部分：词语、词频（可省略）、词性（可省略），用空格隔开，顺序不可颠倒。file_name 若为路径或二进制方式打开的文件，则文件必须为 UTF-8 编码。</p>
+<p>这里我们的词典为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">云计算 5</span><br><span class="line">李小福 2 nr</span><br><span class="line">创新办 3 i</span><br><span class="line">easy_install 3 eng</span><br><span class="line">好用 300</span><br><span class="line">韩玉赏鉴 3 nz</span><br><span class="line">八一双鹿 3 nz</span><br><span class="line">台中</span><br><span class="line">凱特琳 nz</span><br><span class="line">Edu Trust认证 2000</span><br></pre></td></tr></table></figure>
+<p>我们这个例子也用官方的Demo，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.path.append(<span class="string">"../"</span>)</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line">jieba.load_userdict(<span class="string">"userdict.txt"</span>)</span><br><span class="line"><span class="comment"># jieba在0.28版本之后采用延迟加载方式</span></span><br><span class="line"><span class="comment"># “import jieba”不会立即触发词典的加载，而是在有必要的时候才会加载词典</span></span><br><span class="line"><span class="comment"># 如果想手动加载，可执行代码： jieba.initialize() 进行手动初始化操作</span></span><br><span class="line"><span class="comment"># 也正是有了延迟加载机制，我们现在可以改变主词典的路径：</span></span><br><span class="line"><span class="comment"># jieba.set_dictionary('data/dict.txt.big')</span></span><br><span class="line"><span class="comment"># 官方还提供了占用内存较小的词典和适用于繁体字的词典，均在官方的GitHub上，有需要的可以自行下载。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> jieba.posseg <span class="keyword">as</span> pseg</span><br><span class="line"><span class="comment"># pseg切分可以显示词性</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下三个操作是修改词典的巩固</span></span><br><span class="line">jieba.add_word(<span class="string">'石墨烯'</span>)</span><br><span class="line">jieba.add_word(<span class="string">'凱特琳'</span>)</span><br><span class="line">jieba.del_word(<span class="string">'自定义词'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">test_sent = (</span><br><span class="line"><span class="string">"李小福是创新办主任也是云计算方面的专家; 什么是八一双鹿\n"</span></span><br><span class="line"><span class="string">"例如我输入一个带“韩玉赏鉴”的标题，在自定义词库中也增加了此词为N类\n"</span></span><br><span class="line"><span class="string">"「台中」正確應該不會被切開。mac上可分出「石墨烯」；此時又可以分出來凱特琳了。"</span></span><br><span class="line">)</span><br><span class="line">words = jieba.cut(test_sent)</span><br><span class="line">print(<span class="string">'/'</span>.join(words))</span><br><span class="line"></span><br><span class="line">print(<span class="string">"="</span>*<span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">result = pseg.cut(test_sent)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> w <span class="keyword">in</span> result:</span><br><span class="line">    print(w.word, <span class="string">"/"</span>, w.flag, <span class="string">", "</span>, end=<span class="string">' '</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>结果如下：</strong></p>
+<p><img src="https://i.loli.net/2018/03/23/5ab46d77c08dc.png" alt="userdict.png"></p>
+<p>像‘云计算’、‘创新办’等词在没加载词典的时候是不能被识别出来的。像‘石墨烯’等在没有add_word()的时候也是不能识别出来的。可见效果还是不错的。</p>
+<h1 id="并行分词">并行分词</h1>
+<p>原理：将目标文本按行分隔后，把各行文本分配到多个 Python 进程并行分词，然后归并结果，从而获得分词速度的可观提升</p>
+<p>但是令人遗憾的是，这个模块并不支持Windows平台，原因是因为jieba的该模块是基于python自带的 multiprocessing 模块，而这个模块并不支持Windows。这里我就贴一下用法，使用Linux系统的同学可以自行体验下这个可观的速度提升。</p>
+<p><strong>用法：</strong></p>
+<ul>
+<li>jieba.enable_parallel(4) # 开启并行分词模式，参数为并行进程数</li>
+<li>jieba.disable_parallel() # 关闭并行分词模式</li>
+</ul>
+<h1 id="最后">最后</h1>
+<p>以上所讲的内容在日常的使用中应该是够用了，当然像基于TextRank算法的关键词抽取等内容，我这里并没涉及，并不是因为不重要，而是我对这个算法还不是很了解，硬着头皮写肯定也是照本宣科，效果肯定很差，所以先挖个坑吧，以后再填。</p>
+<p>感谢阅读~</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/cfc65600/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            rsync的使用与配置
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/39277c31/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">普通的 SQLAlchemy ORM 使用姿势</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/233074e6/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="修改pip全局镜像" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/233074e6/" class="title">修改pip全局镜像</a></p>
+                            <p class="item-date"><time datetime="2018-03-27T12:29:36.000Z" itemprop="datePublished">2018-03-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5dd0238f/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-3-26/44097355.jpg)" alt="如何理解描述符" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/5dd0238f/" class="title">如何理解描述符</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T15:52:32.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b0821049/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow 初体验 （Fashion-mnist）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/b0821049/" class="title">TensorFlow 初体验 （Fashion-mnist）</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:18:37.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cfc65600/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://us-forever.com/img/linux-icon.jpg)" alt="rsync的使用与配置" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/posts/cfc65600/" class="title">rsync的使用与配置</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:08:56.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/931939a5/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/03/18/5aae7476a5f07.png)" alt="文本聚类系列教程：（二）jieba中文分词工具进阶" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/文本聚类/">文本聚类</a></p>
+                            <p class="item-title"><a href="/posts/931939a5/" class="title">文本聚类系列教程：（二）jieba中文分词工具进阶</a></p>
+                            <p class="item-date"><time datetime="2018-03-19T11:57:19.000Z" itemprop="datePublished">2018-03-19</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">9</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

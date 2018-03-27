@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL) | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="Linux运维" />
+    
+    <meta name="description" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
+<meta name="keywords" content="Linux运维">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
+<meta property="og:url" content="http://weafteam.github.io/posts/2f5dded6/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://us-forever.com/img/mysql-linux-icon.png">
+<meta property="og:updated_time" content="2018-03-24T08:26:38.505Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
+<meta name="twitter:description" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
+<meta name="twitter:image" content="http://us-forever.com/img/mysql-linux-icon.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Linux/">Linux</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-03-12/linux-mysql" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/2f5dded6/" class="article-date">
+            <time datetime="2018-03-17T08:08:56.000Z" itemprop="datePublished">2018-03-17</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        earth
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Linux运维/">Linux运维</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h2 id="一准备环境">一、准备环境</h2>
+<ol type="1">
+<li>两台服务器：服务器A、服务器B</li>
+<li>服务器A：Red Hat Enterprise Linux Server release 6.5 (Santiago)</li>
+<li>服务器B：Red Hat Enterprise Linux Server release 6.5 (Santiago)</li>
+<li>服务器A IP：172.16.125.50</li>
+<li>服务器B IP：172.16.125.52</li>
+<li>MySQL版本：5.6.23</li>
+</ol>
+<h2 id="二安装mysql">二、安装MySQL</h2>
+<p>具体安装请见</p>
+<ol type="1">
+<li><a href="http://us-forever.com/2018/01/15/LinuxMySQL的安装/" target="_blank" rel="noopener">LinuxMySQL的安装(1)</a></li>
+<li><a href="http://us-forever.com/2018/02/02/LinuxMySQL的安装-2/" target="_blank" rel="noopener">LinuxMySQL的安装(2)</a></li>
+<li><a href="http://us-forever.com/2018/02/08/LinuxMySQL的安装-3/" target="_blank" rel="noopener">LinuxMySQL的安装(3)</a></li>
+</ol>
+<a id="more"></a>
+<h2 id="三主从库配置">三、主从库配置</h2>
+<h3 id="主库在etcmy.cnf里添加以下内容">1、主库在/etc/my.cnf里添加以下内容</h3>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#log日志</span></span><br><span class="line"><span class="attr">log_bin</span>=mysql_bin</span><br><span class="line"><span class="comment">#server ID</span></span><br><span class="line"><span class="attr">server_id</span>=<span class="number">2</span></span><br><span class="line"><span class="comment">#忽略同步的库</span></span><br><span class="line"><span class="attr">binlog-ignore-db</span>=information_schema</span><br><span class="line"><span class="attr">binlog-ignore-db</span>=cluster</span><br><span class="line"><span class="attr">binlog-ignore-db</span>=mysql</span><br><span class="line"><span class="comment">#需要同步的库</span></span><br><span class="line"><span class="attr">binlog-do-db</span>=test</span><br></pre></td></tr></table></figure>
+<h3 id="从库在etcmy.cnf里添加以下内容">2、从库在/etc/my.cnf里添加以下内容</h3>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">log_bin=mysql_bin</span><br><span class="line">server_id=3</span><br><span class="line">binlog-ignore-db=information_schema</span><br><span class="line">binlog-ignore-db=cluster</span><br><span class="line">binlog-ignore-db=mysql</span><br><span class="line">replicate-do-db=ufind_db</span><br><span class="line">replicate-ignore-db=mysql</span><br><span class="line">log-slave-updates</span><br><span class="line">slave-skip-errors=all</span><br><span class="line">slave-net-timeout=60</span><br></pre></td></tr></table></figure>
+<h2 id="四主从库设置">四、主从库设置</h2>
+<h3 id="进入主库我们在主库中创建一个的账户从库通过使用这个账号来同步数据">1、进入主库，我们在主库中创建一个的账户，从库通过使用这个账号来同步数据。</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'repl'</span>@<span class="string">'172.16.125.52'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="赋予相应的权限">2、赋予相应的权限</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">FILE</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'repl'</span>@<span class="string">'172.16.125.52'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">REPLICATION</span> <span class="keyword">SLAVE</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'repl'</span>@<span class="string">'172.16.125.52'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="重启数据库主库执行以下命令">3、重启数据库（主库）执行以下命令</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW MASTER STATUS;</span><br></pre></td></tr></table></figure>
+<p><img src="http://us-forever.com/img/mysqlsync.png"> 要记住以上的信息，在设置从库的时候需要填写并设置。</p>
+<h3 id="在从库里边执行以下命令">4、在从库里边执行以下命令</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stop slave;</span><br><span class="line">change master to master_host=&apos;172.16.125.50&apos;,master_user=&apos;repl&apos;,master_password=&apos;123456&apos;,master_log_file=&apos;mysql_bin.000023&apos;, master_log_pos=120;</span><br><span class="line">start slave;</span><br></pre></td></tr></table></figure>
+<h3 id="然后执行一下命令查看状态">5、然后执行一下命令查看状态</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show slave status \G;</span><br></pre></td></tr></table></figure>
+<p>内容如下： <img src="http://us-forever.com/img/mysqlsync1.png"> <img src="http://us-forever.com/img/mysqlsync2.png"></p>
+<h3 id="测试与提示">6、测试与提示</h3>
+<p>后期的测试中我们只针对<strong>test</strong>库进行了同步。 所以只能针对<strong>test</strong>进行的操作才有效。</p>
+<p>如果后期对一些列库进行操作，需要 添加相应的配置 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>主库配置文件</span><br><span class="line">binlog-do-db=test</span><br><span class="line"><span class="meta">#</span>从库配置文件</span><br><span class="line">replicate-do-db=test</span><br></pre></td></tr></table></figure></p>
+<p>并查询出最新的master的状态，停止从库。并改变从库的配置重启同步。 五、Xtrabackup的简单介绍 ——————- Percona XtraBackup 是世界上唯一的开源免费的MySQL热备份软件，可以执行非阻塞操作 InnoDB和XtraDB数据库的备份。 Percona XtraBackup可提供以下优点：</p>
+<ul>
+<li>备份快速安全可靠</li>
+<li>备份期间不间断的事务处理</li>
+<li>节省磁盘空间和网络带宽</li>
+<li>自动备份验证</li>
+<li>更快的恢复时间保证正常工作</li>
+</ul>
+<p>Percona XtraBackup 为所有版本的Percona服务器，MySQL和MariaDB提供MySQL热备份。 它可执行 流媒体，压缩和增量MySQL备份。</p>
+<h2 id="六xtrabackup的安装">六、Xtrabackup的安装</h2>
+<p>如果在互联网下 可使用以下命令安装 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.4.4/binary/redhat/7/x86_64/percona-xtrabackup-24-2.4.4-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>获取相应rpm包 安装部分依赖(不同的操作系统可能已安装的库不尽相同) <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh mysql-community-libs-compat-5.7.20-1.el7.x86_64.rpm</span><br><span class="line"><span class="meta">#</span>根据mysql版本而定</span><br><span class="line">yum list|grep perl</span><br><span class="line">yum -y install perl-DBI.x86_64 perl-DBD-MySQL.x86_64</span><br></pre></td></tr></table></figure></p>
+<p>然后安装Xtrabackup <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh percona-xtrabackup-24-2.4.4-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>参考： <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install cmake gcc gcc-c++ libaio libaio-devel automake autoconf bison libtool ncurses-devel libgcrypt-devel libev-devel libcurl-devel vim-common</span><br></pre></td></tr></table></figure></p>
+<h2 id="七xtrabackup备份mysql">七、Xtrabackup备份MySQL</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xtrabackup --defaults-file=/etc/my.cnf --user=root --password=root --host=localhost --backup --target-dir=/data/backups/</span><br><span class="line">可指定数据库--databases=test</span><br></pre></td></tr></table></figure>
+<h2 id="八xtrabackup的备份恢复">八、Xtrabackup的备份恢复</h2>
+<p>备份之前必须先关闭MySQL server 然后删除data目录（/var/lib/mysql一般情况是这个） <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xtrabackup  --copy-back --target-dir=/data/backups/</span><br></pre></td></tr></table></figure></p>
+<p>执行完恢复之后需要设置文件权限 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R mysql:mysql /var/lib/mysql</span><br></pre></td></tr></table></figure></p>
+<p>然后启动mysql <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysqld.service</span><br><span class="line"><span class="meta">#</span>或者使用服务</span><br><span class="line">service mysqld start</span><br></pre></td></tr></table></figure></p>
+<h2 id="九使用脚本自动备份7天之内的数据">九、使用脚本自动备份7天之内的数据</h2>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line"># Database info</span><br><span class="line">DB_USER="root"</span><br><span class="line">DB_PASS="root"</span><br><span class="line">DB_HOST="localhost"</span><br><span class="line"></span><br><span class="line"># Others vars</span><br><span class="line">BCK_DIR="/opt/app/mysqlbackup"    #the backup file directory</span><br><span class="line">CONF_DIR="/etc/my.cnf"</span><br><span class="line">DATE=`date +%F`</span><br><span class="line">RMDATE=`date -d '-7 day' +%F`</span><br><span class="line"></span><br><span class="line"># TODO</span><br><span class="line"></span><br><span class="line">mkdir -p $BCK_DIR/$DATE/</span><br><span class="line">#Create dir for save backup data</span><br><span class="line">xtrabackup --defaults-file=$CONF_DIR --user=$DB_USER --password=$DB_PASS --host=$DB_HOST --backup --target-dir=$BCK_DIR/$DATE/</span><br><span class="line">#Backup mysql data</span><br><span class="line">rm -rf $BCK_DIR/$RMDATE</span><br><span class="line">#Delete the backup 7 days ago</span><br><span class="line">#热备份数据库</span><br></pre></td></tr></table></figure>
+<p>加入crontab <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">30 2 * * * /bin/sh /home/scripts/mysqlbackup.sh</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://learn.percona.com/hubfs/Manuals/Percona_Xtra_Backup/Percona_XtraBackup_2.4/Percona-XtraBackup-2.4.9.pdf" target="_blank" rel="noopener">更多请参考官方文档</a></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/575e441b/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            文本聚类系列教程：（一）jieba中文分词工具入门
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/8e8e4531/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">chapter-01-AIR</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/233074e6/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="修改pip全局镜像" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/233074e6/" class="title">修改pip全局镜像</a></p>
+                            <p class="item-date"><time datetime="2018-03-27T12:29:36.000Z" itemprop="datePublished">2018-03-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5dd0238f/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-3-26/44097355.jpg)" alt="如何理解描述符" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/5dd0238f/" class="title">如何理解描述符</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T15:52:32.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b0821049/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow 初体验 （Fashion-mnist）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/b0821049/" class="title">TensorFlow 初体验 （Fashion-mnist）</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:18:37.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cfc65600/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://us-forever.com/img/linux-icon.jpg)" alt="rsync的使用与配置" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/posts/cfc65600/" class="title">rsync的使用与配置</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:08:56.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/931939a5/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/03/18/5aae7476a5f07.png)" alt="文本聚类系列教程：（二）jieba中文分词工具进阶" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/文本聚类/">文本聚类</a></p>
+                            <p class="item-title"><a href="/posts/931939a5/" class="title">文本聚类系列教程：（二）jieba中文分词工具进阶</a></p>
+                            <p class="item-date"><time datetime="2018-03-19T11:57:19.000Z" itemprop="datePublished">2018-03-19</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">9</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

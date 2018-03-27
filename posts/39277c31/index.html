@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>普通的 SQLAlchemy ORM 使用姿势 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="前言 SQLAlchemy 是 Python 世界中最常用的 SQL 工具之一，包含 SQL 渲染引擎和 ORM 两大部分，平时使用最多的就是 ORM。在我看来平时很多使用 ORM 的姿势是有问题的，或者说是不优雅的。所以这篇文章打算讲讲（搬运）其中一些普通的姿势和技巧（API 文档）。 property 和混合属性 property 下面是一个简单的用户表映射： 12345class">
+<meta property="og:type" content="article">
+<meta property="og:title" content="普通的 SQLAlchemy ORM 使用姿势">
+<meta property="og:url" content="http://weafteam.github.io/posts/39277c31/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="前言 SQLAlchemy 是 Python 世界中最常用的 SQL 工具之一，包含 SQL 渲染引擎和 ORM 两大部分，平时使用最多的就是 ORM。在我看来平时很多使用 ORM 的姿势是有问题的，或者说是不优雅的。所以这篇文章打算讲讲（搬运）其中一些普通的姿势和技巧（API 文档）。 property 和混合属性 property 下面是一个简单的用户表映射： 12345class">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ourm7pfm2.bkt.clouddn.com/18-3-18/10592292.jpg">
+<meta property="og:updated_time" content="2018-03-24T09:25:04.169Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="普通的 SQLAlchemy ORM 使用姿势">
+<meta name="twitter:description" content="前言 SQLAlchemy 是 Python 世界中最常用的 SQL 工具之一，包含 SQL 渲染引擎和 ORM 两大部分，平时使用最多的就是 ORM。在我看来平时很多使用 ORM 的姿势是有问题的，或者说是不优雅的。所以这篇文章打算讲讲（搬运）其中一些普通的姿势和技巧（API 文档）。 property 和混合属性 property 下面是一个简单的用户表映射： 12345class">
+<meta name="twitter:image" content="http://ourm7pfm2.bkt.clouddn.com/18-3-18/10592292.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    未分类
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-03-12/usage-of-sqlalchemy" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        普通的 SQLAlchemy ORM 使用姿势
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/39277c31/" class="article-date">
+            <time datetime="2018-03-18T13:38:54.000Z" itemprop="datePublished">2018-03-18</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        MisLink
+    </div>
+
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h2 id="前言">前言</h2>
+<p>SQLAlchemy 是 Python 世界中最常用的 SQL 工具之一，包含 SQL 渲染引擎和 ORM 两大部分，平时使用最多的就是 ORM。在我看来平时很多使用 ORM 的姿势是有问题的，或者说是不优雅的。所以这篇文章打算讲讲（搬运）其中一些普通的姿势和技巧（API 文档）。</p>
+<h2 id="property-和混合属性">property 和混合属性</h2>
+<h3 id="property">property</h3>
+<p>下面是一个简单的用户表映射：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(Base)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'user'</span></span><br><span class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>)</span><br><span class="line">    name = Column(String(<span class="number">64</span>))</span><br><span class="line">    password = Column(String(<span class="number">128</span>))</span><br></pre></td></tr></table></figure>
+<p>通常情况下，我们会加密用户的密码，在数据库中保存密文，但是这里有一个问题，我们得这么写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建用户</span></span><br><span class="line">user = User(name=<span class="string">'zhang'</span>, password=encrypt(<span class="string">'123456'</span>))</span><br><span class="line"><span class="comment"># 修改密码</span></span><br><span class="line">user.password = encrypt(<span class="string">'654321'</span>)</span><br></pre></td></tr></table></figure>
+<p>这意味着我们需要不断的重复书写 <code>encrypt</code> 函数来保证加密了用户密码。</p>
+<p>有没有什么方法能省去这一步呢？答案是 <code>property</code>。</p>
+<p>现在把用户表映射改成这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(Base)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'user'</span></span><br><span class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>)</span><br><span class="line">    name = Column(String(<span class="number">64</span>))</span><br><span class="line">    _password = Column(String(<span class="number">128</span>))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">password</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'write only!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @password.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">password</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        self._password = encrypt(value)</span><br></pre></td></tr></table></figure>
+<p>现在只需要简单的写成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建用户</span></span><br><span class="line">user = User(name=<span class="string">'zhang'</span>, password=<span class="string">'123456'</span>)</span><br><span class="line"><span class="comment"># 修改密码</span></span><br><span class="line">user.password = <span class="string">'654321'</span></span><br></pre></td></tr></table></figure>
+<p>就可以了。</p>
+<p>关于 Python 中 <code>property</code>和描述符的使用值得再另写一篇文章描述，在这里就不详细说明了。</p>
+<h3 id="混合属性hybrid_property">混合属性（hybrid_property）</h3>
+<p>上面的例子看上去让代码清爽了不少，但是有时候这种用法是无法满足需要的，譬如下面这个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(Base)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'student'</span></span><br><span class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>)</span><br><span class="line">    name = Column(String(<span class="number">64</span>))</span><br><span class="line">    birthday = Column(DateTime)</span><br></pre></td></tr></table></figure>
+<p>这是一个学生表映射，增加了 <code>birthday</code> 字段。通常我们会保存用户的生日，再通过生日获取用户年龄。有了上面的例子，很容易写出获取年龄的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(Base)</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> datetime.now().year - self.birthday.year</span><br></pre></td></tr></table></figure>
+<p>现在可以简单的使用 <code>student.age</code> 获取具体的生日。</p>
+<p>这样做是有缺陷的：如果需要获取所有 18 岁的学生呢？我们希望可以这样写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session.query(Student).filter_by(age=<span class="number">18</span>).all()</span><br></pre></td></tr></table></figure>
+<p>但是却没有任何结果返回。如果改成这样呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">now = datetime.now()</span><br><span class="line">start = datetime(now.year - <span class="number">18</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">end = end = datetime(now.year + <span class="number">1</span> - <span class="number">18</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">session.query(Student).filter(Student.birthday &gt;= start, Student.birthday &lt; end).all()</span><br></pre></td></tr></table></figure>
+<p>这样倒是可以获取正确的结果了，但是也太丑了点吧？难道没办法写出像第一条一样的既清晰又简洁的查询么？</p>
+<p>答案自然是有的，SQLAlchemy 提供了混合属性（<code>hybrid_property</code>）来处理类似的情况，于是我们可以改写获取年龄的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy.ext.hybrid <span class="keyword">import</span> hybrid_property</span><br><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> func</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(Base)</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="meta">    @hybrid_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> datetime.now().year - self.birthday.year</span><br><span class="line"></span><br><span class="line"><span class="meta">    @age.expression</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> datetime.now().year - func.year(self.birthday)</span><br></pre></td></tr></table></figure>
+<p>这里将原本的 <code>property</code> 替换为 SQLAlchemy 中的 <code>hybrid_property</code>，同时提供了一个 <code>expression</code> 装饰器，在被装饰的方法中把 Python 代码翻译成 SQL（代码示例的目标数据库为 MySQL，获取日期中的年份的函数为<code>YEAR()</code>，使用其他数据库请查阅对应数据库的相关文档）。有了这个方法，SQLAlchemy 就知道如何在 SQL 语句中处理 <code>age</code> 属性了。</p>
+<p>接下来稍微提一下 <code>hybrid_method</code>。</p>
+<p>和 <code>hybrid_property</code> 类似，只不过可以给 <code>hybrid_method</code> 传参数。下面这个例子不太合适，只为了展示<code>hybrid_method</code> 的功能。</p>
+<p>如何找到所有 90 后同学？当然我们可以复用上面的 <code>age</code> 属性，先计算一下 90 后的同学现在多少岁，然后直接写在查询里就好：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session.query(Student).filter(Student.age &gt;= now.year - <span class="number">1990</span>, Student.age &lt; now.year - <span class="number">2000</span>).all()</span><br></pre></td></tr></table></figure>
+<p>如果要判断某个学生是否是 90 后呢？又需要再写一遍：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> now.year - <span class="number">2000</span> &gt; student.age &gt;= now.year - <span class="number">1990</span>:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>出现了很多不直观的代码，这时候可以使用 <code>hybrid_method</code> 简化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(Base)</span>:</span></span><br><span class="line">    ...</span><br><span class="line"><span class="meta">    @hybrid_method</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">born_after</span><span class="params">(self, years)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> years + <span class="number">10</span> &gt; self.birthday.year &gt;= years</span><br><span class="line"></span><br><span class="line"><span class="meta">    @born_after.expression</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">born_after</span><span class="params">(self, years)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> and_(func.year(self.birthday) &lt; years + <span class="number">10</span>, func.year(self.birthday) &gt;= years)</span><br></pre></td></tr></table></figure>
+<p>于是现在可以这样做：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">session.query(Student).filter(Student.born_after(<span class="number">1990</span>)).all()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> student.born_after(<span class="number">1990</span>):</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>看上去好了一些（误</p>
+<p>这一部分就到此为止，当然 hybrid 在 SQLAlchemy 中的用法不止上述这些，更详细和复杂的内容参见官方文档。</p>
+<h2 id="关联代理association_proxy">关联代理（association_proxy）</h2>
+<h3 id="简化标量集合">简化标量集合</h3>
+<p>关联代理用在有关联的表中，所以我们先创建如下映射关系：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">association = Table(<span class="string">'association'</span>, Base.metadata,</span><br><span class="line">                    Column(<span class="string">'blog_id'</span>, Integer, ForeignKey(<span class="string">'blog.id'</span>), primary_key=<span class="keyword">True</span>),</span><br><span class="line">                    Column(<span class="string">'tag_id'</span>, Integer, ForeignKey(<span class="string">'tag.id'</span>), primary_key=<span class="keyword">True</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Blog</span><span class="params">(Base)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'blog'</span></span><br><span class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>)</span><br><span class="line">    name = Column(String(<span class="number">64</span>))</span><br><span class="line">    tags = relationship(</span><br><span class="line">        <span class="string">'Tag'</span>, secondary=association, backref=backref(<span class="string">'blogs'</span>, lazy=<span class="string">'dynamic'</span>), lazy=<span class="string">'dynamic'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tag</span><span class="params">(Base)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'tag'</span></span><br><span class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>)</span><br><span class="line">    name = Column(String(<span class="number">64</span>))</span><br></pre></td></tr></table></figure>
+<p>一个经常被拿出来作为演示的 Many-To-Many 模型。</p>
+<p>先填充一些数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: blog = Blog(name=<span class="string">'first'</span>)</span><br><span class="line">In [<span class="number">2</span>]: blog.tags.append(Tag(name=<span class="string">'t1'</span>))</span><br><span class="line">In [<span class="number">3</span>]: blog.tags.append(Tag(name=<span class="string">'t2'</span>))</span><br><span class="line">In [<span class="number">4</span>]: session.add(blog)</span><br><span class="line">In [<span class="number">5</span>]: session.commit()</span><br></pre></td></tr></table></figure>
+<p>接下来就可以获取这些对象的所有信息了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">4</span>]: blog.tags.all()</span><br><span class="line">Out[<span class="number">4</span>]: [&lt;Tag at <span class="number">0x1fdbab6f198</span>&gt;, &lt;Tag at <span class="number">0x1fdbab6f208</span>&gt;]</span><br><span class="line"></span><br><span class="line">In [<span class="number">5</span>]: blog.tags.all()[<span class="number">0</span>].name</span><br><span class="line">Out[<span class="number">5</span>]: <span class="string">'t1'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">6</span>]: [t.name <span class="keyword">for</span> t <span class="keyword">in</span> blog.tags]</span><br><span class="line">Out[<span class="number">6</span>]: [<span class="string">'t1'</span>, <span class="string">'t2'</span>]</span><br></pre></td></tr></table></figure>
+<p>上面的操作有点复杂。对我们而言，<code>Tag</code> 对象只有 <code>name</code> 字段是有用的，为了获取 <code>name</code> 字段，我们要写很多额外的代码把 <code>name</code> 字段从 <code>Tag</code> 对象中剥离出来。<code>association_proxy</code> 就可以用来简化这个操作。</p>
+<p>现在修改一下上面的 <code>Blog</code> 映射：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy.ext.associationproxy <span class="keyword">import</span> association_proxy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Blog</span><span class="params">(Base)</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    tag_objects = relationship(</span><br><span class="line">        <span class="string">'Tag'</span>, secondary=association, backref=backref(<span class="string">'blogs'</span>, lazy=<span class="string">'dynamic'</span>), lazy=<span class="string">'dynamic'</span>)</span><br><span class="line">    tags = association_proxy(<span class="string">'tag_objects'</span>, <span class="string">'name'</span>)</span><br></pre></td></tr></table></figure>
+<p>增加了一行 <code>association_proxy</code> 对象的声明，现在我们可以这样做：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">7</span>]: blog.tags</span><br><span class="line">Out[<span class="number">7</span>]: [<span class="string">'t1'</span>, <span class="string">'t2'</span>]</span><br></pre></td></tr></table></figure>
+<p>现在查询操作变得很简单了，但是新增标签的操作还是很麻烦：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blog.tag_objects.append(Tag(name=<span class="string">'t3'</span>))</span><br></pre></td></tr></table></figure>
+<p>还是需要实例化一个 <code>Tag</code> 对象，能不能直接写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blog.tags.append(<span class="string">'t4'</span>)</span><br></pre></td></tr></table></figure>
+<p>当然是可以的，只要再修改一下 <code>association_proxy</code> 的声明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Blog</span><span class="params">(Base)</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    tags = association_proxy(<span class="string">'tag_objects'</span>, <span class="string">'name'</span>, creator=<span class="keyword">lambda</span> name: Tag(name=name))</span><br></pre></td></tr></table></figure>
+<p>参数 <code>creator</code> 接受一个可调用对象，它告诉 <code>association_proxy</code> 如何处理“新增”操作。</p>
+<p><strong>注意</strong>：<code>creator</code> 的默认参数是被代理对象的构造函数，如果提供了一个单参数的构造函数，那么可以省略 <code>creator</code> 参数。</p>
+<h3 id="简化关联对象">简化关联对象</h3>
+<p>上面的例子里把 <code>association</code> 表作为一个普通的 <code>Table</code> 对象，是因为 <code>association</code> 中不需要保存额外信息，只需要作为 <code>Blog</code> 和 <code>Tag</code> 的中转。现在有了新的需求，我们需要知道每篇博客的标签是在什么时候加上的，这就需要在 <code>association</code> 表中增加一个额外的字段用来表示创建时间，同时为了获取这个时间，还要把 <code>association</code> 改造成一个真正的映射：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Association</span><span class="params">(Base)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'association'</span></span><br><span class="line"></span><br><span class="line">    blog_id = Column(Integer, ForeignKey(<span class="string">'blog.id'</span>), primary_key=<span class="keyword">True</span>)</span><br><span class="line">    tag_id = Column(Integer, ForeignKey(<span class="string">'tag.id'</span>), primary_key=<span class="keyword">True</span>)</span><br><span class="line">    created_at = Column(DateTime, default=datetime.now)</span><br><span class="line"></span><br><span class="line">    blog = relationship(<span class="string">'Blog'</span>, backref=backref(<span class="string">'blog_tags'</span>, lazy=<span class="string">'dynamic'</span>), lazy=<span class="string">'joined'</span>)</span><br><span class="line">    tag = relationship(<span class="string">'Tag'</span>, backref=backref(<span class="string">'tag_blogs'</span>, lazy=<span class="string">'dynamic'</span>), lazy=<span class="string">'joined'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tag</span><span class="params">(Base)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'tag'</span></span><br><span class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>)</span><br><span class="line">    name = Column(String(<span class="number">64</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Blog</span><span class="params">(Base)</span>:</span></span><br><span class="line">    __tablename__ = <span class="string">'blog'</span></span><br><span class="line">    id = Column(Integer, primary_key=<span class="keyword">True</span>)</span><br><span class="line">    name = Column(String(<span class="number">64</span>))</span><br></pre></td></tr></table></figure>
+<p>这里实际上是把 Many-To-Many 拆成了两个 One-To-Many。</p>
+<p>然后构造一些数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">In  [<span class="number">1</span>]: blog = Blog(name=<span class="string">'first'</span>)</span><br><span class="line">    ...: tags = [Tag(name=<span class="string">'t1'</span>), Tag(name=<span class="string">'t2'</span>)]</span><br><span class="line">    ...: <span class="keyword">for</span> tag <span class="keyword">in</span> tags:</span><br><span class="line">    ...:     session.add(Association(blog=blog, tag=tag))</span><br><span class="line">    ...: session.add(blog)</span><br><span class="line">    ...: session.add_all(tags)</span><br><span class="line">    ...: session.commit()</span><br></pre></td></tr></table></figure>
+<p>现在就可以获取 <code>Tag</code> 和被添加的时间了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">2</span>]: blog.blog_tags[<span class="number">0</span>].tag.name</span><br><span class="line">Out[<span class="number">2</span>]: <span class="string">'t1'</span></span><br><span class="line"></span><br><span class="line">In [<span class="number">3</span>]: blog.blog_tags[<span class="number">0</span>].created_at</span><br><span class="line">Out[<span class="number">3</span>]: datetime.datetime(<span class="number">2018</span>, <span class="number">3</span>, <span class="number">18</span>, <span class="number">16</span>, <span class="number">4</span>, <span class="number">17</span>)</span><br></pre></td></tr></table></figure>
+<p>可以看到，给 <code>Blog</code> 增加标签要经过 <code>Association</code> 这个中间对象。虽然表结构的确如此，但是我们仍然希望 <code>Association</code> 表是透明的，仅当需要获取其中的创建时间时才明确获取 <code>Association</code> 对象。只需要在 <code>Blog</code> 中声明一个关联代理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Blog</span><span class="params">(Base)</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    tags = association_proxy(<span class="string">'blog_tags'</span>, <span class="string">'tag'</span>, creator=<span class="keyword">lambda</span> tag: Association(tag=tag))</span><br></pre></td></tr></table></figure>
+<p>然后就可以这样写了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">4</span>]: blog.tags[<span class="number">0</span>].name</span><br><span class="line">Out[<span class="number">4</span>]: <span class="string">'t1'</span></span><br></pre></td></tr></table></figure>
+<p>添加新的 <code>Tag</code> 也方便了很多：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In  [<span class="number">3</span>]: <span class="keyword">for</span> tag <span class="keyword">in</span> [Tag(name=<span class="string">'t3'</span>), Tag(name=<span class="string">'t4'</span>)]:</span><br><span class="line">    ...:     blog.tags.append(tag)</span><br></pre></td></tr></table></figure>
+<h3 id="混合关联代理">混合关联代理</h3>
+<p>现在回到了第一个问题的出发点，能不能在上一个例子的基础上简化 <code>tags</code> 的调用呢？同样没问题，只要在 <code>Association</code> 中加一个关联代理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Association</span><span class="params">(Base)</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    tag_objects = relationship(<span class="string">'Tag'</span>, backref=backref(<span class="string">'tag_blogs'</span>, lazy=<span class="string">'dynamic'</span>), lazy=<span class="string">'joined'</span>)</span><br><span class="line">    tags = association_proxy(<span class="string">'tag_objects'</span>, <span class="string">'name'</span>, creator=<span class="keyword">lambda</span> name: Tag(name=name))</span><br></pre></td></tr></table></figure>
+<p>然后用起来就和第一个例子一样了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: blog.tags</span><br><span class="line">Out[<span class="number">1</span>]: [<span class="string">'t1'</span>, <span class="string">'t2'</span>]</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: blog.tags.append(<span class="string">'t3'</span>)</span><br><span class="line">In [<span class="number">3</span>]: blog.tags</span><br><span class="line">Out[<span class="number">3</span>]: [<span class="string">'t1'</span>, <span class="string">'t2'</span>, <span class="string">'t3'</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="结语">结语</h2>
+<p>上述内容并没有很复杂的操作，都是一些易于实现并且可以改善日常使用体验的方法。SQLAlchemy 还有很多骚操作可以讲，但是受限于本人的姿势水平，很多并没有实际使用过，也谈不上有什么见解。那就这样吧~</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/931939a5/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            文本聚类系列教程：（二）jieba中文分词工具进阶
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/575e441b/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">文本聚类系列教程：（一）jieba中文分词工具入门</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/233074e6/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="修改pip全局镜像" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/233074e6/" class="title">修改pip全局镜像</a></p>
+                            <p class="item-date"><time datetime="2018-03-27T12:29:36.000Z" itemprop="datePublished">2018-03-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5dd0238f/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-3-26/44097355.jpg)" alt="如何理解描述符" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/5dd0238f/" class="title">如何理解描述符</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T15:52:32.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b0821049/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow 初体验 （Fashion-mnist）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/b0821049/" class="title">TensorFlow 初体验 （Fashion-mnist）</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:18:37.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cfc65600/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://us-forever.com/img/linux-icon.jpg)" alt="rsync的使用与配置" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/posts/cfc65600/" class="title">rsync的使用与配置</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:08:56.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/931939a5/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/03/18/5aae7476a5f07.png)" alt="文本聚类系列教程：（二）jieba中文分词工具进阶" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/文本聚类/">文本聚类</a></p>
+                            <p class="item-title"><a href="/posts/931939a5/" class="title">文本聚类系列教程：（二）jieba中文分词工具进阶</a></p>
+                            <p class="item-date"><time datetime="2018-03-19T11:57:19.000Z" itemprop="datePublished">2018-03-19</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">9</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
