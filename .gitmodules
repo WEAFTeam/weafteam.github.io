@@ -4,3 +4,6 @@
 [submodule "source/_posts"]
 	path = source/_posts
 	url = https://github.com/WEAFTeam/weekly
+[submodule ".deploy_git"]
+	path = .deploy_git
+	url = git@github.com:WEAFTeam/weafteam.github.io.git
