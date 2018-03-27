@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://weafteam.github.io/"/>
-  <updated>2018-03-27T15:20:21.288Z</updated>
+  <updated>2018-03-27T15:28:35.639Z</updated>
   <id>http://weafteam.github.io/</id>
   
   <author>
@@ -17,36 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>test deploy</title>
-    <link href="http://weafteam.github.io/posts/1fc29f16/"/>
-    <id>http://weafteam.github.io/posts/1fc29f16/</id>
-    <published>2018-03-27T15:20:02.231Z</published>
-    <updated>2018-03-27T15:20:21.288Z</updated>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          
-
-        
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
     <title>修改pip全局镜像</title>
     <link href="http://weafteam.github.io/posts/233074e6/"/>
     <id>http://weafteam.github.io/posts/233074e6/</id>
     <published>2018-03-27T12:29:36.000Z</published>
-    <updated>2018-03-27T15:19:41.635Z</updated>
+    <updated>2018-03-27T15:28:35.639Z</updated>
     
     <content type="html"><![CDATA[<h3 id="修改pip全局镜像">修改pip全局镜像</h3><p>第一次我们在windows上面安装了Anaconda，在使用pip安装Tensorflow中速度过慢，所以我为大家介绍一中修改全局pip源的方法（这样在使用pip下载依赖库的时候就会快一些）：</p><ol type="1"><li>打开用户主目录：我的是<code>C:\Users\milittle</code>。</li><li>在里面新建pip文件夹，在pip文件夹中建立pip.ini文件。</li><li>在pip.ini文件中添加如下配置信息，我使用的豆瓣源：</li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">timeout = 6000</span><br><span class="line">index-url = https://pypi.douban.com/simple</span><br></pre></td></tr></table></figure><ol start="4" type="1"><li>最后的目录结构就是：<code>C:\Users\milittle\pip\pip.ini</code></li></ol>]]></content>
     
