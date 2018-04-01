@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>TensorFlow 建立网络模型 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="TensorFlow" />
+    
+    <meta name="description" content="TensorFlow 建立网络模型 上次一我们在fashion-mnist上面体验了一把，但是里面有一些建立模型和一些TensorFlow的基础概念都没有给大家讲，所以这节决定将这方面的知识介绍一些，上节是为了引起大家的注意，TensorFlow具有很强大的功能，我们只能后续慢慢的学习。  其实在上一次的实例中，有很多地方确实是很困惑的，如果没有接触过机器学习的小伙伴可能理解起来会有一些问题">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow 建立网络模型">
+<meta property="og:url" content="http://weafteam.github.io/posts/5b7df854/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="TensorFlow 建立网络模型 上次一我们在fashion-mnist上面体验了一把，但是里面有一些建立模型和一些TensorFlow的基础概念都没有给大家讲，所以这节决定将这方面的知识介绍一些，上节是为了引起大家的注意，TensorFlow具有很强大的功能，我们只能后续慢慢的学习。  其实在上一次的实例中，有很多地方确实是很困惑的，如果没有接触过机器学习的小伙伴可能理解起来会有一些问题">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+<meta property="og:updated_time" content="2018-04-01T12:26:05.182Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow 建立网络模型">
+<meta name="twitter:description" content="TensorFlow 建立网络模型 上次一我们在fashion-mnist上面体验了一把，但是里面有一些建立模型和一些TensorFlow的基础概念都没有给大家讲，所以这节决定将这方面的知识介绍一些，上节是为了引起大家的注意，TensorFlow具有很强大的功能，我们只能后续慢慢的学习。  其实在上一次的实例中，有很多地方确实是很困惑的，如果没有接触过机器学习的小伙伴可能理解起来会有一些问题">
+<meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/TensorFlow/">TensorFlow</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-03-26/chapter-03-AIR" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        TensorFlow 建立网络模型
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/5b7df854/" class="article-date">
+            <time datetime="2018-03-31T10:23:35.000Z" itemprop="datePublished">2018-03-31</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        milittle
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/TensorFlow/">TensorFlow</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="tensorflow-建立网络模型">TensorFlow 建立网络模型</h1>
+<p>上次一我们在fashion-mnist上面体验了一把，但是里面有一些建立模型和一些TensorFlow的基础概念都没有给大家讲，所以这节决定将这方面的知识介绍一些，上节是为了引起大家的注意，TensorFlow具有很强大的功能，我们只能后续慢慢的学习。</p>
+<ol type="1">
+<li>其实在上一次的实例中，有很多地方确实是很困惑的，如果没有接触过机器学习的小伙伴可能理解起来会有一些问题，那么我开头就稍微讲一下，机器学习有一些什么？就我现在了解的一些内容给大家介绍，有可能有一些不到位的地方，还请多多包涵：</li>
+</ol>
+<blockquote>
+<ul>
+<li>其实机器学习，总的宗旨就是利用数据的特征来做识别和分类等任务</li>
+<li>第一大类是分类工作，假设有一百类，经典的做法，就是使用神经网络提取一些数据的特征，然后利用softmax输出层进行不同种类概率的预测：</li>
+</ul>
+</blockquote>
+<p><span class="math display">\[
+softmax(i) = \frac{X_i}{\sum_{i=0,99}X_i}
+\]</span></p>
+<blockquote>
+<ul>
+<li>上面是softmax层计算的公式，从一百类里面找出每一类的概率值，然后按照概率值来预测输入数据是哪一种类型，就像上一次文章里面的fashion-mnist的数据一样，会预测出输出的类别。softmax(i)代表的就是这个种类的概率值，取最大值作为预测类别。</li>
+<li>你可以把一个矩阵看成一个数据集合，一行是一个数据信息，就和我们的关系型数据一样，一行代表一个表的一条信息，那么每列就是每一行数据的一个属性，那么在机器学习里面就是数据的特征了，因为在网络模型中，每个特征都有对应的权重，那么，对于每个特征来说，对于最后的分类，识别等工作起的重要程度是不一样的。这也和我们的数据库信息差不多，有一些信息也是无关紧要的。有些信息可以主要决定这一行数据。</li>
+<li>第二大类就是回归，回归可以看作是一个连续的分类，对于二维数据来说，其实就是根据你给出的数据来拟合一条线。对于三维来讲就是拟合一个平面。再高维就是超平面。</li>
+</ul>
+</blockquote>
+<ol start="2" type="1">
+<li>最近，也就是2018年3月31在加利福尼亚州山景城的计算机历史博物馆举办了第二届TensorFlow开发者峰会，会上有超过500名使用TensorFlow的用户，还有一些观众，大家有兴趣的话可以关注youtube的TensorFlow官方频道。可以查看开会的视频。</li>
+</ol>
+<ul>
+<li>TensorFlow应用广泛，其中有使用TensorFlow来做开普勒任务分析的</li>
+<li>也有使用TensorFlow预测心脏发作和中风概率</li>
+<li>还有一些应用在现实当中的项目。</li>
+<li>这让我们认识到TensorFlow对于实际领域中应用的越来越广泛，所以我们不学习是不是有点亏。这么好的开源项目。</li>
+</ul>
+<ol start="3" type="1">
+<li>上一次我们既然做过了一次服装类别识别，那么这次我主要从TensorFlow建立模型的步骤讲起：让大家再深入理解一下TensorFlow。</li>
+</ol>
+<ul>
+<li>第一步也是很重要的一步，那就是导入数据。</li>
+<li>第二步一般就是对数据进行的预处理，一般包括归一化数据，转换数据等操作。</li>
+<li>第三步设置算法的超参数，一般也就是学习率，batch_size(批处理个数)，epoch(轮次)。这里举一个例子，假如你有10000条训练数据。那么，batch_size设置为100，那么你的一个epoch就迭代100次才能将所有数据训练一遍，每次输入数据是100条，因为一个epoch的意思就是训练完一次训练数据，所以一个epoch是迭代100次就可以结束一轮了。learning_rate一般设置为0.1-0.0001之间，但是也不排除一些特殊情况，主要是learning_rate设置的过小，反向传播更新参数的时候速度会很慢，设置的过大，会出现无法收敛的情况。</li>
+<li>第四步设置变量和placeholders，变量是记录权重和偏置项信息的，一般在最小化loss函数的时候，反向传播算法会更新权重和偏置项，TensorFlow导入数据是通过placeholders来实现的，大家还记得我们上次的fashion-mnist识别，我的数据就是通过先定义placeholders，最后在Session运行的时候，在feed_dict这个字典参数里面将训练数据喂进去的。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a_var = tf.constant(<span class="number">42</span>)</span><br><span class="line">x_input = tf.placeholder(tf.float32, [n_x, <span class="keyword">None</span>], name=<span class="string">"X"</span>)</span><br><span class="line">x_output = tf.placeholder(tf.float32, [n_y, <span class="keyword">None</span>], name=<span class="string">"y"</span>)</span><br><span class="line"><span class="comment"># 定义输入数据的一些方式</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>第五步定义图模型，我们有了数据，初始化了变量和placeholders，那我们就需要定义一个图模型，来生成TensorFlow的图模型（计算图）我们必须告诉TensorFlow对我们的数据进行哪些操作，来让我们的模型具有预测能力（更加深入的运算我们在后续的博客里面会陆续讲到）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">h_pre_output = tf.add(tf.matmul(W, x_input) + B)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第六步声明loss函数，在上面计算图中我们定义了一些对我们数据的操作。那么我们需要验证我们预测的输出，和我们真实之间的差距，一般对于回归任务来讲的话，就是平方误差：这样就求得了平方误差。但是对于分类任务，那就是交叉熵误差。就像上一节我们用到的loss生成函数就是softmax这种方式。，交叉熵的公式后续用到再给大家介绍。</li>
+</ul>
+<p><span class="math display">\[
+loss(i)=\frac{1}{N}\sum{_i}(y\_pre_i-y\_true_i)^2
+\]</span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TensorFlow求法：</span><br><span class="line">loss = tf.reduce_mean(tf.square(y_pre - y_true))</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第七步声明了loss函数以后，我们需要使用BP算法也就是反向传播算法来更新权重和偏置项。在TenorFlow框架里面有好多这样的优化器，都在 tf.train这个模块里面。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">optimizer = tf.train.AdamOptimizer(learning_rate = <span class="number">0.001</span>).minimize(loss)</span><br><span class="line">这个就是我们上次使用的优化器，来优化我们的loss</span><br></pre></td></tr></table></figure>
+<ul>
+<li>最后一步那就是初始化会话Session()，开始训练模型</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> session:</span><br><span class="line">	session.run(init)</span><br><span class="line">	.....</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>由上面的步骤，大家再结合上一次的网络代码，是不是可以理解了TensorFlow在建立一个网络模型的时候的具体步骤。</li>
+<li>其实在TensorFlow中还有一个很重要的概念，那就是Tensor，上次说过了它的概念，那么接下来我讲一下TensorFlow里面的Tensor。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"><span class="comment"># 定义一个会话，记得，TensorFlow里面都是通过session来执行的</span></span><br><span class="line">sess = tf.Session()</span><br><span class="line"><span class="comment"># 创建一个1 * 20的向量</span></span><br><span class="line">tensor_zeros = tf.zeros([<span class="number">1</span>, <span class="number">20</span>])</span><br><span class="line">sess.run(tensor_zeros) <span class="comment"># 你可以运行一下看看</span></span><br><span class="line">my_var = tf.Variable(tf.zeros([<span class="number">1</span>, <span class="number">20</span>])) <span class="comment"># 使用tenso来初始化变量</span></span><br><span class="line">sess.run(my_var.initializer) <span class="comment"># 又一种运行变量初始化器的方式</span></span><br><span class="line">sess.run(my_var) <span class="comment">#打印出来看看</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># tf.ones() 生成全是1</span></span><br><span class="line"><span class="comment"># tf.zeros() 生成全是0</span></span><br><span class="line"><span class="comment"># tf.constant() 生成一个常量Tensor</span></span><br><span class="line"><span class="comment"># 如果我们想要通过一个已知的Tensor来创建另一个，则可以使用ones_like()和zeros_like()这两个函数</span></span><br><span class="line">zero_similar = tf.Variable(tf.zeros_like(tensor_zeros))</span><br><span class="line"></span><br><span class="line">sess.run(zero_similar.initializer)</span><br><span class="line">print(sess.run(zero_similar))</span><br><span class="line"><span class="comment"># 注意上面的两个函数的参数是为了确定生成Tensor的大小，而产生的值是通过函数决定的</span></span><br><span class="line">tf.fill([row, col], <span class="number">-1</span>)  <span class="comment"># 用具体的数字填充</span></span><br><span class="line">tf.linspace(start=<span class="number">0.0</span>, stop=<span class="number">1.0</span>, num=<span class="number">3</span>) <span class="comment"># 线性分布 包括end</span></span><br><span class="line">tf.range(start=<span class="number">6</span>, limit=<span class="number">15</span>, delta=<span class="number">3</span>)    <span class="comment"># 也是线性均匀 不包括end</span></span><br><span class="line">tf.random_normal([row_dim, col_dim], mean=<span class="number">0.0</span>, stddev=<span class="number">1.0</span>) <span class="comment"># 随机 均值0 方差1.0</span></span><br><span class="line">tf.random_uniform([row_dim, col_dim], minval=<span class="number">0</span>, maxval=<span class="number">4</span>) <span class="comment"># 或者最小最大值随机初始化</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line">my_var = tf.Variable(tf.zeros([<span class="number">1</span>,<span class="number">20</span>]))</span><br><span class="line"></span><br><span class="line">merged = tf.summary.merge_all()</span><br><span class="line"></span><br><span class="line">writer = tf.summary.FileWriter(<span class="string">"./tmp/variable_logs"</span>, graph=sess.graph)</span><br><span class="line"></span><br><span class="line">initialize_op = tf.global_variables_initializer()</span><br><span class="line"></span><br><span class="line">sess.run(initialize_op)</span><br><span class="line"><span class="comment"># 上面的就是一个Tensor放在一个变量里面，我们使用了一条语句 merged = tf.summary.merge_all() 还有writer = tf.summary.FileWriter("/tmp/variable_logs", graph=sess.graph)，这两句这是为了将变量在TensorBoard里面显示出来，让我们更加了解TensorFLow的一些操作。</span></span><br><span class="line"><span class="comment"># 上面的操作过程会在当前文件夹里面创建一个/tmp/variable_logs文件夹然后会将变量信息存储在一个文件里面</span></span><br></pre></td></tr></table></figure>
+<ol start="6" type="1">
+<li>那怎么使用tensorboard</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#进去我们的环境变量，然后执行</span><br><span class="line">tensorboard --logdir=tmp的绝对路径</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2018/04/01/9zF2P1.png" alt="-"></p>
+<p>可以看到我上面执行的命令。然后在浏览器里面输入127.0.0.1:6006然后你就可以看到刚才那个变量的操作过程，这就是tensorboard的魅力</p>
+<p><img src="https://s1.ax1x.com/2018/04/01/9zF7ad.png" alt="-"></p>
+<p>上面就是一个变量在进行初始化时候可视化显示</p>
+<ol start="7" type="1">
+<li>Placeholders使用(一样可以使用tensorboard来查看)</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">import tensorflow as tf</span><br><span class="line">from tensorflow.python.framework import ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line">sess = tf.Session()</span><br><span class="line"># 定义一个placeholder</span><br><span class="line">x = tf.placeholder(tf.float32, shape = (4, 4))</span><br><span class="line"></span><br><span class="line"># 随机生成4 * 4的矩阵</span><br><span class="line">reand_array = np.random.rand(4, 4)</span><br><span class="line">y = tf.identity(x) # 返回与输入对象相同的内容和大小</span><br><span class="line">print(sess.run(y, feed_dict=&#123;x: rand_array&#125;))</span><br><span class="line"></span><br><span class="line">merged = tf.summary.merge_all()</span><br><span class="line">writer = tf.summary.FileWriter(&quot;./tmp/variable_logs&quot;, sess.graph)</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2018/04/01/9zAshR.png" alt="-"></p>
+<h5 id="总结">总结</h5>
+<p>这次我们就TensorFlow的一些基础概念的介绍，也是为了让大家在以后的TensorFlow使用过程中少一些疑问，后面的章节，我们会慢慢深入。小伙伴们不要着急，我的邮箱是air@weaf.top，依旧是那个可以交流学习的milittle。谢谢大家的驻足。</p>
+<p><a href="https://weaf.top/posts/8e8e4531/" target="_blank" rel="noopener">第一篇 TensorFlow安装</a></p>
+<p><a href="https://weaf.top/posts/b0821049/" target="_blank" rel="noopener">第二篇 TensorFlow初体验（fasion-mnist识别）</a></p>
+<p><a href="https://weaf.top/posts/233074e6/" target="_blank" rel="noopener">修改pip全局镜像方法</a></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/posts/233074e6/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">修改pip全局镜像</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5b7df854/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow 建立网络模型" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/5b7df854/" class="title">TensorFlow 建立网络模型</a></p>
+                            <p class="item-date"><time datetime="2018-03-31T10:23:35.000Z" itemprop="datePublished">2018-03-31</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/233074e6/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="修改pip全局镜像" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/233074e6/" class="title">修改pip全局镜像</a></p>
+                            <p class="item-date"><time datetime="2018-03-27T12:29:36.000Z" itemprop="datePublished">2018-03-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5dd0238f/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-3-26/44097355.jpg)" alt="如何理解描述符" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/5dd0238f/" class="title">如何理解描述符</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T15:52:32.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b0821049/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow 初体验 （Fashion-mnist）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/b0821049/" class="title">TensorFlow 初体验 （Fashion-mnist）</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:18:37.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cfc65600/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://us-forever.com/img/linux-icon.jpg)" alt="rsync的使用与配置" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/posts/cfc65600/" class="title">rsync的使用与配置</a></p>
+                            <p class="item-date"><time datetime="2018-03-25T13:08:56.000Z" itemprop="datePublished">2018-03-25</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">10</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
