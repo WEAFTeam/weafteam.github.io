@@ -18,7 +18,7 @@
 <meta property="og:description" content="TensorFLow 基础 hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
-<meta property="og:updated_time" content="2018-04-05T09:48:26.085Z">
+<meta property="og:updated_time" content="2018-04-08T19:44:08.670Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="chapter-04-AIR">
 <meta name="twitter:description" content="TensorFLow 基础 hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会">
@@ -173,7 +173,7 @@
         
         <div class="article-entry" itemprop="articleBody">
             <h1 id="tensorflow-基础">TensorFLow 基础</h1>
-<p>hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会，那么以后运用TensorFlow就很得心应手。</p>
+<p>hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会，那么以后运用TensorFlow就会得心应手。</p>
 <ol type="1">
 <li>和TensorFlow一起工作的Matrices</li>
 </ol>
@@ -235,7 +235,7 @@ x &amp; x &gt; 0 \\
 </ol>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line"></span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line">x_shape = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">1</span>]</span><br><span class="line"><span class="comment"># 定义一个4 * 4 大小的随机矩阵</span></span><br><span class="line">x_val = np.randim.uniform(size = x_shape)</span><br><span class="line"></span><br><span class="line">x_data = tf.placeholder(tf.float32, shape = x_shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个空间移动窗口，也就是卷积操作的卷积核</span></span><br><span class="line"><span class="comment"># 大小是2 * 2， 步长是 2</span></span><br><span class="line"><span class="comment"># filter的值是一个固定的值0.25</span></span><br><span class="line">my_filter = tf.constant(<span class="number">0.25</span>, shape = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line">my_strides = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">mov_avg_layer = tf.nn.conv2d(x_data, my_filter, my_strides, padding = <span class="string">'SAME'</span>, name = <span class="string">'Moving_Avg_Window'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二层</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">custom_layer</span><span class="params">(input_matrix)</span>:</span></span><br><span class="line">    input_matrix_sqeezed = tf.squeeze(input_matrix)</span><br><span class="line">    A = tf.constant([<span class="number">1.</span>, <span class="number">2.</span>], [<span class="number">-1.</span>, <span class="number">3.</span>])</span><br><span class="line">    b = tf.constant(<span class="number">1.</span>, shape = [<span class="number">2</span>, <span class="number">2</span>])</span><br><span class="line">    output = tf.add(tf.matmul(A, input_matrix_sqeezed), b)</span><br><span class="line">    <span class="keyword">return</span> tf.nn.relu(output)</span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">'custom_layer'</span>) <span class="keyword">as</span> scope:</span><br><span class="line">    custom_layer1 = custom_layer(mov_avg_layer)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行结果</span></span><br><span class="line">print(sess.run(mov_avg_layer, feed_dict = &#123;x_data: x_val&#125;))</span><br><span class="line"></span><br><span class="line">print(sess.run(custom_layer1, feed_dict = &#123;x_data: x_val&#125;))</span><br><span class="line"></span><br><span class="line"><span class="comment">#下面将数据计算图输出到文件里面，供我们后来启动tensorboard使用</span></span><br><span class="line">merged = tf.summary.merge_all(key = <span class="string">'summaries'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'tensorboard_logs/'</span>):</span><br><span class="line">    os.makedirs(<span class="string">'tensorboard_logs/'</span>)</span><br><span class="line">my_writer = tf.summary.FileWriter(<span class="string">'tensorboard_logs'</span>, sess.graph)</span><br><span class="line"><span class="comment"># 下图是计算图</span></span><br></pre></td></tr></table></figure>
 <p><img src="https://s1.ax1x.com/2018/04/05/CCksmV.png" alt="-"></p>
-<p>总结：这一次，一开始主要讲了矩阵的一些操作，后续又进行了数学操作，激活函数，运算图、层内元素且套运算还有最好的多层运算，并给出了tensorboard的计算图结构。大家可以动手做一做。</p>
+<p>总结：这一次，一开始主要讲了矩阵的一些操作，后续又进行了数学操作，激活函数，运算图、层内元素嵌套运算还有最好的多层运算，并给出了tensorboard的计算图结构。大家不仅仅要看一看，也要动手做一做哦。</p>
 <p>一如既往的有什么问题可以直接联系milittle，air@weaf.top邮箱</p>
 
         </div>
@@ -337,6 +337,16 @@ x &amp; x &gt; 0 \\
         
 <nav id="article-nav">
     
+        <a href="/posts/cd89a3b2/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            如何理解丘奇计数
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
     
         <a href="/posts/5b7df854/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
@@ -355,6 +365,26 @@ x &amp; x &gt; 0 \\
         <h3 class="widget-title">最新文章</h3>
         <div class="widget">
             <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cd89a3b2/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-9/67032850.jpg)" alt="如何理解丘奇计数" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/cd89a3b2/" class="title">如何理解丘奇计数</a></p>
+                            <p class="item-date"><time datetime="2018-04-07T19:39:29.000Z" itemprop="datePublished">2018-04-08</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -436,26 +466,6 @@ x &amp; x &gt; 0 \\
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/5dd0238f/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-3-26/44097355.jpg)" alt="如何理解描述符" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/posts/5dd0238f/" class="title">如何理解描述符</a></p>
-                            <p class="item-date"><time datetime="2018-03-25T15:52:32.000Z" itemprop="datePublished">2018-03-25</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -475,7 +485,7 @@ x &amp; x &gt; 0 \\
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
         </div>
     </div>
 
