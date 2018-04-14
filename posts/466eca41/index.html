@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>chapter-04-AIR | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="TensorFlow" />
+    
+    <meta name="description" content="TensorFLow 基础 hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter-04-AIR">
+<meta property="og:url" content="http://weafteam.github.io/posts/466eca41/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="TensorFLow 基础 hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+<meta property="og:updated_time" content="2018-04-14T06:25:47.769Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter-04-AIR">
+<meta name="twitter:description" content="TensorFLow 基础 hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会">
+<meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/TensorFlow/">TensorFlow</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-04-02/chapter-04-AIR" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        chapter-04-AIR
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/466eca41/" class="article-date">
+            <time datetime="2018-04-05T02:13:07.000Z" itemprop="datePublished">2018-04-05</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        milittle
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/TensorFlow/">TensorFlow</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="tensorflow-基础">TensorFLow 基础</h1>
+<p>hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会，那么以后运用TensorFlow就会得心应手。</p>
+<ol type="1">
+<li>和TensorFlow一起工作的Matrices</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 矩阵和矩阵操作</span></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line">sess = tf.Session()</span><br><span class="line">identity_matrix = tf.diag([<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1</span>])</span><br><span class="line">print(sess.run(identity_matrix)) <span class="comment">#注意这个地方，如果是TensorFlow的Tensor，</span></span><br><span class="line"><span class="comment"># 那么使用sess的run方法才能将结果显示</span></span><br><span class="line"><span class="comment"># 或者下面这种方式</span></span><br><span class="line">print(identity_matrix.eval(session = sess))</span><br><span class="line">A = tf.truncated_normal([<span class="number">2</span>, <span class="number">3</span>]) <span class="comment"># 2 * 3 大小 均值0 方差为1.</span></span><br><span class="line">print(sess.run(A))</span><br><span class="line">B = tf.fill([<span class="number">2</span>, <span class="number">3</span>], <span class="number">5.</span>) <span class="comment"># 2 * 3 使用5.填充</span></span><br><span class="line">print(sess.run(B))</span><br><span class="line">C = tf.random_uniform([<span class="number">3</span>, <span class="number">2</span>]) <span class="comment"># 3 * 2 随机初始化</span></span><br><span class="line">print(sess.run(C))</span><br><span class="line">D = tf.convert_to_tensor(np.array([[<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>], [<span class="number">-3.</span>, <span class="number">-7.</span>, <span class="number">-1.</span>], [<span class="number">0.</span>, <span class="number">5.</span>, <span class="number">-2.</span>]]))</span><br><span class="line">print(sess.run(D))</span><br><span class="line"></span><br><span class="line">print(sess.run(A+B)) <span class="comment"># 加法和 tf.add() 一样</span></span><br><span class="line">print(sess.run(B-B)) <span class="comment"># 减法和 tf.subtract() 一样</span></span><br><span class="line">print(sess.run(tf.matmul(B, identity_matrix))) <span class="comment"># 矩阵乘法</span></span><br><span class="line">print(sess.run(tf.transpose(C))) <span class="comment"># 矩阵转置</span></span><br><span class="line">print(sess.run(tf.matrix_determinant(D)))  <span class="comment"># 计算行列式</span></span><br><span class="line">print(sess.run(tf.matrix_inverse(D))) <span class="comment"># 矩阵的逆</span></span><br><span class="line">print(sess.run(tf.cholesky(identity_matrix))) <span class="comment"># cholesk分解（平方根分解）</span></span><br><span class="line"></span><br><span class="line">eigenvalues, eigenvectors = sess.run(tf.self_adjoint_eig(D)) <span class="comment"># 求特征向量和特征值</span></span><br><span class="line">print(eigenvalues)</span><br><span class="line">print(eigenvectors)</span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>Math Operation（数学操作）</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line"><span class="comment"># math operation</span></span><br><span class="line">print(sess.run(tf.div(<span class="number">3</span>, <span class="number">4</span>)))</span><br><span class="line">print(sess.run(tf.truediv(<span class="number">3</span>, <span class="number">4</span>)))</span><br><span class="line">print(sess.run(tf.floordiv(<span class="number">3.</span>, <span class="number">4.</span>)))</span><br><span class="line">print(sess.run(tf.mod(<span class="number">22.</span>, <span class="number">5.</span>)))</span><br><span class="line">print(sess.run(tf.cross([<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>], [<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">0.</span>])))</span><br><span class="line"><span class="comment"># Trig operation</span></span><br><span class="line">print(sess.run(tf.sin(<span class="number">3.1416</span>)))</span><br><span class="line">print(sess.run(tf.cos(<span class="number">3.1416</span>)))</span><br><span class="line">print(sess.run(tf.div(tf.sin(<span class="number">3.1416</span> / <span class="number">4.</span>), tf.cos(<span class="number">3.1416</span> / <span class="number">4.</span>))))</span><br><span class="line"><span class="comment"># custom operation</span></span><br><span class="line"><span class="comment"># f(x) = 3 * x^2 - X + 10</span></span><br><span class="line"></span><br><span class="line">test_nums = range(<span class="number">15</span>) <span class="comment"># 生成一个list</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">custom_polynomial</span><span class="params">(x_val)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> (tf.subtract(<span class="number">3</span> * tf.square(x_val), x_val) + <span class="number">10</span>)</span><br><span class="line">print(sess.run(custom_polynomial(<span class="number">11</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># list expend</span></span><br><span class="line">expected_output = [<span class="number">3</span> * x * x - x + <span class="number">10</span> <span class="keyword">for</span> x <span class="keyword">in</span> test_nums]</span><br><span class="line">print(expected_output)</span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> test_nums:</span><br><span class="line">    print(sess.run(custom_polynomial(num)))</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>Activation Function（激活函数）</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 激活函数主要是为了让神经网络模型具有非线性的特性</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line">sess = tf.Session()</span><br><span class="line">x_vals = np.linspace(start = <span class="number">-10</span>, stop = <span class="number">10</span>, num = <span class="number">100</span>)</span><br><span class="line"><span class="comment"># Relu Activation-&gt; max(0, x)</span></span><br><span class="line">print(sess.run(tf.nn.relu([<span class="number">-3.</span>, <span class="number">3.</span>, <span class="number">10.</span>])))</span><br><span class="line">y_relu = sess.run(tf.nn.relu(x_vals))</span><br><span class="line"><span class="comment"># Relu6 Activation-&gt; min(max(x, 0), 6)</span></span><br><span class="line">print(sess.run(tf.nn.relu6([<span class="number">-3.</span>, <span class="number">3.</span>, <span class="number">10.</span>])))</span><br><span class="line">y_relu6 = sess.run(tf.nn.relu6(x_vals))</span><br><span class="line"><span class="comment"># Sigmoidactivation-&gt; 见公式1</span></span><br><span class="line">print(sess.run(tf.nn.sigmoid([<span class="number">-1.</span>, <span class="number">0.</span>, <span class="number">1.</span>])))</span><br><span class="line">y_sigmoid = sess.run(tf.nn.sigmoid(x_vals))</span><br><span class="line"><span class="comment"># Hyper Tangent activation-&gt;见公式2</span></span><br><span class="line">print(sess.run(tf.nn.tanh([<span class="number">-1.</span>, <span class="number">0.</span>, <span class="number">1.</span>])))</span><br><span class="line">y_tanh = sess.run(tf.nn.tanh(x_vals))</span><br><span class="line"><span class="comment"># softsign activation-&gt;见公式3</span></span><br><span class="line">print(sess.run(tf.nn.softsign([<span class="number">-1.</span>, <span class="number">0.</span>, <span class="number">1.</span>])))</span><br><span class="line">y_softsign = sess.run(tf.nn.softsign(x_vals))</span><br><span class="line"><span class="comment"># softplus activation-&gt;见公式4</span></span><br><span class="line">print(sess.run(tf.nn.softplus([<span class="number">-1.</span>, <span class="number">0.</span>, <span class="number">1.</span>])))</span><br><span class="line">y_softplus = sess.run(tf.nn.softplus(x_vals))</span><br><span class="line"><span class="comment"># Exponential linear activation-&gt;见公式5</span></span><br><span class="line">print(sess.run(tf.nn.elu([<span class="number">-1.</span>, <span class="number">0.</span>, <span class="number">1.</span>])))</span><br><span class="line">y_elu = sess.run(tf.nn.elu(x_vals))</span><br><span class="line"></span><br><span class="line">plt.plot(x_vals, y_softplus, <span class="string">'r--'</span>, label=<span class="string">'Softplus'</span>, linewidth=<span class="number">2</span>)</span><br><span class="line">plt.plot(x_vals, y_relu, <span class="string">'b:'</span>, label=<span class="string">'ReLU'</span>, linewidth=<span class="number">2</span>)</span><br><span class="line">plt.plot(x_vals, y_relu6, <span class="string">'g-.'</span>, label=<span class="string">'ReLU6'</span>, linewidth=<span class="number">2</span>)</span><br><span class="line">plt.plot(x_vals, y_elu, <span class="string">'k-'</span>, label=<span class="string">'ExpLU'</span>, linewidth=<span class="number">0.5</span>)</span><br><span class="line">plt.ylim([<span class="number">-1.5</span>,<span class="number">7</span>])</span><br><span class="line">plt.legend(loc=<span class="string">'upper left'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line">plt.plot(x_vals, y_sigmoid, <span class="string">'r--'</span>, label=<span class="string">'Sigmoid'</span>, linewidth=<span class="number">2</span>)</span><br><span class="line">plt.plot(x_vals, y_tanh, <span class="string">'b:'</span>, label=<span class="string">'Tanh'</span>, linewidth=<span class="number">2</span>)</span><br><span class="line">plt.plot(x_vals, y_softsign, <span class="string">'g-.'</span>, label=<span class="string">'Softsign'</span>, linewidth=<span class="number">2</span>)</span><br><span class="line">plt.ylim([<span class="number">-2</span>,<span class="number">2</span>])</span><br><span class="line">plt.legend(loc=<span class="string">'upper left'</span>)</span><br><span class="line">plt.show()</span><br><span class="line">下图给出激活函数的曲线图</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>公式1：</p>
+</blockquote>
+<p><span class="math display">\[
+\sigma(x)=\frac{1}{1+e^{-x}}
+\]</span></p>
+<blockquote>
+<p>公式2：</p>
+</blockquote>
+<p><span class="math display">\[
+f(x)=\frac{e^x-e^{-x}}{e^x + e^{-x}}
+\]</span></p>
+<blockquote>
+<p>公式3：</p>
+</blockquote>
+<p><span class="math display">\[
+f(x) = \frac{1}{1 + |x|}
+\]</span></p>
+<blockquote>
+<p>公式4</p>
+</blockquote>
+<p><span class="math display">\[
+f(x) = \log(1 + e^x)
+\]</span></p>
+<blockquote>
+<p>公式5：</p>
+</blockquote>
+<p><span class="math display">\[
+elu(x) = \begin{cases} 
+x &amp; x &gt; 0 \\
+\alpha(exp(x) - 1) &amp; x \leq 0
+\end{cases}
+\]</span></p>
+<p><img src="https://s1.ax1x.com/2018/04/05/CC9wN9.png" alt="-"></p>
+<p><img src="https://s1.ax1x.com/2018/04/05/CC90hR.png" alt="-"></p>
+<ol start="4" type="1">
+<li>Operations on a Computational Graph</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建的数据是要喂给下面的placeholder的</span></span><br><span class="line">x_vals = np.array([<span class="number">1.</span>, <span class="number">3.</span>, <span class="number">5.</span>, <span class="number">7.</span>, <span class="number">9.</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建placeholder</span></span><br><span class="line">x_data = tf.placeholder(tf.float32)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个乘数</span></span><br><span class="line">m = tf.constant(<span class="number">3.</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 乘法</span></span><br><span class="line">prod = tf.multiply(x_data, m)</span><br><span class="line"><span class="keyword">for</span> x_val <span class="keyword">in</span> x_vals:</span><br><span class="line">    print(sess.run(prod, feed_dict = &#123;x_data: x_val&#125;))</span><br><span class="line"></span><br><span class="line"><span class="comment">#下面将数据计算图输出到文件里面，供我们后来启动tensorboard使用</span></span><br><span class="line">merged = tf.summary.merge_all(key = <span class="string">'summary'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'tensorboard_logs/'</span>):</span><br><span class="line">    os.makedirs(<span class="string">'tensorboard_logs/'</span>)</span><br><span class="line"></span><br><span class="line">my_writer = tf.summary.FileWriter(<span class="string">'./tensorboard_logs/'</span>, sess.graph)</span><br></pre></td></tr></table></figure>
+<ol start="5" type="1">
+<li>Layering Nested Operations</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line"></span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建数据为了feed</span></span><br><span class="line">my_array = np.array([[<span class="number">1.</span>, <span class="number">3.</span>, <span class="number">5.</span>, <span class="number">7.</span>, <span class="number">9.</span>],</span><br><span class="line">                    [<span class="number">-2.</span>, <span class="number">0.</span>, <span class="number">2.</span>, <span class="number">4.</span>, <span class="number">6.</span>],</span><br><span class="line">                    [<span class="number">-6.</span>, <span class="number">-3.</span>, <span class="number">0.</span>, <span class="number">3.</span>, <span class="number">6.</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制</span></span><br><span class="line">x_vals = np.array([my_array, my_array + <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 声明placeholder</span></span><br><span class="line">x_data = tf.placeholder(tf.float32, shape = [<span class="number">3</span>, <span class="number">5</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 声明常数来操作</span></span><br><span class="line">m1 = tf.constant([[<span class="number">1.</span>], [<span class="number">0.</span>], [<span class="number">-1.</span>], [<span class="number">2.</span>], [<span class="number">4</span>]])</span><br><span class="line">m2 = tf.constant([[<span class="number">2.</span>]])</span><br><span class="line">a1 = tf.constant([[<span class="number">10.</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 声明操作</span></span><br><span class="line">prod1 = tf.matmul(x_data, m1)</span><br><span class="line">prod2 = tf.matmul(prod1, m2)</span><br><span class="line">add1 = tf.matmul(prod2, a1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印验证结果</span></span><br><span class="line"><span class="keyword">for</span> x_val <span class="keyword">in</span> x_vals:</span><br><span class="line">    print(sess.run(add1, feed_dict = &#123;x_data: x_val&#125;))</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="comment">#下面将数据计算图输出到文件里面，供我们后来启动tensorboard使用</span></span><br><span class="line">merged = tf.summary.merge_all(key = <span class="string">'summaries'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'tensorboard_logs/'</span>):</span><br><span class="line">    os.makedirs(<span class="string">'tensorflow_logs/'</span>)</span><br><span class="line">my_writer = tf.summary.FileWriter(<span class="string">'tensorboard_logs/'</span>, sess.graph)</span><br><span class="line"><span class="comment">#下图就是在操作过程中，tensorflow建立的图运算模型</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2018/04/05/CCkFQ1.png" alt="-"></p>
+<ol start="6" type="1">
+<li>Working With Multiple Layers</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line"></span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line">x_shape = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">1</span>]</span><br><span class="line"><span class="comment"># 定义一个4 * 4 大小的随机矩阵</span></span><br><span class="line">x_val = np.randim.uniform(size = x_shape)</span><br><span class="line"></span><br><span class="line">x_data = tf.placeholder(tf.float32, shape = x_shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个空间移动窗口，也就是卷积操作的卷积核</span></span><br><span class="line"><span class="comment"># 大小是2 * 2， 步长是 2</span></span><br><span class="line"><span class="comment"># filter的值是一个固定的值0.25</span></span><br><span class="line">my_filter = tf.constant(<span class="number">0.25</span>, shape = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line">my_strides = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">mov_avg_layer = tf.nn.conv2d(x_data, my_filter, my_strides, padding = <span class="string">'SAME'</span>, name = <span class="string">'Moving_Avg_Window'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二层</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">custom_layer</span><span class="params">(input_matrix)</span>:</span></span><br><span class="line">    input_matrix_sqeezed = tf.squeeze(input_matrix)</span><br><span class="line">    A = tf.constant([<span class="number">1.</span>, <span class="number">2.</span>], [<span class="number">-1.</span>, <span class="number">3.</span>])</span><br><span class="line">    b = tf.constant(<span class="number">1.</span>, shape = [<span class="number">2</span>, <span class="number">2</span>])</span><br><span class="line">    output = tf.add(tf.matmul(A, input_matrix_sqeezed), b)</span><br><span class="line">    <span class="keyword">return</span> tf.nn.relu(output)</span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">'custom_layer'</span>) <span class="keyword">as</span> scope:</span><br><span class="line">    custom_layer1 = custom_layer(mov_avg_layer)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行结果</span></span><br><span class="line">print(sess.run(mov_avg_layer, feed_dict = &#123;x_data: x_val&#125;))</span><br><span class="line"></span><br><span class="line">print(sess.run(custom_layer1, feed_dict = &#123;x_data: x_val&#125;))</span><br><span class="line"></span><br><span class="line"><span class="comment">#下面将数据计算图输出到文件里面，供我们后来启动tensorboard使用</span></span><br><span class="line">merged = tf.summary.merge_all(key = <span class="string">'summaries'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'tensorboard_logs/'</span>):</span><br><span class="line">    os.makedirs(<span class="string">'tensorboard_logs/'</span>)</span><br><span class="line">my_writer = tf.summary.FileWriter(<span class="string">'tensorboard_logs'</span>, sess.graph)</span><br><span class="line"><span class="comment"># 下图是计算图</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2018/04/05/CCksmV.png" alt="-"></p>
+<p>总结：这一次，一开始主要讲了矩阵的一些操作，后续又进行了数学操作，激活函数，运算图、层内元素嵌套运算还有最好的多层运算，并给出了tensorboard的计算图结构。大家不仅仅要看一看，也要动手做一做哦。</p>
+<p>一如既往的有什么问题可以直接联系milittle，air@weaf.top邮箱</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/cd89a3b2/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            如何理解丘奇计数
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/5b7df854/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">TensorFlow 建立网络模型</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cd89a3b2/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-9/67032850.jpg)" alt="如何理解丘奇计数" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/cd89a3b2/" class="title">如何理解丘奇计数</a></p>
+                            <p class="item-date"><time datetime="2018-04-07T19:39:29.000Z" itemprop="datePublished">2018-04-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/466eca41/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-04-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/466eca41/" class="title">chapter-04-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-04-05T02:13:07.000Z" itemprop="datePublished">2018-04-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5b7df854/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow 建立网络模型" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/5b7df854/" class="title">TensorFlow 建立网络模型</a></p>
+                            <p class="item-date"><time datetime="2018-03-31T10:23:35.000Z" itemprop="datePublished">2018-03-31</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/a751f7e5/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/04/02/5ac1826f0d299.png)" alt="文本聚类系列教程：（三）构建词袋空间VSM（Vector Space Model）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/文本聚类/">文本聚类</a></p>
+                            <p class="item-title"><a href="/posts/a751f7e5/" class="title">文本聚类系列教程：（三）构建词袋空间VSM（Vector Space Model）</a></p>
+                            <p class="item-date"><time datetime="2018-03-30T06:00:08.000Z" itemprop="datePublished">2018-03-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/233074e6/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="修改pip全局镜像" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/233074e6/" class="title">修改pip全局镜像</a></p>
+                            <p class="item-date"><time datetime="2018-03-27T12:29:36.000Z" itemprop="datePublished">2018-03-27</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

@@ -18,7 +18,7 @@
 <meta property="og:description" content="咱们今天先聊个概念吧，著名的聚类假设，这也是文本聚类的依据，内容如下：该假设认为，同类的文档相似度较大，而不同类的文档相似度较小。   概念： 对于上述概念，也就是做文本聚类的基础，如果不相关的文档反而相似度高，我们便无法做文本聚类。 接下来再说VSM(Vector Space Model),对于VSM的定义，我在网上搜罗了些资料，如下所示： Vector space model">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://i.loli.net/2018/04/02/5ac1826f0d299.png">
-<meta property="og:updated_time" content="2018-04-02T14:12:49.208Z">
+<meta property="og:updated_time" content="2018-04-14T05:59:22.791Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本聚类系列教程：（三）构建词袋空间VSM（Vector Space Model）">
 <meta name="twitter:description" content="咱们今天先聊个概念吧，著名的聚类假设，这也是文本聚类的依据，内容如下：该假设认为，同类的文档相似度较大，而不同类的文档相似度较小。   概念： 对于上述概念，也就是做文本聚类的基础，如果不相关的文档反而相似度高，我们便无法做文本聚类。 接下来再说VSM(Vector Space Model),对于VSM的定义，我在网上搜罗了些资料，如下所示： Vector space model">
@@ -249,9 +249,9 @@
 <p>|D|：语料库中文件的总数</p>
 <p>分子为包含该词条t的文件数目，如果该词条不在语料库中，就会导致分母为零，因此一般使用1。</p>
 <p>那就接着我们上述代码，运用TF-IDF，把对应的矩阵的单纯计数转换成权值计算吧：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">···</span><br><span class="line"></span><br><span class="line">def get_all_vector(file_path):</span><br><span class="line">    names = [ os.path.join(file_path,f) for f in os.listdir(file_path) ]</span><br><span class="line">    posts = [ open(name).read() for name in names]</span><br><span class="line">    docs = []</span><br><span class="line">    word_set = set()</span><br><span class="line">    for post in posts:</span><br><span class="line">        doc = RmStopWords(post)</span><br><span class="line">        docs.append(doc)</span><br><span class="line">        word_set |= set(doc)</span><br><span class="line"></span><br><span class="line">    word_set = list(word_set)</span><br><span class="line">    docs_vsm = []</span><br><span class="line">    for word in word_set[:30]:</span><br><span class="line">        print(word)</span><br><span class="line">    for doc in docs:</span><br><span class="line">        temp_vector = []</span><br><span class="line">        for word in word_set:</span><br><span class="line">            temp_vector.append(doc.count(word) * 1.0)</span><br><span class="line">        docs_vsm.append(temp_vector)</span><br><span class="line">    docs_matrix = np.array(docs_vsm)</span><br><span class="line">    #return docs_matrix</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    column_sum = [ float(len(np.nonzero(docs_matrix[:,i])[0])) for i in range(docs_matrix.shape[1]) ]</span><br><span class="line">    column_sum = np.array(column_sum)</span><br><span class="line">    column_sum = docs_matrix.shape[0] / column_sum</span><br><span class="line">    </span><br><span class="line">	idf =  np.log(column_sum)</span><br><span class="line">    idf =  np.diag(idf)</span><br><span class="line">    </span><br><span class="line">	for doc_v in docs_matrix:</span><br><span class="line">        if doc_v.sum() == 0:</span><br><span class="line">            doc_v = doc_v / 1</span><br><span class="line">        else:</span><br><span class="line">            doc_v = doc_v / (doc_v.sum())</span><br><span class="line">        tfidf = np.dot(docs_matrix,idf)</span><br><span class="line">    return names,tfidf</span><br><span class="line"></span><br><span class="line">txt3 = get_all_vector(&apos;txt1&apos;)</span><br><span class="line">print(txt3)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">···</span><br><span class="line"></span><br><span class="line">def get_all_vector(file_path):</span><br><span class="line">    names = [ os.path.join(file_path,f) for f in os.listdir(file_path) ]</span><br><span class="line">    posts = [ open(name).read() for name in names]</span><br><span class="line">    docs = []</span><br><span class="line">    word_set = set()</span><br><span class="line">    for post in posts:</span><br><span class="line">        doc = RmStopWords(post)</span><br><span class="line">        docs.append(doc)</span><br><span class="line">        word_set |= set(doc)</span><br><span class="line"></span><br><span class="line">    word_set = list(word_set)</span><br><span class="line">    docs_vsm = []</span><br><span class="line">    for word in word_set[:30]:</span><br><span class="line">        print(word)</span><br><span class="line">    for doc in docs:</span><br><span class="line">        temp_vector = []</span><br><span class="line">        for word in word_set:</span><br><span class="line">            temp_vector.append(doc.count(word) * 1.0)</span><br><span class="line">        docs_vsm.append(temp_vector)</span><br><span class="line">    docs_matrix = np.array(docs_vsm)</span><br><span class="line">    #return docs_matrix</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    column_sum = [ float(len(np.nonzero(docs_matrix[:,i])[0])) for i in range(docs_matrix.shape[1]) ]</span><br><span class="line">    column_sum = np.array(column_sum)</span><br><span class="line">    column_sum = docs_matrix.shape[0] / column_sum</span><br><span class="line">    </span><br><span class="line">	idf =  np.log(column_sum)</span><br><span class="line">    idf =  np.diag(idf)</span><br><span class="line">    </span><br><span class="line">	i = 0    </span><br><span class="line">    for doc_v in docs_matrix:    </span><br><span class="line">        if doc_v.sum() == 0:</span><br><span class="line">            docs_matrix[i] = docs_matrix[i]/1</span><br><span class="line">        else:</span><br><span class="line">            docs_matrix[i] = docs_matrix[i] / (doc_v.sum())</span><br><span class="line">        i+=1</span><br><span class="line">    </span><br><span class="line">	tfidf = np.dot(docs_matrix,idf)</span><br><span class="line">    return names,tfidf</span><br><span class="line"></span><br><span class="line">txt3 = get_all_vector(&apos;txt1&apos;)</span><br><span class="line">print(txt3)</span><br></pre></td></tr></table></figure>
 <p><strong>结果：</strong></p>
-<p><img src="https://s1.ax1x.com/2018/04/01/9zP9aR.png" alt="tfidfResult.png"></p>
+<p><img src="https://i.loli.net/2018/04/14/5ad1988749e40.png" alt="tfidfResult.png"></p>
 <p>本次的学习会用到很多numpy的知识，请大家自行查阅。如有兴趣，请思考为什么在新的权值矩阵中“来到”一词的权重变成了0。感谢大家的阅读~</p>
 
         </div>
@@ -385,6 +385,46 @@
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/posts/cd89a3b2/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-9/67032850.jpg)" alt="如何理解丘奇计数" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/cd89a3b2/" class="title">如何理解丘奇计数</a></p>
+                            <p class="item-date"><time datetime="2018-04-07T19:39:29.000Z" itemprop="datePublished">2018-04-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/466eca41/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-04-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/466eca41/" class="title">chapter-04-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-04-05T02:13:07.000Z" itemprop="datePublished">2018-04-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/posts/5b7df854/" class="thumbnail">
     
     
@@ -442,46 +482,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/5dd0238f/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-3-26/44097355.jpg)" alt="如何理解描述符" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/posts/5dd0238f/" class="title">如何理解描述符</a></p>
-                            <p class="item-date"><time datetime="2018-03-25T15:52:32.000Z" itemprop="datePublished">2018-03-25</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/b0821049/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow 初体验 （Fashion-mnist）" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
-                            <p class="item-title"><a href="/posts/b0821049/" class="title">TensorFlow 初体验 （Fashion-mnist）</a></p>
-                            <p class="item-date"><time datetime="2018-03-25T13:18:37.000Z" itemprop="datePublished">2018-03-25</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -491,7 +491,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -501,7 +501,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
         </div>
     </div>
 
@@ -511,7 +511,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
         </div>
     </div>
 
