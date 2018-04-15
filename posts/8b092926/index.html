@@ -3,25 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>如何理解丘奇计数 | WEAF 周刊</title>
+    <title>Vigenere密码加密解密 | WEAF 周刊</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="" />
+        <meta name="keywords" content="密码学" />
     
-    <meta name="description" content="前言 不想写 Python 了，这次换个主题：丘奇计数，又名 lambda 演算的自然数表示法。 什么是 lambda 演算 lambda 演算（也称为 λ 演算）是数学逻辑中的一种形式系统，它基于函数抽象和应用，使用变量绑定和替换来表示计算。 没错，上面这句话来自维基百科，基本上是一句正确的废话，看完了也不知道什么是 lambda 演算。不过这篇文章的重点不在 lambda 演算上，希望">
+    <meta name="description" content="今天换个口味，写点原来从没接触过的东西–密码学。前一阵信息安全课上留了一个作业，实现Vigenere加密解密，借着机会写篇博客。这次博客由于比较仓促，这次只写加密解密系统的实现，不涉及唯密文破解。   任务要求：   a.编程实现Vigenere加密/解密系统，并分析和评估该算法的安全性。  b.编程实现唯密文破译系统，能够破译密钥为2到4个字符的Vigenere密文，并分析如何加">
+<meta name="keywords" content="密码学">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何理解丘奇计数">
-<meta property="og:url" content="http://weafteam.github.io/posts/cd89a3b2/index.html">
+<meta property="og:title" content="Vigenere密码加密解密">
+<meta property="og:url" content="http://weafteam.github.io/posts/8b092926/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
-<meta property="og:description" content="前言 不想写 Python 了，这次换个主题：丘奇计数，又名 lambda 演算的自然数表示法。 什么是 lambda 演算 lambda 演算（也称为 λ 演算）是数学逻辑中的一种形式系统，它基于函数抽象和应用，使用变量绑定和替换来表示计算。 没错，上面这句话来自维基百科，基本上是一句正确的废话，看完了也不知道什么是 lambda 演算。不过这篇文章的重点不在 lambda 演算上，希望">
+<meta property="og:description" content="今天换个口味，写点原来从没接触过的东西–密码学。前一阵信息安全课上留了一个作业，实现Vigenere加密解密，借着机会写篇博客。这次博客由于比较仓促，这次只写加密解密系统的实现，不涉及唯密文破解。   任务要求：   a.编程实现Vigenere加密/解密系统，并分析和评估该算法的安全性。  b.编程实现唯密文破译系统，能够破译密钥为2到4个字符的Vigenere密文，并分析如何加">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-9/67032850.jpg">
-<meta property="og:updated_time" content="2018-04-14T06:25:47.770Z">
+<meta property="og:image" content="https://i.loli.net/2018/04/15/5ad30ff4d44d1.png">
+<meta property="og:updated_time" content="2018-04-15T12:46:07.825Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何理解丘奇计数">
-<meta name="twitter:description" content="前言 不想写 Python 了，这次换个主题：丘奇计数，又名 lambda 演算的自然数表示法。 什么是 lambda 演算 lambda 演算（也称为 λ 演算）是数学逻辑中的一种形式系统，它基于函数抽象和应用，使用变量绑定和替换来表示计算。 没错，上面这句话来自维基百科，基本上是一句正确的废话，看完了也不知道什么是 lambda 演算。不过这篇文章的重点不在 lambda 演算上，希望">
-<meta name="twitter:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-9/67032850.jpg">
+<meta name="twitter:title" content="Vigenere密码加密解密">
+<meta name="twitter:description" content="今天换个口味，写点原来从没接触过的东西–密码学。前一阵信息安全课上留了一个作业，实现Vigenere加密解密，借着机会写篇博客。这次博客由于比较仓促，这次只写加密解密系统的实现，不涉及唯密文破解。   任务要求：   a.编程实现Vigenere加密/解密系统，并分析和评估该算法的安全性。  b.编程实现唯密文破译系统，能够破译密钥为2到4个字符的Vigenere密文，并分析如何加">
+<meta name="twitter:image" content="https://i.loli.net/2018/04/15/5ad30ff4d44d1.png">
     
 
     
@@ -128,18 +129,18 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    未分类
+    <a class="page-title-link" href="/categories/密码学/">密码学</a>
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-2018-04-02/how-to-understand-church-numerals" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-2018-04-09/Vigenere密码加密解密" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        如何理解丘奇计数
+        Vigenere密码加密解密
         </h1>
     
 
@@ -149,84 +150,66 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/posts/cd89a3b2/" class="article-date">
-            <time datetime="2018-04-07T19:39:29.000Z" itemprop="datePublished">2018-04-08</time>
+        <a href="/posts/8b092926/" class="article-date">
+            <time datetime="2018-04-14T14:11:24.000Z" itemprop="datePublished">2018-04-14</time>
         </a>
     </div>
 
                 
     <div>
         <i class="fa fa-user"></i>
-        MisLink
+        Leno
     </div>
 
 
                 
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/密码学/">密码学</a>
+    </div>
+
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h2 id="前言">前言</h2>
-<p>不想写 Python 了，这次换个主题：丘奇计数，又名 lambda 演算的自然数表示法。</p>
-<h2 id="什么是-lambda-演算">什么是 lambda 演算</h2>
-<p>lambda 演算（也称为 λ 演算）是数学逻辑中的一种形式系统，它基于函数抽象和应用，使用变量绑定和替换来表示计算。</p>
-<p>没错，上面这句话来自维基百科，基本上是一句正确的废话，看完了也不知道什么是 lambda 演算。不过这篇文章的重点不在 lambda 演算上，希望你已经了解了一些关于 lambda 演算的知识。如果有机会下一篇再展开说（可能</p>
-<h2 id="什么是自然数">什么是自然数</h2>
-<p>在计算机科学和集合论中，我们把非负整数 <span class="math inline">\((0, 1, 2, 3, 4...)\)</span> 称为自然数。皮亚诺给出了自然数的严格定义：</p>
-<ol type="1">
-<li><span class="math inline">\(0\)</span> 是自然数；</li>
-<li>如果 <span class="math inline">\(n\)</span> 是自然数，那么 <span class="math inline">\(n+1\)</span> 也是自然数（<span class="math inline">\(n+1\)</span> 代表 <span class="math inline">\(n\)</span> 的后继）；</li>
-<li><span class="math inline">\(0\)</span> 不是任何一个数的后继；</li>
-<li>如果 <span class="math inline">\(m\)</span> 与 <span class="math inline">\(n\)</span> 都是自然数且 <span class="math inline">\(m\neq n\)</span>，那么 <span class="math inline">\(n+1 \neq m+1\)</span>；</li>
-<li>设 <span class="math inline">\(P(n)\)</span> 为关于自然数 <span class="math inline">\(n\)</span> 的一个性质，如果 <span class="math inline">\(P(0)\)</span> 正确， 且假设 <span class="math inline">\(P(n)\)</span> 正确，则 <span class="math inline">\(P(n+1)\)</span> 亦正确。那么 <span class="math inline">\(P(n)\)</span> 对一切自然数 <span class="math inline">\(n\)</span> 都正确。</li>
-</ol>
-<p>存在一个集合 <span class="math inline">\(N\)</span>，称其元素为自然数，当且仅当这些元素满足公理 1 - 5（也就是皮亚诺公理）。</p>
-<p>在自然数集合上可以定义一组运算：加法、乘法等等，这里用加法举个例子：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(m, n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> m</span><br><span class="line">    <span class="keyword">return</span> add(m, n - <span class="number">1</span>) + <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>可以看出加法是由两条规则递归定义的：</p>
-<ol type="1">
-<li>$ m + 0 = m$</li>
-<li><span class="math inline">\(m + (n + 1) = (m + n) + 1\)</span></li>
-</ol>
-<h2 id="lambda-演算的自然数表示法">lambda 演算的自然数表示法</h2>
-<p>自然数当然不止可以用皮亚诺公理定义，丘奇首先把自然数和自然数上的运算定义在了 lambda 演算上，所以称之为丘奇计数。</p>
-<p>下面就要开始丘奇计数的定义了，由于 lambda 演算的样子不太友好，所以还是用 Python 表示。</p>
-<p>首先定义 0：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zero = <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: x</span><br></pre></td></tr></table></figure>
-<p>先不管它为什么是 0，让我们看看这个语句。它定义了一个接受一个参数 <code>f</code> 的函数，返回一个函数，这个函数接受一个参数 <code>x</code>，然后返回它。似乎很简单，但是它为什么是 0？</p>
-<p>把它放在一边，看看 1 的定义：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">one = <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: f(x)</span><br></pre></td></tr></table></figure>
-<p>这个语句是什么意思呢？定义了一个接受一个参数 <code>f</code> 的函数，返回一个函数，这个函数接受一个参数 <code>x</code>，然后返回 <code>f(x)</code> 的调用结果。好像有些规律了，再看看 2：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">two = <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: f(f(x))</span><br></pre></td></tr></table></figure>
-<p>定义了一个接受一个参数 <code>f</code> 的函数，返回一个函数，这个函数接受一个参数 <code>x</code>，然后返回 <code>f(f(x))</code> 的调用结果。</p>
-<p>现在可以清楚的看到，每个自然数的后继都多调用了一次 <code>f</code>，自然数被表示为 <code>f</code> 的调用次数。</p>
-<p>于是，我们可以很轻易的写出后继函数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">succ = <span class="keyword">lambda</span> n: <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: f(n(f)(x))</span><br></pre></td></tr></table></figure>
-<p>这个函数接受一个参数 <code>n</code>（也就是上面被定义的 0，1，2 等等），返回一个函数，这个函数在 <code>n</code> 的基础上多执行了一次 <code>f</code>，达到了求 <code>n</code> 的后继的目的。</p>
-<p>现在让我们忘记 1 的定义，用 0 和后继重新定义一次：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">zero = <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: x</span><br><span class="line">succ = <span class="keyword">lambda</span> n: <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: f(n(f)(x))</span><br><span class="line"></span><br><span class="line">one = succ(zero)</span><br><span class="line">    = (<span class="keyword">lambda</span> n: <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: f(n(f)(x)))(<span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: x)</span><br><span class="line">    = <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: f(((<span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: x)(f))(x))</span><br><span class="line">    = <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: f((<span class="keyword">lambda</span> x: x)(x))</span><br><span class="line">    = <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: f(x)</span><br></pre></td></tr></table></figure>
-<p>和我们预想的完全一致。</p>
-<h3 id="加法">加法</h3>
-<p>接下来试着定义一下加法，加法是两个数相加返回一个数（也就是说，加法是定义在自然数上的幺半群），所以签名长这样：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add = <span class="keyword">lambda</span> m: <span class="keyword">lambda</span> n: <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: ...</span><br></pre></td></tr></table></figure>
-<p>函数体呢？我们推广一下后继函数：后继函数在<code>n</code>的基础上多调用了一次 <code>f</code>，相当于 <code>+1</code>；那加法相当于 <code>+m</code>，也就是多调用 <code>m</code> 次 <code>f</code>，于是可以得出：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add = <span class="keyword">lambda</span> m: <span class="keyword">lambda</span> n: <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: m(f)(n(f)(x))</span><br></pre></td></tr></table></figure>
-<h3 id="乘法">乘法</h3>
-<p>乘法的签名也是一样：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mul = <span class="keyword">lambda</span> m: <span class="keyword">lambda</span> n: <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: ...</span><br></pre></td></tr></table></figure>
-<p>我们都知道乘法是从加法推广而来的：<code>m * n</code> 相当于加 <code>m</code> 次 <code>n</code>，所以可以使用加法的定义：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mul = <span class="keyword">lambda</span> m: <span class="keyword">lambda</span> n: <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: m(add(n))(zero)(f)(x)</span><br></pre></td></tr></table></figure>
-<p>上面的写法正确，不过太丑了，可以化简为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mul = <span class="keyword">lambda</span> m: <span class="keyword">lambda</span> n: <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: m(n(f))(x)</span><br></pre></td></tr></table></figure>
-<h3 id="求幂">求幂</h3>
-<p>求幂的签名也一样：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pow = <span class="keyword">lambda</span> m: <span class="keyword">lambda</span> n: <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: ...</span><br></pre></td></tr></table></figure>
-<p>求幂是由乘法推广而来的：m<sup>n</sup> 相当于乘 <code>n</code> 次 <code>m</code>，所以可以使用乘法的定义：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pow = <span class="keyword">lambda</span> m: <span class="keyword">lambda</span> n: <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: n(mul(m))(one)(f)(x)</span><br></pre></td></tr></table></figure>
-<p>同样可以化简为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pow = <span class="keyword">lambda</span> m: <span class="keyword">lambda</span> n: <span class="keyword">lambda</span> f: <span class="keyword">lambda</span> x: n(m)(f)(x)</span><br></pre></td></tr></table></figure>
-<h2 id="结语">结语</h2>
-<p>机智的同学一定发现我们并没有实现减法，这是因为减法的实现太复杂了。至于为什么减法的实现很复杂，以及如何实现减法，这里有一篇<a href="http://gettingsharper.de/2012/08/30/lambda-calculus-subtraction-is-hard/" target="_blank" rel="noopener">参考资料</a> ，有兴趣的话可以自行了解一下。</p>
+            <blockquote>
+<p>今天换个口味，写点原来从没接触过的东西–密码学。前一阵信息安全课上留了一个作业，实现Vigenere加密解密，借着机会写篇博客。这次博客由于比较仓促，这次只写加密解密系统的实现，不涉及唯密文破解。</p>
+</blockquote>
+<hr>
+<h1 id="任务要求">任务要求：</h1>
+<ul>
+<li><pre><code> a.编程实现Vigenere加密/解密系统，并分析和评估该算法的安全性。</code></pre></li>
+<li><pre><code> b.编程实现唯密文破译系统，能够破译密钥为2到4个字符的Vigenere密文，并分析如何加快破译速度。</code></pre></li>
+<li>时间要求： 布置任务后，在3周之内完成。</li>
+<li>提交结果：已设计并测试好的程序，包括源码、可执行程序、测试数据集、实验报告。</li>
+</ul>
+<h1 id="原理介绍">原理介绍：</h1>
+<p>先普及下Caesar密码，作为单密码简单替换密码届的扛把子，他有着不可动摇的地位，它的原理很简单，对于需要加密的每个字符都进行相同大小的平移。先给出Caesar密码加密的字符对应表，如下：</p>
+<p><img src="https://i.loli.net/2018/04/15/5ad32ed02524c.png" alt="Caesar.png"></p>
+<p>举个例子吧：明文为China，它对应的数字应为2 7 8 13 0.比如我们平移距离为3，那么加密之后的密文应该为FKLQD，简单到炸。</p>
+<p>我们先不谈上述加密方法的缺点，这些我们放到唯密文解密中聊。有了以上的基础之后我们再聊Vigenere加密以及解密，它是使用一系列凯撒密码组成密码字母表的加密算法，属于多表密码的一种简单形式。同样先给出它的密码加密字符对应表（自己画太麻烦了，我就在百科上扒了一个图，溜。。）：</p>
+<p><img src="https://i.loli.net/2018/04/15/5ad33112af0e9.png" alt="222.png"></p>
+<p>上图中的维吉尼亚表的第一列代表着密钥字母（这是有别于Caesar密码的地方），第一行代表着明文字母，行列分别使用当前需要加密字符和当前的密钥字符确定当前明文字符对应着的密文字符。</p>
+<p>这里我们说一下，一般情况下，我们给出的密钥是短于我们的明文长度的。所以我们做Vigenere加密的时候第一步做的就是对照明文长度，补齐密钥字串。</p>
+<p>说了这么多，举个例子说下吧：</p>
+<ul>
+<li><p>例如我们的明文字串为：data security</p></li>
+<li><p>密钥：best</p></li>
+</ul>
+<p>按照上述的规则，第b行，第d列，对应的字符为E，….. 加密之后的密文应为：EELTTIUNSMLR（不区分大小写）。</p>
+<h1 id="实现">实现</h1>
+<h3 id="第一步使得密钥字符串长度与明文长度相同">第一步：使得密钥字符串长度与明文长度相同</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">dealKey</span><span class="params">(String str,String Key)</span></span>&#123;   </span><br><span class="line">        Key=Key.toUpperCase();<span class="comment">// 将密钥转换成大写</span></span><br><span class="line">        Key=Key.replaceAll(<span class="string">"[^A-Z]"</span>, <span class="string">""</span>);<span class="comment">//去除所有非字母的字符  </span></span><br><span class="line"></span><br><span class="line">		StringBuilder stringBuilder = <span class="keyword">new</span> StringBuilder(Key);</span><br><span class="line">        String newKey=<span class="string">""</span>;</span><br><span class="line">        <span class="keyword">if</span>(sstringBuilder.length()!=str.length())&#123; </span><br><span class="line">            <span class="comment">//如果密钥长度与str不同，则需要生成密钥字符串</span></span><br><span class="line">            <span class="keyword">if</span>(stringBuilder.length()&lt;str.length())&#123;</span><br><span class="line">                <span class="comment">//如果密钥长度比str短，则以不断重复密钥的方式生成密钥字符串</span></span><br><span class="line">                <span class="keyword">while</span>(stringBuilder.length()&lt;str.length())&#123;</span><br><span class="line">                    stringBuilder.append(Key);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//此时，密钥字符串的长度大于或等于str长度</span></span><br><span class="line">            <span class="comment">//将密钥字符串截取为与str等长的字符串</span></span><br><span class="line">            newKey=stringBuilder.substring(<span class="number">0</span>, str.length());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> newKey;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第二步加密">第二步：加密</h3>
+<p>其实我们不用将上述的Vigenere密码表列出来，一是列出来费时费力费空间，二是一个简单的取余操作就能解决这个事情。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String PwTable = <span class="string">"ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">Encryption</span><span class="params">(String P,String K)</span></span>&#123;</span><br><span class="line">        P = P.toUpperCase();<span class="comment">// 将明文转换成大写</span></span><br><span class="line">        P = P.replaceAll(<span class="string">"[^A-Z]"</span>, <span class="string">""</span>);<span class="comment">//去除所有非字母的字符   </span></span><br><span class="line">        K = dealKey(P,K);</span><br><span class="line">        <span class="keyword">int</span> len = K.length();</span><br><span class="line">        StringBuilder stringBuilder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; len;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> row=PwTable.indexOf(K.charAt(i));<span class="comment">//行号</span></span><br><span class="line">            <span class="keyword">int</span> col=PwTable.indexOf(P.charAt(i));<span class="comment">//列号</span></span><br><span class="line">            <span class="keyword">int</span> index = (row+col)%<span class="number">26</span>;</span><br><span class="line">            stringBuilder.append(PwTable.charAt(index));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> stringBuilder.toString();       </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第三步解密">第三步：解密</h3>
+<p>这个过程其实是比较有趣的，我们取密钥所在行为解密的行号，密文所在列作为我们的列号，我们需要分两种情况考虑：</p>
+<p>首先说一下第一种情况，将上述的密码表从主对角线分开，一是密文在我们的密码表的右上部，这种情况比较简单，其实就是一个加密过程的逆过程，我们此时的密文字符在密码表中的位置肯定是不比其对应的明文靠后的（理解这句话，这种情况其实也就明白了，再简单点讲就是PwTable.indexof(密文)&gt;PwTable.indexof(对应的明文)），此时我们只要让列号减去行号，然后将结果做indexof操作就能得到相应的明文。</p>
+<p>如果你理解了第一种情况，第二种情况也就好理解了，此时我们的密文字符在我们的密码表中的位置肯定是不比其对应的明文的位置靠前的，我们需要将列号加一圈字符表再去减行号。</p>
+<p>理解之后下面的这些代码应该就不难理解了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">Decryption</span><span class="params">(String C,String K)</span></span>&#123;</span><br><span class="line">        C=C.toUpperCase();<span class="comment">// 将密文转换成大写</span></span><br><span class="line">        C=C.replaceAll(<span class="string">"[^A-Z]"</span>, <span class="string">""</span>);<span class="comment">//去除所有非字母的字符   </span></span><br><span class="line">        K=dealKey(C,K);</span><br><span class="line">        <span class="keyword">int</span> len = K.length();</span><br><span class="line">        StringBuilder stringBuilder=<span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> row = PwTable.indexOf(K.charAt(i));<span class="comment">//行号</span></span><br><span class="line">            <span class="keyword">int</span> col = PwTable.indexOf(C.charAt(i));<span class="comment">//列号</span></span><br><span class="line">            <span class="keyword">int</span> index;</span><br><span class="line">            <span class="keyword">if</span>(row&gt;col)&#123;</span><br><span class="line">                index=col+<span class="number">26</span>-row;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                index=col-row;</span><br><span class="line">            &#125;</span><br><span class="line">            stringBuilder.append(PwTable.charAt(index));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();     </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>以上是本篇博客的全部内容，希望对你有所帮助，感谢驻足~</p>
 
         </div>
         <footer class="article-footer">
@@ -327,20 +310,10 @@
         
 <nav id="article-nav">
     
-        <a href="/posts/8b092926/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">下一篇</strong>
-        <p class="article-nav-title">
-        
-            Vigenere密码加密解密
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/posts/466eca41/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/posts/cd89a3b2/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">chapter-04-AIR</p>
+        <p class="article-nav-title">如何理解丘奇计数</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
