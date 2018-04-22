@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>唯密文解密（针对Vigenere加密） | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="密码学" />
+    
+    <meta name="description" content="上次说到了Vigenere加密以及解密的算法，但是如何破译这样的密码，也是很有意思的，这篇博客就是实现一个这样的破译，主要针对的是通过Vigenere加密的密文，那么就开始吧~  任务要求：   a.编程实现Vigenere加密/解密系统，并分析和评估该算法的安全性。  b.编程实现唯密文破译系统，能够破译密钥为2到4个字符的Vigenere密文，并分析如何加快破译速度。 时间要求">
+<meta name="keywords" content="密码学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="唯密文解密（针对Vigenere加密）">
+<meta property="og:url" content="http://weafteam.github.io/posts/899ccb0/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="上次说到了Vigenere加密以及解密的算法，但是如何破译这样的密码，也是很有意思的，这篇博客就是实现一个这样的破译，主要针对的是通过Vigenere加密的密文，那么就开始吧~  任务要求：   a.编程实现Vigenere加密/解密系统，并分析和评估该算法的安全性。  b.编程实现唯密文破译系统，能够破译密钥为2到4个字符的Vigenere密文，并分析如何加快破译速度。 时间要求">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2018/04/22/5adc349eaedc8.png">
+<meta property="og:updated_time" content="2018-04-22T07:32:03.948Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="唯密文解密（针对Vigenere加密）">
+<meta name="twitter:description" content="上次说到了Vigenere加密以及解密的算法，但是如何破译这样的密码，也是很有意思的，这篇博客就是实现一个这样的破译，主要针对的是通过Vigenere加密的密文，那么就开始吧~  任务要求：   a.编程实现Vigenere加密/解密系统，并分析和评估该算法的安全性。  b.编程实现唯密文破译系统，能够破译密钥为2到4个字符的Vigenere密文，并分析如何加快破译速度。 时间要求">
+<meta name="twitter:image" content="https://i.loli.net/2018/04/22/5adc349eaedc8.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/密码学/">密码学</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-04-16/唯密文解密（针对Vigenere加密）" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        唯密文解密（针对Vigenere加密）
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/899ccb0/" class="article-date">
+            <time datetime="2018-04-21T01:38:12.000Z" itemprop="datePublished">2018-04-21</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        Leno
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/密码学/">密码学</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <blockquote>
+<p>上次说到了Vigenere加密以及解密的算法，但是如何破译这样的密码，也是很有意思的，这篇博客就是实现一个这样的破译，主要针对的是通过Vigenere加密的密文，那么就开始吧~</p>
+</blockquote>
+<h1 id="任务要求">任务要求：</h1>
+<ul>
+<li><pre><code> a.编程实现Vigenere加密/解密系统，并分析和评估该算法的安全性。</code></pre></li>
+<li><pre><code> b.编程实现唯密文破译系统，能够破译密钥为2到4个字符的Vigenere密文，并分析如何加快破译速度。</code></pre></li>
+<li>时间要求： 布置任务后，在3周之内完成。</li>
+<li>提交结果：已设计并测试好的程序，包括源码、可执行程序、测试数据集、实验报告。</li>
+</ul>
+<h1 id="原理介绍">原理介绍：</h1>
+<p>按照我们之前的说法，我们先介绍一下Caesar加密的缺点。对于一个稍微有点点密码学功底的人来说，Caesar密码的安全强度几乎为零，正如我们是上篇博客所讲的Caesar加密，加密的密钥充其量也就24个，也就是说，不管移动多少个字符，最多进行24次猜解就可以破译出来。</p>
+<p>当然，这只是一种解密方法，也是比较笨的一种方法，而且这种方法并不适用于我们的Vigenere密码破解，因为我们没办法列举出所有的情况。</p>
+<p>这里我们介绍破解Caesar密码的另一类方法，称为（字母）频度分析法。</p>
+<p>假设大家都知道，英语中的字母出现概率是有差别的，其实对于一种特定的自然语言，如果文本足够长，那么各个字母出现的概率就是相对稳定的，具体的概率统计如下图所示：</p>
+<p><img src="https://i.loli.net/2018/04/21/5adaa41cbbb56.png" alt="percent.png"></p>
+<p>这样我们根据以上的频度表，以及根据我们的Caesar密文中的统计出来的各个词的拼读，对应一下就可以找到密文对应的明文，再然后对应密文与明文就可以找到相应的加密的密钥。很简单吧，其实能想到这个想法并不简单的。</p>
+<p>由上一篇的博客介绍，你应该知道了Vigenere密码分解之后其实就是多个Caesar密码。所以我们如果知道密钥的长度，每隔这个长度将原来的Vigenere密文分解为多个Caesar密文，再做上述的工作，是不是就完成了我们的破译工作？思路就是这样，但是怎么确定我们的密钥长度？那么我们接下来就讲讲怎么解决这个问题吧。</p>
+<h1 id="确定密钥长度">确定密钥长度</h1>
+<p>这个在网上搜集到的资料其实是有两种方法的。分别称为Kasiski测试法和Friedman测试法，但是本文给到的代码是基于第二个方法的，不过在此之前，我们还是先讲讲这两个方法的思路吧。</p>
+<h2 id="kasiski测试法">Kasiski测试法</h2>
+<p>Kasiski测试法是由Friedrich Kasiski于1863年给出了其描述，然而早在约1854年这一方法就由Charles Babbage首先发现。</p>
+<p>它的思想是基于这样的一个事实：两个相同的明文段加密成相同的密文段，它们之间的距离为Length，那么密钥的长度就是距离Length的约数。</p>
+<p>而当密文的长度很长时，我们便可以多找几组这样拥有重复密文段，找出他们间距的相同约数就是密钥的长度。</p>
+<p>关于这个方法的代码，本文并未涉及，大家有兴趣可自行查阅资料实现。</p>
+<p>另：机智的你也许发现了，我们这种方法其实并没有涉及到我们刚才说的统计频度，所以我们的重点不是这个方法，接下来就是本文的重点了。</p>
+<h2 id="friedman测试法">Friedman测试法</h2>
+<p>首先我们讲一个概念：重合指数（IC，index of coincidence）。百度一下这个概念的话，搜到的结果可能不是令人很满意，我也是找了很多资料，感觉如下的概念说的很清楚，分享给大家。</p>
+<p>重合指数表示：两个随机选出的字母是相同的概率，对于我们的英文字母来说，即以上概率即为随机选出两个A的概率+随机选出两个B的概率+….+随机选出两个Z的概率。</p>
+<p>前人也为我们统计出了这个数字，为0.65。</p>
+<blockquote>
+<p>即 P(A)^2 + P(B)^2 + P(C)^2 + … + P(Z)^2 = 0.65.</p>
+</blockquote>
+<p>而利用这一概念推测密钥长度的原理为：对于一个Caesar密码的序列，由于所有字母的位移程度是一样的，所以密文的重合指数等于原文的重合指数。</p>
+<p>将这一概念迁移到我们的Vigenere密文上，我们只要计算不同密钥长度下的重合指数，只要重合指数接近期望的0.65时，我们便可以推测当前的长度就是我们的密钥长度。</p>
+<p><strong>举个例子：</strong></p>
+<p>密文为：AAABBCCDDDDEEEFG</p>
+<p>首先我们测试密钥长度=1，首先统计上述密文中每个字母出现的次数（A-Z）：</p>
+<p>A：3 B：2 C：2 D：4 E：3 F:1 G:1 H:0 … Z：0</p>
+<p>然后我们根据上述公式计算重合指数P，如果 P ！= 0.65，我们就尝试密钥长度2。</p>
+<p>假设为2的话，将上述的密文分成两组：</p>
+<p>组1：A A B C D D E F</p>
+<p>组2：A B C D D E E G</p>
+<p>再分别计算重合指数，如果这两个的重合指数都接近于0.65，那么我们就可以基本确定密钥的长度为2了。如果不是，那么继续往下分。</p>
+<p>理论上来说，我们得到的密文长度越长，通过这个方法分析得到的效果会更好，实际上在我测试的结果中，也确实符合刚才的说法。</p>
+<h1 id="实现">实现</h1>
+<p><strong>Friedman测试法确定密钥长度</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">// Friedman测试法确定密钥长度</span><br><span class="line">   public int Friedman(String ciphertext) &#123;</span><br><span class="line">       int keyLength = 1; // 猜测密钥长度</span><br><span class="line">       double[] IC; // 重合指数</span><br><span class="line">       double average; // 平均重合指数</span><br><span class="line">       ArrayList&lt;String&gt; cipherGroup; // 密文分组</span><br><span class="line"></span><br><span class="line">       while (true) &#123;</span><br><span class="line">           IC = new double[keyLength];</span><br><span class="line">           cipherGroup = new ArrayList&lt;String&gt;();</span><br><span class="line">           average = 0;</span><br><span class="line"></span><br><span class="line">           // 1 先根据密钥长度分组</span><br><span class="line">           for (int i = 0; i &lt; keyLength; ++i) &#123;</span><br><span class="line">               StringBuffer temporaryGroup = new StringBuffer();</span><br><span class="line">               for (int j = 0; i + j * keyLength &lt; ciphertext.length(); ++j) &#123;</span><br><span class="line">                   temporaryGroup.append(ciphertext.charAt(i + j * keyLength));</span><br><span class="line">               &#125;</span><br><span class="line">               cipherGroup.add(temporaryGroup.toString());</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           // 2 再计算每一组的重合指数</span><br><span class="line">           for (int i = 0; i &lt; keyLength; ++i) &#123;</span><br><span class="line">               String subCipher = new String(cipherGroup.get(i)); // 子串</span><br><span class="line">               HashMap&lt;Character, Integer&gt; occurrenceNumber = new HashMap&lt;Character, Integer&gt;(); // 字母及其出现的次数</span><br><span class="line"></span><br><span class="line">               // 2.1 初始化字母及其次数键值对</span><br><span class="line">               for (int h = 0; h &lt; 26; ++h) &#123;</span><br><span class="line">                   occurrenceNumber.put((char) (h + 65), 0);</span><br><span class="line">               &#125;</span><br><span class="line"></span><br><span class="line">               // 2.2 统计每个字母出现的次数</span><br><span class="line">               for (int j = 0; j &lt; subCipher.length(); ++j) &#123;</span><br><span class="line">                   occurrenceNumber.put(subCipher.charAt(j), occurrenceNumber.get(subCipher.charAt(j)) + 1);</span><br><span class="line">               &#125;</span><br><span class="line"></span><br><span class="line">               // 2.3 计算重合指数</span><br><span class="line">               double denominator = Math.pow((double) subCipher.length(), 2);</span><br><span class="line">               for (int k = 0; k &lt; 26; ++k) &#123;</span><br><span class="line">                   double o = (double) occurrenceNumber.get((char) (k + 65));</span><br><span class="line">                   IC[i] += o * (o - 1);</span><br><span class="line">               &#125;</span><br><span class="line">               IC[i] /= denominator;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           // 3 判断退出条件,重合指数的平均值是否大于0.065</span><br><span class="line">           for (int i = 0; i &lt; keyLength; ++i) &#123;</span><br><span class="line">               average += IC[i];</span><br><span class="line">           &#125;</span><br><span class="line">           average /= (double) keyLength;</span><br><span class="line">           if (average &gt;= 0.06) &#123;</span><br><span class="line">               break;</span><br><span class="line">           &#125; else &#123;</span><br><span class="line">               keyLength++;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; // while--end</span><br><span class="line">       </span><br><span class="line">       return keyLength;</span><br><span class="line">   &#125;// Friedman--end</span><br></pre></td></tr></table></figure>
+<p><strong>破译密文</strong></p>
+<p>这里给出来的是打印出来了具体的密钥和明文，实际上可以直接写一个类，类中设计两个属性值，一个密钥属性，一个明文属性，直接赋值下就可以了。相信机智的你可以完成这个操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">public void decryptCipher(int keyLength, String ciphertext) &#123;</span><br><span class="line">        int[] key = new int[keyLength];</span><br><span class="line">        ArrayList&lt;String&gt; cipherGroup = new ArrayList&lt;String&gt;();</span><br><span class="line">        double[] probability = new double[] &#123; 0.082, 0.015, 0.028, 0.043, 0.127, 0.022, 0.02, 0.061, 0.07, 0.002, 0.008,</span><br><span class="line">                0.04, 0.024, 0.067, 0.075, 0.019, 0.001, 0.06, 0.063, 0.091, 0.028, 0.01, 0.023, 0.001, 0.02, 0.001 &#125;;</span><br><span class="line"></span><br><span class="line">        // 1 先根据密钥长度分组</span><br><span class="line">        for (int i = 0; i &lt; keyLength; ++i) &#123;</span><br><span class="line">            StringBuffer temporaryGroup = new StringBuffer();</span><br><span class="line">            for (int j = 0; i + j * keyLength &lt; ciphertext.length(); ++j) &#123;</span><br><span class="line">                temporaryGroup.append(ciphertext.charAt(i + j * keyLength));</span><br><span class="line">            &#125;</span><br><span class="line">            cipherGroup.add(temporaryGroup.toString());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 2 确定密钥</span><br><span class="line">        for (int i = 0; i &lt; keyLength; ++i) &#123;</span><br><span class="line">            double MG; // 重合指数</span><br><span class="line">            int flag; // 移动位置</span><br><span class="line">            int g = 0; // 密文移动g个位置</span><br><span class="line">            HashMap&lt;Character, Integer&gt; occurrenceNumber; // 字母出现次数</span><br><span class="line">            String subCipher; // 子串</span><br><span class="line"></span><br><span class="line">            while (true) &#123;</span><br><span class="line">                MG = 0;</span><br><span class="line">                flag = 65 + g;</span><br><span class="line">                subCipher = new String(cipherGroup.get(i));</span><br><span class="line">                occurrenceNumber = new HashMap&lt;Character, Integer&gt;();</span><br><span class="line"></span><br><span class="line">                // 1.1 初始化字母及其次数</span><br><span class="line">                for (int h = 0; h &lt; 26; ++h) &#123;</span><br><span class="line">                    occurrenceNumber.put((char) (h + 65), 0);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                // 1.2 统计字母出现次数</span><br><span class="line">                for (int j = 0; j &lt; subCipher.length(); ++j) &#123;</span><br><span class="line">                    occurrenceNumber.put(subCipher.charAt(j), occurrenceNumber.get(subCipher.charAt(j)) + 1);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                // 1.3 计算重合指数</span><br><span class="line">                for (int k = 0; k &lt; 26; ++k, ++flag) &#123;</span><br><span class="line">                    double p = probability[k];</span><br><span class="line">                    flag = (flag == 91) ? 65 : flag;</span><br><span class="line">                    double f = (double) occurrenceNumber.get((char) flag) / subCipher.length();</span><br><span class="line">                    MG += p * f;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                // 1.4 判断退出条件</span><br><span class="line">                if (MG &gt;= 0.055) &#123;</span><br><span class="line">                    key[i] = g;</span><br><span class="line">                    break;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    ++g;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; // while--end</span><br><span class="line">        &#125; // for--end</span><br><span class="line"></span><br><span class="line">        // 3 打印密钥</span><br><span class="line">        StringBuffer keyString = new StringBuffer();</span><br><span class="line">        for (int i = 0; i &lt; keyLength; ++i) &#123;</span><br><span class="line">            keyString.append((char) (key[i] + 65));</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;\n密钥为: &quot; + keyString.toString());</span><br><span class="line"></span><br><span class="line">        // 4 解密</span><br><span class="line">        StringBuffer plainBuffer = new StringBuffer();</span><br><span class="line">        for (int i = 0; i &lt; ciphertext.length(); ++i) &#123;</span><br><span class="line">            int keyFlag = i % keyLength;</span><br><span class="line">            int change = (int) ciphertext.charAt(i) - 65 - key[keyFlag];</span><br><span class="line">            char plainLetter = (char) ((change &lt; 0 ? (change + 26) : change) + 65);</span><br><span class="line">            plainBuffer.append(plainLetter);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;\n明文为：\n&quot; + plainBuffer.toString().toLowerCase());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>参考资料：</strong></p>
+<p><a href="https://blog.csdn.net/limisky/article/details/16885959" target="_blank" rel="noopener">维吉尼亚密码及其破解</a></p>
+<p><a href="https://blog.csdn.net/white_idiot/article/details/61201864" target="_blank" rel="noopener">【密码学】维吉尼亚密码加解密原理及其破解算法Java实现</a></p>
+<p>以上是本次博客的全部内容，感谢驻足~</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/posts/2cd32dfc/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">Linux下MySQL安装</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/899ccb0/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/04/22/5adc349eaedc8.png)" alt="唯密文解密（针对Vigenere加密）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/密码学/">密码学</a></p>
+                            <p class="item-title"><a href="/posts/899ccb0/" class="title">唯密文解密（针对Vigenere加密）</a></p>
+                            <p class="item-date"><time datetime="2018-04-21T01:38:12.000Z" itemprop="datePublished">2018-04-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/2cd32dfc/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/redis-logo.png)" alt="Linux下MySQL安装" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/2cd32dfc/" class="title">Linux下MySQL安装</a></p>
+                            <p class="item-date"><time datetime="2018-04-18T09:57:12.000Z" itemprop="datePublished">2018-04-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/2cd32dfc/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://labs.mysql.com/common/logos/mysql-logo.svg?v2)" alt="Linux下MySQL安装" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/posts/2cd32dfc/" class="title">Linux下MySQL安装</a></p>
+                            <p class="item-date"><time datetime="2018-04-17T04:07:12.000Z" itemprop="datePublished">2018-04-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7b0ee3f1/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-05-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/7b0ee3f1/" class="title">chapter-05-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-04-15T14:14:23.000Z" itemprop="datePublished">2018-04-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b496f296/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（一）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/b496f296/" class="title">asyncio 不完全指北（一）</a></p>
+                            <p class="item-date"><time datetime="2018-04-14T19:37:56.000Z" itemprop="datePublished">2018-04-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
