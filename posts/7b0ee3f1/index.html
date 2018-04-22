@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>chapter-05-AIR | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="TensorFlow" />
+    
+    <meta name="description" content="TensorFlow 基础（2） 今天有和大家见面了，今天的文章可能内容有点少，这周有很多事情，所以少写点。下一周我尽量多写点。弥补大家。那么我们今天闲话少说，直接开始今天的TensorFlow的基础介绍。接着上一节继续讲起。  Loss Functions   今天这个开头就是最常用的损失函数的实现，使用。主要涉及到两种损失函数的设计，数值预测的回归损失函数，还有分类的损失函数设计。">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter-05-AIR">
+<meta property="og:url" content="http://weafteam.github.io/posts/7b0ee3f1/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="TensorFlow 基础（2） 今天有和大家见面了，今天的文章可能内容有点少，这周有很多事情，所以少写点。下一周我尽量多写点。弥补大家。那么我们今天闲话少说，直接开始今天的TensorFlow的基础介绍。接着上一节继续讲起。  Loss Functions   今天这个开头就是最常用的损失函数的实现，使用。主要涉及到两种损失函数的设计，数值预测的回归损失函数，还有分类的损失函数设计。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+<meta property="og:updated_time" content="2018-04-22T06:27:14.412Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter-05-AIR">
+<meta name="twitter:description" content="TensorFlow 基础（2） 今天有和大家见面了，今天的文章可能内容有点少，这周有很多事情，所以少写点。下一周我尽量多写点。弥补大家。那么我们今天闲话少说，直接开始今天的TensorFlow的基础介绍。接着上一节继续讲起。  Loss Functions   今天这个开头就是最常用的损失函数的实现，使用。主要涉及到两种损失函数的设计，数值预测的回归损失函数，还有分类的损失函数设计。">
+<meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/TensorFlow/">TensorFlow</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-04-09/chapter-05-AIR" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        chapter-05-AIR
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/7b0ee3f1/" class="article-date">
+            <time datetime="2018-04-15T14:14:23.000Z" itemprop="datePublished">2018-04-15</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        milittle
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/TensorFlow/">TensorFlow</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="tensorflow-基础2">TensorFlow 基础（2）</h1>
+<p>今天有和大家见面了，今天的文章可能内容有点少，这周有很多事情，所以少写点。下一周我尽量多写点。弥补大家。那么我们今天闲话少说，直接开始今天的TensorFlow的基础介绍。接着上一节继续讲起。</p>
+<ol type="1">
+<li>Loss Functions</li>
+</ol>
+<blockquote>
+<p>今天这个开头就是最常用的损失函数的实现，使用。主要涉及到两种损失函数的设计，数值预测的回归损失函数，还有分类的损失函数设计。那么我们直接开始我们的实现，有什么难点我会注释。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先我们像往常一场导入我们需要的模块</span></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line">x_vals = tf.linspace(<span class="number">-1.</span>, <span class="number">1.</span>, <span class="number">500</span>)</span><br><span class="line"></span><br><span class="line">target = tf.constant(<span class="number">0.</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># l2 loss 和l2范数差一个平方根</span></span><br><span class="line">l2_y_vals = tf.square(target - x_vals)</span><br><span class="line">l2_y_out = sess.run(l2_y_vals)</span><br><span class="line"></span><br><span class="line"><span class="comment"># l1 loss 就是l1范数</span></span><br><span class="line">l1_y_vals = tf.abs(target - x_vals)</span><br><span class="line">l1_y_out = sess.run(l1_y_vals)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Pseudo-Huber loss 为了让loss更加的光滑一些</span></span><br><span class="line"><span class="comment"># 具体看公式一</span></span><br><span class="line">delta = tf.constant(<span class="number">0.25</span>)</span><br><span class="line">phuber1_y_vals = tf.multiply(tf.square(delta), tf.sqrt(<span class="number">1.</span> + tf.square((target - x_vals) / delta)) - <span class="number">1.</span>)</span><br><span class="line">phuber1_y_out = sess.run(phuber1_y_vals)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">delta2 = tf.constant(<span class="number">5.</span>)</span><br><span class="line">phuber2_y_vals = tf.multiply(tf.square(delta2), tf.sqrt(<span class="number">1.</span> + tf.square((target - x_vals)/delta2)) - <span class="number">1.</span>)</span><br><span class="line">phuber2_y_out = sess.run(phuber2_y_vals)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 画出这些回归损失函数</span></span><br><span class="line">x_array = sess.run(x_vals)</span><br><span class="line">plt.plot(x_array, l2_y_out, <span class="string">'b-'</span>, label=<span class="string">'L2 Loss'</span>)</span><br><span class="line">plt.plot(x_array, l1_y_out, <span class="string">'r--'</span>, label=<span class="string">'L1 Loss'</span>)</span><br><span class="line">plt.plot(x_array, phuber1_y_out, <span class="string">'k-.'</span>, label=<span class="string">'P-Huber Loss (0.25)'</span>)</span><br><span class="line">plt.plot(x_array, phuber2_y_out, <span class="string">'g:'</span>, label=<span class="string">'P-Huber Loss (5.0)'</span>)</span><br><span class="line">plt.ylim(<span class="number">-0.2</span>, <span class="number">0.4</span>)</span><br><span class="line">plt.legend(loc=<span class="string">'lower right'</span>, prop=&#123;<span class="string">'size'</span>: <span class="number">11</span>&#125;)</span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment"># 你能从后面的两个损失函数中得到什么规律呢？</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Various predicted X values</span></span><br><span class="line">x_vals = tf.linspace(<span class="number">-3.</span>, <span class="number">5.</span>, <span class="number">500</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Target of 1.0</span></span><br><span class="line">target = tf.constant(<span class="number">1.</span>)</span><br><span class="line">targets = tf.fill([<span class="number">500</span>,], <span class="number">1.</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 分类损失函数</span></span><br><span class="line"><span class="comment"># Hinge Loss 合页损失函数</span></span><br><span class="line"><span class="comment"># 具体请见公式二</span></span><br><span class="line">hinge_y_vals = tf.maximum(<span class="number">0.</span>, <span class="number">1.</span> - tf.multiply(target, x_vals))</span><br><span class="line">hinge_y_out = sess.run(hinge_y_vals)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 交叉熵损失</span></span><br><span class="line">xentropy_y_vals = - tf.multiply(target, tf.log(x_vals)) - tf.multiply((<span class="number">1.</span> - target), tf.log(<span class="number">1.</span> - x_vals))</span><br><span class="line">xentropy_y_out = sess.run(xentropy_y_vals)</span><br><span class="line"></span><br><span class="line"><span class="comment"># sigmoid 交叉熵</span></span><br><span class="line">x_val_input = tf.expand_dims(x_vals, <span class="number">1</span>)</span><br><span class="line">target_input = tf.expand_dims(targets, <span class="number">1</span>)</span><br><span class="line">xentropy_sigmoid_y_vals = tf.nn.softmax_cross_entropy_with_logits(logits = x_val_input, labels = target_input)</span><br><span class="line">xentropy_sigmoid_y_out = sess.run(xentropy_sigmoid_y_vals)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 权重softmax 交叉熵损失函数</span></span><br><span class="line">weight = tf.constant(<span class="number">0.5</span>)</span><br><span class="line">xentropy_weighted_y_vals = tf.nn.weighted_cross_entropy_with_logits(x_vals, targets, weight)</span><br><span class="line">xentropy_weighted_y_out = sess.run(xentropy_weighted_y_vals)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 画出这些损失函数</span></span><br><span class="line">x_array = sess.run(x_vals)</span><br><span class="line">plt.plot(x_array, hinge_y_out, <span class="string">'b-'</span>, label=<span class="string">'Hinge Loss'</span>)</span><br><span class="line">plt.plot(x_array, xentropy_y_out, <span class="string">'r--'</span>, label=<span class="string">'Cross Entropy Loss'</span>)</span><br><span class="line">plt.plot(x_array, xentropy_sigmoid_y_out, <span class="string">'k-.'</span>, label=<span class="string">'Cross Entropy Sigmoid Loss'</span>)</span><br><span class="line">plt.plot(x_array, xentropy_weighted_y_out, <span class="string">'g:'</span>, label=<span class="string">'Weighted Cross Entropy Loss (x0.5)'</span>)</span><br><span class="line">plt.ylim(<span class="number">-1.5</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment">#plt.xlim(-1, 3)</span></span><br><span class="line">plt.legend(loc=<span class="string">'lower right'</span>, prop=&#123;<span class="string">'size'</span>: <span class="number">11</span>&#125;)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 具体损失函数是干嘛用的，那就是为了具体的数据预测给提供一个最优化的目标，为了让每一类任务有一个最小化目标而构造出来的loss函数，在机器学习里面最重要的其实有一项就是损失函数的设计，设计一个好的损失函数，会让我们的网络更加的稳定，更加容易收敛和收敛到一个相对最优值</span></span><br><span class="line"><span class="comment"># 没有掌握这些基本概念的，希望自己先找一些这方面的知识来看一看，然后再理解的写代码，这样会事半功倍。</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>公式一：</p>
+</blockquote>
+<p><span class="math display">\[
+L_{\delta}(i) = {\delta}^2 (\sqrt{1 + (a/{\delta})^2} - 1)
+\]</span></p>
+<blockquote>
+<p>公式二：</p>
+</blockquote>
+<p><span class="math display">\[
+max(0, 1 - (pre - y))
+\]</span></p>
+<blockquote>
+<p>公式三：</p>
+</blockquote>
+<p><span class="math display">\[
+L = -actual * (log(pre)) - (1- actual)(log(1-pre))
+\]</span></p>
+<blockquote>
+<p>公式四：</p>
+</blockquote>
+<p><span class="math display">\[
+L = -actual * (log(sigmoid(pre))) - (1- actual)(log(1- sigmoid(pre)))
+\]</span></p>
+<blockquote>
+<p>公式五：</p>
+</blockquote>
+<p><span class="math display">\[
+L = -actual * (log(pre)) * weights - (1-actual)(log(1-pre))
+\]</span></p>
+<ol start="2" type="1">
+<li>Back Propagation</li>
+</ol>
+<blockquote>
+<p>这个地方不要紧张，我这里给你推荐一个网站，上面有很好理解这个算法的解释。</p>
+</blockquote>
+<p><a href="https://www.zybuluo.com/hanbingtao/note/476663" target="_blank" rel="noopener">机器学习基础以及反向传播算法介绍</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下面是一个回归的例子</span></span><br><span class="line"><span class="comment"># 老样子，我们创建tensorflow的会话，使用默认的计算图</span></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line"><span class="comment"># 一个回归的例子</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建数据</span></span><br><span class="line">x_vals = np.random.normal(<span class="number">1</span>, <span class="number">0.1</span>, <span class="number">100</span>) <span class="comment"># x数据</span></span><br><span class="line">y_vals = np.repeat(<span class="number">10.</span>, <span class="number">100</span>) <span class="comment"># y 数据</span></span><br><span class="line">x_data = tf.placeholder(shape=[<span class="number">1</span>], dtype=tf.float32) <span class="comment"># 占位符</span></span><br><span class="line">y_target = tf.placeholder(shape=[<span class="number">1</span>], dtype=tf.float32) <span class="comment"># label（真值）</span></span><br><span class="line"></span><br><span class="line">A = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>]))</span><br><span class="line">my_output = tf.multiply(x_data, A)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用l2 loss</span></span><br><span class="line">loss = tf.square(my_output - y_target)</span><br><span class="line"></span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建了一个反向传播优化器</span></span><br><span class="line">my_opt = tf.train.GradientDescentOptimizer(<span class="number">0.02</span>)</span><br><span class="line">train_step = my_opt.minimize(loss) <span class="comment"># 最小化loss</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开始我们的迭代训练</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    rand_index = np.random.choice(<span class="number">100</span>)</span><br><span class="line">    rand_x = [x_vals[rand_index]]</span><br><span class="line">    rand_y = [y_vals[rand_index]]</span><br><span class="line">    sess.run(train_step, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">    <span class="keyword">if</span> (i+<span class="number">1</span>)%<span class="number">25</span>==<span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'Step #'</span> + str(i+<span class="number">1</span>) + <span class="string">' A = '</span> + str(sess.run(A)))</span><br><span class="line">        print(<span class="string">'Loss = '</span> + str(sess.run(loss, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面是一个分类的例子</span></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line"></span><br><span class="line">ops.reset_default_graph()</span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 分类的例子</span></span><br><span class="line"><span class="comment"># 创建数据</span></span><br><span class="line">x_vals = np.concatenate((np.random.normal(<span class="number">-1</span>, <span class="number">1</span>, <span class="number">50</span>), np.random.normal(<span class="number">3</span>, <span class="number">1</span>, <span class="number">50</span>)))</span><br><span class="line">y_vals = np.concatenate((np.repeat(<span class="number">0.</span>, <span class="number">50</span>), np.repeat(<span class="number">1.</span>, <span class="number">50</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建占位符</span></span><br><span class="line">x_data = tf.placeholder(shape=[<span class="number">1</span>], dtype=tf.float32)</span><br><span class="line">y_target = tf.placeholder(shape=[<span class="number">1</span>], dtype=tf.float32)</span><br><span class="line">A = tf.Variable(tf.random_normal(mean=<span class="number">10</span>, shape=[<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">my_output = tf.add(x_data, A)</span><br><span class="line"></span><br><span class="line">my_output_expanded = tf.expand_dims(my_output, <span class="number">0</span>)</span><br><span class="line">y_target_expanded = tf.expand_dims(y_target, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 是不是使用的是对应的分类损失函数呀 sigmoid cross entropy</span></span><br><span class="line">xentropy = tf.nn.sigmoid_cross_entropy_with_logits(logits = my_output_expanded, labels = y_target_expanded)</span><br><span class="line"></span><br><span class="line">my_opt = tf.train.GradientDescentOptimizer(<span class="number">0.05</span>)</span><br><span class="line">train_step = my_opt.minimize(xentropy)</span><br><span class="line"></span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1400</span>):</span><br><span class="line">    rand_index = np.random.choice(<span class="number">100</span>)</span><br><span class="line">    rand_x = [x_vals[rand_index]]</span><br><span class="line">    rand_y = [y_vals[rand_index]]</span><br><span class="line">    </span><br><span class="line">    sess.run(train_step, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">    <span class="keyword">if</span> (i+<span class="number">1</span>)%<span class="number">200</span>==<span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'Step #'</span> + str(i+<span class="number">1</span>) + <span class="string">' A = '</span> + str(sess.run(A)))</span><br><span class="line">        print(<span class="string">'Loss = '</span> + str(sess.run(xentropy, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试 </span></span><br><span class="line">predictions = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(x_vals)):</span><br><span class="line">    x_val = [x_vals[i]]</span><br><span class="line">    prediction = sess.run(tf.round(tf.sigmoid(my_output)), feed_dict=&#123;x_data: x_val&#125;)</span><br><span class="line">    predictions.append(prediction[<span class="number">0</span>])</span><br><span class="line">    </span><br><span class="line">accuracy = sum(x==y <span class="keyword">for</span> x,y <span class="keyword">in</span> zip(predictions, y_vals))/<span class="number">100.</span></span><br><span class="line">print(<span class="string">'Ending Accuracy = '</span> + str(np.round(accuracy, <span class="number">2</span>)))</span><br></pre></td></tr></table></figure>
+<p>o^o,今天我们就讲到这里，下节我们再见，总的来说，就是在回归和分类问题中，设计相对应的loss函数，然后使用反向传播优化器起优化loss，使得loss逐渐减小</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/2cd32dfc/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            Linux下MySQL安装
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/b496f296/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">asyncio 不完全指北（一）</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/2cd32dfc/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/redis-logo.png)" alt="Linux下MySQL安装" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/2cd32dfc/" class="title">Linux下MySQL安装</a></p>
+                            <p class="item-date"><time datetime="2018-04-18T09:57:12.000Z" itemprop="datePublished">2018-04-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/2cd32dfc/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://labs.mysql.com/common/logos/mysql-logo.svg?v2)" alt="Linux下MySQL安装" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/posts/2cd32dfc/" class="title">Linux下MySQL安装</a></p>
+                            <p class="item-date"><time datetime="2018-04-17T04:07:12.000Z" itemprop="datePublished">2018-04-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7b0ee3f1/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-05-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/7b0ee3f1/" class="title">chapter-05-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-04-15T14:14:23.000Z" itemprop="datePublished">2018-04-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b496f296/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（一）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/b496f296/" class="title">asyncio 不完全指北（一）</a></p>
+                            <p class="item-date"><time datetime="2018-04-14T19:37:56.000Z" itemprop="datePublished">2018-04-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/8b092926/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/04/15/5ad30ff4d44d1.png)" alt="Vigenere密码加密解密" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/密码学/">密码学</a></p>
+                            <p class="item-title"><a href="/posts/8b092926/" class="title">Vigenere密码加密解密</a></p>
+                            <p class="item-date"><time datetime="2018-04-14T14:11:24.000Z" itemprop="datePublished">2018-04-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

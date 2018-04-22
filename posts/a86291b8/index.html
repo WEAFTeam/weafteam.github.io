@@ -3,26 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL) | WEAF 周刊</title>
+    <title>Nginx和Git的离线安装 | WEAF 周刊</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
         <meta name="keywords" content="Linux运维" />
     
-    <meta name="description" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
+    <meta name="description" content="Nginx和Git的离线安装">
 <meta name="keywords" content="Linux运维">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
-<meta property="og:url" content="http://weafteam.github.io/posts/2f5dded6/index.html">
+<meta property="og:title" content="Nginx和Git的离线安装">
+<meta property="og:url" content="http://weafteam.github.io/posts/a86291b8/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
-<meta property="og:description" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
+<meta property="og:description" content="Nginx和Git的离线安装">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://us-forever.com/img/mysql-linux-icon.png">
-<meta property="og:updated_time" content="2018-04-02T13:33:51.367Z">
+<meta property="og:image" content="http://nginx.org/nginx.png">
+<meta property="og:updated_time" content="2018-04-22T06:27:14.409Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
-<meta name="twitter:description" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
-<meta name="twitter:image" content="http://us-forever.com/img/mysql-linux-icon.png">
+<meta name="twitter:title" content="Nginx和Git的离线安装">
+<meta name="twitter:description" content="Nginx和Git的离线安装">
+<meta name="twitter:image" content="http://nginx.org/nginx.png">
     
 
     
@@ -133,14 +133,14 @@
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-2018-03-12/linux-mysql" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-2018-03-26/offline-install-git-and-nginx" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)
+        Nginx和Git的离线安装
         </h1>
     
 
@@ -150,8 +150,8 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/posts/2f5dded6/" class="article-date">
-            <time datetime="2018-03-17T08:08:56.000Z" itemprop="datePublished">2018-03-17</time>
+        <a href="/posts/a86291b8/" class="article-date">
+            <time datetime="2018-04-01T04:07:12.000Z" itemprop="datePublished">2018-04-01</time>
         </a>
     </div>
 
@@ -172,68 +172,36 @@
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h2 id="一准备环境">一、准备环境</h2>
-<ol type="1">
-<li>两台服务器：服务器A、服务器B</li>
-<li>服务器A：Red Hat Enterprise Linux Server release 6.5 (Santiago)</li>
-<li>服务器B：Red Hat Enterprise Linux Server release 6.5 (Santiago)</li>
-<li>服务器A IP：172.16.125.50</li>
-<li>服务器B IP：172.16.125.52</li>
-<li>MySQL版本：5.6.23</li>
-</ol>
-<h2 id="二安装mysql">二、安装MySQL</h2>
-<p>具体安装请见</p>
-<ol type="1">
-<li><a href="http://us-forever.com/2018/01/15/LinuxMySQL的安装/" target="_blank" rel="noopener">LinuxMySQL的安装(1)</a></li>
-<li><a href="http://us-forever.com/2018/02/02/LinuxMySQL的安装-2/" target="_blank" rel="noopener">LinuxMySQL的安装(2)</a></li>
-<li><a href="http://us-forever.com/2018/02/08/LinuxMySQL的安装-3/" target="_blank" rel="noopener">LinuxMySQL的安装(3)</a></li>
-</ol>
+            <h1 id="一准备工作">一、准备工作</h1>
+<p>一般情况下为了确保安装没有任何问题，我们先使用有网络环境的下安装的方法，去检测当前机器具体需要安装什么冬天链接库，然后按照提示缺失的库去下载相应的库。 我们按照正常的流程，去解压nginx <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf nginx-1.13.8.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>进入解压后的目录执行 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd nginx-1.13.8</span><br><span class="line">./configure</span><br></pre></td></tr></table></figure></p>
+<p>出现以下错误： <img src="http://us-forever.com/img/nginxerror.png"></p>
+<p>我们按照有网络环境的方法去检测缺失的库及其版本。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install gcc gcc-c++ autoconf automake make</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<h2 id="三主从库配置">三、主从库配置</h2>
-<h3 id="主库在etcmy.cnf里添加以下内容">1、主库在/etc/my.cnf里添加以下内容</h3>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#log日志</span></span><br><span class="line"><span class="attr">log_bin</span>=mysql_bin</span><br><span class="line"><span class="comment">#server ID</span></span><br><span class="line"><span class="attr">server_id</span>=<span class="number">2</span></span><br><span class="line"><span class="comment">#忽略同步的库</span></span><br><span class="line"><span class="attr">binlog-ignore-db</span>=information_schema</span><br><span class="line"><span class="attr">binlog-ignore-db</span>=cluster</span><br><span class="line"><span class="attr">binlog-ignore-db</span>=mysql</span><br><span class="line"><span class="comment">#需要同步的库</span></span><br><span class="line"><span class="attr">binlog-do-db</span>=test</span><br></pre></td></tr></table></figure>
-<h3 id="从库在etcmy.cnf里添加以下内容">2、从库在/etc/my.cnf里添加以下内容</h3>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">log_bin=mysql_bin</span><br><span class="line">server_id=3</span><br><span class="line">binlog-ignore-db=information_schema</span><br><span class="line">binlog-ignore-db=cluster</span><br><span class="line">binlog-ignore-db=mysql</span><br><span class="line">replicate-do-db=ufind_db</span><br><span class="line">replicate-ignore-db=mysql</span><br><span class="line">log-slave-updates</span><br><span class="line">slave-skip-errors=all</span><br><span class="line">slave-net-timeout=60</span><br></pre></td></tr></table></figure>
-<h2 id="四主从库设置">四、主从库设置</h2>
-<h3 id="进入主库我们在主库中创建一个的账户从库通过使用这个账号来同步数据">1、进入主库，我们在主库中创建一个的账户，从库通过使用这个账号来同步数据。</h3>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'repl'</span>@<span class="string">'172.16.125.52'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="赋予相应的权限">2、赋予相应的权限</h3>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">FILE</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'repl'</span>@<span class="string">'172.16.125.52'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">REPLICATION</span> <span class="keyword">SLAVE</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'repl'</span>@<span class="string">'172.16.125.52'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="重启数据库主库执行以下命令">3、重启数据库（主库）执行以下命令</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW MASTER STATUS;</span><br></pre></td></tr></table></figure>
-<p><img src="http://us-forever.com/img/mysqlsync.png"> 要记住以上的信息，在设置从库的时候需要填写并设置。</p>
-<h3 id="在从库里边执行以下命令">4、在从库里边执行以下命令</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stop slave;</span><br><span class="line">change master to master_host=&apos;172.16.125.50&apos;,master_user=&apos;repl&apos;,master_password=&apos;123456&apos;,master_log_file=&apos;mysql_bin.000023&apos;, master_log_pos=120;</span><br><span class="line">start slave;</span><br></pre></td></tr></table></figure>
-<h3 id="然后执行一下命令查看状态">5、然后执行一下命令查看状态</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show slave status \G;</span><br></pre></td></tr></table></figure>
-<p>内容如下： <img src="http://us-forever.com/img/mysqlsync1.png"> <img src="http://us-forever.com/img/mysqlsync2.png"></p>
-<h3 id="测试与提示">6、测试与提示</h3>
-<p>后期的测试中我们只针对<strong>test</strong>库进行了同步。 所以只能针对<strong>test</strong>进行的操作才有效。</p>
-<p>如果后期对一些列库进行操作，需要 添加相应的配置 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>主库配置文件</span><br><span class="line">binlog-do-db=test</span><br><span class="line"><span class="meta">#</span>从库配置文件</span><br><span class="line">replicate-do-db=test</span><br></pre></td></tr></table></figure></p>
-<p>并查询出最新的master的状态，停止从库。并改变从库的配置重启同步。 五、Xtrabackup的简单介绍 ——————- Percona XtraBackup 是世界上唯一的开源免费的MySQL热备份软件，可以执行非阻塞操作 InnoDB和XtraDB数据库的备份。 Percona XtraBackup可提供以下优点：</p>
+<p>显示如下： <img src="http://us-forever.com/img/liberror.png"></p>
+<p>我们下载号相应的库 下边提供几个下载的网址：</p>
 <ul>
-<li>备份快速安全可靠</li>
-<li>备份期间不间断的事务处理</li>
-<li>节省磁盘空间和网络带宽</li>
-<li>自动备份验证</li>
-<li>更快的恢复时间保证正常工作</li>
+<li><a href="http://mirrors.163.com/centos/6/os/x86_64/Packages/" class="uri" target="_blank" rel="noopener">http://mirrors.163.com/centos/6/os/x86_64/Packages/</a></li>
+<li><a href="http://rpmfind.net/" class="uri" target="_blank" rel="noopener">http://rpmfind.net/</a></li>
+<li><a href="https://pkgs.org" class="uri" target="_blank" rel="noopener">https://pkgs.org</a></li>
 </ul>
-<p>Percona XtraBackup 为所有版本的Percona服务器，MySQL和MariaDB提供MySQL热备份。 它可执行 流媒体，压缩和增量MySQL备份。</p>
-<h2 id="六xtrabackup的安装">六、Xtrabackup的安装</h2>
-<p>如果在互联网下 可使用以下命令安装 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.4.4/binary/redhat/7/x86_64/percona-xtrabackup-24-2.4.4-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
-<p>获取相应rpm包 安装部分依赖(不同的操作系统可能已安装的库不尽相同) <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh mysql-community-libs-compat-5.7.20-1.el7.x86_64.rpm</span><br><span class="line"><span class="meta">#</span>根据mysql版本而定</span><br><span class="line">yum list|grep perl</span><br><span class="line">yum -y install perl-DBI.x86_64 perl-DBD-MySQL.x86_64</span><br></pre></td></tr></table></figure></p>
-<p>然后安装Xtrabackup <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh percona-xtrabackup-24-2.4.4-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
-<p>参考： <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install cmake gcc gcc-c++ libaio libaio-devel automake autoconf bison libtool ncurses-devel libgcrypt-devel libev-devel libcurl-devel vim-common</span><br></pre></td></tr></table></figure></p>
-<h2 id="七xtrabackup备份mysql">七、Xtrabackup备份MySQL</h2>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xtrabackup --defaults-file=/etc/my.cnf --user=root --password=root --host=localhost --backup --target-dir=/data/backups/</span><br><span class="line">可指定数据库--databases=test</span><br></pre></td></tr></table></figure>
-<h2 id="八xtrabackup的备份恢复">八、Xtrabackup的备份恢复</h2>
-<p>备份之前必须先关闭MySQL server 然后删除data目录（/var/lib/mysql一般情况是这个） <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xtrabackup  --copy-back --target-dir=/data/backups/</span><br></pre></td></tr></table></figure></p>
-<p>执行完恢复之后需要设置文件权限 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R mysql:mysql /var/lib/mysql</span><br></pre></td></tr></table></figure></p>
-<p>然后启动mysql <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysqld.service</span><br><span class="line"><span class="meta">#</span>或者使用服务</span><br><span class="line">service mysqld start</span><br></pre></td></tr></table></figure></p>
-<h2 id="九使用脚本自动备份7天之内的数据">九、使用脚本自动备份7天之内的数据</h2>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line"># Database info</span><br><span class="line">DB_USER="root"</span><br><span class="line">DB_PASS="root"</span><br><span class="line">DB_HOST="localhost"</span><br><span class="line"></span><br><span class="line"># Others vars</span><br><span class="line">BCK_DIR="/opt/app/mysqlbackup"    #the backup file directory</span><br><span class="line">CONF_DIR="/etc/my.cnf"</span><br><span class="line">DATE=`date +%F`</span><br><span class="line">RMDATE=`date -d '-7 day' +%F`</span><br><span class="line"></span><br><span class="line"># TODO</span><br><span class="line"></span><br><span class="line">mkdir -p $BCK_DIR/$DATE/</span><br><span class="line">#Create dir for save backup data</span><br><span class="line">xtrabackup --defaults-file=$CONF_DIR --user=$DB_USER --password=$DB_PASS --host=$DB_HOST --backup --target-dir=$BCK_DIR/$DATE/</span><br><span class="line">#Backup mysql data</span><br><span class="line">rm -rf $BCK_DIR/$RMDATE</span><br><span class="line">#Delete the backup 7 days ago</span><br><span class="line">#热备份数据库</span><br></pre></td></tr></table></figure>
-<p>加入crontab <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">30 2 * * * /bin/sh /home/scripts/mysqlbackup.sh</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://learn.percona.com/hubfs/Manuals/Percona_Xtra_Backup/Percona_XtraBackup_2.4/Percona-XtraBackup-2.4.9.pdf" target="_blank" rel="noopener">更多请参考官方文档</a></p>
+<p>下边是下载好的库 <img src="http://us-forever.com/img/gcclib.png"> 安装相应的库（<strong>集体安装情况具体分析</strong>）： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh mpfr-2.4.1-6.el6.x86_64.rpm</span><br><span class="line">rpm -ivh cpp-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -Uvh tzdata-2016j-1.el6.noarch.rpm</span><br><span class="line">rpm -Uvh glibc-common-2.12-1.209.el6.x86_64.rpm glibc-2.12-1.209.el6.x86_64.rpm glibc-headers-2.12-1.209.el6.x86_64.rpm glibc-devel-2.12-1.209.el6.x86_64.rpm kernel-headers-2.6.32-696.el6.x86_64.rpm</span><br><span class="line">rpm -ivh libgomp-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -Uvh libstdc++-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh libstdc++-devel-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh ppl-0.10.2-11.el6.x86_64.rpm</span><br><span class="line">rpm -ivh cloog-ppl-0.15.7-1.2.el6.x86_64.rpm</span><br><span class="line">rpm -Uvh libgcc-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh gcc-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh gcc-c++-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh automake-1.11.1-4.el6.noarch.rpm autoconf-2.63-5.1.el6.noarch.rpm</span><br></pre></td></tr></table></figure></p>
+<p>然后执行./configure 发现错误： <img src="http://us-forever.com/img/nginxerror1.png"> 然后安装一下库 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh pcre-7.8-7.el6.x86_64.rpm</span><br><span class="line">rpm -ivh pcre-devel-7.8-7.el6.x86_64.rpm</span><br><span class="line">rpm -Uvh zlib-1.2.3-29.el6.x86_64.rpm</span><br><span class="line">rpm -ivh zlib-devel-1.2.3-29.el6.x86_64.rpm</span><br><span class="line">rpm -i --force --nodeps krb5-devel-1.10.3-65.el6.x86_64.rpm</span><br><span class="line">rpm -Uvh openssl-1.0.1e-57.el6.x86_64.rpm</span><br><span class="line">rpm -ivh openssl-devel-1.0.1e-57.el6.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>然后执行 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure></p>
+<p>安装完成 二、查看版本信息 ===== 根据安装完成的信息查看nginx. 三、简介 —– 不同操作系统的Linux的安装可能不太一样。 本教程使用的是CentOS或者RHEL。 四、准备环境 —- 如果有网络的情况下肯定相当容易： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker</span><br><span class="line"></span><br><span class="line">yum install git</span><br></pre></td></tr></table></figure></p>
+<p>若果yum源安装的版本较低，不执行<strong>yum install git</strong>命令，并按照四、五步骤操作。 如果是离线需要完成后续操作： 首先我们需要到官网下载相应的安装包 <a href="https://www.kernel.org/pub/software/scm/git/" class="uri" target="_blank" rel="noopener">https://www.kernel.org/pub/software/scm/git/</a> 选择<strong>tar.gz</strong> 三、下载和安装依赖 —— 然后最麻烦的地方就是依赖动态链接库的下载。 需要下载的库可以到这两个网站上去找： <a href="http://www.rpmfind.net/linux/RPM/index.html" target="_blank" rel="noopener">fr2.rpmfind.net</a> <a href="https://pkgs.org/" target="_blank" rel="noopener">Linux Packages Search-pkgs.org</a> 我这里提供了一些 <!--more--> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">cpio-2.11-24.el7.x86_64.rpm</span><br><span class="line">curl-7.29.0-42.el7.x86_64.rpm</span><br><span class="line">expat-2.1.0-10.el7_3.x86_64.rpm</span><br><span class="line">expat-devel-2.1.0-10.el7_3.x86_64.rpm</span><br><span class="line">gdbm-devel-1.10-8.el7.x86_64.rpm</span><br><span class="line">gettext-0.19.8.1-2.el7.x86_64.rpm</span><br><span class="line">gettext-devel-0.19.8.1-2.el7.x86_64.rpm</span><br><span class="line">krb5-devel-1.15.1-8.el7.x86_64.rpm</span><br><span class="line">libcurl-7.29.0-42.el7.x86_64.rpm</span><br><span class="line">libcurl-devel-7.29.0-42.el7.x86_64.rpm</span><br><span class="line">libdb-devel-5.3.21-20.el7.x86_64.rpm</span><br><span class="line">openssl-1.0.2k-8.el7.x86_64.rpm</span><br><span class="line">openssl-devel-1.0.2k-8.el7.x86_64.rpm</span><br><span class="line">perl-5.16.3-292.el7.x86_64.rpm</span><br><span class="line">perl-devel-5.16.3-292.el7.x86_64.rpm</span><br><span class="line">perl-ExtUtils-CBuilder-0.28.2.6-292.el7.noarch.rpm</span><br><span class="line">perl-ExtUtils-Install-1.58-292.el7.noarch.rpm</span><br><span class="line">perl-ExtUtils-MakeMaker-6.68-3.el7.noarch.rpm</span><br><span class="line">perl-ExtUtils-Manifest-1.61-244.el7.noarch.rpm</span><br><span class="line">perl-ExtUtils-ParseXS-3.18-3.el7.noarch.rpm</span><br><span class="line">systemtap-sdt-devel-3.1-3.el7.x86_64.rpm</span><br><span class="line">zlib-1.2.7-17.el7.x86_64.rpm</span><br><span class="line">zlib-devel-1.2.7-17.el7.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>这是git需要的一些库，需要安装的不是很多，但是安装的库也需要依赖。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh perl-5.16.3-292.el7.x86_64.rpm</span><br><span class="line">rpm -ivh perl-devel-5.16.3-292.el7.x86_64.rpm</span><br><span class="line">rpm -ivh zlib-devel-1.2.7-17.el7.x86_64.rpm</span><br><span class="line">rpm -ivh libcurl-devel-7.29.0-42.el7.x86_64.rpm</span><br><span class="line">rpm -ivh curl-7.29.0-42.el7.x86_64.rpm</span><br><span class="line">rpm -ivh zlib-devel-1.2.7-17.el7.x86_64.rpm</span><br><span class="line">rpm -ivh openssl-devel-1.0.2k-8.el7.x86_64.rpm</span><br><span class="line">rpm -ivh perl-ExtUtils-MakeMaker-6.68-3.el7.noarch.rpm</span><br><span class="line">rpm -ivh gettext-devel-0.19.8.1-2.el7.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>以上库需要安装，并需要安装对应依赖。 有时候有些包可能互相依赖，安装时可使用一下命令 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh perl-ExtUtils-MakeMaker-6.68-3.el7.noarch.rpm perl-ExtUtils-Install-1.58-292.el7.noarch.rpm zlib-devel-1.2.7-17.el7.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>编译安装可能需要的包 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh cloog-ppl-0.15.7-1.2.el6.x86_64.rpm</span><br><span class="line">rpm -ivh cpp-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh gcc-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh gcc-c++-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh libgcc-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh libgomp-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh libstdc++-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh libstdc++-devel-4.4.7-18.el6.x86_64.rpm</span><br><span class="line">rpm -ivh mpfr-2.4.1-6.el6.x86_64.rpm</span><br><span class="line">rpm -ivh ppl-0.10.2-11.el6.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>有时会发生冲突可以使用枪支卸载，或者不考虑依赖安装。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rpm -e  --nodeps mariadb-libs-5.5.56-2.el7.x86_64</span><br><span class="line">	//强制卸载</span><br><span class="line"></span><br><span class="line">rpm -i --force --nodeps krb5-devel-1.15.1-8.el7.x86_64.rpm</span><br><span class="line">	//强制安装 --force可选</span><br></pre></td></tr></table></figure></p>
+<h2 id="五解压和安装">五、解压和安装</h2>
+<p>解压安装包 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf git-2.15.1.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>进入解压后的文件夹 <img src="http://us-forever.com/img/git-1.png"> 执行一下命令 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br></pre></td></tr></table></figure></p>
+<p>检查没有任何出错 <img src="http://us-forever.com/img/git-2.png"> 然后执行以下命令进行编译 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure></p>
+<p>检查没有问题执行安装 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure></p>
+<p>检查没有任何出错 <img src="http://us-forever.com/img/git-4.png"> 六、查看安装结果 —-</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure>
+<p><img src="http://us-forever.com/img/git-5.png"></p>
 
         </div>
         <footer class="article-footer">
@@ -334,20 +302,20 @@
         
 <nav id="article-nav">
     
-        <a href="/posts/575e441b/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/posts/466eca41/" id="article-nav-newer" class="article-nav-link-wrap">
         <strong class="article-nav-caption">下一篇</strong>
         <p class="article-nav-title">
         
-            文本聚类系列教程：（一）jieba中文分词工具入门
+            chapter-04-AIR
         
         </p>
         <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
     </a>
     
     
-        <a href="/posts/8e8e4531/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/posts/5b7df854/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">chapter-01-AIR</p>
+        <p class="article-nav-title">TensorFlow 建立网络模型</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     

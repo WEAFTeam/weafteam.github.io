@@ -9,19 +9,19 @@
     
         <meta name="keywords" content="TensorFlow" />
     
-    <meta name="description" content="TensorFLow 基础 hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会">
+    <meta name="description" content="TensorFLow 基础（1） hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概">
 <meta name="keywords" content="TensorFlow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="chapter-04-AIR">
 <meta property="og:url" content="http://weafteam.github.io/posts/466eca41/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
-<meta property="og:description" content="TensorFLow 基础 hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会">
+<meta property="og:description" content="TensorFLow 基础（1） hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
-<meta property="og:updated_time" content="2018-04-08T19:44:08.670Z">
+<meta property="og:updated_time" content="2018-04-22T06:27:14.411Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="chapter-04-AIR">
-<meta name="twitter:description" content="TensorFLow 基础 hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会">
+<meta name="twitter:description" content="TensorFLow 基础（1） hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概">
 <meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
     
 
@@ -74,7 +74,7 @@
                                     <a class="main-nav-list-link" href="/">主页</a>
                                 </li>
                             
-                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
                                     
                         </ul>
                         <nav id="sub-nav">
@@ -172,7 +172,7 @@
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h1 id="tensorflow-基础">TensorFLow 基础</h1>
+            <h1 id="tensorflow-基础1">TensorFLow 基础（1）</h1>
 <p>hi,又和大家见面了，上一次我们讲了建立模型步骤和一些基础的概念（Tensor、Placeholder），那么我们这次就继续我们的矩阵操作，因为在TensorFlow处理一些数学问题的时候，往往都是通过矩阵来存储数据，通过特定的矩阵运算，我们实现数据的处理，从而得到一些数据的特性。还有一些其他的Tensorflow的概念，我希望大家能坚持下去，只要将这些基础的概念学会，那么以后运用TensorFlow就会得心应手。</p>
 <ol type="1">
 <li>和TensorFlow一起工作的Matrices</li>
@@ -348,9 +348,9 @@ x &amp; x &gt; 0 \\
     </a>
     
     
-        <a href="/posts/5b7df854/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/posts/a86291b8/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">TensorFlow 建立网络模型</p>
+        <p class="article-nav-title">Nginx和Git的离线安装</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -365,6 +365,66 @@ x &amp; x &gt; 0 \\
         <h3 class="widget-title">最新文章</h3>
         <div class="widget">
             <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/2cd32dfc/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/redis-logo.png)" alt="Linux下MySQL安装" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/2cd32dfc/" class="title">Linux下MySQL安装</a></p>
+                            <p class="item-date"><time datetime="2018-04-18T09:57:12.000Z" itemprop="datePublished">2018-04-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/2cd32dfc/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://labs.mysql.com/common/logos/mysql-logo.svg?v2)" alt="Linux下MySQL安装" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/posts/2cd32dfc/" class="title">Linux下MySQL安装</a></p>
+                            <p class="item-date"><time datetime="2018-04-17T04:07:12.000Z" itemprop="datePublished">2018-04-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7b0ee3f1/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-05-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/7b0ee3f1/" class="title">chapter-05-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-04-15T14:14:23.000Z" itemprop="datePublished">2018-04-15</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -406,66 +466,6 @@ x &amp; x &gt; 0 \\
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/cd89a3b2/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-9/67032850.jpg)" alt="如何理解丘奇计数" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/posts/cd89a3b2/" class="title">如何理解丘奇计数</a></p>
-                            <p class="item-date"><time datetime="2018-04-07T19:39:29.000Z" itemprop="datePublished">2018-04-08</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/466eca41/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-04-AIR" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
-                            <p class="item-title"><a href="/posts/466eca41/" class="title">chapter-04-AIR</a></p>
-                            <p class="item-date"><time datetime="2018-04-05T02:13:07.000Z" itemprop="datePublished">2018-04-05</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/5b7df854/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow 建立网络模型" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
-                            <p class="item-title"><a href="/posts/5b7df854/" class="title">TensorFlow 建立网络模型</a></p>
-                            <p class="item-date"><time datetime="2018-03-31T10:23:35.000Z" itemprop="datePublished">2018-03-31</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -475,7 +475,7 @@ x &amp; x &gt; 0 \\
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -485,7 +485,7 @@ x &amp; x &gt; 0 \\
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
         </div>
     </div>
 
@@ -495,7 +495,7 @@ x &amp; x &gt; 0 \\
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
         </div>
     </div>
 

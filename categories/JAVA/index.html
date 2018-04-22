@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     
-    <title>标签：: Linux运维 | WEAF 周刊</title>
+    <title>分类：: JAVA | WEAF 周刊</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta property="og:type" content="website">
 <meta property="og:title" content="WEAF 周刊">
-<meta property="og:url" content="http://weafteam.github.io/tags/Linux运维/index.html">
+<meta property="og:url" content="http://weafteam.github.io/categories/JAVA/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
@@ -120,7 +120,7 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <i class="icon fa fa-tag"></i>标签：: <em>Linux运维</em>
+    <i class="icon fa fa-folder-open"></i>分类：: <em class="page-title-link">JAVA</em>
     </h1>
 </div>
                         <div class="main-body-content">
@@ -183,221 +183,12 @@
     </div>
 </article>
     
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/2cd32dfc/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://labs.mysql.com/common/logos/mysql-logo.svg?v2)" alt="Linux下MySQL安装" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Linux/">Linux</a>
-            </div>
-            <div class="date"><time datetime="2018-04-17T04:07:12.000Z" itemprop="datePublished">2018-04-17</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/2cd32dfc/">Linux下MySQL安装</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            接下来我将介绍3种方法安装MySQL
-第一种
-一、查看是否安装了MySQL
-使用命令： 1rpm -qa|grep -i mysql
-如果使用centos，可能会出现冲突，解决冲突需要卸载mariadb 首先查看是否安装了Mariadb 1rpm -qa|grep mariadb
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/a86291b8/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://nginx.org/nginx.png)" alt="Nginx和Git的离线安装" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Linux/">Linux</a>
-            </div>
-            <div class="date"><time datetime="2018-04-01T04:07:12.000Z" itemprop="datePublished">2018-04-01</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/a86291b8/">Nginx和Git的离线安装</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            一、准备工作
-一般情况下为了确保安装没有任何问题，我们先使用有网络环境的下安装的方法，去检测当前机器具体需要安装什么冬天链接库，然后按照提示缺失的库去下载相应的库。 我们按照正常的流程，去解压nginx 1tar -zxvf nginx-1.13.8.tar.gz
-进入解压后的目录执行 12cd nginx-1.13.8./configure
-出现以下错误： 
-我们按照有网络环境的方法去检测缺失的库及其版本。 1yum -y install gcc gcc-c++ autoconf automake make
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/cfc65600/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://us-forever.com/img/linux-icon.jpg)" alt="rsync的使用与配置" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Linux/">Linux</a>
-            </div>
-            <div class="date"><time datetime="2018-03-25T13:08:56.000Z" itemprop="datePublished">2018-03-25</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/cfc65600/">rsync的使用与配置</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            一、什么是rsync
-rsync，remote synchronize顾名思意就知道它是一款实现远程同步功能的软件，它在同步文件的同时，可以保持原来文件的权限、时间、软硬链接等附加信息。 rsync是用 “rsync 算法”提供了一个客户机和远程文件服务器的文件同步的快速方法，而且可以通过ssh方式来传输文件，这样其保密性也非常好，另外它还是免费的软件。
-二、rsync的安装
-rysnc的官方网站：http://rsync.samba.org 可以从上面得到最新的版本。目前最新版是3.1.2。当然，因为rsync是一款如此有用的软件，所以很多Linux的发行版本都将它收录在内了。
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/2f5dded6/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://us-forever.com/img/mysql-linux-icon.png)" alt="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/Linux/">Linux</a>
-            </div>
-            <div class="date"><time datetime="2018-03-17T08:08:56.000Z" itemprop="datePublished">2018-03-17</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/2f5dded6/">MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            一、准备环境
-
-两台服务器：服务器A、服务器B
-服务器A：Red Hat Enterprise Linux Server release 6.5 (Santiago)
-服务器B：Red Hat Enterprise Linux Server release 6.5 (Santiago)
-服务器A IP：172.16.125.50
-服务器B IP：172.16.125.52
-MySQL版本：5.6.23
-
-二、安装MySQL
-具体安装请见
-
-LinuxMySQL的安装(1)
-LinuxMySQL的安装(2)
-LinuxMySQL的安装(3)
-
-        </p>
-    </div>
-</article>
-    
         </div>
     
 
 
     </div></section>
+
 
 
 

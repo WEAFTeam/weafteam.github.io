@@ -3,26 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL) | WEAF 周刊</title>
+    <title>Linux下MySQL安装 | WEAF 周刊</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
         <meta name="keywords" content="Linux运维" />
     
-    <meta name="description" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
+    <meta name="description" content="Linux下MySQL安装">
 <meta name="keywords" content="Linux运维">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
-<meta property="og:url" content="http://weafteam.github.io/posts/2f5dded6/index.html">
+<meta property="og:title" content="Linux下MySQL安装">
+<meta property="og:url" content="http://weafteam.github.io/posts/2cd32dfc/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
-<meta property="og:description" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
+<meta property="og:description" content="Linux下MySQL安装">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://us-forever.com/img/mysql-linux-icon.png">
-<meta property="og:updated_time" content="2018-04-02T13:33:51.367Z">
+<meta property="og:image" content="https://labs.mysql.com/common/logos/mysql-logo.svg?v2">
+<meta property="og:updated_time" content="2018-04-22T06:27:14.417Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
-<meta name="twitter:description" content="MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)">
-<meta name="twitter:image" content="http://us-forever.com/img/mysql-linux-icon.png">
+<meta name="twitter:title" content="Linux下MySQL安装">
+<meta name="twitter:description" content="Linux下MySQL安装">
+<meta name="twitter:image" content="https://labs.mysql.com/common/logos/mysql-logo.svg?v2">
     
 
     
@@ -133,14 +133,14 @@
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-2018-03-12/linux-mysql" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-2018-04-09/three-method-for-install-mysql" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)
+        Linux下MySQL安装
         </h1>
     
 
@@ -150,8 +150,8 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/posts/2f5dded6/" class="article-date">
-            <time datetime="2018-03-17T08:08:56.000Z" itemprop="datePublished">2018-03-17</time>
+        <a href="/posts/2cd32dfc/" class="article-date">
+            <time datetime="2018-04-17T04:07:12.000Z" itemprop="datePublished">2018-04-17</time>
         </a>
     </div>
 
@@ -172,68 +172,70 @@
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h2 id="一准备环境">一、准备环境</h2>
-<ol type="1">
-<li>两台服务器：服务器A、服务器B</li>
-<li>服务器A：Red Hat Enterprise Linux Server release 6.5 (Santiago)</li>
-<li>服务器B：Red Hat Enterprise Linux Server release 6.5 (Santiago)</li>
-<li>服务器A IP：172.16.125.50</li>
-<li>服务器B IP：172.16.125.52</li>
-<li>MySQL版本：5.6.23</li>
-</ol>
-<h2 id="二安装mysql">二、安装MySQL</h2>
-<p>具体安装请见</p>
-<ol type="1">
-<li><a href="http://us-forever.com/2018/01/15/LinuxMySQL的安装/" target="_blank" rel="noopener">LinuxMySQL的安装(1)</a></li>
-<li><a href="http://us-forever.com/2018/02/02/LinuxMySQL的安装-2/" target="_blank" rel="noopener">LinuxMySQL的安装(2)</a></li>
-<li><a href="http://us-forever.com/2018/02/08/LinuxMySQL的安装-3/" target="_blank" rel="noopener">LinuxMySQL的安装(3)</a></li>
-</ol>
+            <p>接下来我将介绍3种方法安装MySQL</p>
+<h1 id="第一种">第一种</h1>
+<h2 id="一查看是否安装了mysql">一、查看是否安装了MySQL</h2>
+<p>使用命令： <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep -i mysql</span><br></pre></td></tr></table></figure></p>
+<p>如果使用centos，可能会出现冲突，解决冲突需要卸载mariadb 首先查看是否安装了Mariadb <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep mariadb</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<h2 id="三主从库配置">三、主从库配置</h2>
-<h3 id="主库在etcmy.cnf里添加以下内容">1、主库在/etc/my.cnf里添加以下内容</h3>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#log日志</span></span><br><span class="line"><span class="attr">log_bin</span>=mysql_bin</span><br><span class="line"><span class="comment">#server ID</span></span><br><span class="line"><span class="attr">server_id</span>=<span class="number">2</span></span><br><span class="line"><span class="comment">#忽略同步的库</span></span><br><span class="line"><span class="attr">binlog-ignore-db</span>=information_schema</span><br><span class="line"><span class="attr">binlog-ignore-db</span>=cluster</span><br><span class="line"><span class="attr">binlog-ignore-db</span>=mysql</span><br><span class="line"><span class="comment">#需要同步的库</span></span><br><span class="line"><span class="attr">binlog-do-db</span>=test</span><br></pre></td></tr></table></figure>
-<h3 id="从库在etcmy.cnf里添加以下内容">2、从库在/etc/my.cnf里添加以下内容</h3>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">log_bin=mysql_bin</span><br><span class="line">server_id=3</span><br><span class="line">binlog-ignore-db=information_schema</span><br><span class="line">binlog-ignore-db=cluster</span><br><span class="line">binlog-ignore-db=mysql</span><br><span class="line">replicate-do-db=ufind_db</span><br><span class="line">replicate-ignore-db=mysql</span><br><span class="line">log-slave-updates</span><br><span class="line">slave-skip-errors=all</span><br><span class="line">slave-net-timeout=60</span><br></pre></td></tr></table></figure>
-<h2 id="四主从库设置">四、主从库设置</h2>
-<h3 id="进入主库我们在主库中创建一个的账户从库通过使用这个账号来同步数据">1、进入主库，我们在主库中创建一个的账户，从库通过使用这个账号来同步数据。</h3>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'repl'</span>@<span class="string">'172.16.125.52'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="赋予相应的权限">2、赋予相应的权限</h3>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">FILE</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'repl'</span>@<span class="string">'172.16.125.52'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">REPLICATION</span> <span class="keyword">SLAVE</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'repl'</span>@<span class="string">'172.16.125.52'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="重启数据库主库执行以下命令">3、重启数据库（主库）执行以下命令</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW MASTER STATUS;</span><br></pre></td></tr></table></figure>
-<p><img src="http://us-forever.com/img/mysqlsync.png"> 要记住以上的信息，在设置从库的时候需要填写并设置。</p>
-<h3 id="在从库里边执行以下命令">4、在从库里边执行以下命令</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stop slave;</span><br><span class="line">change master to master_host=&apos;172.16.125.50&apos;,master_user=&apos;repl&apos;,master_password=&apos;123456&apos;,master_log_file=&apos;mysql_bin.000023&apos;, master_log_pos=120;</span><br><span class="line">start slave;</span><br></pre></td></tr></table></figure>
-<h3 id="然后执行一下命令查看状态">5、然后执行一下命令查看状态</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show slave status \G;</span><br></pre></td></tr></table></figure>
-<p>内容如下： <img src="http://us-forever.com/img/mysqlsync1.png"> <img src="http://us-forever.com/img/mysqlsync2.png"></p>
-<h3 id="测试与提示">6、测试与提示</h3>
-<p>后期的测试中我们只针对<strong>test</strong>库进行了同步。 所以只能针对<strong>test</strong>进行的操作才有效。</p>
-<p>如果后期对一些列库进行操作，需要 添加相应的配置 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>主库配置文件</span><br><span class="line">binlog-do-db=test</span><br><span class="line"><span class="meta">#</span>从库配置文件</span><br><span class="line">replicate-do-db=test</span><br></pre></td></tr></table></figure></p>
-<p>并查询出最新的master的状态，停止从库。并改变从库的配置重启同步。 五、Xtrabackup的简单介绍 ——————- Percona XtraBackup 是世界上唯一的开源免费的MySQL热备份软件，可以执行非阻塞操作 InnoDB和XtraDB数据库的备份。 Percona XtraBackup可提供以下优点：</p>
-<ul>
-<li>备份快速安全可靠</li>
-<li>备份期间不间断的事务处理</li>
-<li>节省磁盘空间和网络带宽</li>
-<li>自动备份验证</li>
-<li>更快的恢复时间保证正常工作</li>
-</ul>
-<p>Percona XtraBackup 为所有版本的Percona服务器，MySQL和MariaDB提供MySQL热备份。 它可执行 流媒体，压缩和增量MySQL备份。</p>
-<h2 id="六xtrabackup的安装">六、Xtrabackup的安装</h2>
-<p>如果在互联网下 可使用以下命令安装 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.4.4/binary/redhat/7/x86_64/percona-xtrabackup-24-2.4.4-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
-<p>获取相应rpm包 安装部分依赖(不同的操作系统可能已安装的库不尽相同) <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh mysql-community-libs-compat-5.7.20-1.el7.x86_64.rpm</span><br><span class="line"><span class="meta">#</span>根据mysql版本而定</span><br><span class="line">yum list|grep perl</span><br><span class="line">yum -y install perl-DBI.x86_64 perl-DBD-MySQL.x86_64</span><br></pre></td></tr></table></figure></p>
-<p>然后安装Xtrabackup <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh percona-xtrabackup-24-2.4.4-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
-<p>参考： <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install cmake gcc gcc-c++ libaio libaio-devel automake autoconf bison libtool ncurses-devel libgcrypt-devel libev-devel libcurl-devel vim-common</span><br></pre></td></tr></table></figure></p>
-<h2 id="七xtrabackup备份mysql">七、Xtrabackup备份MySQL</h2>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xtrabackup --defaults-file=/etc/my.cnf --user=root --password=root --host=localhost --backup --target-dir=/data/backups/</span><br><span class="line">可指定数据库--databases=test</span><br></pre></td></tr></table></figure>
-<h2 id="八xtrabackup的备份恢复">八、Xtrabackup的备份恢复</h2>
-<p>备份之前必须先关闭MySQL server 然后删除data目录（/var/lib/mysql一般情况是这个） <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xtrabackup  --copy-back --target-dir=/data/backups/</span><br></pre></td></tr></table></figure></p>
-<p>执行完恢复之后需要设置文件权限 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R mysql:mysql /var/lib/mysql</span><br></pre></td></tr></table></figure></p>
-<p>然后启动mysql <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysqld.service</span><br><span class="line"><span class="meta">#</span>或者使用服务</span><br><span class="line">service mysqld start</span><br></pre></td></tr></table></figure></p>
-<h2 id="九使用脚本自动备份7天之内的数据">九、使用脚本自动备份7天之内的数据</h2>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line"># Database info</span><br><span class="line">DB_USER="root"</span><br><span class="line">DB_PASS="root"</span><br><span class="line">DB_HOST="localhost"</span><br><span class="line"></span><br><span class="line"># Others vars</span><br><span class="line">BCK_DIR="/opt/app/mysqlbackup"    #the backup file directory</span><br><span class="line">CONF_DIR="/etc/my.cnf"</span><br><span class="line">DATE=`date +%F`</span><br><span class="line">RMDATE=`date -d '-7 day' +%F`</span><br><span class="line"></span><br><span class="line"># TODO</span><br><span class="line"></span><br><span class="line">mkdir -p $BCK_DIR/$DATE/</span><br><span class="line">#Create dir for save backup data</span><br><span class="line">xtrabackup --defaults-file=$CONF_DIR --user=$DB_USER --password=$DB_PASS --host=$DB_HOST --backup --target-dir=$BCK_DIR/$DATE/</span><br><span class="line">#Backup mysql data</span><br><span class="line">rm -rf $BCK_DIR/$RMDATE</span><br><span class="line">#Delete the backup 7 days ago</span><br><span class="line">#热备份数据库</span><br></pre></td></tr></table></figure>
-<p>加入crontab <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">30 2 * * * /bin/sh /home/scripts/mysqlbackup.sh</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://learn.percona.com/hubfs/Manuals/Percona_Xtra_Backup/Percona_XtraBackup_2.4/Percona-XtraBackup-2.4.9.pdf" target="_blank" rel="noopener">更多请参考官方文档</a></p>
+<p>然后卸载 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e mariadb-libs-5.5.56-2.el7.x86_64</span><br></pre></td></tr></table></figure></p>
+<p>强制卸载(可选): <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps mariadb-libs-5.5.56-2.el7.x86_64</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://us-forever.com/img/linuxMySQL-1.png" alt="mysql-1"> 二、如果安装了需删除已安装版本 —— 删除命令： <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps 包名</span><br><span class="line">( rpm -ev mysql-4.1.12-3.RHEL4.1 )</span><br></pre></td></tr></table></figure></p>
+<p>删除老版本mysql的开发头文件和库 命令： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -fr /usr/lib/mysql</span><br><span class="line">rm -fr /usr/include/mysql</span><br></pre></td></tr></table></figure></p>
+<p>注意：卸载后/var/lib/mysql中的数据及/etc/my.cnf不会删除，如果确定没用后就手工删除 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -f /etc/my.cnf</span><br><span class="line">rm -fr /var/lib/mysql</span><br></pre></td></tr></table></figure></p>
+<h2 id="三安装mysql准备环境">三、安装mysql准备环境</h2>
+<p>我自mysql官网下载通用的Linux版本安装包 mysql-5.7.20-linux-glibc2.12-x86_64.tar.gz 将下载好的包放在 /usr/local 目录下，或者执行命令： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.20-linux-glibc2.12-x86_64.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://us-forever.com/img/linuxMySQL-2.png" alt="mysql-2"></p>
+<p>解压下载的文件 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf mysql-5.7.20-linux-glibc2.12-x86_64.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>将解压之后的所有文件移动到/usr/local/mysql <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv ./mysql-5.7.20-linux-glibc2.12-x86_64/* ./mysql</span><br></pre></td></tr></table></figure></p>
+<p>为mysql创建系统用户(可选，新版本会自动创建相应用户) <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">groupadd mysql</span><br><span class="line">useradd -r -g mysql mysql</span><br></pre></td></tr></table></figure></p>
+<p>//-r参数表示mysql用户是系统用户，不可用于登录系统 并变更mysql安装目录的所属用户和用户组 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chown -R mysql:mysql mysql</span><br><span class="line">// -R 迭代处理</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://us-forever.com/img/linuxMySQL-3.png" alt="mysql-3"> 四、 安装和初始化 ——</p>
+<p>初始化数据库 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/mysqld --initialize --user=mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data --lc_messages_dir=/usr/local/mysql/share --lc_messages=en_US</span><br></pre></td></tr></table></figure></p>
+<p>记录刚刚输出的密码： jk9tEao&lt;94MC <img src="http://us-forever.com/img/linuxMySQL-4.png" alt="mysql-4"></p>
+<p>配置/etc/my.cnf</p>
+<p><a href="http://us-forever.com/file/my.cnf" target="_blank" rel="noopener">my.cnf</a></p>
+<h2 id="五-启动登录和设置密码">五、 启动登录和设置密码</h2>
+<p>切换到mysql安装目录的bin下启动 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mysqld_safe --user=mysql</span><br></pre></td></tr></table></figure></p>
+<p>启动后可能无法使用当前窗口</p>
+<p>登录进去设置新的密码： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mysql -u root -p</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">password</span>=<span class="keyword">password</span>(<span class="string">"root"</span>);</span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="http://us-forever.com/img/linuxMySQL-5.png" alt="mysql-5"></p>
+<p>六、 添加到服务</p>
+<p>切换到 support-files目录下，并执行以下命令 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp mysql.server /etc/init.d/mysql</span><br></pre></td></tr></table></figure></p>
+<p>然后停止当前进程，使用服务启动mysql <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysql start</span><br></pre></td></tr></table></figure></p>
+<p>并添加mysql环境变量 在 /etc/profile 的文件末尾追加： export PATH=$PATH:/usr/local/mysql/bin 保存后执行 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p>最后使用新密码登录到mysql <img src="http://us-forever.com/img/linuxMySQL-6.png" alt="mysql-6"></p>
+<h1 id="第二种">第二种</h1>
+<h2 id="一查看是否安装了mysql-1">一、查看是否安装了MySQL</h2>
+<p>使用命令： <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep -i mysql</span><br></pre></td></tr></table></figure></p>
+<p>如果使用centos，可能会出现冲突，解决冲突需要卸载mariadb 首先查看是否安装了Mariadb <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep mariadb</span><br></pre></td></tr></table></figure></p>
+<!--more-->
+<p>然后卸载 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e mariadb-libs-5.5.56-2.el7.x86_64</span><br></pre></td></tr></table></figure></p>
+<p>强制卸载(可选): <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps mariadb-libs-5.5.56-2.el7.x86_64</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://us-forever.com/img/linuxMySQL-1.png" alt="mysql-1"> 二、如果安装了需删除已安装版本 —— 删除命令： <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps 包名</span><br><span class="line">( rpm -ev mysql-4.1.12-3.RHEL4.1 )</span><br></pre></td></tr></table></figure></p>
+<p>删除老版本mysql的开发头文件和库 命令： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -fr /usr/lib/mysql</span><br><span class="line">rm -fr /usr/include/mysql</span><br></pre></td></tr></table></figure></p>
+<p>注意：卸载后/var/lib/mysql中的数据及/etc/my.cnf不会删除，如果确定没用后就手工删除 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -f /etc/my.cnf</span><br><span class="line">rm -fr /var/lib/mysql</span><br></pre></td></tr></table></figure></p>
+<p>三、准备安装的环境 wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.20-1.el7.x86_64.rpm-bundle.tar 或者用自己准备好的包 mysql-5.7.20-1.el7.x86_64.rpm-bundle.tar 解压包 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf mysql-5.7.20-1.el7.x86_64.rpm-bundle.tar</span><br></pre></td></tr></table></figure></p>
+<p>然后按照以下顺序安装 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh mysql-community-common-5.7.20-1.el7.x86_64.rpm </span><br><span class="line">rpm -ivh mysql-community-libs-5.7.20-1.el7.x86_64.rpm </span><br><span class="line">rpm -ivh mysql-community-client-5.7.20-1.el7.x86_64.rpm </span><br><span class="line">rpm -ivh mysql-community-server-5.7.20-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>四、启动并修改密码 安装完成后就可以启动服务了 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld start</span><br></pre></td></tr></table></figure></p>
+<p>启动后查看配置文件 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://us-forever.com/img/linuxMySQL-1-2.png" alt="linuxMySQL-1-2.png"> 找打log文件 进入查找默认root密码 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/log/mysqld.log</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://us-forever.com/img/linuxMySQL-1-3.png"></p>
+<p>使用一下命令登录并修改密码 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure></p>
+<p>修改密码 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SET PASSWORD FOR &apos;root&apos;@&apos;localhost&apos; = PASSWORD(&apos;newpass&apos;);</span><br><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://us-forever.com/img/linuxMySQL-1-4.png"></p>
+<h1 id="第三种">第三种</h1>
+<h2 id="一查看是否安装了mysql数据库">一、查看是否安装了MySQL数据库</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep mysql</span><br></pre></td></tr></table></figure>
+<p><img src="http://us-forever.com/img/mysql1.png"> 卸载 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps mysql-libs-5.1.71-1.el6.x86_64</span><br></pre></td></tr></table></figure></p>
+<p>二、安装 安装一下包 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh MySQL-devel-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br><span class="line">rpm -ivh MySQL-client-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br><span class="line">rpm -ivh MySQL-server-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br><span class="line">rpm -ivh MySQL-embedded-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br><span class="line">rpm -ivh MySQL-shared-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br><span class="line">rpm -ivh MySQL-shared-compat-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>三、启动登录设置密码 使用以下命令开启服务</p>
+<pre><code>service mysql start</code></pre>
+<p>获取初始密码： <img src="http://us-forever.com/img/mysql2.png"> 使用root登录</p>
+<pre><code>mysql -uroot -p</code></pre>
+<p>然后试用一下命令设置密码</p>
+<pre><code>SET PASSWORD = PASSWORD(&#39;123456&#39;);</code></pre>
 
         </div>
         <footer class="article-footer">
@@ -334,20 +336,20 @@
         
 <nav id="article-nav">
     
-        <a href="/posts/575e441b/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/posts/2cd32dfc/" id="article-nav-newer" class="article-nav-link-wrap">
         <strong class="article-nav-caption">下一篇</strong>
         <p class="article-nav-title">
         
-            文本聚类系列教程：（一）jieba中文分词工具入门
+            Linux下MySQL安装
         
         </p>
         <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
     </a>
     
     
-        <a href="/posts/8e8e4531/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/posts/7b0ee3f1/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">chapter-01-AIR</p>
+        <p class="article-nav-title">chapter-05-AIR</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
