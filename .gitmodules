@@ -3,7 +3,7 @@
 	url = git@github.com:WEAFTeam/hexo-theme-hueman.git
 [submodule "source/_posts"]
 	path = source/_posts
-	url = git@github.com:WEAFTeam/weekly
+	url = git@github.com:WEAFTeam/weekly.git
 [submodule ".deploy_git"]
 	path = .deploy_git
 	url = git@github.com:WEAFTeam/weafteam.github.io.git
