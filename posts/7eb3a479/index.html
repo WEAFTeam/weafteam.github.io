@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>asyncio 不完全指北（四） | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="书接上文。 同步原语 虽然使用 asyncio 的程序通常都以单线程运行，但仍然可以作为并发程序。每个协程或任务可以根据来自 I / O 或其他外部事件的延迟和中断以不可预测的顺序执行。为了支持安全并发，和 threading和 multiprocessing 模块一样，asyncio 包含了一些相同的低级原语的实现。 锁 锁对共享资源的访问提供了保护。只有锁的持有者才能使用资源。第二次及">
+<meta property="og:type" content="article">
+<meta property="og:title" content="asyncio 不完全指北（四）">
+<meta property="og:url" content="http://weafteam.github.io/posts/7eb3a479/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="书接上文。 同步原语 虽然使用 asyncio 的程序通常都以单线程运行，但仍然可以作为并发程序。每个协程或任务可以根据来自 I / O 或其他外部事件的延迟和中断以不可预测的顺序执行。为了支持安全并发，和 threading和 multiprocessing 模块一样，asyncio 包含了一些相同的低级原语的实现。 锁 锁对共享资源的访问提供了保护。只有锁的持有者才能使用资源。第二次及">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg">
+<meta property="og:updated_time" content="2018-05-06T03:27:59.024Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="asyncio 不完全指北（四）">
+<meta name="twitter:description" content="书接上文。 同步原语 虽然使用 asyncio 的程序通常都以单线程运行，但仍然可以作为并发程序。每个协程或任务可以根据来自 I / O 或其他外部事件的延迟和中断以不可预测的顺序执行。为了支持安全并发，和 threading和 multiprocessing 模块一样，asyncio 包含了一些相同的低级原语的实现。 锁 锁对共享资源的访问提供了保护。只有锁的持有者才能使用资源。第二次及">
+<meta name="twitter:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    未分类
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-04-30/guide-to-asyncio-4" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        asyncio 不完全指北（四）
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/7eb3a479/" class="article-date">
+            <time datetime="2018-05-04T14:32:16.000Z" itemprop="datePublished">2018-05-04</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        MisLink
+    </div>
+
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>书接上文。</p>
+<h2 id="同步原语">同步原语</h2>
+<p>虽然使用 <code>asyncio</code> 的程序通常都以单线程运行，但仍然可以作为并发程序。每个协程或任务可以根据来自 I / O 或其他外部事件的延迟和中断以不可预测的顺序执行。为了支持安全并发，和 <code>threading</code>和 <code>multiprocessing</code> 模块一样，<code>asyncio</code> 包含了一些相同的低级原语的实现。</p>
+<h3 id="锁">锁</h3>
+<p>锁对共享资源的访问提供了保护。只有锁的持有者才能使用资源。第二次及以上获取锁的尝试将被阻止，因此每次只有一个持有者：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unlock</span><span class="params">(lock)</span>:</span></span><br><span class="line">    print(<span class="string">'callback releasing lock'</span>)</span><br><span class="line">    lock.release()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">coro1</span><span class="params">(lock)</span>:</span></span><br><span class="line">    print(<span class="string">'`coro1` waiting for the lock'</span>)</span><br><span class="line">    <span class="keyword">with</span> <span class="keyword">await</span> lock:</span><br><span class="line">        print(<span class="string">'`coro1` acquired lock'</span>)</span><br><span class="line">    print(<span class="string">'`coro1` released lock'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">coro2</span><span class="params">(lock)</span>:</span></span><br><span class="line">    print(<span class="string">'`coro2` waiting for the lock'</span>)</span><br><span class="line">    <span class="keyword">await</span> lock</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        print(<span class="string">'`coro2` acquired lock'</span>)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        print(<span class="string">'`coro2` released lock'</span>)</span><br><span class="line">        lock.release()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></span><br><span class="line">    <span class="comment"># 创建并持有一个锁</span></span><br><span class="line">    lock = asyncio.Lock()</span><br><span class="line">    print(<span class="string">'acquiring the lock before starting coroutines'</span>)</span><br><span class="line">    <span class="keyword">await</span> lock.acquire()</span><br><span class="line">    print(<span class="string">f'lock acquired: <span class="subst">&#123;lock.locked()&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 安排一个回调释放锁</span></span><br><span class="line">    loop.call_later(<span class="number">0.1</span>, functools.partial(unlock, lock))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 运行希望持有锁的协程</span></span><br><span class="line">    print(<span class="string">'waiting for coroutines'</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.wait([coro1(lock), coro2(lock)])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(main(event_loop))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>可以使用 <code>await</code> 持有一个锁，并用 <code>release()</code> 释放，就像<code>coro2()</code> 的做法一样；同时也可以像 <code>coro1()</code> 一样，用带有 <code>await</code> 的异步上下文处理器来持有并释放一个锁：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">acquiring the lock before starting coroutines</span><br><span class="line">lock acquired: True</span><br><span class="line">waiting for coroutines</span><br><span class="line">`coro1` waiting for the lock</span><br><span class="line">`coro2` waiting for the lock</span><br><span class="line">callback releasing lock</span><br><span class="line">`coro1` acquired lock</span><br><span class="line">`coro1` released lock</span><br><span class="line">`coro2` acquired lock</span><br><span class="line">`coro2` released lock</span><br></pre></td></tr></table></figure>
+<h3 id="event">Event</h3>
+<p><code>asyncio.Event</code> 与 <code>threading.Event</code> 类似，用于允许多个协程等待某个事件发生，而不需要监听一个特定值来实现类似通知的功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_event</span><span class="params">(event)</span>:</span></span><br><span class="line">    print(<span class="string">'setting event in callback'</span>)</span><br><span class="line">    event.set()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">coro1</span><span class="params">(event)</span>:</span></span><br><span class="line">    print(<span class="string">'coro1 waiting for event'</span>)</span><br><span class="line">    <span class="keyword">await</span> event.wait()</span><br><span class="line">    print(<span class="string">'coro1 triggered'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">coro2</span><span class="params">(event)</span>:</span></span><br><span class="line">    print(<span class="string">'coro2 waiting for event'</span>)</span><br><span class="line">    <span class="keyword">await</span> event.wait()</span><br><span class="line">    print(<span class="string">'coro2 triggered'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></span><br><span class="line">    event = asyncio.Event()</span><br><span class="line">    print(<span class="string">f'event start state: <span class="subst">&#123;event.is_set()&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line">    loop.call_later(<span class="number">0.1</span>, functools.partial(set_event, event))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> asyncio.gather(coro1(event), coro2(event))</span><br><span class="line">    print(<span class="string">f'event end state: <span class="subst">&#123;event.is_set()&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(main(event_loop))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>与锁一样，<code>coro1()</code> 和 <code>coro2()</code> 都会等待 <code>event</code> 被设置。不同之处在于，它们可以在 <code>event</code> 状态发生变化时立即启动，并且它们不需要获取 <code>event</code> 对象的唯一使用权：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">event start state: False</span><br><span class="line">coro2 waiting for event</span><br><span class="line">coro1 waiting for event</span><br><span class="line">setting event in callback</span><br><span class="line">coro2 triggered</span><br><span class="line">coro1 triggered</span><br><span class="line">event end state: True</span><br></pre></td></tr></table></figure>
+<h3 id="condition">Condition</h3>
+<p><code>Condition</code>的作用类似于 <code>Event</code>，不同之处在于，<code>Condition</code> 不会唤醒所有等待中的协程，唤醒的数量由 <code>notify() </code> 的参数控制：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">consumer</span><span class="params">(condition, n)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> <span class="keyword">await</span> condition:</span><br><span class="line">        print(<span class="string">f'consumer <span class="subst">&#123;n&#125;</span> is waiting'</span>)</span><br><span class="line">        <span class="keyword">await</span> condition.wait()</span><br><span class="line">        print(<span class="string">f'consumer <span class="subst">&#123;n&#125;</span> triggered'</span>)</span><br><span class="line">    print(<span class="string">f'ending consumer <span class="subst">&#123;n&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">manipulate_condition</span><span class="params">(condition)</span>:</span></span><br><span class="line">    print(<span class="string">'starting manipulate_condition'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">3</span>):</span><br><span class="line">        <span class="keyword">with</span> <span class="keyword">await</span> condition:</span><br><span class="line">            print(<span class="string">f'notifying <span class="subst">&#123;i&#125;</span> consumers'</span>)</span><br><span class="line">            condition.notify(n=i)</span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="keyword">await</span> condition:</span><br><span class="line">        print(<span class="string">'notifying remaining consumers'</span>)</span><br><span class="line">        condition.notify_all()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'ending manipulate_condition'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></span><br><span class="line">    condition = asyncio.Condition()</span><br><span class="line"></span><br><span class="line">    consumers = [consumer(condition, i) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line"></span><br><span class="line">    loop.create_task(manipulate_condition(condition))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> asyncio.gather(*consumers)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    result = event_loop.run_until_complete(main(event_loop))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>这个例子中启动了五个 <code>Condition</code> 的消费者。每个都使用 <code>wait()</code> 方法等待通知它们继续的消息。<code>manipulate_condition()</code> 通知一个消费者，然后通知两个消费者，最后通知所有剩余的消费者：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">starting manipulate_condition</span><br><span class="line">notifying 1 consumers</span><br><span class="line">consumer 2 is waiting</span><br><span class="line">consumer 3 is waiting</span><br><span class="line">consumer 0 is waiting</span><br><span class="line">consumer 4 is waiting</span><br><span class="line">consumer 1 is waiting</span><br><span class="line">notifying 2 consumers</span><br><span class="line">consumer 2 triggered</span><br><span class="line">ending consumer 2</span><br><span class="line">consumer 3 triggered</span><br><span class="line">ending consumer 3</span><br><span class="line">notifying remaining consumers</span><br><span class="line">ending manipulate_condition</span><br><span class="line">consumer 0 triggered</span><br><span class="line">ending consumer 0</span><br><span class="line">consumer 4 triggered</span><br><span class="line">ending consumer 4</span><br><span class="line">consumer 1 triggered</span><br><span class="line">ending consumer 1</span><br></pre></td></tr></table></figure>
+<h3 id="queue">Queue</h3>
+<p><code>asyncio.Queue</code> 为协程提供了一个先进先出的数据结构，类似于与多线程中的 <code>queue.Queue</code>，多进程中的 <code>multiprocessing.Queue</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">consumer</span><span class="params">(n, q)</span>:</span></span><br><span class="line">    print(<span class="string">f'consumer <span class="subst">&#123;n&#125;</span>: starting'</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        print(<span class="string">f'consumer <span class="subst">&#123;n&#125;</span>: waiting for item'</span>)</span><br><span class="line">        item = <span class="keyword">await</span> q.get()</span><br><span class="line">        print(<span class="string">f'consumer <span class="subst">&#123;n&#125;</span>: has item <span class="subst">&#123;item&#125;</span>'</span>)</span><br><span class="line">        <span class="comment"># None 表示终止信号</span></span><br><span class="line">        <span class="keyword">if</span> item <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            q.task_done()</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">await</span> asyncio.sleep(<span class="number">0.01</span> * item)</span><br><span class="line">            q.task_done()</span><br><span class="line">    print(<span class="string">f'consumer <span class="subst">&#123;n&#125;</span>: ending'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">producer</span><span class="params">(q, num_workers)</span>:</span></span><br><span class="line">    print(<span class="string">'producer: starting'</span>)</span><br><span class="line">    <span class="comment"># 向队列中添加一些数据</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num_workers * <span class="number">3</span>):</span><br><span class="line">        <span class="keyword">await</span> q.put(i)</span><br><span class="line">        print(<span class="string">f'producer: added task <span class="subst">&#123;i&#125;</span> to the queue'</span>)</span><br><span class="line">    <span class="comment"># 传入终止信号</span></span><br><span class="line">    print(<span class="string">'producer: adding stop signals to the queue'</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num_workers):</span><br><span class="line">        <span class="keyword">await</span> q.put(<span class="keyword">None</span>)</span><br><span class="line">    print(<span class="string">'producer: waiting for queue to empty'</span>)</span><br><span class="line">    <span class="keyword">await</span> q.join()</span><br><span class="line">    print(<span class="string">'producer: ending'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop, num_consumers)</span>:</span></span><br><span class="line">    <span class="comment"># 创建指定大小的队列</span></span><br><span class="line">    <span class="comment"># 超过队列大小时生产者会阻塞，直到有消费者取出数据</span></span><br><span class="line">    q = asyncio.Queue(maxsize=num_consumers)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 调度消费者</span></span><br><span class="line">    consumers = [loop.create_task(consumer(i, q)) <span class="keyword">for</span> i <span class="keyword">in</span> range(num_consumers)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 调度生产者</span></span><br><span class="line">    prod = loop.create_task(producer(q, num_consumers))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 等待所有任务完成</span></span><br><span class="line">    <span class="keyword">await</span> asyncio.gather(*consumers, prod)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(main(event_loop, <span class="number">2</span>))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>使用 <code>put()</code> 添加项或使用 <code>get()</code> 获取并删除项都是异步操作，因为队列大小可能是固定的（阻塞添加操作），或者队列可能是空的（阻塞获取项的操作）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">consumer 0: starting</span><br><span class="line">consumer 0: waiting for item</span><br><span class="line">consumer 1: starting</span><br><span class="line">consumer 1: waiting for item</span><br><span class="line">producer: starting</span><br><span class="line">producer: added task 0 to the queue</span><br><span class="line">producer: added task 1 to the queue</span><br><span class="line">consumer 0: has item 0</span><br><span class="line">consumer 1: has item 1</span><br><span class="line">producer: added task 2 to the queue</span><br><span class="line">producer: added task 3 to the queue</span><br><span class="line">consumer 0: waiting for item</span><br><span class="line">consumer 0: has item 2</span><br><span class="line">producer: added task 4 to the queue</span><br><span class="line">consumer 1: waiting for item</span><br><span class="line">consumer 1: has item 3</span><br><span class="line">producer: added task 5 to the queue</span><br><span class="line">producer: adding stop signals to the queue</span><br><span class="line">consumer 0: waiting for item</span><br><span class="line">consumer 0: has item 4</span><br><span class="line">consumer 1: waiting for item</span><br><span class="line">consumer 1: has item 5</span><br><span class="line">producer: waiting for queue to empty</span><br><span class="line">consumer 0: waiting for item</span><br><span class="line">consumer 0: has item None</span><br><span class="line">consumer 0: ending</span><br><span class="line">consumer 1: waiting for item</span><br><span class="line">consumer 1: has item None</span><br><span class="line">consumer 1: ending</span><br><span class="line">producer: ending</span><br></pre></td></tr></table></figure>
+<h2 id="用-protocol-抽象类实现异步-i-o">用 Protocol 抽象类实现异步 I / O</h2>
+<p>到目前为止，这些示例都避免了将并发和 I / O 操作混合在一起，一次只关注一个概念。但是，在 I / O 阻塞时切换上下文是 <code>asyncio</code> 的主要使用情形之一。在已经介绍的并发概念的基础上，本节将实现简单的 echo 服务器程序和客户端程序。客户端可以连接到服务器，发送一些数据，然后接收与响应相同的数据。每次启动 I / O 操作时，执行代码都会放弃对事件循环的控制，从而允许其他任务运行，直到 I / O 操作就绪。</p>
+<h3 id="echo-服务器">Echo 服务器</h3>
+<p>服务器首先导入所需的 <code>asyncio</code> 和 <code>logging</code> 模块，然后创建事件循环对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">SERVER_ADDRESS = (<span class="string">'localhost'</span>, <span class="number">10000</span>)</span><br><span class="line"></span><br><span class="line">logging.basicConfig(</span><br><span class="line">    level=logging.DEBUG,</span><br><span class="line">    format=<span class="string">'%(name)s: %(message)s'</span>,</span><br><span class="line">    stream=sys.stderr,</span><br><span class="line">)</span><br><span class="line">log = logging.getLogger(<span class="string">'main'</span>)</span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br></pre></td></tr></table></figure>
+<p>然后定义了一个 <code>asyncio.Protocol</code> 的子类，用来处理与客户端的通信。<code>Protocol</code> 对象的方法是基于与服务器 socket 关联的事件调用的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EchoServer</span><span class="params">(asyncio.Protocol)</span>:</span></span><br></pre></td></tr></table></figure>
+<p>每个新的客户端连接都会触发对 <code>connection_made() </code> 的调用。<code>transport</code> 参数是<code>asyncio.Transport</code> 的实例，它提供了使用 socket 进行异步 I / O 的抽象。不同类型的通信提供不同的 <code>tansport</code> 实现，所有这些实现都具有相同的 API。例如，有单独的 <code>transport</code> 类用于与 socket 通信、与子进程通过管道通信。传入客户端的地址可以通过 <code>transport</code> 的 <code>get_extra_info()</code> 获取，这是一种特定于实现的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">connection_made</span><span class="params">(self, transport)</span>:</span></span><br><span class="line">    self.transport = transport</span><br><span class="line">    self.address = transport.get_extra_info(<span class="string">'peername'</span>)</span><br><span class="line">    self.log = logging.getLogger(<span class="string">'EchoServer_&#123;&#125;_&#123;&#125;'</span>.format(*self.address))</span><br><span class="line">    self.log.debug(<span class="string">'connection accepted'</span>)</span><br></pre></td></tr></table></figure>
+<p>建立连接后，当数据从客户端发送到服务器时，将调用协议的  <code>data_received()</code> 方法将数据传入以进行处理。数据以字节串的形式传递，由应用程序以适当的方式对其进行解码。在这里记录结果，然后通过调用 <code>transport.write()</code> 立即将响应发送回客户端：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_received</span><span class="params">(self, data)</span>:</span></span><br><span class="line">    self.log.debug(<span class="string">'received &#123;!r&#125;'</span>.format(data))</span><br><span class="line">    self.transport.write(data)</span><br><span class="line">    self.log.debug(<span class="string">'sent &#123;!r&#125;'</span>.format(data))</span><br></pre></td></tr></table></figure>
+<p>某些 <code>transport</code> 支持特殊的文件结束标识符（EOF）。遇到 EOF 时，将调用 <code>eof_received()</code> 方法。在这个实现中，EOF 被发送回客户端来表示它已被接收。由于并非所有 <code>transport</code> 都支持显式 EOF，因此 <code>protocol</code> 首先询问 <code>transport</code> 发送 EOF 是否安全：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eof_received</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.log.debug(<span class="string">'received EOF'</span>)</span><br><span class="line">    <span class="keyword">if</span> self.transport.can_write_eof():</span><br><span class="line">        self.transport.write_eof()</span><br></pre></td></tr></table></figure>
+<p>当连接关闭时，无论是正常关闭还是错误关闭，都会调用 <code>protocol</code> 的  <code>connection_lost()</code>  方法。如果发生错误，参数会包含适当的异常对象，否则为 <code>None</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">connection_lost</span><span class="params">(self, error)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> error:</span><br><span class="line">        self.log.error(<span class="string">f'ERROR: <span class="subst">&#123;error&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        self.log.debug(<span class="string">'closing'</span>)</span><br><span class="line">    super().connection_lost(error)</span><br></pre></td></tr></table></figure>
+<p>启动服务器有两个步骤。首先，应用程序告诉事件循环要使用的 <code>protocol</code> 类以及要侦听的主机名和 socket，用来创建新的服务器对象。<code>create_server()</code> 方法是协程，因此必须由事件循环处理结果，才能真正的启动服务器。然后，协程完成后产生了一个绑定到事件循环的 <code>asyncio.Server</code> 实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">factory = event_loop.create_server(EchoServer, *SERVER_ADDRESS)</span><br><span class="line">server = event_loop.run_until_complete(factory)</span><br><span class="line">log.debug(<span class="string">'starting up on &#123;&#125; port &#123;&#125;'</span>.format(*SERVER_ADDRESS))</span><br></pre></td></tr></table></figure>
+<p>然后，需要运行事件循环以处理事件和客户端请求。对于长期运行的服务，<code>run_forever()</code> 方法是最简单的方法。当事件循环停止时，无论是通过应用程序代码还是通过发信号通知进程，服务器都可以关闭，以便正确清理 socket，然后可以关闭事件循环，以便在程序退出之前完成对任何其他事务的处理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_forever()</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    log.debug(<span class="string">'closing server'</span>)</span><br><span class="line">    server.close()</span><br><span class="line">    event_loop.run_until_complete(server.wait_closed())</span><br><span class="line">    log.debug(<span class="string">'closing event loop'</span>)</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<h3 id="echo-客户端">Echo 客户端</h3>
+<p>使用 <code>protocol</code> 类构造客户端非常类似于构造服务器。首先导入所需的 <code>asyncio</code> 和 <code>logging</code> 模块，然后创建事件循环对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">MESSAGES = [</span><br><span class="line">    <span class="string">b'This is the message. '</span>,</span><br><span class="line">    <span class="string">b'It will be sent '</span>,</span><br><span class="line">    <span class="string">b'in parts.'</span>,</span><br><span class="line">]</span><br><span class="line">SERVER_ADDRESS = (<span class="string">'localhost'</span>, <span class="number">10000</span>)</span><br><span class="line"></span><br><span class="line">logging.basicConfig(</span><br><span class="line">    level=logging.DEBUG,</span><br><span class="line">    format=<span class="string">'%(name)s: %(message)s'</span>,</span><br><span class="line">    stream=sys.stderr,</span><br><span class="line">)</span><br><span class="line">log = logging.getLogger(<span class="string">'main'</span>)</span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br></pre></td></tr></table></figure>
+<p>客户端 <code>protocol</code> 类定义了与服务器相同的方法，但实现方式不同。类构造函数接受两个参数，一个是要发送的消息列表，另一个是 <code>future</code> 的实例，用于通过接收来自服务器的响应来表明客户端已经完成了一个工作周期：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EchoClient</span><span class="params">(asyncio.Protocol)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, messages, future)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.messages = messages</span><br><span class="line">        self.log = logging.getLogger(<span class="string">'EchoClient'</span>)</span><br><span class="line">        self.f = future</span><br></pre></td></tr></table></figure>
+<p>当客户端成功连接到服务器时，它将立即开始通信。消息序列一次发送一条，尽管底层网络代码可以将多个消息组合成一个传输。当所有消息都用尽时，将发送 EOF。</p>
+<p>虽然看起来数据都是立即发送的，但实际上 <code>transport</code> 对象缓冲传出的数据，并在当 socket 的缓冲区准备好接收数据时设置回调来进行实际的传输。所有这些都是透明处理的，因此可以编写应用程序代码，就好像 I / O 操作正在立即发生一样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">connection_made</span><span class="params">(self, transport)</span>:</span></span><br><span class="line">    self.transport = transport</span><br><span class="line">    self.address = transport.get_extra_info(<span class="string">'peername'</span>)</span><br><span class="line">    self.log.debug(<span class="string">'connecting to &#123;&#125; port &#123;&#125;'</span>.format(*self.address))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 这里可以是 transport.writelines()</span></span><br><span class="line">    <span class="comment"># 但这会使显示要发送的消息的每个部分变得更加困难</span></span><br><span class="line">    <span class="keyword">for</span> msg <span class="keyword">in</span> self.messages:</span><br><span class="line">        transport.write(msg)</span><br><span class="line">        self.log.debug(<span class="string">f'sending <span class="subst">&#123;msg!r&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">if</span> transport.can_write_eof():</span><br><span class="line">        transport.write_eof()</span><br></pre></td></tr></table></figure>
+<p>收到来自服务器的响应时，将记录该响应：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_received</span><span class="params">(self, data)</span>:</span></span><br><span class="line">    self.log.debug(<span class="string">f'received <span class="subst">&#123;data!r&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>当从服务器端接收到 EOF 或者连接被关闭时，本地 <code>transport</code> 对象被关闭，并通过设置结果将 <code>future</code> 对象标记为完成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eof_received</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.log.debug(<span class="string">'received EOF'</span>)</span><br><span class="line">    self.transport.close()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self.f.done():</span><br><span class="line">        self.f.set_result(<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">connection_lost</span><span class="params">(self, exc)</span>:</span></span><br><span class="line">    self.log.debug(<span class="string">'server closed connection'</span>)</span><br><span class="line">    self.transport.close()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self.f.done():</span><br><span class="line">        self.f.set_result(<span class="keyword">True</span>)</span><br><span class="line">    super().connection_lost(exc)</span><br></pre></td></tr></table></figure>
+<p>通常，<code>protocol</code> 类被传递到事件循环以创建连接。在这种情况下，由于事件循环没有向 <code>protocol</code> 构造函数传递额外参数的工具，因此需要 <code>functools.partial()</code> 来包装客户端类，并传递要发送的消息列表和 <code>future</code> 的实例。然后，在调用 <code>create_connection()</code> 建立客户端连接时，将使用该新的可调用对象代替 <code>protocol</code> 类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">client_completed = asyncio.Future()</span><br><span class="line"></span><br><span class="line">client_factory = functools.partial(</span><br><span class="line">    EchoClient,</span><br><span class="line">    messages=MESSAGES,</span><br><span class="line">    future=client_completed,</span><br><span class="line">)</span><br><span class="line">factory_coroutine = event_loop.create_connection(</span><br><span class="line">    client_factory,</span><br><span class="line">    *SERVER_ADDRESS,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>为了触发客户端运行，事件循环将调用一次创建客户端的协程，然后再调用一次指定给客户端的 <code>future</code> 实例，以便在完成后进行通信。使用这样的两个调用避免了客户端程序中的无限循环，客户端程序可能希望在完成与服务器的通信后退出。如果仅使用第一个调用来等待协程创建客户端，那它可能无法处理所有响应数据并正确清理与服务器的连接：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">log.debug(<span class="string">'waiting for client to complete'</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(factory_coroutine)</span><br><span class="line">    event_loop.run_until_complete(client_completed)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    log.debug(<span class="string">'closing event loop'</span>)</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<h3 id="输出">输出</h3>
+<p>在一个窗口中运行服务器而在另一个窗口中运行客户端。</p>
+<p>客户端将产生以下输出：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">asyncio: Using selector: KqueueSelector</span><br><span class="line">main: waiting for client to complete</span><br><span class="line">EchoClient: connecting to ::1 port 10000</span><br><span class="line">EchoClient: sending b'This is the message. '</span><br><span class="line">EchoClient: sending b'It will be sent '</span><br><span class="line">EchoClient: sending b'in parts.'</span><br><span class="line">EchoClient: received b'This is the message. It will be sent in parts.'</span><br><span class="line">EchoClient: received EOF</span><br><span class="line">EchoClient: server closed connection</span><br><span class="line">main: closing event loop</span><br></pre></td></tr></table></figure>
+<p>虽然客户端总是单独发送消息，但客户端第一次运行时，服务器会收到一条大消息，并将该消息返回给客户端。根据网络的繁忙程度以及是否在准备所有数据之前刷新网络缓冲区，这些结果在后续运行中会有所不同：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">asyncio: Using selector: KqueueSelector</span><br><span class="line">main: starting up on localhost port 10000</span><br><span class="line">EchoServer_::1_55307: connection accepted</span><br><span class="line">EchoServer_::1_55307: received b'This is the message. It will be sent in part</span><br><span class="line">s.'</span><br><span class="line">EchoServer_::1_55307: sent b'This is the message. It will be sent in parts.'</span><br><span class="line">EchoServer_::1_55307: received EOF</span><br><span class="line">EchoServer_::1_55307: closing</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">EchoServer_::1_55309: connection accepted</span><br><span class="line">EchoServer_::1_55309: received b'This is the message. '</span><br><span class="line">EchoServer_::1_55309: sent b'This is the message. '</span><br><span class="line">EchoServer_::1_55309: received b'It will be sent in parts.'</span><br><span class="line">EchoServer_::1_55309: sent b'It will be sent in parts.'</span><br><span class="line">EchoServer_::1_55309: received EOF</span><br><span class="line">EchoServer_::1_55309: closing</span><br></pre></td></tr></table></figure>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/1ceb091/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            chapter-07-AIR
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/c99ebd1c/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">asyncio 不完全指北（三）</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/839e2740/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-08-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/839e2740/" class="title">chapter-08-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:30:48.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/1ceb091/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-07-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/1ceb091/" class="title">chapter-07-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:29:55.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7eb3a479/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（四）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/7eb3a479/" class="title">asyncio 不完全指北（四）</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T14:32:16.000Z" itemprop="datePublished">2018-05-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c99ebd1c/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（三）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/c99ebd1c/" class="title">asyncio 不完全指北（三）</a></p>
+                            <p class="item-date"><time datetime="2018-05-01T03:58:22.000Z" itemprop="datePublished">2018-05-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/84801e4e/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（二）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/84801e4e/" class="title">asyncio 不完全指北（二）</a></p>
+                            <p class="item-date"><time datetime="2018-04-24T15:43:20.000Z" itemprop="datePublished">2018-04-24</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

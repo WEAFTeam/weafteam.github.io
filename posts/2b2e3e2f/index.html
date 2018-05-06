@@ -18,7 +18,7 @@
 <meta property="og:description" content="Redis在SpringBoot 2.0中的整合">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/redis-logo.png">
-<meta property="og:updated_time" content="2018-04-23T10:17:53.269Z">
+<meta property="og:updated_time" content="2018-05-06T03:27:58.954Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis在SpringBoot 2.0中的整合">
 <meta name="twitter:description" content="Redis在SpringBoot 2.0中的整合">
@@ -182,7 +182,7 @@
 <p>客户端运行脚本 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/redis-cli</span><br></pre></td></tr></table></figure></p>
 <h3 id="springboot2.0相关配置">3. SpringBoot2.0相关配置</h3>
 <p>pom文件加入以下依赖 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
-<p>我这里SpringBoot的配置文件使用的是YAML。 在相应环境中配置Redis ##### application-local.yml <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">    datasource:</span><br><span class="line">        name: test</span><br><span class="line">        driverClassName: com.mysql.jdbc.Driver</span><br><span class="line">        url: jdbc:mysql://127.0.0.1:3306/local?useUnicode=true&amp;characterEncoding=UTF-8</span><br><span class="line">        username: root</span><br><span class="line">        password: root</span><br><span class="line">    redis:</span><br><span class="line">          database: 0</span><br><span class="line">          host: localhost</span><br><span class="line">          port: 6379</span><br><span class="line">          jedis:</span><br><span class="line">            pool:</span><br><span class="line">              min-idle: 0</span><br><span class="line">              max-idle: 8</span><br><span class="line">              max-active: 8</span><br><span class="line">              max-wait: -1ms</span><br></pre></td></tr></table></figure></p>
+<p>我这里SpringBoot的配置文件使用的是YAML。 在相应环境中配置Redis ##### application-local.yml <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">    datasource:</span></span><br><span class="line"><span class="attr">        name:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">        driverClassName:</span> <span class="string">com.mysql.jdbc.Driver</span></span><br><span class="line"><span class="attr">        url:</span> <span class="attr">jdbc:mysql://127.0.0.1:3306/local?useUnicode=true&amp;characterEncoding=UTF-8</span></span><br><span class="line"><span class="attr">        username:</span> <span class="string">root</span></span><br><span class="line"><span class="attr">        password:</span> <span class="string">root</span></span><br><span class="line"><span class="attr">    redis:</span></span><br><span class="line"><span class="attr">          database:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">          host:</span> <span class="string">localhost</span></span><br><span class="line"><span class="attr">          port:</span> <span class="number">6379</span></span><br><span class="line"><span class="attr">          jedis:</span></span><br><span class="line"><span class="attr">            pool:</span></span><br><span class="line"><span class="attr">              min-idle:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">              max-idle:</span> <span class="number">8</span></span><br><span class="line"><span class="attr">              max-active:</span> <span class="number">8</span></span><br><span class="line"><span class="attr">              max-wait:</span> <span class="bullet">-1</span><span class="string">ms</span></span><br></pre></td></tr></table></figure></p>
 <h3 id="代码级别配置">4.代码级别配置</h3>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.xxx.controller.entry.entity.AccessToken;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cache.annotation.CachingConfigurerSupport;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cache.annotation.EnableCaching;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.cache.RedisCacheManager;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.RedisConnectionFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.jedis.JedisConnectionFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.RedisTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.convert.KeyspaceConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.repository.configuration.EnableRedisRepositories;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.serializer.StringRedisSerializer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Collections;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ：yaxuSong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 18:35 2018/4/17</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> by:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableCaching</span></span><br><span class="line"><span class="comment">//增加Respository支持，并使其支持@TimeToLive</span></span><br><span class="line"><span class="meta">@EnableRedisRepositories</span>(keyspaceConfiguration = RedisCacheConfig.MyKeyspaceConfiguration.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisCacheConfig</span> <span class="keyword">extends</span> <span class="title">CachingConfigurerSupport</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedisCacheManager <span class="title">cacheManager</span><span class="params">(RedisConnectionFactory connectionFactory)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> RedisCacheManager.builder(connectionFactory).build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//    @Bean</span></span><br><span class="line"><span class="comment">//    public RedisConnectionFactory connectionFactory() &#123;</span></span><br><span class="line"><span class="comment">//        return new JedisConnectionFactory();</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RedisTemplate&lt;?, ?&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) &#123;</span><br><span class="line">        RedisTemplate&lt;<span class="keyword">byte</span>[], <span class="keyword">byte</span>[]&gt; template = <span class="keyword">new</span> RedisTemplate&lt;<span class="keyword">byte</span>[], <span class="keyword">byte</span>[]&gt;();</span><br><span class="line">        template.setConnectionFactory(redisConnectionFactory);</span><br><span class="line">        <span class="keyword">return</span> template;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//    @Bean</span></span><br><span class="line"><span class="comment">//    public RedisTemplate&lt;Object, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory)&#123;</span></span><br><span class="line"><span class="comment">//        RedisTemplate&lt;Object, Object&gt; redisTemplate = new RedisTemplate&lt;Object, Object&gt;();</span></span><br><span class="line"><span class="comment">//        redisTemplate.setConnectionFactory(redisConnectionFactory);</span></span><br><span class="line"><span class="comment">//        redisTemplate.setKeySerializer(new StringRedisSerializer());//key序列化</span></span><br><span class="line"><span class="comment">//        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(Object.class));  //value序列化</span></span><br><span class="line"><span class="comment">//        redisTemplate.afterPropertiesSet();</span></span><br><span class="line"><span class="comment">//        return redisTemplate;</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyKeyspaceConfiguration</span> <span class="keyword">extends</span> <span class="title">KeyspaceConfiguration</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> Iterable&lt;KeyspaceSettings&gt; <span class="title">initialConfiguration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> Collections.singleton(<span class="keyword">new</span> KeyspaceSettings(AccessToken.class, <span class="string">"accessToken"</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>缓存对象AccessToken <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.annotation.Id;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.RedisHash;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.TimeToLive;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ：yaxuSong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 14:26 2018/4/18</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> by:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RedisHash</span>(<span class="string">"accessToken"</span>)</span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccessToken</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    String id;</span><br><span class="line">    String accessToken;</span><br><span class="line">    <span class="meta">@TimeToLive</span></span><br><span class="line">    Long expire;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -330,90 +330,10 @@
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/posts/3cae9921/" class="thumbnail">
+                            <a href="/posts/839e2740/" class="thumbnail">
     
     
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-06-AIR" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
-                            <p class="item-title"><a href="/posts/3cae9921/" class="title">chapter-06-AIR</a></p>
-                            <p class="item-date"><time datetime="2018-04-22T06:31:24.000Z" itemprop="datePublished">2018-04-22</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/899ccb0/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://i.loli.net/2018/04/22/5adc349eaedc8.png)" alt="唯密文解密（针对Vigenere加密）" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/密码学/">密码学</a></p>
-                            <p class="item-title"><a href="/posts/899ccb0/" class="title">唯密文解密（针对Vigenere加密）</a></p>
-                            <p class="item-date"><time datetime="2018-04-21T01:38:12.000Z" itemprop="datePublished">2018-04-21</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/2b2e3e2f/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/redis-logo.png)" alt="Redis在SpringBoot 2.0中的整合" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
-                            <p class="item-title"><a href="/posts/2b2e3e2f/" class="title">Redis在SpringBoot 2.0中的整合</a></p>
-                            <p class="item-date"><time datetime="2018-04-18T09:57:12.000Z" itemprop="datePublished">2018-04-18</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/2cd32dfc/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://labs.mysql.com/common/logos/mysql-logo.svg?v2)" alt="Linux下MySQL安装" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
-                            <p class="item-title"><a href="/posts/2cd32dfc/" class="title">Linux下MySQL安装</a></p>
-                            <p class="item-date"><time datetime="2018-04-17T04:07:12.000Z" itemprop="datePublished">2018-04-17</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/7b0ee3f1/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-05-AIR" class="thumbnail-image"></span>
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-08-AIR" class="thumbnail-image"></span>
     
     
 </a>
@@ -422,8 +342,88 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
-                            <p class="item-title"><a href="/posts/7b0ee3f1/" class="title">chapter-05-AIR</a></p>
-                            <p class="item-date"><time datetime="2018-04-15T14:14:23.000Z" itemprop="datePublished">2018-04-15</time></p>
+                            <p class="item-title"><a href="/posts/839e2740/" class="title">chapter-08-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:30:48.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/1ceb091/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-07-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/1ceb091/" class="title">chapter-07-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:29:55.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7eb3a479/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（四）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/7eb3a479/" class="title">asyncio 不完全指北（四）</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T14:32:16.000Z" itemprop="datePublished">2018-05-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c99ebd1c/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（三）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/c99ebd1c/" class="title">asyncio 不完全指北（三）</a></p>
+                            <p class="item-date"><time datetime="2018-05-01T03:58:22.000Z" itemprop="datePublished">2018-05-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/84801e4e/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（二）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/84801e4e/" class="title">asyncio 不完全指北（二）</a></p>
+                            <p class="item-date"><time datetime="2018-04-24T15:43:20.000Z" itemprop="datePublished">2018-04-24</time></p>
                         </div>
                     </li>
                 
@@ -436,7 +436,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -446,7 +446,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
         </div>
     </div>
 
@@ -456,7 +456,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
         </div>
     </div>
 

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>asyncio 不完全指北（三） | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="书接上文。 并行执行任务 任务是与事件循环交互的主要方式之一。任务包装协程并跟踪它们完成的时间。任务是 future 的子类，因此其它协程可以等待任务，并且每个任务都有一个结果，可以在任务完成后获取。 启动任务 使用 create_task() 创建任务实例。只要事件循环正在运行且协程不返回，生成的任务将作为事件循环管理的并发操作的一部分运行： 123456789101112131415">
+<meta property="og:type" content="article">
+<meta property="og:title" content="asyncio 不完全指北（三）">
+<meta property="og:url" content="http://weafteam.github.io/posts/c99ebd1c/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="书接上文。 并行执行任务 任务是与事件循环交互的主要方式之一。任务包装协程并跟踪它们完成的时间。任务是 future 的子类，因此其它协程可以等待任务，并且每个任务都有一个结果，可以在任务完成后获取。 启动任务 使用 create_task() 创建任务实例。只要事件循环正在运行且协程不返回，生成的任务将作为事件循环管理的并发操作的一部分运行： 123456789101112131415">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg">
+<meta property="og:updated_time" content="2018-05-06T03:27:58.998Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="asyncio 不完全指北（三）">
+<meta name="twitter:description" content="书接上文。 并行执行任务 任务是与事件循环交互的主要方式之一。任务包装协程并跟踪它们完成的时间。任务是 future 的子类，因此其它协程可以等待任务，并且每个任务都有一个结果，可以在任务完成后获取。 启动任务 使用 create_task() 创建任务实例。只要事件循环正在运行且协程不返回，生成的任务将作为事件循环管理的并发操作的一部分运行： 123456789101112131415">
+<meta name="twitter:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    未分类
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-04-23/guide-to-asyncio-3" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        asyncio 不完全指北（三）
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/c99ebd1c/" class="article-date">
+            <time datetime="2018-05-01T03:58:22.000Z" itemprop="datePublished">2018-05-01</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        MisLink
+    </div>
+
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>书接上文。</p>
+<h2 id="并行执行任务">并行执行任务</h2>
+<p>任务是与事件循环交互的主要方式之一。任务包装协程并跟踪它们完成的时间。任务是 <code>future</code> 的子类，因此其它协程可以等待任务，并且每个任务都有一个结果，可以在任务完成后获取。</p>
+<h3 id="启动任务">启动任务</h3>
+<p>使用 <code>create_task()</code> 创建任务实例。只要事件循环正在运行且协程不返回，生成的任务将作为事件循环管理的并发操作的一部分运行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">task_func</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'in task_func'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'the result'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></span><br><span class="line">    print(<span class="string">'creating task'</span>)</span><br><span class="line">    task = loop.create_task(task_func())</span><br><span class="line">    print(<span class="string">f'waiting for <span class="subst">&#123;task!r&#125;</span>'</span>)</span><br><span class="line">    return_value = <span class="keyword">await</span> task</span><br><span class="line">    print(<span class="string">f'task completed <span class="subst">&#123;task!r&#125;</span>'</span>)</span><br><span class="line">    print(<span class="string">f'return value: <span class="subst">&#123;return_value!r&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(main(event_loop))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p><code>main()</code> 函数在退出前等待任务返回结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">creating task</span><br><span class="line">waiting for &lt;Task pending coro=&lt;task_func() running at *.py:4&gt;&gt;</span><br><span class="line">in task_func</span><br><span class="line">task completed &lt;Task finished coro=&lt;task_func() done, defined at *.py:4&gt; result='the result'&gt;</span><br><span class="line">return value: 'the result'</span><br></pre></td></tr></table></figure>
+<h3 id="取消任务">取消任务</h3>
+<p>通过保留 <code>create_task()</code> 返回的任务对象，可以在任务完成之前取消其操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">task_func</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'in task_func'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'the result'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></span><br><span class="line">    print(<span class="string">'creating task'</span>)</span><br><span class="line">    task = loop.create_task(task_func())</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'canceling task'</span>)</span><br><span class="line">    task.cancel()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">f'canceled task <span class="subst">&#123;task!r&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">await</span> task</span><br><span class="line">    <span class="keyword">except</span> asyncio.CancelledError:</span><br><span class="line">        print(<span class="string">'caught error from canceled task'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">f'task result: <span class="subst">&#123;task.result()!r&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(main(event_loop))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>在启动事件循环之前取消任务时，<code>await task</code> 会抛出 <code>CancelledError</code> 异常：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">creating task</span><br><span class="line">canceling task</span><br><span class="line">canceled task &lt;Task cancelling coro=&lt;task_func() running at *.py:4&gt;&gt;</span><br><span class="line">caught error from canceled task</span><br></pre></td></tr></table></figure>
+<p>如果某个任务在等待另一个并发操作时被取消，则会通过在其等待的位置抛出 <code>CancelledError</code> 异常来通知该任务：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">task_func</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'in task_func, sleeping'</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">except</span> asyncio.CancelledError:</span><br><span class="line">        print(<span class="string">'task_func was canceled'</span>)</span><br><span class="line">        <span class="keyword">raise</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'the result'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">task_canceller</span><span class="params">(t)</span>:</span></span><br><span class="line">    print(<span class="string">'in task_canceller'</span>)</span><br><span class="line">    t.cancel()</span><br><span class="line">    print(<span class="string">'canceled the task'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></span><br><span class="line">    print(<span class="string">'creating task'</span>)</span><br><span class="line">    task = loop.create_task(task_func())</span><br><span class="line">    loop.call_soon(task_canceller, task)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">await</span> task</span><br><span class="line">    <span class="keyword">except</span> asyncio.CancelledError:</span><br><span class="line">        print(<span class="string">'main() also sees task as canceled'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(main(event_loop))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>捕获该异常可以清理已完成工作：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">creating task</span><br><span class="line">in task_func, sleeping</span><br><span class="line">in task_canceller</span><br><span class="line">canceled the task</span><br><span class="line">task_func was canceled</span><br><span class="line">main() also sees task as canceled</span><br></pre></td></tr></table></figure>
+<h3 id="从协程创建任务">从协程创建任务</h3>
+<p><code>ensure_future()</code> 返回一个与协程的执行相关联的任务。然后，可以将该任务实例传递给其他代码，这些代码可以在不知道原始的协程是如何构造或调用的情况下等待它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">wrapped</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'wrapped'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'result'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(task)</span>:</span></span><br><span class="line">    print(<span class="string">'inner: starting'</span>)</span><br><span class="line">    print(<span class="string">f'inner: waiting for <span class="subst">&#123;task!r&#125;</span>'</span>)</span><br><span class="line">    result = <span class="keyword">await</span> task</span><br><span class="line">    print(<span class="string">f'inner: task returned <span class="subst">&#123;result!r&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">starter</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'starter: creating task'</span>)</span><br><span class="line">    task = asyncio.ensure_future(wrapped())</span><br><span class="line">    print(<span class="string">'starter: waiting for inner'</span>)</span><br><span class="line">    <span class="keyword">await</span> inner(task)</span><br><span class="line">    print(<span class="string">'starter: inner returned'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(<span class="string">'entering event loop'</span>)</span><br><span class="line">    result = event_loop.run_until_complete(starter())</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>可以注意到传入 <code>ensure_future()</code> 的协程不会马上启动，而是直到某个地方用 <code>await</code> 调用了用它创建的任务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">entering event loop</span><br><span class="line">starter: creating task</span><br><span class="line">starter: waiting for inner</span><br><span class="line">inner: starting</span><br><span class="line">inner: waiting for &lt;Task pending coro=&lt;wrapped() running at *.py:4&gt;&gt;</span><br><span class="line">wrapped</span><br><span class="line">inner: task returned 'result'</span><br><span class="line">starter: inner returned</span><br></pre></td></tr></table></figure>
+<h2 id="用控制结构组合协程">用控制结构组合协程</h2>
+<p>一系列线性执行的协程可以很方便的使用关键字 <code>await</code> 管理。对于复杂的控制结构，例如一个协程等待其他几个协程并行完成，也可以用 <code>asyncio</code> 中的工具实现。</p>
+<h3 id="等待多个协程">等待多个协程</h3>
+<p>将一个操作分成许多部分并分别执行它们是很常见的场景。例如，下载多个远程资源，或查询远程 API。在执行顺序无关紧要，并且可能存在任意数量的操作的情况下，<code>wait()</code> 可以用于暂停一个协程，直到其他后台操作完成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">phase</span><span class="params">(i)</span>:</span></span><br><span class="line">    print(<span class="string">f'in phase <span class="subst">&#123;i&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">0.1</span> * i)</span><br><span class="line">    print(<span class="string">f'done with phase <span class="subst">&#123;i&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f'phase <span class="subst">&#123;i&#125;</span> result'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(num_phases)</span>:</span></span><br><span class="line">    print(<span class="string">'starting main'</span>)</span><br><span class="line">    phases = [phase(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(num_phases)]</span><br><span class="line">    print(<span class="string">'waiting for phases to complete'</span>)</span><br><span class="line">    completed, pending = <span class="keyword">await</span> asyncio.wait(phases)</span><br><span class="line">    results = [t.result() <span class="keyword">for</span> t <span class="keyword">in</span> completed]</span><br><span class="line">    print(<span class="string">f'results: <span class="subst">&#123;results!r&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(main(<span class="number">3</span>))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>在内部，<code>wait()</code> 使用一个集合来保存它创建的任务实例，所以任务的执行顺序是无序的。<code>wait()</code> 的返回值是一个包含两个集合的元组，第一个保存了状态为 <code>done</code> 的任务，第二个保存了状态为 <code>pending</code> 的任务。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">starting main</span><br><span class="line">waiting for phases to complete</span><br><span class="line">in phase 1</span><br><span class="line">in phase 0</span><br><span class="line">in phase 2</span><br><span class="line">done with phase 0</span><br><span class="line">done with phase 1</span><br><span class="line">done with phase 2</span><br><span class="line">results: ['phase 1 result', 'phase 0 result', 'phase 2 result']</span><br></pre></td></tr></table></figure>
+<p>调用 <code>wait()</code> 时如果指定了 <code>timeout</code> 参数，才会出现状态为 <code>pending</code> 的任务：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">phase</span><span class="params">(i)</span>:</span></span><br><span class="line">    print(<span class="string">f'in phase <span class="subst">&#123;i&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">0.1</span> * i)</span><br><span class="line">    <span class="keyword">except</span> asyncio.CancelledError:</span><br><span class="line">        print(<span class="string">f'phase <span class="subst">&#123;i&#125;</span> canceled'</span>)</span><br><span class="line">        <span class="keyword">raise</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">f'done with phase <span class="subst">&#123;i&#125;</span>'</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f'phase <span class="subst">&#123;i&#125;</span> result'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(num_phases)</span>:</span></span><br><span class="line">    print(<span class="string">'starting main'</span>)</span><br><span class="line">    phases = [phase(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(num_phases)]</span><br><span class="line">    print(<span class="string">'waiting 0.1 for phases to complete'</span>)</span><br><span class="line">    completed, pending = <span class="keyword">await</span> asyncio.wait(phases, timeout=<span class="number">0.1</span>)</span><br><span class="line">    print(<span class="string">f'<span class="subst">&#123;len(completed)&#125;</span> completed and <span class="subst">&#123;len(pending)&#125;</span> pending'</span>)</span><br><span class="line">    <span class="comment"># 取消状态为 pending 的任务</span></span><br><span class="line">    <span class="keyword">if</span> pending:</span><br><span class="line">        print(<span class="string">'canceling tasks'</span>)</span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> pending:</span><br><span class="line">            t.cancel()</span><br><span class="line">    print(<span class="string">'exiting main'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(main(<span class="number">3</span>))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>这些状态为 <code>pending</code> 的任务应被取消或者继续等待它们完成。事件循环继续运行时这些任务将继续执行，如果<code>wait()</code> 函数的完成被认为所有操作都已经终止了，那这样的结果是不正确的；如果在事件循环结束时仍未完成这些任务，则会生成警告。所以有必要在 <code>wait()</code> 函数结束后取消所有状态为 <code>pending</code> 的任务。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">starting main</span><br><span class="line">waiting 0.1 for phases to complete</span><br><span class="line">in phase 0</span><br><span class="line">in phase 1</span><br><span class="line">in phase 2</span><br><span class="line">done with phase 0</span><br><span class="line">1 completed and 2 pending</span><br><span class="line">canceling tasks</span><br><span class="line">exiting main</span><br><span class="line">phase 1 canceled</span><br><span class="line">phase 2 canceled</span><br></pre></td></tr></table></figure>
+<h3 id="收集协程的结果">收集协程的结果</h3>
+<p>如果要执行的多个协程已经被定义好，并且只关心它们的结果，那么 <code>gather()</code> 是一种比较好的收集结果的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">phase1</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'in phase1'</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">2</span>)</span><br><span class="line">    print(<span class="string">'done with phase1'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'phase1 result'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">phase2</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'in phase2'</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">'done with phase2'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'phase2 result'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'starting main'</span>)</span><br><span class="line">    print(<span class="string">'waiting for phases to complete'</span>)</span><br><span class="line">    results = <span class="keyword">await</span> asyncio.gather(</span><br><span class="line">        phase1(),</span><br><span class="line">        phase2(),</span><br><span class="line">    )</span><br><span class="line">    print(<span class="string">f'results: <span class="subst">&#123;results!r&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(main())</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p><code>gather()</code> 创建的任务不会公开，因此无法取消。返回值是一个结果列表，顺序与传递给 <code>gather()</code> 的参数的顺序相同，与实际完成的顺序无关：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">starting main</span><br><span class="line">waiting for phases to complete</span><br><span class="line">in phase2</span><br><span class="line">in phase1</span><br><span class="line">done with phase2</span><br><span class="line">done with phase1</span><br><span class="line">results: [&apos;phase1 result&apos;, &apos;phase2 result&apos;]</span><br></pre></td></tr></table></figure>
+<h3 id="在任务完成后做一些事">在任务完成后做一些事</h3>
+<p><code>as_completed()</code> 是一个生成器，它管理当作参数传递给它的协程列表的执行，每次迭代都会产生一个执行完的协程。与 <code>wait()</code> 一样，<code>as_completed()</code> 也不保证顺序；与 <code>wait()</code> 不同的是它不会等到所有后台操作完成后才可以执行其它操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">phase</span><span class="params">(i)</span>:</span></span><br><span class="line">    print(<span class="string">f'in phase <span class="subst">&#123;i&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">0.5</span> - (<span class="number">0.1</span> * i))</span><br><span class="line">    print(<span class="string">f'done with phase <span class="subst">&#123;i&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f'phase <span class="subst">&#123;i&#125;</span> result'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(num_phases)</span>:</span></span><br><span class="line">    print(<span class="string">'starting main'</span>)</span><br><span class="line">    phases = [phase(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(num_phases)]</span><br><span class="line">    print(<span class="string">'waiting for phases to complete'</span>)</span><br><span class="line">    results = []</span><br><span class="line">    <span class="keyword">for</span> next_to_complete <span class="keyword">in</span> asyncio.as_completed(phases):</span><br><span class="line">        print(<span class="string">f'start <span class="subst">&#123;next_to_complete&#125;</span>'</span>)</span><br><span class="line">        answer = <span class="keyword">await</span> next_to_complete</span><br><span class="line">        print(<span class="string">f'received answer <span class="subst">&#123;answer!r&#125;</span>'</span>)</span><br><span class="line">        results.append(answer)</span><br><span class="line">    print(<span class="string">f'results: <span class="subst">&#123;results!r&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">return</span> results</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(main(<span class="number">3</span>))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>这个例子启动了几个协程，这些协程以它们开始顺序的相反顺序结束。当生成器被消耗时，循环使用 <code>await</code>等待协程的结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">starting main</span><br><span class="line">waiting for phases to complete</span><br><span class="line">in phase 0</span><br><span class="line">in phase 1</span><br><span class="line">in phase 2</span><br><span class="line">done with phase 2</span><br><span class="line">received answer 'phase 2 result'</span><br><span class="line">done with phase 1</span><br><span class="line">received answer 'phase 1 result'</span><br><span class="line">done with phase 0</span><br><span class="line">received answer 'phase 0 result'</span><br><span class="line">results: ['phase 2 result', 'phase 1 result', 'phase 0 result']</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://pymotw.com/3/asyncio/tasks.html" target="_blank" rel="noopener">Executing Tasks Concurrently</a></li>
+<li><a href="https://pymotw.com/3/asyncio/control.html" target="_blank" rel="noopener">Composing Coroutines with Control Structures</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/7eb3a479/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            asyncio 不完全指北（四）
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/84801e4e/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">asyncio 不完全指北（二）</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/839e2740/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-08-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/839e2740/" class="title">chapter-08-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:30:48.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/1ceb091/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-07-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/1ceb091/" class="title">chapter-07-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:29:55.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7eb3a479/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（四）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/7eb3a479/" class="title">asyncio 不完全指北（四）</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T14:32:16.000Z" itemprop="datePublished">2018-05-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c99ebd1c/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（三）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/c99ebd1c/" class="title">asyncio 不完全指北（三）</a></p>
+                            <p class="item-date"><time datetime="2018-05-01T03:58:22.000Z" itemprop="datePublished">2018-05-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/84801e4e/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（二）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/84801e4e/" class="title">asyncio 不完全指北（二）</a></p>
+                            <p class="item-date"><time datetime="2018-04-24T15:43:20.000Z" itemprop="datePublished">2018-04-24</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

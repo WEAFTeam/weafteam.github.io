@@ -17,7 +17,7 @@
 <meta property="og:description" content="前言 众所周知，Python 的并发编程主要由线程、进程和协程三个组件组成，我们可以使用 Python 模块 threading、multiprocessing 和 yield 句法去操纵它们。后来，又有了更高层的封装：concurrent.futures 和 asyncio 模块。concurrent.futures是对 threading 和 multiprocessing 的封装，不是这篇">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg">
-<meta property="og:updated_time" content="2018-04-22T15:33:25.858Z">
+<meta property="og:updated_time" content="2018-05-06T03:27:58.934Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="asyncio 不完全指北（一）">
 <meta name="twitter:description" content="前言 众所周知，Python 的并发编程主要由线程、进程和协程三个组件组成，我们可以使用 Python 模块 threading、multiprocessing 和 yield 句法去操纵它们。后来，又有了更高层的封装：concurrent.futures 和 asyncio 模块。concurrent.futures是对 threading 和 multiprocessing 的封装，不是这篇">
@@ -132,7 +132,7 @@
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-2018-04-09/guide-to-asyncio" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-2018-04-09/guide-to-asyncio-1" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
@@ -173,20 +173,23 @@
 <h2 id="asyncio-中的几个概念">asyncio 中的几个概念</h2>
 <p>事件循环：<code>asyncio</code> 提供的框架以事件循环为中心，它是负责有效处理 I / O 事件、系统事件和应用程序上下文切换的第一类对象。Python 提供了几个循环实现，通常会自动选择合理的默认值，但也可以选择特定的事件循环实现。同样也有一些第三方的实现，例如 <a href="https://github.com/MagicStack/uvloop" target="_blank" rel="noopener">uvloop</a>。应用程序将要执行的代码注册到事件循环中，代表允许事件循环在必要时对代码进行调用。当调用结束，或无法继续时，应用程序会让出控制权，交还给事件循环。</p>
 <p>协程（coroutine ）：将控制权交还给事件循环的机制来自于 Python 的协程，这是一种特殊的函数，它将控制权交还给调用方而不会丢失本身状态。协程类似于生成器函数，事实上可以在 Python 3.5 之前的版本中用生成器实现协程。<code>asyncio</code> 还为 <code>Protocols</code> 和 <code>Transports</code> 提供了基于类的抽象层，使用回调的代码风格。在基于类的模型和协程模型中，通过重新进入事件循环来显式更改上下文将取代 Python 线程实现中的隐式上下文更改。</p>
-<p>future：future 是一种对象，表示待完成的操作。事件循环可以监视将要完成的 <code>future</code> 对象，从而允许应用程序的一部分等待另一部分完成某些工作。除了 future，<code>asyncio</code> 还包括其他并发原语，例如锁和信号量。通常情况下，我们不应该自行创建 future，只能通过并发框架（例如 <code>asyncio</code>）来实例化。原因是 future 代表终将发生的事情，而某件事的发生，是通过安排好这件事的执行时间来确定的。只有当我们把某件事交给事件循环处理时，事件循环才会给这件事排期，从而创建一个 future 对象。</p>
-<p>任务（Task）：任务是 future 的子类，它包装并管理协程的执行。任务可以通过事件循环进行调度，以便在它们需要的资源可用时运行，并生成可由其他协程使用的结果。</p>
+<p><code>future</code>：<code>future</code>是一种对象，表示待完成的操作的结果。事件循环可以监视 <code>future</code> 对象直到它完成，从而允许应用程序的一部分等待另一部分完成某些工作。除了 <code>future</code>，<code>asyncio</code> 还包括其他并发原语，例如锁和信号量。通常情况下，我们不应该自行创建 <code>future</code>，只能通过并发框架（例如 <code>asyncio</code>）来实例化。原因是 <code>future</code>代表终将发生的事情，而某件事的发生，是通过安排好这件事的执行时间来确定的。只有当我们把某件事交给事件循环处理时，事件循环才会给这件事排期，从而创建一个 <code>future</code>对象。</p>
+<p>任务（Task）：任务是 <code>future</code>的子类，它包装并管理协程的执行。任务可以通过事件循环进行调度，以便在它们需要的资源可用时运行，并生成可由其他协程使用的结果。</p>
 <h2 id="使用协程处理多任务协作">使用协程处理多任务协作</h2>
 <p>协程是为并发设计的语言概念。协程函数在调用时创建协程对象，然后调用方可以使用协程的 <code>send ()</code> 方法运行函数。协程可以在另一个协程中使用 <code>await</code>关键字暂停执行。当它被暂停时，协程的状态被保持，允许它在下次被唤醒时恢复到它停止的位置。</p>
 <h3 id="启动协程">启动协程</h3>
 <p>启动一个协程最简单的方式是将一个协程传递给事件循环的 <code>run_until_complete()</code> 方法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">coroutine</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'in coroutine'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(<span class="string">'starting coroutine'</span>)</span><br><span class="line">    print(<span class="string">'entering event loop'</span>)</span><br><span class="line">    event_loop.run_until_complete(coroutine())</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    print(<span class="string">'closing event loop'</span>)</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">starting coroutine</span><br><span class="line">entering event loop</span><br><span class="line">in coroutine</span><br><span class="line">closing event loop</span><br></pre></td></tr></table></figure>
 <p>首先，我们通过 <code>asyncio.get_event_loop()</code> 获取了一个默认事件循环的引用。<code>run_until_complete()</code> 方法接受一个协程对象，并用它启动事件循环，然后在协程通过 <code>return</code> 结束时停止事件循环。</p>
 <h3 id="协程的返回值">协程的返回值</h3>
 <p>协程的返回值返回给启动并等待它的程序：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">coroutine</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'in coroutine'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'result'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    return_value = event_loop.run_until_complete(coroutine())</span><br><span class="line">    print(<span class="string">f'it returned: <span class="subst">&#123;return_value!r&#125;</span>'</span>)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">in coroutine</span><br><span class="line">it returned: 'result'</span><br></pre></td></tr></table></figure>
 <h3 id="链式调用协程">链式调用协程</h3>
 <p>一个协程可以启动另一个协程并等待它返回结果。下面的示例包含两个阶段，它们必须按顺序执行，但可以与另外的操作同时运行：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">phase1</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'in phase1'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'result1'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">phase2</span><span class="params">(arg)</span>:</span></span><br><span class="line">    print(<span class="string">'in phase2'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">f'result2 derived from <span class="subst">&#123;arg&#125;</span>'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'in main'</span>)</span><br><span class="line">    print(<span class="string">'waiting for result1'</span>)</span><br><span class="line">    result1 = <span class="keyword">await</span> phase1()</span><br><span class="line">    print(<span class="string">'waiting for result2'</span>)</span><br><span class="line">    result2 = <span class="keyword">await</span> phase2(result1)</span><br><span class="line">    <span class="keyword">return</span> (result1, result2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    return_value = event_loop.run_until_complete(main())</span><br><span class="line">    print(<span class="string">f'return value: <span class="subst">&#123;return_value!r&#125;</span>'</span>)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">in main</span><br><span class="line">waiting for result1</span><br><span class="line">in phase1</span><br><span class="line">waiting for result2</span><br><span class="line">in phase2</span><br><span class="line">return value: ('result1', 'result2 derived from result1')</span><br></pre></td></tr></table></figure>
 <p>在这里使用了 <code>await</code> 关键字，并没有将新的协程添加到事件循环中。因为控制流已经在由事件循环管理的协程内部，所以不需要通知事件循环管理新的协程。</p>
 <h3 id="使用生成器语法">使用生成器语法</h3>
 <p><code>async</code> 和 <code>await</code> 关键字出现于 Python 3.5，对于 Python 3.5 之前的版本，可以使用 <code>asyncio.coroutine</code> 装饰器和 <code>yield from</code> 来实现相同的功能：</p>
@@ -328,90 +331,10 @@
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/posts/3cae9921/" class="thumbnail">
+                            <a href="/posts/839e2740/" class="thumbnail">
     
     
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-06-AIR" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
-                            <p class="item-title"><a href="/posts/3cae9921/" class="title">chapter-06-AIR</a></p>
-                            <p class="item-date"><time datetime="2018-04-22T06:31:24.000Z" itemprop="datePublished">2018-04-22</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/899ccb0/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://i.loli.net/2018/04/22/5adc349eaedc8.png)" alt="唯密文解密（针对Vigenere加密）" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/密码学/">密码学</a></p>
-                            <p class="item-title"><a href="/posts/899ccb0/" class="title">唯密文解密（针对Vigenere加密）</a></p>
-                            <p class="item-date"><time datetime="2018-04-21T01:38:12.000Z" itemprop="datePublished">2018-04-21</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/2b2e3e2f/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/redis-logo.png)" alt="Redis在SpringBoot 2.0中的整合" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
-                            <p class="item-title"><a href="/posts/2b2e3e2f/" class="title">Redis在SpringBoot 2.0中的整合</a></p>
-                            <p class="item-date"><time datetime="2018-04-18T09:57:12.000Z" itemprop="datePublished">2018-04-18</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/2cd32dfc/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://labs.mysql.com/common/logos/mysql-logo.svg?v2)" alt="Linux下MySQL安装" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
-                            <p class="item-title"><a href="/posts/2cd32dfc/" class="title">Linux下MySQL安装</a></p>
-                            <p class="item-date"><time datetime="2018-04-17T04:07:12.000Z" itemprop="datePublished">2018-04-17</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/7b0ee3f1/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-05-AIR" class="thumbnail-image"></span>
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-08-AIR" class="thumbnail-image"></span>
     
     
 </a>
@@ -420,8 +343,88 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
-                            <p class="item-title"><a href="/posts/7b0ee3f1/" class="title">chapter-05-AIR</a></p>
-                            <p class="item-date"><time datetime="2018-04-15T14:14:23.000Z" itemprop="datePublished">2018-04-15</time></p>
+                            <p class="item-title"><a href="/posts/839e2740/" class="title">chapter-08-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:30:48.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/1ceb091/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-07-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/1ceb091/" class="title">chapter-07-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:29:55.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7eb3a479/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（四）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/7eb3a479/" class="title">asyncio 不完全指北（四）</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T14:32:16.000Z" itemprop="datePublished">2018-05-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c99ebd1c/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（三）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/c99ebd1c/" class="title">asyncio 不完全指北（三）</a></p>
+                            <p class="item-date"><time datetime="2018-05-01T03:58:22.000Z" itemprop="datePublished">2018-05-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/84801e4e/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（二）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/84801e4e/" class="title">asyncio 不完全指北（二）</a></p>
+                            <p class="item-date"><time datetime="2018-04-24T15:43:20.000Z" itemprop="datePublished">2018-04-24</time></p>
                         </div>
                     </li>
                 
@@ -434,7 +437,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -444,7 +447,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
         </div>
     </div>
 
@@ -454,7 +457,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
         </div>
     </div>
 

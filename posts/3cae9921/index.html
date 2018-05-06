@@ -18,7 +18,7 @@
 <meta property="og:description" content="TensorFlow 基础（3） hello,大家好，几天我们继续学习基础知识，为我们以后建立模型打下基础。主要是最近有点忙，所以每一周的内容会少一些，请大家谅解，随后慢慢加快进度。  这一次我们讲一下batch的概念，以及一些基本的操作，在之前的文章中，我们也讲过batch这个概念的。大家应该不会陌生   Working with Batch and Stochastic Train">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
-<meta property="og:updated_time" content="2018-04-23T10:13:40.555Z">
+<meta property="og:updated_time" content="2018-05-06T03:33:57.555Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="chapter-06-AIR">
 <meta name="twitter:description" content="TensorFlow 基础（3） hello,大家好，几天我们继续学习基础知识，为我们以后建立模型打下基础。主要是最近有点忙，所以每一周的内容会少一些，请大家谅解，随后慢慢加快进度。  这一次我们讲一下batch的概念，以及一些基本的操作，在之前的文章中，我们也讲过batch这个概念的。大家应该不会陌生   Working with Batch and Stochastic Train">
@@ -185,7 +185,7 @@
 <p><img src="https://s1.ax1x.com/2018/04/22/CMTbv9.png" alt="-"></p>
 <p>你就说上面的你理解没理解，没理解要好好理解理解了~！！！</p>
 <ol start="2" type="1">
-<li>这个就是结合了，把所有上面价格的基础结合在一起，你说说是不是很棒</li>
+<li>这个就是结合了，把所有上面介绍的基础结合在一起，你说说是不是很棒</li>
 </ol>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 联合所有的基础操作，弄一个分类的例子，期不期待</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line">iris = datasets.load_iris() <span class="comment"># 将鸢尾花数据集下下来 总共是四个属性的数据集，根据四个种类，预测种类，总共三类</span></span><br><span class="line">binary_target = np.array([<span class="number">1.</span> <span class="keyword">if</span> x==<span class="number">0</span> <span class="keyword">else</span> <span class="number">0.</span> <span class="keyword">for</span> x <span class="keyword">in</span> iris.target]) <span class="comment"># 将label作为二分类问题</span></span><br><span class="line">iris_2d = np.array([[x[<span class="number">2</span>], x[<span class="number">3</span>]] <span class="keyword">for</span> x <span class="keyword">in</span> iris.data]) <span class="comment"># 将后两个属性取出来用作种类预测</span></span><br><span class="line"></span><br><span class="line">batch_size = <span class="number">20</span></span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line">x1_data = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32)</span><br><span class="line">x2_data = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32)</span><br><span class="line">y_target = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">A = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line">b = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">my_mult = tf.matmul(x2_data, A)</span><br><span class="line">my_add = tf.add(my_mult, b)</span><br><span class="line">my_output = tf.subtract(x1_data, my_add) <span class="comment"># 你能不能自己使用公式写出我们预测种类的公式呢？</span></span><br><span class="line"></span><br><span class="line">xentropy = tf.nn.sigmoid_cross_entropy_with_logits(logits = my_output, labels = y_target)</span><br><span class="line"></span><br><span class="line">my_opt = tf.train.GradientDescentOptimizer(<span class="number">0.05</span>)</span><br><span class="line">train_step = my_opt.minimize(xentropy)</span><br><span class="line"></span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    rand_index = np.random.choice(len(iris_2d), size=batch_size)</span><br><span class="line">    <span class="comment">#rand_x = np.transpose([iris_2d[rand_index]])</span></span><br><span class="line">    rand_x = iris_2d[rand_index]</span><br><span class="line">    rand_x1 = np.array([[x[<span class="number">0</span>]] <span class="keyword">for</span> x <span class="keyword">in</span> rand_x])</span><br><span class="line">    rand_x2 = np.array([[x[<span class="number">1</span>]] <span class="keyword">for</span> x <span class="keyword">in</span> rand_x])</span><br><span class="line">    <span class="comment">#rand_y = np.transpose([binary_target[rand_index]])</span></span><br><span class="line">    rand_y = np.array([[y] <span class="keyword">for</span> y <span class="keyword">in</span> binary_target[rand_index]])</span><br><span class="line">    sess.run(train_step, feed_dict=&#123;x1_data: rand_x1, x2_data: rand_x2, y_target: rand_y&#125;)</span><br><span class="line">    <span class="keyword">if</span> (i+<span class="number">1</span>)%<span class="number">200</span>==<span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'Step #'</span> + str(i+<span class="number">1</span>) + <span class="string">' A = '</span> + str(sess.run(A)) + <span class="string">', b = '</span> + str(sess.run(b)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Pull out slope/intercept</span></span><br><span class="line">[[slope]] = sess.run(A)</span><br><span class="line">[[intercept]] = sess.run(b)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create fitted line</span></span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">3</span>, num=<span class="number">50</span>)</span><br><span class="line">ablineValues = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> x:</span><br><span class="line">  ablineValues.append(slope*i+intercept)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the fitted line over the data</span></span><br><span class="line">setosa_x = [a[<span class="number">1</span>] <span class="keyword">for</span> i,a <span class="keyword">in</span> enumerate(iris_2d) <span class="keyword">if</span> binary_target[i]==<span class="number">1</span>]</span><br><span class="line">setosa_y = [a[<span class="number">0</span>] <span class="keyword">for</span> i,a <span class="keyword">in</span> enumerate(iris_2d) <span class="keyword">if</span> binary_target[i]==<span class="number">1</span>]</span><br><span class="line">non_setosa_x = [a[<span class="number">1</span>] <span class="keyword">for</span> i,a <span class="keyword">in</span> enumerate(iris_2d) <span class="keyword">if</span> binary_target[i]==<span class="number">0</span>]</span><br><span class="line">non_setosa_y = [a[<span class="number">0</span>] <span class="keyword">for</span> i,a <span class="keyword">in</span> enumerate(iris_2d) <span class="keyword">if</span> binary_target[i]==<span class="number">0</span>]</span><br><span class="line">plt.plot(setosa_x, setosa_y, <span class="string">'rx'</span>, ms=<span class="number">10</span>, mew=<span class="number">2</span>, label=<span class="string">'setosa'</span>)</span><br><span class="line">plt.plot(non_setosa_x, non_setosa_y, <span class="string">'ro'</span>, label=<span class="string">'Non-setosa'</span>)</span><br><span class="line">plt.plot(x, ablineValues, <span class="string">'b-'</span>)</span><br><span class="line">plt.xlim([<span class="number">0.0</span>, <span class="number">2.7</span>])</span><br><span class="line">plt.ylim([<span class="number">0.0</span>, <span class="number">7.1</span>])</span><br><span class="line">plt.suptitle(<span class="string">'Linear Separator For I.setosa'</span>, fontsize=<span class="number">20</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Petal Length'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Petal Width'</span>)</span><br><span class="line">plt.legend(loc=<span class="string">'lower right'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 <p><img src="https://s1.ax1x.com/2018/04/22/CM7GV0.png"></p>
@@ -298,6 +298,16 @@
         
 <nav id="article-nav">
     
+        <a href="/posts/23949c22/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            Kafka在SpringBoot 2.0中的整合
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
     
         <a href="/posts/899ccb0/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
@@ -320,90 +330,10 @@
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/posts/3cae9921/" class="thumbnail">
+                            <a href="/posts/839e2740/" class="thumbnail">
     
     
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-06-AIR" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
-                            <p class="item-title"><a href="/posts/3cae9921/" class="title">chapter-06-AIR</a></p>
-                            <p class="item-date"><time datetime="2018-04-22T06:31:24.000Z" itemprop="datePublished">2018-04-22</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/899ccb0/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://i.loli.net/2018/04/22/5adc349eaedc8.png)" alt="唯密文解密（针对Vigenere加密）" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/密码学/">密码学</a></p>
-                            <p class="item-title"><a href="/posts/899ccb0/" class="title">唯密文解密（针对Vigenere加密）</a></p>
-                            <p class="item-date"><time datetime="2018-04-21T01:38:12.000Z" itemprop="datePublished">2018-04-21</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/2b2e3e2f/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/redis-logo.png)" alt="Redis在SpringBoot 2.0中的整合" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
-                            <p class="item-title"><a href="/posts/2b2e3e2f/" class="title">Redis在SpringBoot 2.0中的整合</a></p>
-                            <p class="item-date"><time datetime="2018-04-18T09:57:12.000Z" itemprop="datePublished">2018-04-18</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/2cd32dfc/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://labs.mysql.com/common/logos/mysql-logo.svg?v2)" alt="Linux下MySQL安装" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
-                            <p class="item-title"><a href="/posts/2cd32dfc/" class="title">Linux下MySQL安装</a></p>
-                            <p class="item-date"><time datetime="2018-04-17T04:07:12.000Z" itemprop="datePublished">2018-04-17</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/7b0ee3f1/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-05-AIR" class="thumbnail-image"></span>
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-08-AIR" class="thumbnail-image"></span>
     
     
 </a>
@@ -412,8 +342,88 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
-                            <p class="item-title"><a href="/posts/7b0ee3f1/" class="title">chapter-05-AIR</a></p>
-                            <p class="item-date"><time datetime="2018-04-15T14:14:23.000Z" itemprop="datePublished">2018-04-15</time></p>
+                            <p class="item-title"><a href="/posts/839e2740/" class="title">chapter-08-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:30:48.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/1ceb091/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-07-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/1ceb091/" class="title">chapter-07-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:29:55.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7eb3a479/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（四）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/7eb3a479/" class="title">asyncio 不完全指北（四）</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T14:32:16.000Z" itemprop="datePublished">2018-05-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c99ebd1c/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（三）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/c99ebd1c/" class="title">asyncio 不完全指北（三）</a></p>
+                            <p class="item-date"><time datetime="2018-05-01T03:58:22.000Z" itemprop="datePublished">2018-05-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/84801e4e/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（二）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/84801e4e/" class="title">asyncio 不完全指北（二）</a></p>
+                            <p class="item-date"><time datetime="2018-04-24T15:43:20.000Z" itemprop="datePublished">2018-04-24</time></p>
                         </div>
                     </li>
                 
@@ -426,7 +436,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -436,7 +446,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
         </div>
     </div>
 
@@ -446,7 +456,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
         </div>
     </div>
 

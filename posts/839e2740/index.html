@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>chapter-08-AIR | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="TensorFlow" />
+    
+    <meta name="description" content="TensorFlow Linear Regression 2  回顾一下线性回归的loss函数：  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter-08-AIR">
+<meta property="og:url" content="http://weafteam.github.io/posts/839e2740/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="TensorFlow Linear Regression 2  回顾一下线性回归的loss函数：  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+<meta property="og:updated_time" content="2018-05-06T07:18:24.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter-08-AIR">
+<meta name="twitter:description" content="TensorFlow Linear Regression 2  回顾一下线性回归的loss函数：  12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777">
+<meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/TensorFlow/">TensorFlow</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-04-30/chapter-08-AIR" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        chapter-08-AIR
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/839e2740/" class="article-date">
+            <time datetime="2018-05-06T03:30:48.000Z" itemprop="datePublished">2018-05-06</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        milittle
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/TensorFlow/">TensorFlow</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="tensorflow-linear-regression-2">TensorFlow Linear Regression 2</h1>
+<ol type="1">
+<li>回顾一下线性回归的loss函数：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    ops.reset_default_graph()</span><br><span class="line">    sess = tf.Session()</span><br><span class="line">    batch_size = <span class="number">100</span></span><br><span class="line">    x_vals = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">    y_vals = x_vals + np.random.normal(<span class="number">0</span>, <span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">    x_data = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32)</span><br><span class="line">    y_target = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Create variables for linear regression</span></span><br><span class="line">    A = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line">    b = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Declare model operations</span></span><br><span class="line">    model_output = tf.add(tf.matmul(x_data, A), b)</span><br><span class="line"></span><br><span class="line">    loss_l1 = tf.reduce_mean(tf.abs(y_target - model_output))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Declare optimizers</span></span><br><span class="line">    my_opt_l1 = tf.train.GradientDescentOptimizer(<span class="number">0.0001</span>)</span><br><span class="line">    train_step_l1 = my_opt_l1.minimize(loss_l1)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Initialize variables</span></span><br><span class="line">    init = tf.global_variables_initializer()</span><br><span class="line">    sess.run(init)</span><br><span class="line"></span><br><span class="line">    loss_vec_l1 = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">        rand_index = np.random.choice(len(x_vals), size=batch_size)</span><br><span class="line">        rand_x = np.transpose([x_vals[rand_index]])</span><br><span class="line">        rand_y = np.transpose([y_vals[rand_index]])</span><br><span class="line">        sess.run(train_step_l1, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">        temp_loss_l1 = sess.run(loss_l1, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">        loss_vec_l1.append(temp_loss_l1)</span><br><span class="line">        <span class="keyword">if</span> (i + <span class="number">1</span>) % <span class="number">25</span> == <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">'Step #'</span> + str(i + <span class="number">1</span>) + <span class="string">' A = '</span> + str(sess.run(A)) + <span class="string">' b = '</span> + str(sess.run(b)))</span><br><span class="line"></span><br><span class="line">    ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Create graph</span></span><br><span class="line">    sess = tf.Session()</span><br><span class="line"></span><br><span class="line">    x_data = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32)</span><br><span class="line">    y_target = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Create variables for linear regression</span></span><br><span class="line">    A = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line">    b = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Declare model operations</span></span><br><span class="line">    model_output = tf.add(tf.matmul(x_data, A), b)</span><br><span class="line"></span><br><span class="line">    loss_l2 = tf.reduce_mean(tf.square(y_target - model_output))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Declare optimizers</span></span><br><span class="line">    my_opt_l2 = tf.train.GradientDescentOptimizer(<span class="number">0.0001</span>)</span><br><span class="line">    train_step_l2 = my_opt_l2.minimize(loss_l2)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Initialize variables</span></span><br><span class="line">    init = tf.global_variables_initializer()</span><br><span class="line">    sess.run(init)</span><br><span class="line"></span><br><span class="line">    loss_vec_l2 = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">        rand_index = np.random.choice(len(x_vals), size=batch_size)</span><br><span class="line">        rand_x = np.transpose([x_vals[rand_index]])</span><br><span class="line">        rand_y = np.transpose([y_vals[rand_index]])</span><br><span class="line">        sess.run(train_step_l2, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">        temp_loss_l2 = sess.run(loss_l2, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">        loss_vec_l2.append(temp_loss_l2)</span><br><span class="line">        <span class="keyword">if</span> (i + <span class="number">1</span>) % <span class="number">25</span> == <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">'Step #'</span> + str(i + <span class="number">1</span>) + <span class="string">' A = '</span> + str(sess.run(A)) + <span class="string">' b = '</span> + str(sess.run(b)))</span><br><span class="line"></span><br><span class="line">    plt.plot(loss_vec_l1, <span class="string">'k-'</span>, label=<span class="string">'L1 Loss'</span>)</span><br><span class="line">    plt.plot(loss_vec_l2, <span class="string">'r--'</span>, label=<span class="string">'L2 Loss'</span>)</span><br><span class="line">    plt.title(<span class="string">'L1 and L2 Loss per Generation'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'Generation'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'L1 Loss'</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">'upper right'</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(_)</span>:</span></span><br><span class="line">    run()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    tf.app.run()</span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>戴明回归:</li>
+</ol>
+<p>看图：找不同：</p>
+<p><img src="https://s1.ax1x.com/2018/05/06/CUmQtU.png"></p>
+<p>loss函数是关键:下面是deming regression的loss函数 <span class="math display">\[
+\frac{\mid{A*x+b-y}\mid}{\sqrt{A^2 + 1}}
+\]</span></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"># @Time    : 2018/5/6 14:32</span><br><span class="line"># @Author  : milittle</span><br><span class="line"># @Site    : www.weaf.top</span><br><span class="line"># @File    : deming_lr.py</span><br><span class="line"># @Software: PyCharm</span><br><span class="line"></span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import numpy as np</span><br><span class="line">import tensorflow as tf</span><br><span class="line">from tensorflow.python.framework import ops</span><br><span class="line"></span><br><span class="line">ops.reset_default_graph()</span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def run():</span><br><span class="line">    x_vals = np.linspace(0, 10, 100)</span><br><span class="line">    y_vals = x_vals + np.random.normal(0, 1, 100)</span><br><span class="line">    batch_size = 125</span><br><span class="line"></span><br><span class="line">    x_data = tf.placeholder(shape=[None, 1], dtype=tf.float32)</span><br><span class="line">    y_target = tf.placeholder(shape=[None, 1], dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">    A = tf.Variable(tf.random_normal(shape=[1, 1]))</span><br><span class="line">    b = tf.Variable(tf.random_normal(shape=[1, 1]))</span><br><span class="line"></span><br><span class="line">    model_output = tf.add(tf.matmul(x_data, A), b)</span><br><span class="line"></span><br><span class="line">    # 注意这里的loss函数的求解</span><br><span class="line">    demming_numerator = tf.abs(tf.subtract(tf.add(tf.matmul(x_data, A), b), y_target))</span><br><span class="line">    demming_denominator = tf.sqrt(tf.add(tf.square(A), 1))</span><br><span class="line">    loss = tf.reduce_mean(tf.truediv(demming_numerator, demming_denominator))</span><br><span class="line"></span><br><span class="line">    my_opt = tf.train.GradientDescentOptimizer(0.01)</span><br><span class="line">    train_step = my_opt.minimize(loss)</span><br><span class="line"></span><br><span class="line">    # Initialize variables</span><br><span class="line">    init = tf.global_variables_initializer()</span><br><span class="line">    sess.run(init)</span><br><span class="line"></span><br><span class="line">    loss_vec = []</span><br><span class="line">    for i in range(1500):</span><br><span class="line">        rand_index = np.random.choice(len(x_vals), size=batch_size)</span><br><span class="line">        rand_x = np.transpose([x_vals[rand_index]])</span><br><span class="line">        rand_y = np.transpose([y_vals[rand_index]])</span><br><span class="line">        sess.run(train_step, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">        temp_loss = sess.run(loss, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">        loss_vec.append(temp_loss)</span><br><span class="line">        if (i + 1) % 100 == 0:</span><br><span class="line">            print(&apos;Step #&apos; + str(i + 1) + &apos; A = &apos; + str(sess.run(A)) + &apos; b = &apos; + str(sess.run(b)))</span><br><span class="line">            print(&apos;Loss = &apos; + str(temp_loss))</span><br><span class="line"></span><br><span class="line">    [W] = sess.run(A)</span><br><span class="line">    [bias] = sess.run(b)</span><br><span class="line"></span><br><span class="line">    # Get best fit line</span><br><span class="line">    best_fit = []</span><br><span class="line">    for i in x_vals:</span><br><span class="line">        best_fit.append(W * i + bias)</span><br><span class="line"></span><br><span class="line">    plt.plot(x_vals, y_vals, &apos;o&apos;, label=&apos;Data Points&apos;)</span><br><span class="line">    plt.plot(x_vals, best_fit, &apos;r-&apos;, label=&apos;Best fit line&apos;, linewidth=3)</span><br><span class="line">    plt.legend(loc=&apos;upper left&apos;)</span><br><span class="line">    plt.title(&apos;Sepal Length vs Pedal Width&apos;)</span><br><span class="line">    plt.xlabel(&apos;Pedal Width&apos;)</span><br><span class="line">    plt.ylabel(&apos;Sepal Length&apos;)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">    # Plot loss over time</span><br><span class="line">    plt.plot(loss_vec, &apos;k-&apos;)</span><br><span class="line">    plt.title(&apos;Demming Loss per Generation&apos;)</span><br><span class="line">    plt.xlabel(&apos;Iteration&apos;)</span><br><span class="line">    plt.ylabel(&apos;Demming Loss&apos;)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">def main(_):</span><br><span class="line">    run()</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    tf.app.run()</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>LASSO and Ridge Regression(关键的地方还是loss函数的不同，其他步骤是一致的)</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># @Time    : 2018/5/6 14:46</span></span><br><span class="line"><span class="comment"># @Author  : milittle</span></span><br><span class="line"><span class="comment"># @Site    : www.weaf.top</span></span><br><span class="line"><span class="comment"># @File    : LASSO_Ridge_lr.py</span></span><br><span class="line"><span class="comment"># @Software: PyCharm</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line"></span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">regression_type = <span class="string">'LASSO'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    sess = tf.Session()</span><br><span class="line">    x_vals = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">    y_vals = x_vals + np.random.normal(<span class="number">0</span>, <span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line">    batch_size = <span class="number">125</span></span><br><span class="line"></span><br><span class="line">    x_data = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32)</span><br><span class="line">    y_target = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">    seed = <span class="number">13</span></span><br><span class="line">    np.random.seed(seed)</span><br><span class="line">    tf.set_random_seed(seed)</span><br><span class="line"></span><br><span class="line">    A = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line">    b = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">    model_output = tf.add(tf.matmul(x_data, A), b)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> regression_type == <span class="string">'LASSO'</span>:</span><br><span class="line">        lasso_param = tf.constant(<span class="number">0.9</span>)</span><br><span class="line">        heavyside_step = tf.truediv(<span class="number">1.</span>, tf.add(<span class="number">1.</span>, tf.exp(tf.multiply(<span class="number">-50.</span>, tf.subtract(A, lasso_param)))))</span><br><span class="line">        regularization_param = tf.multiply(heavyside_step, <span class="number">99.</span>)</span><br><span class="line">        loss = tf.add(tf.reduce_mean(tf.square(y_target - model_output)), regularization_param)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> regression_type == <span class="string">'Ridge'</span>:</span><br><span class="line">        ridge_param = tf.constant(<span class="number">1.</span>)</span><br><span class="line">        ridge_loss = tf.reduce_mean(tf.square(A))</span><br><span class="line">        loss = tf.expand_dims(</span><br><span class="line">            tf.add(tf.reduce_mean(tf.square(y_target - model_output)), tf.multiply(ridge_param, ridge_loss)), <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'Invalid regression_type parameter value'</span>, file=sys.stderr)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    my_opt = tf.train.GradientDescentOptimizer(<span class="number">0.001</span>)</span><br><span class="line">    train_step = my_opt.minimize(loss)</span><br><span class="line"></span><br><span class="line">    init = tf.global_variables_initializer()</span><br><span class="line">    sess.run(init)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Training loop</span></span><br><span class="line">    loss_vec = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1500</span>):</span><br><span class="line">        rand_index = np.random.choice(len(x_vals), size=batch_size)</span><br><span class="line">        rand_x = np.transpose([x_vals[rand_index]])</span><br><span class="line">        rand_y = np.transpose([y_vals[rand_index]])</span><br><span class="line">        sess.run(train_step, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">        temp_loss = sess.run(loss, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">        loss_vec.append(temp_loss[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">if</span> (i + <span class="number">1</span>) % <span class="number">300</span> == <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">'Step #'</span> + str(i + <span class="number">1</span>) + <span class="string">' A = '</span> + str(sess.run(A)) + <span class="string">' b = '</span> + str(sess.run(b)))</span><br><span class="line">            print(<span class="string">'Loss = '</span> + str(temp_loss))</span><br><span class="line">            print(<span class="string">'\n'</span>)</span><br><span class="line">    [W] = sess.run(A)</span><br><span class="line">    [bias] = sess.run(b)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Get best fit line</span></span><br><span class="line">    best_fit = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> x_vals:</span><br><span class="line">        best_fit.append(W * i + bias)</span><br><span class="line">    <span class="comment"># Plot the result</span></span><br><span class="line">    plt.plot(x_vals, y_vals, <span class="string">'o'</span>, label=<span class="string">'Data Points'</span>)</span><br><span class="line">    plt.plot(x_vals, best_fit, <span class="string">'r-'</span>, label=<span class="string">'Best fit line'</span>, linewidth=<span class="number">3</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">'upper left'</span>)</span><br><span class="line">    plt.title(<span class="string">'Sepal Length vs Pedal Width'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'Pedal Width'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Sepal Length'</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Plot loss over time</span></span><br><span class="line">    plt.plot(loss_vec, <span class="string">'k-'</span>)</span><br><span class="line">    plt.title(regression_type + <span class="string">' Loss per Generation'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'Generation'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Loss'</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(_)</span>:</span></span><br><span class="line">    run()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    tf.app.run()</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>Elastic Net Regression(利用多个loss函数的叠加进行训练)弹性的方式</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># @Time    : 2018/5/6 14:57</span></span><br><span class="line"><span class="comment"># @Author  : milittle</span></span><br><span class="line"><span class="comment"># @Site    : www.weaf.top</span></span><br><span class="line"><span class="comment"># @File    : Elastic_Net_Regression.py</span></span><br><span class="line"><span class="comment"># @Software: PyCharm</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line">x_vals = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">y_vals = x_vals + np.random.normal(<span class="number">0</span>, <span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line">batch_size = <span class="number">16</span></span><br><span class="line"></span><br><span class="line">seed = <span class="number">13</span></span><br><span class="line">np.random.seed(seed)</span><br><span class="line">tf.set_random_seed(seed)</span><br><span class="line"></span><br><span class="line">x_data = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32, name=<span class="string">'input'</span>)</span><br><span class="line">y_target = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32, name=<span class="string">'output'</span>)</span><br><span class="line"></span><br><span class="line">A = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line">b = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">model_output = tf.add(tf.matmul(x_data, A), b)</span><br><span class="line"></span><br><span class="line">elastic_param1 = tf.constant(<span class="number">1.</span>)</span><br><span class="line">elastic_param2 = tf.constant(<span class="number">1.</span>)</span><br><span class="line">l1_a_loss = tf.reduce_mean(tf.abs(A))</span><br><span class="line">l2_a_loss = tf.reduce_mean(tf.square(A))</span><br><span class="line">e1_term = tf.multiply(elastic_param1, l1_a_loss)</span><br><span class="line">e2_term = tf.multiply(elastic_param2, l2_a_loss)</span><br><span class="line">loss = tf.expand_dims(tf.add(tf.add(tf.reduce_mean(tf.square(y_target - model_output)), e1_term), e2_term), <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">my_opt = tf.train.GradientDescentOptimizer(<span class="number">0.001</span>)</span><br><span class="line">train_step = my_opt.minimize(loss)</span><br><span class="line"></span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Training loop</span></span><br><span class="line">loss_vec = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    rand_index = np.random.choice(len(x_vals), size=batch_size)</span><br><span class="line">    rand_x = np.transpose([x_vals[rand_index]])</span><br><span class="line">    rand_y = np.transpose([y_vals[rand_index]])</span><br><span class="line">    sess.run(train_step, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">    temp_loss = sess.run(loss, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">    loss_vec.append(temp_loss[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">if</span> (i + <span class="number">1</span>) % <span class="number">250</span> == <span class="number">0</span>:</span><br><span class="line">        print(<span class="string">'Step #'</span> + str(i + <span class="number">1</span>) + <span class="string">' A = '</span> + str(sess.run(A)) + <span class="string">' b = '</span> + str(sess.run(b)))</span><br><span class="line">    print(<span class="string">'Loss = '</span> + str(temp_loss))</span><br><span class="line"></span><br><span class="line">W = sess.run(A)</span><br><span class="line">bias = sess.run(b)</span><br><span class="line"></span><br><span class="line">plt.plot(loss_vec, <span class="string">'k-'</span>)</span><br><span class="line">plt.title(<span class="string">'Loss per Generation'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Generation'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Loss'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>好，今天到此把一些线性模型的应用问题大体讲完了，还是有什么问题，可以积极讨论，可以给我发邮件air@weaf.top，上面的代码由于很简单，所以我想大家都可以看懂的。其实这么多类型的回归问题，总的来说就是loss函数不一样，只要将loss函数理解了，那么问题就迎刃而解。</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/posts/1ceb091/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">chapter-07-AIR</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/839e2740/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-08-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/839e2740/" class="title">chapter-08-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:30:48.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/1ceb091/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-07-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/1ceb091/" class="title">chapter-07-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:29:55.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7eb3a479/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（四）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/7eb3a479/" class="title">asyncio 不完全指北（四）</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T14:32:16.000Z" itemprop="datePublished">2018-05-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c99ebd1c/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（三）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/c99ebd1c/" class="title">asyncio 不完全指北（三）</a></p>
+                            <p class="item-date"><time datetime="2018-05-01T03:58:22.000Z" itemprop="datePublished">2018-05-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/84801e4e/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（二）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/84801e4e/" class="title">asyncio 不完全指北（二）</a></p>
+                            <p class="item-date"><time datetime="2018-04-24T15:43:20.000Z" itemprop="datePublished">2018-04-24</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

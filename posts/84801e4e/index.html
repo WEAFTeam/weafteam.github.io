@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>asyncio 不完全指北（二） | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="书接上文。 调度常规函数 除了管理协程和 I / O 回调之外，asyncio 事件循环还可以根据循环中的计时器调度常规函数。 立即调度 如果函数执行的时机无关紧要，call_soon() 可以用于在事件循环的下一次迭代中调度函数。 123456789101112131415161718192021222324import asyncioimport functoolsdef callb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="asyncio 不完全指北（二）">
+<meta property="og:url" content="http://weafteam.github.io/posts/84801e4e/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="书接上文。 调度常规函数 除了管理协程和 I / O 回调之外，asyncio 事件循环还可以根据循环中的计时器调度常规函数。 立即调度 如果函数执行的时机无关紧要，call_soon() 可以用于在事件循环的下一次迭代中调度函数。 123456789101112131415161718192021222324import asyncioimport functoolsdef callb">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg">
+<meta property="og:updated_time" content="2018-05-06T03:27:58.968Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="asyncio 不完全指北（二）">
+<meta name="twitter:description" content="书接上文。 调度常规函数 除了管理协程和 I / O 回调之外，asyncio 事件循环还可以根据循环中的计时器调度常规函数。 立即调度 如果函数执行的时机无关紧要，call_soon() 可以用于在事件循环的下一次迭代中调度函数。 123456789101112131415161718192021222324import asyncioimport functoolsdef callb">
+<meta name="twitter:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    未分类
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-04-16/guide-to-asyncio-2" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        asyncio 不完全指北（二）
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/84801e4e/" class="article-date">
+            <time datetime="2018-04-24T15:43:20.000Z" itemprop="datePublished">2018-04-24</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        MisLink
+    </div>
+
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>书接上文。</p>
+<h2 id="调度常规函数">调度常规函数</h2>
+<p>除了管理协程和 I / O 回调之外，<code>asyncio</code> 事件循环还可以根据循环中的计时器调度常规函数。</p>
+<h3 id="立即调度">立即调度</h3>
+<p>如果函数执行的时机无关紧要，<code>call_soon()</code> 可以用于在事件循环的下一次迭代中调度函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">callback</span><span class="params">(arg, *, kwarg=<span class="string">'default'</span>)</span>:</span></span><br><span class="line">    print(<span class="string">f'callback invoked with <span class="subst">&#123;arg&#125;</span> and <span class="subst">&#123;kwarg&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></span><br><span class="line">    print(<span class="string">'registering callbacks'</span>)</span><br><span class="line">    loop.call_soon(callback, <span class="number">1</span>)</span><br><span class="line">    wrapped = functools.partial(callback, kwarg=<span class="string">'not default'</span>)</span><br><span class="line">    loop.call_soon(wrapped, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(<span class="string">'entering event loop'</span>)</span><br><span class="line">    event_loop.run_until_complete(main(event_loop))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    print(<span class="string">'closing event loop'</span>)</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p><code>call_soon()</code> 的第一个参数为回调函数，剩下的位置参数都会被传递给回调函数。如果想传入关键字参数，就需要用到 <code>functools.partical()</code>。</p>
+<p>回调函数按照调度顺序被依次调用：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">entering event loop</span><br><span class="line">registering callbacks</span><br><span class="line">callback invoked with 1 and default</span><br><span class="line">callback invoked with 2 and not default</span><br><span class="line">closing event loop</span><br></pre></td></tr></table></figure>
+<h3 id="有延迟的调度">有延迟的调度</h3>
+<p>要将回调函数的执行推迟到将来的某个时间，可以使用 <code>call_later()</code>。它的第一个参数是以秒为单位的延迟，第二个参数是回调函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">callback</span><span class="params">(n)</span>:</span></span><br><span class="line">    print(<span class="string">f'callback <span class="subst">&#123;n&#125;</span> invoked'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></span><br><span class="line">    print(<span class="string">'registering callbacks'</span>)</span><br><span class="line">    loop.call_later(<span class="number">0.2</span>, callback, <span class="number">1</span>)</span><br><span class="line">    loop.call_later(<span class="number">0.1</span>, callback, <span class="number">2</span>)</span><br><span class="line">    loop.call_soon(callback, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">0.4</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(<span class="string">'entering event loop'</span>)</span><br><span class="line">    event_loop.run_until_complete(main(event_loop))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    print(<span class="string">'closing event loop'</span>)</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，相同的回调函数参与了三次调度，分别使用了几个不同的延迟和不同的参数。最后使用了 <code>call_soon()</code>，它使回调函数在所有延迟调度之前调用，这表明 <code>call_soon()</code> 通常意味着最小延迟：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">entering event loop</span><br><span class="line">registering callbacks</span><br><span class="line">callback 3 invoked</span><br><span class="line">callback 2 invoked</span><br><span class="line">callback 1 invoked</span><br><span class="line">closing event loop</span><br></pre></td></tr></table></figure>
+<h3 id="在特定时间调度">在特定时间调度</h3>
+<p>还可以在特定时间调度函数。事件循环使用单调时钟，而不是 Unix 时钟，以确保当前的值永不回归。要在特定的时间调度，必须使用事件循环的<code>time()</code>方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">callback</span><span class="params">(n, loop)</span>:</span></span><br><span class="line">    print(<span class="string">f'callback <span class="subst">&#123;n&#125;</span> invoked at <span class="subst">&#123;loop.time()&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></span><br><span class="line">    now = loop.time()</span><br><span class="line">    print(<span class="string">f'clock time: <span class="subst">&#123;time.time()&#125;</span>'</span>)</span><br><span class="line">    print(<span class="string">f'loop  time: <span class="subst">&#123;now&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'registering callbacks'</span>)</span><br><span class="line">    loop.call_at(now + <span class="number">0.2</span>, callback, <span class="number">1</span>, loop)</span><br><span class="line">    loop.call_at(now + <span class="number">0.1</span>, callback, <span class="number">2</span>, loop)</span><br><span class="line">    loop.call_soon(callback, <span class="number">3</span>, loop)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(<span class="string">'entering event loop'</span>)</span><br><span class="line">    event_loop.run_until_complete(main(event_loop))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    print(<span class="string">'closing event loop'</span>)</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>可以注意到事件循环内的时间与 <code>time.time()</code> 不一致：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">entering event loop</span><br><span class="line">clock time: 1524502404.7036376</span><br><span class="line">loop  time: 4562.515</span><br><span class="line">registering callbacks</span><br><span class="line">callback 3 invoked at 4562.515</span><br><span class="line">callback 2 invoked at 4562.625</span><br><span class="line">callback 1 invoked at 4562.718</span><br><span class="line">closing event loop</span><br></pre></td></tr></table></figure>
+<h2 id="异步产生结果">异步产生结果</h2>
+<p><code>future</code>是尚未完成的工作的结果。事件循环可以监视<code>future</code>对象的状态直到它完成，从而允许应用程序的一部分等待另一部分完成某些工作。</p>
+<h3 id="等待-future">等待 <code>future</code></h3>
+<p><code>future</code>就像协程，所以任何用于处理协程的方法也可以用来处理<code>future</code>。这个例子将<code>future</code>传递给事件循环的<code>run_until_complete()</code>方法。记住我们在上一篇中提到的，通常我们不应该自行创建 <code>future</code> 对象，这里只为演示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mark_done</span><span class="params">(future, result)</span>:</span></span><br><span class="line">    print(<span class="string">f'setting future result to <span class="subst">&#123;result!r&#125;</span>'</span>)</span><br><span class="line">    future.set_result(result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    all_done = asyncio.Future()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'scheduling mark_done'</span>)</span><br><span class="line">    event_loop.call_soon(mark_done, all_done, <span class="string">'the result'</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'entering event loop'</span>)</span><br><span class="line">    result = event_loop.run_until_complete(all_done)</span><br><span class="line">    print(<span class="string">f'returned result: <span class="subst">&#123;result!r&#125;</span>'</span>)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    print(<span class="string">'closing event loop'</span>)</span><br><span class="line">    event_loop.close()</span><br><span class="line"></span><br><span class="line">print(<span class="string">f'future result: <span class="subst">&#123;all_done.result()!r&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>调用 <code>set_result()</code> 时，<code>future</code> 的状态会被更改为已完成，<code>future</code>的实例将保存结果，并返回：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">scheduling mark_done</span><br><span class="line">entering event loop</span><br><span class="line">setting future result to 'the result'</span><br><span class="line">returned result: 'the result'</span><br><span class="line">closing event loop</span><br><span class="line">future result: 'the result'</span><br></pre></td></tr></table></figure>
+<p><code>future</code> 也可以与 <code>await</code> 一起使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mark_done</span><span class="params">(future, result)</span>:</span></span><br><span class="line">    print(<span class="string">f'setting future result to <span class="subst">&#123;result!r&#125;</span>'</span>)</span><br><span class="line">    future.set_result(result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span></span><br><span class="line">    all_done = asyncio.Future()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'scheduling mark_done'</span>)</span><br><span class="line">    loop.call_soon(mark_done, all_done, <span class="string">'the result'</span>)</span><br><span class="line"></span><br><span class="line">    result = <span class="keyword">await</span> all_done</span><br><span class="line">    print(<span class="string">f'returned result: <span class="subst">&#123;result!r&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(main(event_loop))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p><code>future</code> 的结果由 <code>await</code> 返回：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scheduling mark_done</span><br><span class="line">setting future result to <span class="string">'the result'</span></span><br><span class="line">returned result: <span class="string">'the result'</span></span><br></pre></td></tr></table></figure>
+<h3 id="future-的回调"><code>future</code> 的回调</h3>
+<p>除了像协程一样工作之外，<code>future</code>还可以在完成时调用回调函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">callback</span><span class="params">(future, n)</span>:</span></span><br><span class="line">    print(<span class="string">f'<span class="subst">&#123;n&#125;</span>: future done: <span class="subst">&#123;future.result()&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">register_callbacks</span><span class="params">(all_done)</span>:</span></span><br><span class="line">    print(<span class="string">'registering callbacks on future'</span>)</span><br><span class="line">    all_done.add_done_callback(functools.partial(callback, n=<span class="number">1</span>))</span><br><span class="line">    all_done.add_done_callback(functools.partial(callback, n=<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(all_done)</span>:</span></span><br><span class="line">    <span class="keyword">await</span> register_callbacks(all_done)</span><br><span class="line">    print(<span class="string">'setting result of future'</span>)</span><br><span class="line">    all_done.set_result(<span class="string">'the result'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    all_done = asyncio.Future()</span><br><span class="line">    event_loop.run_until_complete(main(all_done))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>添加回调的函数只需要一个参数，即回调函数；回调函数也只接受一个参数，即 <code>future</code> 实例。若要传递其他参数给回调函数，要使用 <code>functools.partical()</code> 。回调函数按注册顺序被调用：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">registering callbacks on future</span><br><span class="line">setting result of future</span><br><span class="line">1: future done: the result</span><br><span class="line">2: future done: the result</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://pymotw.com/3/asyncio/scheduling.html" target="_blank" rel="noopener">Scheduling Calls to Regular Functions</a></li>
+<li><a href="https://pymotw.com/3/asyncio/futures.html" target="_blank" rel="noopener">Producing Results Asynchronously</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/c99ebd1c/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            asyncio 不完全指北（三）
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/23949c22/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">Kafka在SpringBoot 2.0中的整合</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/839e2740/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-08-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/839e2740/" class="title">chapter-08-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:30:48.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/1ceb091/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-07-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/1ceb091/" class="title">chapter-07-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:29:55.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7eb3a479/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（四）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/7eb3a479/" class="title">asyncio 不完全指北（四）</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T14:32:16.000Z" itemprop="datePublished">2018-05-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c99ebd1c/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（三）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/c99ebd1c/" class="title">asyncio 不完全指北（三）</a></p>
+                            <p class="item-date"><time datetime="2018-05-01T03:58:22.000Z" itemprop="datePublished">2018-05-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/84801e4e/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（二）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/84801e4e/" class="title">asyncio 不完全指北（二）</a></p>
+                            <p class="item-date"><time datetime="2018-04-24T15:43:20.000Z" itemprop="datePublished">2018-04-24</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

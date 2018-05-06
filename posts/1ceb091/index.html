@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>chapter-07-AIR | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="TensorFlow" />
+    
+    <meta name="description" content="TensorFlow Linear Regression 1 亲爱的小伙伴们，上周又事情给耽搁了，这周将上周的内容一起补充一下。我们前面的内容将TensorFlow的基础内容都介绍了，所以接下来我们需要实现一些基本的算法，如果大家想跑一些现在主流的一些网络结构，大家可以移步到我的GitHub MLModel这个仓库MLModel，里面会定期更新一些主流的网络框架。喜欢的话，给个star可好。接下">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chapter-07-AIR">
+<meta property="og:url" content="http://weafteam.github.io/posts/1ceb091/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="TensorFlow Linear Regression 1 亲爱的小伙伴们，上周又事情给耽搁了，这周将上周的内容一起补充一下。我们前面的内容将TensorFlow的基础内容都介绍了，所以接下来我们需要实现一些基本的算法，如果大家想跑一些现在主流的一些网络结构，大家可以移步到我的GitHub MLModel这个仓库MLModel，里面会定期更新一些主流的网络框架。喜欢的话，给个star可好。接下">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+<meta property="og:updated_time" content="2018-05-06T06:15:34.433Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="chapter-07-AIR">
+<meta name="twitter:description" content="TensorFlow Linear Regression 1 亲爱的小伙伴们，上周又事情给耽搁了，这周将上周的内容一起补充一下。我们前面的内容将TensorFlow的基础内容都介绍了，所以接下来我们需要实现一些基本的算法，如果大家想跑一些现在主流的一些网络结构，大家可以移步到我的GitHub MLModel这个仓库MLModel，里面会定期更新一些主流的网络框架。喜欢的话，给个star可好。接下">
+<meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/TensorFlow/">TensorFlow</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-04-23/chapter-07-AIR" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        chapter-07-AIR
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/1ceb091/" class="article-date">
+            <time datetime="2018-05-06T03:29:55.000Z" itemprop="datePublished">2018-05-06</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        milittle
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/TensorFlow/">TensorFlow</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="tensorflow-linear-regression-1">TensorFlow Linear Regression 1</h1>
+<p>亲爱的小伙伴们，上周又事情给耽搁了，这周将上周的内容一起补充一下。我们前面的内容将TensorFlow的基础内容都介绍了，所以接下来我们需要实现一些基本的算法，如果大家想跑一些现在主流的一些网络结构，大家可以移步到我的GitHub MLModel这个仓库<a href="https://github.com/Milittle/MLModel" target="_blank" rel="noopener">MLModel</a>，里面会定期更新一些主流的网络框架。喜欢的话，给个star可好。接下来呢我们开始我们今天的线性回归模型的各种求解方法。</p>
+<ol type="1">
+<li>在TensorFlow中使用矩阵的逆来解决线性模型，这个解决方案，相比学过线性代数的你，都会解。</li>
+</ol>
+<p>大家可曾记得线性代数里面的线性方程组： <span class="math display">\[
+A * x + b = y
+\]</span> x就是我们要解的未知解，那x该怎么解来着？ <span class="math display">\[
+x = {(A^T  * A)}^{-1} * A^T * y - b
+\]</span> 上面的公式一下就能看出来是怎么回事对不对？</p>
+<p>推导过程： <span class="math display">\[
+第一步:A^T * A * x = A^T*y-b\\第二步：{(A^T*A)}^{-1} *{(A^T*A)} * x = {(A^T*A)}^{-1} * A^T*y-b\\第三步：左边是不是就是一个单位矩阵了？\\得到最后的结果是：x = {(A^T  * A)}^{-1} * A^T * y-b
+\]</span> 我们下面使用的A的特征维度是一维，(再加上b这个维度)这是为了可以可视化结果：在直接利用矩阵运算而得到的解对于这些数据来说，是最好的结果。也是唯一解。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 构造数据</span></span><br><span class="line">    x_vals = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">    y_vals = x_vals + np.random.normal(<span class="number">0</span>, <span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">    x_vals_column = np.transpose(np.matrix(x_vals))</span><br><span class="line">    ones_column = np.transpose(np.matrix(np.repeat(<span class="number">1</span>, <span class="number">100</span>)))</span><br><span class="line"></span><br><span class="line">    A = np.column_stack((x_vals_column, ones_column))</span><br><span class="line"></span><br><span class="line">    y = np.transpose(np.matrix(y_vals))</span><br><span class="line"></span><br><span class="line">    A_tensor = tf.constant(A)</span><br><span class="line">    y_tensor = tf.constant(y)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#利用矩阵的逆解决这个线性问题。</span></span><br><span class="line">    t_A_A = tf.matmul(tf.transpose(A_tensor), A_tensor) <span class="comment">#求矩阵转置和本身的乘积</span></span><br><span class="line">    t_A_A_inverse = tf.matrix_inverse(t_A_A) <span class="comment"># 求矩阵的逆</span></span><br><span class="line">    product = tf.matmul(t_A_A_inverse, tf.transpose(A_tensor))</span><br><span class="line">    solution = tf.matmul(product, y_tensor)</span><br><span class="line"></span><br><span class="line">    solution_eval = sess.run(solution)</span><br><span class="line"></span><br><span class="line">    W = solution_eval[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    bias = solution_eval[<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'W: '</span> + str(W))</span><br><span class="line">    print(<span class="string">'bias: '</span> + str(bias))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Get best fit line</span></span><br><span class="line">    best_fit = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> x_vals:</span><br><span class="line">        best_fit.append(W * i + bias)</span><br><span class="line">    plt.plot(x_vals, y_vals, <span class="string">'o'</span>, label = <span class="string">'data'</span>)</span><br><span class="line">    plt.plot(x_vals, best_fit, <span class="string">'r-'</span>, label = <span class="string">'best fit line'</span>, linewidth = <span class="number">3</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">'upper left'</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(_)</span>:</span></span><br><span class="line">    run()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    tf.app.run()</span><br></pre></td></tr></table></figure>
+<p>其实大家也可以看出，我们使用矩阵的逆去求线性模型是又快又准，但是你们想过没有为啥神经网络里面在求解线性回归的时候还要用到反向传播梯度下降的方式呢，给你们举个例子，假设现在一个样本有上万或者十万个特征维度，你想想我们在求解矩阵逆的时候要花费多长时间，那是你意想不到的，所以才会使用方向传播算法去解决W的求解问题。详细需要花费的时间。</p>
+<ol start="2" type="1">
+<li>第二种求解方式：Cholesky Method</li>
+</ol>
+<p><span class="math display">\[
+A*x=y
+\]</span></p>
+<p>思路如下：在Cholesky method方法中，我们需要将A分解为L和L的转置的乘积，然后再进行x的求解，为什么要这么做呢?当然是为了避免求矩阵的逆，它很耗费时间。</p>
+<p>因为A要求在求解Cholesky Depcomposition的时候是square也就是方阵。但是一般的A都不是方阵，那么我们就构造出来一个方阵： <span class="math display">\[
+A^T*A
+\]</span> 它就是一个方阵，那么我们就求A转置和A乘积的Cholesky Decomposition。</p>
+<p>首先明确分解步骤： <span class="math display">\[
+第一步：A^T*A=L^T*L\\第二步：L^T*L*x=A^T*Y\\第三步：L^T*z=A^T*Y\\where z = L*x
+\]</span> 其次明确求解步骤： <span class="math display">\[
+第一步：计算A的Cholesky Decomposition\\where A^T*A=L^T*L\\第二步：求解z，利用L^T*z=A^T*y这个公式\\第三步：求解x，利用L*x=z这个公式
+\]</span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line">ops.reset_default_graph()</span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 构造数据</span></span><br><span class="line">    x_vals = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">    y_vals = x_vals + np.random.normal(<span class="number">0</span>, <span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">    x_vals_column = np.transpose(np.matrix(x_vals))</span><br><span class="line">    ones_column = np.transpose(np.matrix(np.repeat(<span class="number">1</span>, <span class="number">100</span>)))</span><br><span class="line">    A = np.column_stack((x_vals_column, ones_column))</span><br><span class="line">    y = np.transpose(np.matrix(y_vals))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    A_tensor = tf.constant(A)</span><br><span class="line">    y_tensor = tf.constant(y)</span><br><span class="line"></span><br><span class="line">    tA_A = tf.matmul(tf.transpose(A_tensor), A_tensor)</span><br><span class="line">    L = tf.cholesky(tA_A)</span><br><span class="line"></span><br><span class="line">    tA_y = tf.matmul(tf.transpose(A_tensor), y)</span><br><span class="line">    sol1 = tf.matrix_solve(L, tA_y)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    sol2 = tf.matrix_solve(tf.transpose(L), sol1)</span><br><span class="line">    solution_eval = sess.run(sol2)</span><br><span class="line"></span><br><span class="line">    W = solution_eval[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">    bias = solution_eval[<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'slope: '</span> + str(W))</span><br><span class="line">    print(<span class="string">'y_intercept: '</span> + str(bias))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    best_fit = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> x_vals:</span><br><span class="line">        best_fit.append(W * i + bias)</span><br><span class="line">    plt.plot(x_vals, y_vals, <span class="string">'o'</span>, label=<span class="string">'Data'</span>)</span><br><span class="line">    plt.plot(x_vals, best_fit, <span class="string">'r-'</span>, label=<span class="string">'Best fit line'</span>, linewidth=<span class="number">3</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">'upper left'</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(_)</span>:</span></span><br><span class="line">    run()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    tf.app.run()</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>使用反向传播梯度下降的方式求解线性模型。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line"></span><br><span class="line">ops.reset_default_graph()</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 构造数据</span></span><br><span class="line">    batch_size = <span class="number">32</span></span><br><span class="line">    x_vals = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">100</span>)</span><br><span class="line">    y_vals = x_vals + np.random.normal(<span class="number">0</span>, <span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">    x_data = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32)</span><br><span class="line">    y_target = tf.placeholder(shape=[<span class="keyword">None</span>, <span class="number">1</span>], dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">    A = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line">    b = tf.Variable(tf.random_normal(shape=[<span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">    model_output = tf.add(tf.matmul(x_data, A), b)</span><br><span class="line">    loss = tf.reduce_mean(tf.square(y_target - model_output))</span><br><span class="line"></span><br><span class="line">    my_opt = tf.train.GradientDescentOptimizer(<span class="number">0.00001</span>)</span><br><span class="line">    train_step = my_opt.minimize(loss)</span><br><span class="line"></span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line"></span><br><span class="line">    loss_vec = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10000</span>):</span><br><span class="line">        rand_index = np.random.choice(len(x_vals), size = batch_size)</span><br><span class="line">        rand_x = np.transpose([x_vals[rand_index]])</span><br><span class="line">        rand_y = np.transpose([y_vals[rand_index]])</span><br><span class="line">        sess.run(train_step, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">        temp_loss = sess.run(loss, feed_dict=&#123;x_data: rand_x, y_target: rand_y&#125;)</span><br><span class="line">        loss_vec.append(temp_loss)</span><br><span class="line">        <span class="keyword">if</span> (i + <span class="number">1</span>) % <span class="number">25</span> == <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">'Step #'</span> + str(i + <span class="number">1</span>) + <span class="string">' A = '</span> + str(sess.run(A)) + <span class="string">' b = '</span> + str(sess.run(b)))</span><br><span class="line">            print(<span class="string">'Loss = '</span> + str(temp_loss))</span><br><span class="line"></span><br><span class="line">    [W] = sess.run(A)</span><br><span class="line">    [b] = sess.run(b)</span><br><span class="line"></span><br><span class="line">    best_fit = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> x_vals:</span><br><span class="line">        best_fit.append(W * i + b)</span><br><span class="line"></span><br><span class="line">    plt.plot(x_vals, y_vals, <span class="string">'o'</span>, label=<span class="string">'Data Points'</span>)</span><br><span class="line">    plt.plot(x_vals, best_fit, <span class="string">'r-'</span>, label=<span class="string">'Best fit line'</span>, linewidth=<span class="number">3</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">'upper left'</span>)</span><br><span class="line">    plt.title(<span class="string">'Sepal Length vs Pedal Width'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'Pedal Width'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'Sepal Length'</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">    plt.plot(loss_vec, <span class="string">'b-'</span>)</span><br><span class="line">    plt.title(<span class="string">'L2 Loss per Generation'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'Generation'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'L2 Loss'</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(_)</span>:</span></span><br><span class="line">    run()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    tf.app.run()</span><br></pre></td></tr></table></figure>
+<p>这三种方式求解的线性模型，大家都熟悉一下。有什么不确定的地方，可以发邮件给我air@weaf.top。上面的方式其实在现实里面都可以使用，只不过前两种方法，在数据维度较大的时候，计算耗时。所以才会使用梯度下降的去求最优解。这次的文章就到这里。如果哪里表述不清的地方或者错误的地方，还请大家指出。</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/839e2740/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            chapter-08-AIR
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/7eb3a479/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">asyncio 不完全指北（四）</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/839e2740/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-08-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/839e2740/" class="title">chapter-08-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:30:48.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/1ceb091/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-07-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/1ceb091/" class="title">chapter-07-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:29:55.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7eb3a479/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（四）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/7eb3a479/" class="title">asyncio 不完全指北（四）</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T14:32:16.000Z" itemprop="datePublished">2018-05-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c99ebd1c/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（三）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/c99ebd1c/" class="title">asyncio 不完全指北（三）</a></p>
+                            <p class="item-date"><time datetime="2018-05-01T03:58:22.000Z" itemprop="datePublished">2018-05-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/84801e4e/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（二）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/84801e4e/" class="title">asyncio 不完全指北（二）</a></p>
+                            <p class="item-date"><time datetime="2018-04-24T15:43:20.000Z" itemprop="datePublished">2018-04-24</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
