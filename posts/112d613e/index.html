@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>asyncio 不完全指北（五） | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="书接上文。 用协程和流实现异步 I / O 本节将重新实现 echo 服务器和客户端的两个示例程序，只不过会使用协程和 asyncio 流 API 而不是 Protocol 和 Transport 类抽象。这些示例在比前面讨论的Protocol API 更低的抽象级别上操作，但是处理的事件是相似的。 Echo 服务器 服务器程序首先导入所需的 asyncio 和 logging 模块，然后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="asyncio 不完全指北（五）">
+<meta property="og:url" content="http://weafteam.github.io/posts/112d613e/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="书接上文。 用协程和流实现异步 I / O 本节将重新实现 echo 服务器和客户端的两个示例程序，只不过会使用协程和 asyncio 流 API 而不是 Protocol 和 Transport 类抽象。这些示例在比前面讨论的Protocol API 更低的抽象级别上操作，但是处理的事件是相似的。 Echo 服务器 服务器程序首先导入所需的 asyncio 和 logging 模块，然后">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg">
+<meta property="og:updated_time" content="2018-05-13T15:11:25.901Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="asyncio 不完全指北（五）">
+<meta name="twitter:description" content="书接上文。 用协程和流实现异步 I / O 本节将重新实现 echo 服务器和客户端的两个示例程序，只不过会使用协程和 asyncio 流 API 而不是 Protocol 和 Transport 类抽象。这些示例在比前面讨论的Protocol API 更低的抽象级别上操作，但是处理的事件是相似的。 Echo 服务器 服务器程序首先导入所需的 asyncio 和 logging 模块，然后">
+<meta name="twitter:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    未分类
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-05-07/guide-to-asyncio-5" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        asyncio 不完全指北（五）
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/112d613e/" class="article-date">
+            <time datetime="2018-05-13T15:09:56.000Z" itemprop="datePublished">2018-05-13</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        MisLink
+    </div>
+
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>书接上文。</p>
+<h2 id="用协程和流实现异步-i-o">用协程和流实现异步 I / O</h2>
+<p>本节将重新实现 echo 服务器和客户端的两个示例程序，只不过会使用协程和 <code>asyncio</code> 流 API 而不是 <code>Protocol</code> 和 <code>Transport</code> 类抽象。这些示例在比前面讨论的<code>Protocol</code> API 更低的抽象级别上操作，但是处理的事件是相似的。</p>
+<h3 id="echo-服务器">Echo 服务器</h3>
+<p>服务器程序首先导入所需的 <code>asyncio</code> 和 <code>logging</code> 模块，然后创建事件循环对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">SERVER_ADDRESS = (<span class="string">'localhost'</span>, <span class="number">10000</span>)</span><br><span class="line"></span><br><span class="line">logging.basicConfig(</span><br><span class="line">    level=logging.DEBUG,</span><br><span class="line">    format=<span class="string">'%(name)s: %(message)s'</span>,</span><br><span class="line">    stream=sys.stderr,</span><br><span class="line">)</span><br><span class="line">log = logging.getLogger(<span class="string">'main'</span>)</span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br></pre></td></tr></table></figure>
+<p>然后定义一个协程来处理通信。每次客户端连接时，都会调用协程的新实例，从而在该函数中的代码一次只能与一个客户端通信。Python 的语言运行时管理每个协程实例的状态，因此应用程序代码不需要管理任何额外的数据结构来跟踪单独的客户端。</p>
+<p>协程接受的参数是与新连接关联的 <code>StreamReader</code> 和 <code>StreamWriter</code> 实例。与 <code>Transport</code> 一样，可以通过 <code>writer</code> 的 <code>get_extra_info()</code> 方法访问客户端地址：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">echo</span><span class="params">(reader, writer)</span>:</span></span><br><span class="line">    address = writer.get_extra_info(<span class="string">'peername'</span>)</span><br><span class="line">    log = logging.getLogger(<span class="string">'echo_&#123;&#125;_&#123;&#125;'</span>.format(*address))</span><br><span class="line">    log.debug(<span class="string">'connection accepted'</span>)</span><br></pre></td></tr></table></figure>
+<p>虽然在建立连接时调用协程，但可能还没有任何要读取的数据。为了避免在读取时阻塞，协程使用 <code>await read()</code> 来允许事件循环继续处理其他任务，直到有数据要读取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    data = <span class="keyword">await</span> reader.read(<span class="number">128</span>)</span><br></pre></td></tr></table></figure>
+<p>如果客户端发送了数据，则从 <code>await</code> 返回数据，并可通过将其传递给 <code>writer</code> 发送回客户端。对 <code>write()</code> 的多个调用可用于缓冲传出的数据，然后使用 <code>drain()</code> 刷新结果。由于刷新网络 I / O 可能会阻塞，因此再次使用 <code>await</code> 来恢复对事件循环的控制，事件循环监视写入 socket，并在可能发送更多数据时调用 <code>writer</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> data:</span><br><span class="line">    log.debug(<span class="string">f'received <span class="subst">&#123;data&#125;</span>'</span>)</span><br><span class="line">    writer.write(data)</span><br><span class="line">    <span class="keyword">await</span> writer.drain()</span><br><span class="line">    log.debug(<span class="string">f'sent <span class="subst">&#123;data&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>如果客户端未发送任何数据，<code>read()</code> 将返回一个空字节串，以指示连接已关闭。服务器需要关闭 socket 以写入客户端，然后 协程可以返回以指示它已完成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    log.debug(<span class="string">'closing'</span>)</span><br><span class="line">    writer.close()</span><br><span class="line">    <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+<p>启动服务器有两个步骤。首先，应用程序告诉事件循环要监听的主机名和 socket，使用协程创建新的服务器对象。 <code>start_server()</code>  方法本身就是一个协程，因此必须由事件循环处理结果才能实际启动服务器。完成协程产生了绑定到事件循环的 <code>asyncio.Server</code> 实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">factory = asyncio.start_server(echo, *SERVER_ADDRESS)</span><br><span class="line">server = event_loop.run_until_complete(factory)</span><br><span class="line">log.debug(<span class="string">'starting up on &#123;&#125; port &#123;&#125;'</span>.format(*SERVER_ADDRESS))</span><br></pre></td></tr></table></figure>
+<p>需要运行事件循环以处理事件和客户端请求。对于长期运行的服务，<code>run_forever()</code> 方法是最简单的方法。当事件循环停止时，无论是通过应用程序代码还是通过发信号通知进程，服务器都可以关闭以正确清理 socket，然后可以关闭事件循环以在程序退出之前完成对任何其他事务的处理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_forever()</span><br><span class="line"><span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    log.debug(<span class="string">'closing server'</span>)</span><br><span class="line">    server.close()</span><br><span class="line">    event_loop.run_until_complete(server.wait_closed())</span><br><span class="line">    log.debug(<span class="string">'closing event loop'</span>)</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<h3 id="echo-客户端">Echo 客户端</h3>
+<p>使用协程构建客户端非常类似于构建服务器。代码再次开始于导入 <code>asyncio</code> 和 <code>logging</code> 模块，然后创建事件循环对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">MESSAGES = [</span><br><span class="line">    <span class="string">b'This is the message. '</span>,</span><br><span class="line">    <span class="string">b'It will be sent '</span>,</span><br><span class="line">    <span class="string">b'in parts.'</span>,</span><br><span class="line">]</span><br><span class="line">SERVER_ADDRESS = (<span class="string">'localhost'</span>, <span class="number">10000</span>)</span><br><span class="line"></span><br><span class="line">logging.basicConfig(</span><br><span class="line">    level=logging.DEBUG,</span><br><span class="line">    format=<span class="string">'%(name)s: %(message)s'</span>,</span><br><span class="line">    stream=sys.stderr,</span><br><span class="line">)</span><br><span class="line">log = logging.getLogger(<span class="string">'main'</span>)</span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br></pre></td></tr></table></figure>
+<p><code>echo_client</code> 协程接受两个参数，告诉它服务器在哪里以及要发送什么消息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">echo_client</span><span class="params">(address, messages)</span>:</span></span><br></pre></td></tr></table></figure>
+<p>当任务启动时调用协程，但它没有可用的活动连接。因此，第一步是让客户端建立自己的连接。它使用 <code>await</code> 来避免在 <code>open_connection()</code> 协程运行时阻塞其他活动：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">log = logging.getLogger(<span class="string">'echo_client'</span>)</span><br><span class="line"></span><br><span class="line">log.debug(<span class="string">'connecting to &#123;&#125; port &#123;&#125;'</span>.format(*address))</span><br><span class="line">reader, writer = <span class="keyword">await</span> asyncio.open_connection(*address)</span><br></pre></td></tr></table></figure>
+<p><code>open_connection()</code> 协程返回与新 socket 关联的 <code>StreamReader</code> 和 <code>StreamWriter</code> 实例。下一步是使用 <code>writer</code> 向服务器发送数据。与服务器一样，<code>writer</code> 将缓冲传出的数据，直到 socket 就绪或使用 <code>drain()</code> 刷新结果。由于刷新网络 I / O 可能会阻塞，因此再次使用 <code>await</code> 来恢复对事件循环的控制，事件循环监视写入 socket，并在可能发送更多数据时调用 <code>writer</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> msg <span class="keyword">in</span> messages:</span><br><span class="line">    writer.write(msg)</span><br><span class="line">    log.debug(<span class="string">f'sending <span class="subst">&#123;msg&#125;</span>'</span>)</span><br><span class="line"><span class="keyword">if</span> writer.can_write_eof():</span><br><span class="line">    writer.write_eof()</span><br><span class="line"><span class="keyword">await</span> writer.drain()</span><br></pre></td></tr></table></figure>
+<p>接下来，客户端通过尝试读取数据直到没有要读取的内容来获取来自服务器的响应。为了避免阻塞单个 <code>read()</code> 调用，<code>await</code> 将控制权交还给事件循环。如果服务器已发送数据，则会记录数据。如果服务器未发送任何数据，<code>read()</code> 将返回一个空字节串，指示连接已关闭。客户端需要关闭 socket 以发送到服务器，然后返回以指示已完成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">log.debug(<span class="string">'waiting for response'</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    data = <span class="keyword">await</span> reader.read(<span class="number">128</span>)</span><br><span class="line">    <span class="keyword">if</span> data:</span><br><span class="line">        log.debug(<span class="string">f'received <span class="subst">&#123;data&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        log.debug(<span class="string">'closing'</span>)</span><br><span class="line">        writer.close()</span><br><span class="line">        <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+<p>要启动客户端，使用协程调用事件循环以创建客户端。使用 <code>run_until_complete()</code>  可避免客户端程序中出现无限循环。与<code>Protocol</code> 示例不同，协程完成时不需要单独的 <code>future</code> 发出信号，因为 <code>echo_client()</code> 包含所有客户端逻辑本身，并且在收到响应并关闭服务器连接之前不会返回：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(echo_client(SERVER_ADDRESS, MESSAGES))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    log.debug(<span class="string">'closing event loop'</span>)</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<h3 id="输出">输出</h3>
+<p>在一个窗口中运行服务器而在另一个窗口中运行客户端。</p>
+<p>客户端将产生以下输出：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">asyncio: Using selector: SelectSelector</span><br><span class="line">echo_client: connecting to localhost port 10000</span><br><span class="line">echo_client: sending b'This is the message. '</span><br><span class="line">echo_client: sending b'It will be sent '</span><br><span class="line">echo_client: sending b'in parts.'</span><br><span class="line">echo_client: waiting for response</span><br><span class="line">echo_client: received b'This is the message. It will be sent in parts.'</span><br><span class="line">echo_client: closing</span><br><span class="line">main: closing event loop</span><br></pre></td></tr></table></figure>
+<p>虽然客户端总是单独发送消息，但客户端第一次运行时，服务器会收到一条大消息，并将该消息返回给客户端。根据网络的繁忙程度以及是否在准备所有数据之前刷新网络缓冲区，这些结果在后续运行中会有所不同：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">asyncio: Using selector: SelectSelector</span><br><span class="line">main: starting up on localhost port 10000</span><br><span class="line">echo_::1_11075: connection accepted</span><br><span class="line">echo_::1_11075: received b'This is the message. It will be sent in parts.'</span><br><span class="line">echo_::1_11075: sent b'This is the message. It will be sent in parts.'</span><br><span class="line">echo_::1_11075: closing</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">echo_::1_11200: connection accepted</span><br><span class="line">echo_::1_11200: received b'This is the message. It will be sent '</span><br><span class="line">echo_::1_11200: sent b'This is the message. It will be sent '</span><br><span class="line">echo_::1_11200: received b'in parts.'</span><br><span class="line">echo_::1_11200: sent b'in parts.'</span><br><span class="line">echo_::1_11200: closing</span><br></pre></td></tr></table></figure>
+<h2 id="与子进程协作">与子进程协作</h2>
+<p>为了利用现有代码而不重写，或者访问 Python 中不可用的库或功能，我们经常需要使用其他程序或进程。与网络 I / O 一样，<code>asyncio</code> 包括两个抽象，用于启动另一个程序，然后与它交互。</p>
+<h3 id="使用子进程的-protocol-抽象">使用子进程的 Protocol 抽象</h3>
+<p>这个例子使用协程启动一个进程来运行 Unix 命令 <code>df</code>，以便查看在本地磁盘上的可用空间。它使用 <code>subprocess_exec()</code> 启动进程，并将其绑定到知道如何读取 <code>df</code> 命令输出并对其进行分析的 <code>Protocol</code> 类。<code>Protocol</code> 类的方法是根据子进程的 I / O 事件自动调用的。因为 <code>stdin</code> 和 <code>stderr</code> 参数都设置为 <code>None</code>，所以这些通信通道不会连接到新进程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">run_df</span><span class="params">(loop)</span>:</span></span><br><span class="line">    print(<span class="string">'in run_df'</span>)</span><br><span class="line"></span><br><span class="line">    cmd_done = asyncio.Future(loop=loop)</span><br><span class="line">    factory = functools.partial(DFProtocol, cmd_done)</span><br><span class="line">    proc = loop.subprocess_exec(</span><br><span class="line">        factory,</span><br><span class="line">        <span class="string">'df'</span>,</span><br><span class="line">        <span class="string">'-hl'</span>,</span><br><span class="line">        stdin=<span class="keyword">None</span>,</span><br><span class="line">        stderr=<span class="keyword">None</span>,</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        print(<span class="string">'launching process'</span>)</span><br><span class="line">        transport, protocol = <span class="keyword">await</span> proc</span><br><span class="line">        print(<span class="string">'waiting for process to complete'</span>)</span><br><span class="line">        <span class="keyword">await</span> cmd_done</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        transport.close()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> cmd_done.result()</span><br></pre></td></tr></table></figure>
+<p>类 <code>DFProtocol</code> 继承自 <code>SubprocessProtocol</code>，该 <code>Protocol</code> 定义了类通过管道与另一进程通信的 API。<code>done</code> 参数是调用者用来监视进程是否完成的 <code>future</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DFProtocol</span><span class="params">(asyncio.SubprocessProtocol)</span>:</span></span><br><span class="line"></span><br><span class="line">    FD_NAMES = [<span class="string">'stdin'</span>, <span class="string">'stdout'</span>, <span class="string">'stderr'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, done_future)</span>:</span></span><br><span class="line">        self.done = done_future</span><br><span class="line">        self.buffer = bytearray()</span><br><span class="line">        super().__init__()</span><br></pre></td></tr></table></figure>
+<p>与 socket 通信一样，在设置新进程的输入通道时调用 <code>connection_made()</code>。<code>transport</code> 参数是 <code>BaseSubprocessTransport</code> 子类的一个实例。如果进程被配置为接收输入，则它可以读取进程输出的数据并将数据写入进程的输入流：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">connection_made</span><span class="params">(self, transport)</span>:</span></span><br><span class="line">    print(<span class="string">f'process started <span class="subst">&#123;transport.get_pid()&#125;</span>'</span>)</span><br><span class="line">    self.transport = transport</span><br></pre></td></tr></table></figure>
+<p>当进程生成输出时，<code>pipe_data_received()</code> 将使用发送数据的文件描述符和从管道读取的实际数据作为参数调用。<code>Protocol</code>类将进程的标准输出通道的输出保存在缓冲区中，以供以后处理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pipe_data_received</span><span class="params">(self, fd, data)</span>:</span></span><br><span class="line">    print(<span class="string">f'read <span class="subst">&#123;len(data)&#125;</span> bytes from <span class="subst">&#123;self.FD_NAMES[fd]&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">if</span> fd == <span class="number">1</span>:</span><br><span class="line">        self.buffer.extend(data)</span><br></pre></td></tr></table></figure>
+<p>当进程终止时，<code>process_exited()</code> 将被调用。通过调用 <code>get_returncode()</code> 可以从 <code>transport</code> 对象获得进程的退出代码。在这种情况下，如果没有报告错误，则可以在通过 <code>future</code> 实例返回可用输出之前对其进行解码和分析。如果出现错误，则结果为空。设置 <code>future</code> 的结果会告诉 <code>run_df()</code> 进程已退出，因此它会清理并返回结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_exited</span><span class="params">(self)</span>:</span></span><br><span class="line">    print(<span class="string">'process exited'</span>)</span><br><span class="line">    return_code = self.transport.get_returncode()</span><br><span class="line">    print(<span class="string">f'return code <span class="subst">&#123;return_code&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> return_code:</span><br><span class="line">        cmd_output = bytes(self.buffer).decode()</span><br><span class="line">        results = self._parse_results(cmd_output)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        results = []</span><br><span class="line">    self.done.set_result((return_code, results))</span><br></pre></td></tr></table></figure>
+<p>命令的输出被解析成一系列字典，将每行输出的标题名称映射到值，并返回结果列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_parse_results</span><span class="params">(self, output)</span>:</span></span><br><span class="line">    print(<span class="string">'parsing results'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> output:</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line">    lines = output.splitlines()</span><br><span class="line">    headers = lines[<span class="number">0</span>].split()</span><br><span class="line">    devices = lines[<span class="number">1</span>:]</span><br><span class="line">    results = [dict(zip(headers, line.split())) <span class="keyword">for</span> line <span class="keyword">in</span> devices]</span><br><span class="line">    <span class="keyword">return</span> results</span><br></pre></td></tr></table></figure>
+<p><code>run_df()</code> 协程使用 <code>run_until_complete()</code> 运行，然后检查结果并打印每个设备上的可用空间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    return_code, results = event_loop.run_until_complete(run_df(event_loop))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> return_code:</span><br><span class="line">    print(<span class="string">f'error exit <span class="subst">&#123;return_code&#125;</span>'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'\nFree space:'</span>)</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> results:</span><br><span class="line">        print(<span class="string">f'<span class="subst">&#123;r[<span class="string">"Mounted"</span>]:<span class="number">25</span>&#125;</span>: <span class="subst">&#123;r[<span class="string">"Avail"</span>]&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>下面的输出显示了执行步骤的顺序，以及系统中驱动器的可用空间：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">in run_df</span><br><span class="line">launching process</span><br><span class="line">process started 6170</span><br><span class="line">waiting for process to complete</span><br><span class="line">read 375 bytes from stdout</span><br><span class="line">process exited</span><br><span class="line">return code 0</span><br><span class="line">parsing results</span><br><span class="line"></span><br><span class="line">Free space:</span><br><span class="line">/                        : 41G</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="用协程和流调用子进程">用协程和流调用子进程</h3>
+<p>若要使用协程直接运行进程，而不是通过 <code>Protocol</code> 子类访问进程，请调用 <code>create_subprocess_exec()</code>，并指定一个连接到管道的标准输出、标准错误和标准输入。产生子进程的协程的结果是一个 <code>Process</code> 实例，可用于操作子进程或与其通信：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> asyncio.subprocess</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">run_df</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'in run_df'</span>)</span><br><span class="line"></span><br><span class="line">    buffer = bytearray()</span><br><span class="line"></span><br><span class="line">    create = asyncio.create_subprocess_exec(</span><br><span class="line">        <span class="string">'df'</span>,</span><br><span class="line">        <span class="string">'-hl'</span>,</span><br><span class="line">        stdout=asyncio.subprocess.PIPE,</span><br><span class="line">    )</span><br><span class="line">    print(<span class="string">'launching process'</span>)</span><br><span class="line">    proc = <span class="keyword">await</span> create</span><br><span class="line">    print(<span class="string">f'process started <span class="subst">&#123;proc.pid&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，<code>df</code> 除了命令行参数之外不需要任何输入，因此下一步是读取所有输出。对于 <code>Protocol</code>，无法控制一次读取多少数据。这个例子中使用了 <code>readline()</code>，但也可以直接调用 <code>read()</code> 读取不是按行组织的数据。命令的输出被缓冲，就像 <code>Protocol</code> 示例一样，因此稍后可以对其进行分析：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    line = <span class="keyword">await</span> proc.stdout.readline()</span><br><span class="line">    print(<span class="string">f'read <span class="subst">&#123;line!r&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> line:</span><br><span class="line">        print(<span class="string">'no more output from command'</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    buffer.extend(line)</span><br></pre></td></tr></table></figure>
+<p><code>readline()</code> 方法在程序已完成不再有输出时返回空字节串。为确保正确清除进程，下一步是等待进程完全退出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'waiting for process to complete'</span>)</span><br><span class="line"><span class="keyword">await</span> proc.wait()</span><br></pre></td></tr></table></figure>
+<p>此时可以检查退出状态，以确定是解析输出还是将错误视为未生成输出。解析逻辑与前面的示例相同，但处于独立函数中，因为没有可以包装它的 <code>Protocol</code> 类。解析数据后，结果和退出代码将返回给调用方：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">return_code = proc.returncode</span><br><span class="line">print(<span class="string">f'return code <span class="subst">&#123;return_code&#125;</span>'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> return_code:</span><br><span class="line">    cmd_output = bytes(buffer).decode()</span><br><span class="line">    results = _parse_results(cmd_output)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    results = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> (return_code, results)</span><br></pre></td></tr></table></figure>
+<p>主程序看起来类似于基于 <code>Protocol</code> 的示例，因为实现的改变被隔离在 <code>run_df()</code> 中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    return_code, results = event_loop.run_until_complete(run_df())</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> return_code:</span><br><span class="line">    print(<span class="string">f'error exit <span class="subst">&#123;return_code&#125;</span>'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'\nFree space:'</span>)</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> results:</span><br><span class="line">        print(<span class="string">f'<span class="subst">&#123;r[<span class="string">"Mounted"</span>]:<span class="number">25</span>&#125;</span>: <span class="subst">&#123;r[<span class="string">"Avail"</span>]&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>由于 <code>df</code> 的输出可以一次读取一行，因此它将显示程序的进度。否则，输出看起来与前面的示例类似：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">in run_df</span><br><span class="line">launching process</span><br><span class="line">process started 7354</span><br><span class="line">read b'Filesystem      Size  Used Avail Use% Mounted on\n'</span><br><span class="line">read b'/dev/vda1        50G  6.0G   41G  13% /\n'</span><br><span class="line">...</span><br><span class="line">read b''</span><br><span class="line">no more output from command</span><br><span class="line">waiting for process to complete</span><br><span class="line">return code 0</span><br><span class="line">parsing results</span><br><span class="line"></span><br><span class="line">Free space:</span><br><span class="line">/                        : 41G</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="向子进程发送数据">向子进程发送数据</h3>
+<p>前面的两个示例都仅使用单个通信信道来从子进程读取数据。通常需要将数据发送到命令中进行处理。下面将定义一个协程，用于执行 Unix 命令 <code>tr</code> 以转换其输入流中的字符。这个例子中<code>tr</code> 用于将小写字母转换为大写字母。</p>
+<p><code>to_upper()</code> 协程将输入字符串作为参数。它产生运行 <code>tr [:lower:] [:upper:]</code> 的子进程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> asyncio.subprocess</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">to_upper</span><span class="params">(input)</span>:</span></span><br><span class="line">    print(<span class="string">'in to_upper'</span>)</span><br><span class="line"></span><br><span class="line">    create = asyncio.create_subprocess_exec(</span><br><span class="line">        <span class="string">'tr'</span>,</span><br><span class="line">        <span class="string">'[:lower:]'</span>,</span><br><span class="line">        <span class="string">'[:upper:]'</span>,</span><br><span class="line">        stdout=asyncio.subprocess.PIPE,</span><br><span class="line">        stdin=asyncio.subprocess.PIPE,</span><br><span class="line">    )</span><br><span class="line">    print(<span class="string">'launching process'</span>)</span><br><span class="line">    proc = <span class="keyword">await</span> create</span><br><span class="line">    print(<span class="string">f'pid <span class="subst">&#123;proc.pid&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>接下来 <code>to_upper()</code> 使用 <code>Process</code> 的 <code>communicate()</code> 方法将输入字符串发送到命令，并异步读取所有生成的输出。与 <code>subprocess.Popen</code> 版本的方法相同，<code>communicate()</code>  返回完整的输出字节串。如果一个命令可能产生的数据超出了可以充裕的放入内存的范围，或者无法一次产生输入，或者必须增量处理输出，则可以直接使用进程的 <code>stdin</code>、<code>stdout</code> 和 <code>stderr</code> 句柄，而不是调用 <code>communicate()</code> ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'communicating with process'</span>)</span><br><span class="line">stdout, stderr = <span class="keyword">await</span> proc.communicate(input.encode())</span><br></pre></td></tr></table></figure>
+<p>I / O 完成后，等待进程完全退出可确保进程得到正确清理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'waiting for process to complete'</span>)</span><br><span class="line"><span class="keyword">await</span> proc.wait()</span><br></pre></td></tr></table></figure>
+<p>然后可以检查返回代码，并对输出字节串进行解码，以准备协程的返回值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">return_code = proc.returncode</span><br><span class="line">print(<span class="string">f'return code <span class="subst">&#123;return_code&#125;</span>'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> return_code:</span><br><span class="line">    results = bytes(stdout).decode()</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    results = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> (return_code, results)</span><br></pre></td></tr></table></figure>
+<p>程序的主要部分构建要转换的消息字符串，然后设置事件循环以运行 <code>to_upper()</code> 并打印结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">MESSAGE = <span class="string">"""</span></span><br><span class="line"><span class="string">This message will be converted</span></span><br><span class="line"><span class="string">to all caps.</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    return_code, results = event_loop.run_until_complete(to_upper(MESSAGE))</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> return_code:</span><br><span class="line">    print(<span class="string">f'error exit <span class="subst">&#123;return_code&#125;</span>'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">f'Original: <span class="subst">&#123;MESSAGE!r&#125;</span>'</span>.format(MESSAGE))</span><br><span class="line">    print(<span class="string">f'Changed : <span class="subst">&#123;results!r&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>输出显示操作序列，然后显示如何转换简单文本消息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">in to_upper</span><br><span class="line">launching process</span><br><span class="line">pid 12428</span><br><span class="line">communicating with process</span><br><span class="line">waiting for process to complete</span><br><span class="line">return code 0</span><br><span class="line">Original: '\nThis message will be converted\nto all caps.\n'</span><br><span class="line">Changed : '\nTHIS MESSAGE WILL BE CONVERTED\nTO ALL CAPS.\n'</span><br></pre></td></tr></table></figure>
+<h2 id="接收-unix-信号">接收 Unix 信号</h2>
+<p>UNIX 系统事件通知通常会中断应用程序，从而触发其处理程序。当与 <code>asyncio</code> 一起使用时，信号处理程序回调与事件循环管理的其他协程和回调交错执行。这导致中断函数较少，因此需要提供安全防护来清理不完整的操作。</p>
+<p>信号处理程序必须是常规的可调用程序，而不是协程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> signal</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">signal_handler</span><span class="params">(name)</span>:</span></span><br><span class="line">    print(<span class="string">f'signal_handler(<span class="subst">&#123;name!r&#125;</span>)'</span>)</span><br></pre></td></tr></table></figure>
+<p>信号处理程序是使用 <code>add_signal_handler()</code> 注册的。第一个参数是信号，第二个参数是回调。回调不传递参数，因此如果需要参数，可以使用 <code>functools.partical()</code> 包装函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line">event_loop.add_signal_handler(</span><br><span class="line">    signal.SIGHUP,</span><br><span class="line">    functools.partial(signal_handler, name=<span class="string">'SIGHUP'</span>),</span><br><span class="line">)</span><br><span class="line">event_loop.add_signal_handler(</span><br><span class="line">    signal.SIGUSR1,</span><br><span class="line">    functools.partial(signal_handler, name=<span class="string">'SIGUSR1'</span>),</span><br><span class="line">)</span><br><span class="line">event_loop.add_signal_handler(</span><br><span class="line">    signal.SIGINT,</span><br><span class="line">    functools.partial(signal_handler, name=<span class="string">'SIGINT'</span>),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>本示例程序使用协程通过 <code>os.kill()</code> 向自身发送信号。在发送每个信号之后，协程将让出控制权以允许处理程序执行。在一个正常的应用程序中，会有很多应用程序代码让步给事件循环的地方，而不需要这样的人工让步：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">send_signals</span><span class="params">()</span>:</span></span><br><span class="line">    pid = os.getpid()</span><br><span class="line">    print(<span class="string">f'starting send_signals for <span class="subst">&#123;pid&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> name <span class="keyword">in</span> [<span class="string">'SIGHUP'</span>, <span class="string">'SIGHUP'</span>, <span class="string">'SIGUSR1'</span>, <span class="string">'SIGINT'</span>]:</span><br><span class="line">        print(<span class="string">f'sending <span class="subst">&#123;name&#125;</span>'</span>)</span><br><span class="line">        os.kill(pid, getattr(signal, name))</span><br><span class="line">        print(<span class="string">'yielding control'</span>)</span><br><span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">0.01</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+<p>主程序运行 <code>send_signals()</code>，直到它发送完所有信号：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    event_loop.run_until_complete(send_signals())</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>输出显示当 <code>send_signals()</code> 在发送信号后让出控制时如何调用处理程序：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">starting send_signals for 23185</span><br><span class="line">sending SIGHUP</span><br><span class="line">yielding control</span><br><span class="line">signal_handler('SIGHUP')</span><br><span class="line">sending SIGHUP</span><br><span class="line">yielding control</span><br><span class="line">signal_handler('SIGHUP')</span><br><span class="line">sending SIGUSR1</span><br><span class="line">yielding control</span><br><span class="line">signal_handler('SIGUSR1')</span><br><span class="line">sending SIGINT</span><br><span class="line">yielding control</span><br><span class="line">signal_handler('SIGINT')</span><br></pre></td></tr></table></figure>
+<h2 id="将协程与线程和进程相结合">将协程与线程和进程相结合</h2>
+<p>许多现有库尚未准备好与 <code>asyncio</code> 配合使用。它们可能会阻塞或依赖模块中不可用的并发功能。通过使用来自 <code>concurrent.futures</code> 的 <code>executor</code> 在单独的线程或单独的进程中运行代码，仍然可以在基于 <code>asyncio</code> 的应用程序中使用这些库。</p>
+<h3 id="线程">线程</h3>
+<p>事件循环的 <code>run_in_executor()</code> 方法接受的参数为 <code>executor</code> 实例，要调用的常规可调用对象以及要传递给可调用对象的任何参数。它返回一个可用于等待函数完成其工作并返回某些内容的 <code>future</code>。如果没有传入 <code>executor</code>，则会创建 <code>ThreadPoolExecutor</code>。此示例显式创建一个 <code>executor</code>，以限制可用的工作线程数。</p>
+<p><code>ThreadPoolExecutor</code>启动其工作线程，然后在线程中调用每个提供的函数一次。此示例说明如何将 <code>run_in_executor()</code> 和 <code>wait()</code> 组合起来，以便在阻塞单独线程中运行的函数的同时，对事件循环具有协程让步控制，然后在这些函数完成时将其唤醒：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> concurrent.futures</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">blocks</span><span class="params">(n)</span>:</span></span><br><span class="line">    log = logging.getLogger(<span class="string">f'blocks(<span class="subst">&#123;n&#125;</span>)'</span>)</span><br><span class="line">    log.info(<span class="string">'running'</span>)</span><br><span class="line">    time.sleep(<span class="number">0.1</span>)</span><br><span class="line">    log.info(<span class="string">'done'</span>)</span><br><span class="line">    <span class="keyword">return</span> n**<span class="number">2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">run_blocking_tasks</span><span class="params">(executor)</span>:</span></span><br><span class="line">    log = logging.getLogger(<span class="string">'run_blocking_tasks'</span>)</span><br><span class="line">    log.info(<span class="string">'starting'</span>)</span><br><span class="line"></span><br><span class="line">    log.info(<span class="string">'creating executor tasks'</span>)</span><br><span class="line">    loop = asyncio.get_event_loop()</span><br><span class="line">    blocking_tasks = [loop.run_in_executor(executor, blocks, i) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>)]</span><br><span class="line">    log.info(<span class="string">'waiting for executor tasks'</span>)</span><br><span class="line">    completed, pending = <span class="keyword">await</span> asyncio.wait(blocking_tasks)</span><br><span class="line">    results = [t.result() <span class="keyword">for</span> t <span class="keyword">in</span> completed]</span><br><span class="line">    log.info(<span class="string">f'results: <span class="subst">&#123;results!r&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line">    log.info(<span class="string">'exiting'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    logging.basicConfig(</span><br><span class="line">        level=logging.INFO,</span><br><span class="line">        format=<span class="string">'%(threadName)10s %(name)18s: %(message)s'</span>,</span><br><span class="line">        stream=sys.stderr,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    executor = concurrent.futures.ThreadPoolExecutor(max_workers=<span class="number">3</span>,)</span><br><span class="line"></span><br><span class="line">    event_loop = asyncio.get_event_loop()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        event_loop.run_until_complete(run_blocking_tasks(executor))</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>这个程序使用 <code>logging</code> 来方便地指示哪些线程和函数正在生成的日志消息。因为每次调用 <code>blocks()</code> 时使用单独的 <code>Logger</code>，所以输出清楚地显示了相同的线程被重用，以调用具有不同参数的函数的多个副本：</p>
+<p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">MainThread run_blocking_tasks: starting</span><br><span class="line">MainThread run_blocking_tasks: creating executor tasks</span><br><span class="line">ThreadPoolExecutor-0_0          blocks(0): running</span><br><span class="line">ThreadPoolExecutor-0_1          blocks(1): running</span><br><span class="line">ThreadPoolExecutor-0_2          blocks(2): running</span><br><span class="line">MainThread run_blocking_tasks: waiting for executor tasks</span><br><span class="line">ThreadPoolExecutor-0_0          blocks(0): done</span><br><span class="line">ThreadPoolExecutor-0_0          blocks(3): running</span><br><span class="line">ThreadPoolExecutor-0_1          blocks(1): done</span><br><span class="line">ThreadPoolExecutor-0_2          blocks(2): done</span><br><span class="line">ThreadPoolExecutor-0_1          blocks(4): running</span><br><span class="line">ThreadPoolExecutor-0_2          blocks(5): running</span><br><span class="line">ThreadPoolExecutor-0_0          blocks(3): done</span><br><span class="line">ThreadPoolExecutor-0_1          blocks(4): done</span><br><span class="line">ThreadPoolExecutor-0_2          blocks(5): done</span><br><span class="line">MainThread run_blocking_tasks: results: [16, 25, 1, 4, 0, 9]</span><br><span class="line">MainThread run_blocking_tasks: exiting</span><br></pre></td></tr></table></figure></p>
+<h3 id="进程">进程</h3>
+<p><code>ProcessPoolExecutor</code> 的工作方式大致相同，它创建一组工作进程而不是线程。使用单独的进程需要更多的系统资源，但是对于计算密集型操作，在每个 CPU 内核上运行单独的任务是有意义的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    logging.basicConfig(</span><br><span class="line">        level=logging.INFO,</span><br><span class="line">        format=<span class="string">'PID %(process)5s %(name)18s: %(message)s'</span>,</span><br><span class="line">        stream=sys.stderr,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    executor = concurrent.futures.ProcessPoolExecutor(max_workers=<span class="number">3</span>,)</span><br><span class="line"></span><br><span class="line">    event_loop = asyncio.get_event_loop()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        event_loop.run_until_complete(run_blocking_tasks(executor))</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        event_loop.close()</span><br></pre></td></tr></table></figure>
+<p>从线程转移到进程所需的唯一更改是创建不同类型的 <code>executor</code>。本示例还将日志记录格式更改为包含进程 id 而不是线程名称，以证明任务实际上正在单独的进程中运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">PID 24417 run_blocking_tasks: starting</span><br><span class="line">PID 24417 run_blocking_tasks: creating executor tasks</span><br><span class="line">PID 24417 run_blocking_tasks: waiting for executor tasks</span><br><span class="line">PID 24461          blocks(0): running</span><br><span class="line">PID 24460          blocks(1): running</span><br><span class="line">PID 24459          blocks(2): running</span><br><span class="line">PID 24460          blocks(1): done</span><br><span class="line">PID 24459          blocks(2): done</span><br><span class="line">PID 24460          blocks(3): running</span><br><span class="line">PID 24461          blocks(0): done</span><br><span class="line">PID 24459          blocks(4): running</span><br><span class="line">PID 24461          blocks(5): running</span><br><span class="line">PID 24460          blocks(3): done</span><br><span class="line">PID 24459          blocks(4): done</span><br><span class="line">PID 24461          blocks(5): done</span><br><span class="line">PID 24417 run_blocking_tasks: results: [16, 1, 25, 0, 4, 9]</span><br><span class="line">PID 24417 run_blocking_tasks: exiting</span><br></pre></td></tr></table></figure>
+<h2 id="调试">调试</h2>
+<p><code>asyncio</code> 内置了几个有用的调试功能。</p>
+<p>首先，事件循环使用 <code>logging</code> 在运行时发出状态消息。如果在应用程序中启用了日志记录，则其中一些是可用的。其他的可以通过告诉循环发出更多调试消息来打开。调用 <code>set_debug()</code>，传递一个布尔值，指示是否应启用调试。</p>
+<p>由于基于 <code>asyncio</code> 构建的应用程序对无法让出控制的“贪婪”协程非常敏感，因此支持检测事件循环中的缓慢回调。通过启用调试将其打开，并通过将循环的 <code>slow_callback_duration</code> 属性设置为应发出警告的秒数来定义 “缓慢”。</p>
+<p>最后，如果使用 <code>asyncio</code> 的应用程序在不清理某些协程或其他资源的情况下退出，这可能意味着存在逻辑错误，无法运行某些应用程序代码。启用 <code>ResourceWarning</code> 警告会在程序退出时报告这些情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line">parser = argparse.ArgumentParser(<span class="string">'debugging asyncio'</span>)</span><br><span class="line">parser.add_argument(</span><br><span class="line">    <span class="string">'-v'</span>,</span><br><span class="line">    dest=<span class="string">'verbose'</span>,</span><br><span class="line">    default=<span class="keyword">False</span>,</span><br><span class="line">    action=<span class="string">'store_true'</span>,</span><br><span class="line">)</span><br><span class="line">args = parser.parse_args()</span><br><span class="line"></span><br><span class="line">logging.basicConfig(</span><br><span class="line">    level=logging.DEBUG,</span><br><span class="line">    format=<span class="string">'%(levelname)7s: %(message)s'</span>,</span><br><span class="line">    stream=sys.stderr,</span><br><span class="line">)</span><br><span class="line">LOG = logging.getLogger(<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">    LOG.info(<span class="string">'inner starting'</span>)</span><br><span class="line">    <span class="comment"># 模拟缓慢的任务</span></span><br><span class="line">    time.sleep(<span class="number">0.1</span>)</span><br><span class="line">    LOG.info(<span class="string">'inner completed'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">(loop)</span>:</span></span><br><span class="line">    LOG.info(<span class="string">'outer starting'</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.ensure_future(loop.create_task(inner()))</span><br><span class="line">    LOG.info(<span class="string">'outer completed'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">event_loop = asyncio.get_event_loop()</span><br><span class="line"><span class="keyword">if</span> args.verbose:</span><br><span class="line">    LOG.info(<span class="string">'enabling debugging'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 启用调试</span></span><br><span class="line">    event_loop.set_debug(<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义一个很小阈值表示“缓慢”</span></span><br><span class="line">    event_loop.slow_callback_duration = <span class="number">0.001</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 报告管理异步资源的所有错误</span></span><br><span class="line">    warnings.simplefilter(<span class="string">'always'</span>, ResourceWarning)</span><br><span class="line"></span><br><span class="line">LOG.info(<span class="string">'entering event loop'</span>)</span><br><span class="line">event_loop.run_until_complete(outer(event_loop))</span><br></pre></td></tr></table></figure>
+<p>在未启用调试的情况下运行时，此应用程序的所有内容看起来都很好：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DEBUG: Using selector: SelectSelector</span><br><span class="line"> INFO: entering event loop</span><br><span class="line"> INFO: outer starting</span><br><span class="line"> INFO: inner starting</span><br><span class="line"> INFO: inner completed</span><br><span class="line"> INFO: outer completed</span><br></pre></td></tr></table></figure>
+<p>开启调试会暴露出一些问题，包括 <code>inner()</code> 完成所花的时间比设定的 <code>slow_callback_duration</code> 还要长，而且当程序结束时，事件循环并未正确关闭：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  DEBUG: Using selector: SelectSelector</span><br><span class="line">   INFO: enabling debugging</span><br><span class="line">   INFO: entering event loop</span><br><span class="line">   INFO: outer starting</span><br><span class="line">   INFO: inner starting</span><br><span class="line">   INFO: inner completed</span><br><span class="line">WARNING: Executing &lt;Task finished coro=&lt;inner() done, defined at *.py:25&gt; result=None created at *.py:33&gt; took 0.093 seconds</span><br><span class="line">   INFO: outer completed</span><br></pre></td></tr></table></figure>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/posts/839e2740/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">chapter-08-AIR</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/112d613e/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（五）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/112d613e/" class="title">asyncio 不完全指北（五）</a></p>
+                            <p class="item-date"><time datetime="2018-05-13T15:09:56.000Z" itemprop="datePublished">2018-05-13</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/839e2740/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-08-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/839e2740/" class="title">chapter-08-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:30:48.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/1ceb091/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-07-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/1ceb091/" class="title">chapter-07-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-06T03:29:55.000Z" itemprop="datePublished">2018-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/7eb3a479/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（四）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/7eb3a479/" class="title">asyncio 不完全指北（四）</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T14:32:16.000Z" itemprop="datePublished">2018-05-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c99ebd1c/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（三）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/c99ebd1c/" class="title">asyncio 不完全指北（三）</a></p>
+                            <p class="item-date"><time datetime="2018-05-01T03:58:22.000Z" itemprop="datePublished">2018-05-01</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
