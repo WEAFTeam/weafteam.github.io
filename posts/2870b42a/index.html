@@ -3,26 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>修改pip全局镜像 | WEAF 周刊</title>
+    <title>Java中String、StringBuffer与StringBuilder的区别 | WEAF 周刊</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="TensorFlow" />
+        <meta name="keywords" content="面试" />
     
-    <meta name="description" content="修改pip全局镜像 第一次我们在windows上面安装了Anaconda，在使用pip安装Tensorflow中速度过慢，所以我为大家介绍一中修改全局pip源的方法（这样在使用pip下载依赖库的时候就会快一些）：  打开用户主目录：我的是C:\Users\milittle。 在里面新建pip文件夹，在pip文件夹中建立pip.ini文件。 在pip.ini文件中添加如下配置信息，我使用的">
-<meta name="keywords" content="TensorFlow">
+    <meta name="description" content="最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。  下面开始本次的内容整理吧~ String 首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存">
+<meta name="keywords" content="面试">
 <meta property="og:type" content="article">
-<meta property="og:title" content="修改pip全局镜像">
-<meta property="og:url" content="http://weafteam.github.io/posts/233074e6/index.html">
+<meta property="og:title" content="Java中String、StringBuffer与StringBuilder的区别">
+<meta property="og:url" content="http://weafteam.github.io/posts/2870b42a/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
-<meta property="og:description" content="修改pip全局镜像 第一次我们在windows上面安装了Anaconda，在使用pip安装Tensorflow中速度过慢，所以我为大家介绍一中修改全局pip源的方法（这样在使用pip下载依赖库的时候就会快一些）：  打开用户主目录：我的是C:\Users\milittle。 在里面新建pip文件夹，在pip文件夹中建立pip.ini文件。 在pip.ini文件中添加如下配置信息，我使用的">
+<meta property="og:description" content="最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。  下面开始本次的内容整理吧~ String 首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
-<meta property="og:updated_time" content="2018-04-10T08:57:00.655Z">
+<meta property="og:image" content="https://i.loli.net/2018/05/06/5aee68d9a096b.png">
+<meta property="og:updated_time" content="2018-05-06T02:35:14.424Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="修改pip全局镜像">
-<meta name="twitter:description" content="修改pip全局镜像 第一次我们在windows上面安装了Anaconda，在使用pip安装Tensorflow中速度过慢，所以我为大家介绍一中修改全局pip源的方法（这样在使用pip下载依赖库的时候就会快一些）：  打开用户主目录：我的是C:\Users\milittle。 在里面新建pip文件夹，在pip文件夹中建立pip.ini文件。 在pip.ini文件中添加如下配置信息，我使用的">
-<meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+<meta name="twitter:title" content="Java中String、StringBuffer与StringBuilder的区别">
+<meta name="twitter:description" content="最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。  下面开始本次的内容整理吧~ String 首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存">
+<meta name="twitter:image" content="https://i.loli.net/2018/05/06/5aee68d9a096b.png">
     
 
     
@@ -129,18 +129,18 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <a class="page-title-link" href="/categories/TensorFlow/">TensorFlow</a>
+    <a class="page-title-link" href="/categories/JAVA/">JAVA</a>
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-2018-03-26/alterM" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-2018-04-23/Java中String、StringBuffer与StringBuilder的区别" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        修改pip全局镜像
+        Java中String、StringBuffer与StringBuilder的区别
         </h1>
     
 
@@ -150,39 +150,59 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/posts/233074e6/" class="article-date">
-            <time datetime="2018-03-27T12:29:36.000Z" itemprop="datePublished">2018-03-27</time>
+        <a href="/posts/2870b42a/" class="article-date">
+            <time datetime="2018-05-03T07:39:02.000Z" itemprop="datePublished">2018-05-03</time>
         </a>
     </div>
 
                 
     <div>
         <i class="fa fa-user"></i>
-        milittle
+        Leno
     </div>
 
 
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/TensorFlow/">TensorFlow</a>
+        <a class="tag-link" href="/tags/面试/">面试</a>
     </div>
 
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h3 id="修改pip全局镜像">修改pip全局镜像</h3>
-<p>第一次我们在windows上面安装了Anaconda，在使用pip安装Tensorflow中速度过慢，所以我为大家介绍一中修改全局pip源的方法（这样在使用pip下载依赖库的时候就会快一些）：</p>
-<ol type="1">
-<li>打开用户主目录：我的是<code>C:\Users\milittle</code>。</li>
-<li>在里面新建pip文件夹，在pip文件夹中建立pip.ini文件。</li>
-<li>在pip.ini文件中添加如下配置信息，我使用的豆瓣源：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">timeout = 6000</span><br><span class="line">index-url = https://pypi.douban.com/simple</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
-<li>最后的目录结构就是：<code>C:\Users\milittle\pip\pip.ini</code></li>
-</ol>
+            <blockquote>
+<p>最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。</p>
+</blockquote>
+<p>下面开始本次的内容整理吧~</p>
+<h1 id="string">String</h1>
+<p>首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存重新申请一块地方存放改变之后的字符串。很显然，String是字符串常量，字符长度不可变。其实这是一件很恐怖的事情，当你需要多次改变时，多次的改变产生的代价不言而喻。</p>
+<h1 id="stringbuffer">StringBuffer</h1>
+<p>StringBuffer是字符串变量，支持多线程进行字符操作，而且是线程安全的，适合在多线程中使用。原因是在源代码中StringBuilder的很多方法都被关键字synchronized修饰了，这也是StringBuffer和StringBuilder的最大区别的地方。</p>
+<h1 id="stringbuilder">StringBuilder</h1>
+<p>StringBuilder也是字符串变量，但是区别于StringBuffer，它并不支持并发操作，非线程安全，不适合在多线程中使用，但是其在单线程中的性能比StringBuffer高。</p>
+<h1 id="测试">测试</h1>
+<h2 id="代码">代码</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringTest</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> EchoNum = <span class="number">10000</span>;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TestStr</span><span class="params">()</span></span>&#123;</span><br><span class="line">        String A = <span class="keyword">new</span> String(<span class="string">"AAA"</span>);</span><br><span class="line">        <span class="keyword">long</span> StartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;EchoNum;i++)&#123;</span><br><span class="line">            A+=<span class="string">"A"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> EndTime = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"String: "</span>+ (EndTime-StartTime)+<span class="string">" millis has been used"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TestStrBuffer</span><span class="params">()</span></span>&#123;</span><br><span class="line">        StringBuffer A = <span class="keyword">new</span> StringBuffer(<span class="string">"AAA"</span>);</span><br><span class="line">        <span class="keyword">long</span> StartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;EchoNum;i++)&#123;</span><br><span class="line">            A = A.append(<span class="string">"A"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> EndTime = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"StringBuffer: "</span>+ (EndTime-StartTime)+<span class="string">" millis has been used"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TestStrBuilder</span><span class="params">()</span></span>&#123;</span><br><span class="line">        StringBuilder A = <span class="keyword">new</span> StringBuilder(<span class="string">"AAA"</span>);</span><br><span class="line">        <span class="keyword">long</span> StartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;EchoNum;i++)&#123;</span><br><span class="line">            A = A.append(<span class="string">"A"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> EndTime = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"StringBuilder: "</span>+ (EndTime-StartTime)+<span class="string">" millis has been used"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        TestStr();</span><br><span class="line">        TestStrBuffer();</span><br><span class="line">        TestStrBuilder();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结果">结果</h2>
+<p><img src="https://i.loli.net/2018/05/06/5aee5e758b3a0.png" alt="StringsResult.png"></p>
+<p>结果就很明显了，String的效率最低下，只考虑单线程的话，推荐使用StringBuilder；但是如果是要保证线程安全的话，肯定要使用StringBuffer。</p>
+<p>稍微总结一下：</p>
+<ul>
+<li>如果我们需要一个在整个程序中不需要修改的字符串，<strong>String</strong>是首选。</li>
+<li>如果我们需要一个在多线程之间共享的动态字符串，<strong>StringBuffer</strong>是我们的选择。</li>
+<li>如果以上两种情况都不存在，<strong>StringBuilder</strong>是一个不错的选择。</li>
+</ul>
+<h1 id="练手">练手</h1>
+<p>然后来看一道阿里巴巴的面试题吧，题目内容如下：</p>
+<p><strong>题目：</strong> (单选题)Java中，StringBuilder和StringBuffer的区别，下面说法错误的是？</p>
+<p><strong>A：</strong> StringBuffer是线程安全的。</p>
+<p><strong>B：</strong> StringBuilder是非线程安全的。</p>
+<p><strong>C：</strong> StringBuffer对String类型进行改变的时候，其实都等同于生成了一个新的String对象，然后将指针指向新的String对象。</p>
+<p><strong>D：</strong> 效率比较 String &lt; StringBuffer &lt; StringBuilder，但是在 String S1 = “This is only a” + &quot; simple&quot; + &quot; test“时，String的效率最高。</p>
+<p><strong>分析：</strong></p>
+<p>A，B就不用多说了，肯定是正确的。C项一眼其实就能看出来是错误的，StringBuffer和StringBuilder都是字符串变量，并不需要重新申请内存存放新的对象。D项中的后一部分<strong>String S1 = “This is only a”+ “Simple”+“Test”</strong>，其实这个地方并没有字符串操作处理，只是简单的<strong>String S1 = “This is only a simple test”</strong>，所以效率最高。</p>
 
         </div>
         <footer class="article-footer">
@@ -283,20 +303,20 @@
         
 <nav id="article-nav">
     
-        <a href="/posts/a751f7e5/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/posts/7eb3a479/" id="article-nav-newer" class="article-nav-link-wrap">
         <strong class="article-nav-caption">下一篇</strong>
         <p class="article-nav-title">
         
-            文本聚类系列教程：（三）构建词袋空间VSM（Vector Space Model）
+            asyncio 不完全指北（四）
         
         </p>
         <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
     </a>
     
     
-        <a href="/posts/5dd0238f/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/posts/c99ebd1c/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">如何理解描述符</p>
+        <p class="article-nav-title">asyncio 不完全指北（三）</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     

@@ -3,26 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>修改pip全局镜像 | WEAF 周刊</title>
+    <title>Pillow的简单使用 | WEAF 周刊</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="TensorFlow" />
+        <meta name="keywords" content="Pillow Python OCR" />
     
-    <meta name="description" content="修改pip全局镜像 第一次我们在windows上面安装了Anaconda，在使用pip安装Tensorflow中速度过慢，所以我为大家介绍一中修改全局pip源的方法（这样在使用pip下载依赖库的时候就会快一些）：  打开用户主目录：我的是C:\Users\milittle。 在里面新建pip文件夹，在pip文件夹中建立pip.ini文件。 在pip.ini文件中添加如下配置信息，我使用的">
-<meta name="keywords" content="TensorFlow">
+    <meta name="description" content="最近导师让我根据已有的笔画位置信息，生成相对应的图像信息，其中用到的就是Pillow库，所以接下来就按照这个任务要求，对Pillow这个库进行使用讲解。  数据 先介绍下数据吧，当时导师给了我一份600M的JSON文件，看到之后我的内心毫无波澜，甚至还想来一份黄焖鸡米饭。虽然数据量很大，但是每条数据是很规范的，例如这样： 1&amp;#123;&amp;quot;_id&amp;quot;:&amp;#123;&amp;qu">
+<meta name="keywords" content="Pillow Python OCR">
 <meta property="og:type" content="article">
-<meta property="og:title" content="修改pip全局镜像">
-<meta property="og:url" content="http://weafteam.github.io/posts/233074e6/index.html">
+<meta property="og:title" content="Pillow的简单使用">
+<meta property="og:url" content="http://weafteam.github.io/posts/33d9791f/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
-<meta property="og:description" content="修改pip全局镜像 第一次我们在windows上面安装了Anaconda，在使用pip安装Tensorflow中速度过慢，所以我为大家介绍一中修改全局pip源的方法（这样在使用pip下载依赖库的时候就会快一些）：  打开用户主目录：我的是C:\Users\milittle。 在里面新建pip文件夹，在pip文件夹中建立pip.ini文件。 在pip.ini文件中添加如下配置信息，我使用的">
+<meta property="og:description" content="最近导师让我根据已有的笔画位置信息，生成相对应的图像信息，其中用到的就是Pillow库，所以接下来就按照这个任务要求，对Pillow这个库进行使用讲解。  数据 先介绍下数据吧，当时导师给了我一份600M的JSON文件，看到之后我的内心毫无波澜，甚至还想来一份黄焖鸡米饭。虽然数据量很大，但是每条数据是很规范的，例如这样： 1&amp;#123;&amp;quot;_id&amp;quot;:&amp;#123;&amp;qu">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
-<meta property="og:updated_time" content="2018-04-10T08:57:00.655Z">
+<meta property="og:image" content="https://i.loli.net/2018/05/17/5afd173867a78.png">
+<meta property="og:updated_time" content="2018-05-17T05:49:32.492Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="修改pip全局镜像">
-<meta name="twitter:description" content="修改pip全局镜像 第一次我们在windows上面安装了Anaconda，在使用pip安装Tensorflow中速度过慢，所以我为大家介绍一中修改全局pip源的方法（这样在使用pip下载依赖库的时候就会快一些）：  打开用户主目录：我的是C:\Users\milittle。 在里面新建pip文件夹，在pip文件夹中建立pip.ini文件。 在pip.ini文件中添加如下配置信息，我使用的">
-<meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+<meta name="twitter:title" content="Pillow的简单使用">
+<meta name="twitter:description" content="最近导师让我根据已有的笔画位置信息，生成相对应的图像信息，其中用到的就是Pillow库，所以接下来就按照这个任务要求，对Pillow这个库进行使用讲解。  数据 先介绍下数据吧，当时导师给了我一份600M的JSON文件，看到之后我的内心毫无波澜，甚至还想来一份黄焖鸡米饭。虽然数据量很大，但是每条数据是很规范的，例如这样： 1&amp;#123;&amp;quot;_id&amp;quot;:&amp;#123;&amp;qu">
+<meta name="twitter:image" content="https://i.loli.net/2018/05/17/5afd173867a78.png">
     
 
     
@@ -129,18 +129,18 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <a class="page-title-link" href="/categories/TensorFlow/">TensorFlow</a>
+    未分类
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-2018-03-26/alterM" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-2018-04-30/Pillow的简单使用" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        修改pip全局镜像
+        Pillow的简单使用
         </h1>
     
 
@@ -150,39 +150,58 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/posts/233074e6/" class="article-date">
-            <time datetime="2018-03-27T12:29:36.000Z" itemprop="datePublished">2018-03-27</time>
+        <a href="/posts/33d9791f/" class="article-date">
+            <time datetime="2018-05-17T02:03:18.000Z" itemprop="datePublished">2018-05-17</time>
         </a>
     </div>
 
                 
     <div>
         <i class="fa fa-user"></i>
-        milittle
+        Leno
     </div>
 
 
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/TensorFlow/">TensorFlow</a>
+        <a class="tag-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a>
     </div>
 
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h3 id="修改pip全局镜像">修改pip全局镜像</h3>
-<p>第一次我们在windows上面安装了Anaconda，在使用pip安装Tensorflow中速度过慢，所以我为大家介绍一中修改全局pip源的方法（这样在使用pip下载依赖库的时候就会快一些）：</p>
-<ol type="1">
-<li>打开用户主目录：我的是<code>C:\Users\milittle</code>。</li>
-<li>在里面新建pip文件夹，在pip文件夹中建立pip.ini文件。</li>
-<li>在pip.ini文件中添加如下配置信息，我使用的豆瓣源：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">timeout = 6000</span><br><span class="line">index-url = https://pypi.douban.com/simple</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
-<li>最后的目录结构就是：<code>C:\Users\milittle\pip\pip.ini</code></li>
-</ol>
+            <blockquote>
+<p>最近导师让我根据已有的笔画位置信息，生成相对应的图像信息，其中用到的就是Pillow库，所以接下来就按照这个任务要求，对Pillow这个库进行使用讲解。</p>
+</blockquote>
+<h1 id="数据">数据</h1>
+<p>先介绍下数据吧，当时导师给了我一份600M的JSON文件，看到之后我的内心毫无波澜，甚至还想来一份黄焖鸡米饭。虽然数据量很大，但是每条数据是很规范的，例如这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;_id&quot;:&#123;&quot;$oid&quot;:&quot;58cbeb882398b78ed0c8165b&quot;&#125;,&quot;word&quot;:&quot;640,83;640,83;642,93;645,102;650,112;653,121;654,128;656,136;654,143;649,152;641,164;630,178;616,193;599,208;583,224;571,234;564,241;558,246;557,250;556,254;562,257;567,260;573,263;575,264;578,270;576,278;572,289;566,303;557,320;549,332;542,342;539,348;537,352;538,353;539,354;541,354;543,355;544,356;544,358;544,363;543,372;541,384;538,396;536,405;536,411;536,415;537,417;542,418;546,420;551,420;554,421;555,422;555,427;552,437;546,455;533,479;514,511;493,548;473,580;460,604;452,622;448,632;448,638;451,639;464,637;484,621;504,600;518,581;527,566;530,558;531,552;529,548;526,545;525,542;523,539;526,534;533,526;546,519;555,514;565,514;569,515;570,522;567,537;560,557;551,577;544,592;540,600;540,604;540,605;541,606;544,607;548,609;550,610;552,613;552,618;552,627;551,637;549,647;548,653;547,658;547,661;549,664;550,665;553,668;554,672;556,676;556,686;555,697;553,708;550,717;549,722;549,725;551,728;553,730;557,733;560,736;563,743;565,754;561,777;552,804;540,833;524,862;508,884;496,899;490,906;485,908;484,903;484,890;494,863;506,842;522,829;543,821;568,835;589,855;608,886;622,923;629,946;633,966;633,977;633,979#577,414;577,414;593,416;614,420;648,423;666,423;689,418;704,414;724,404;742,390;755,381&quot;,&quot;wordIndex&quot;:8826,&quot;str&quot;:&quot;ᠠᠯᠳᠠᠬᠤ&quot;,&quot;createAtDate&quot;:&#123;&quot;$date&quot;:&quot;2017-03-17T13:58:32.767Z&quot;&#125;,&quot;updateAtDate&quot;:&#123;&quot;$date&quot;:&quot;2017-03-17T13:58:32.767Z&quot;&#125;,&quot;phoneId&quot;:&quot;9e29fc4021b45fbe&quot;,&quot;userId&quot;:&quot;0161132290&quot;,&quot;paid&quot;:false,&quot;__v&quot;:0&#125;</span><br></pre></td></tr></table></figure>
+<p>word字段就是笔画的信息，所以现在找个画笔跟着这个笔画画就行了。</p>
+<h1 id="思路">思路</h1>
+<p>因为这些笔画的位置和大小并不是特别规范的（因为收集这些手写体的时候，就是利用手机的手写输入收集的，所以不是很规范），所以首先生成一个3000*3000的灰度图（底是白色），然后用一个很粗的画笔（当时用来一个width = 18的画笔）将上述的笔画画出来，在这之前我们可以先找出笔画的横向最大最小值和纵向的最大最小值，然后根据这四个值，在画布上裁剪出一个矩形框，最后我们可以将裁剪出的矩形区域resize，按照要求是生成宽度为32，高度等比例缩放的图像，当然这个时候我们可以加一个参数，叫做抗锯齿，稍后我会讲到。</p>
+<p>因为传统的PIL库不支持Python3，所以使用从PIL派生出来的Pillow库。</p>
+<h1 id="image和imagedraw类">Image和ImageDraw类</h1>
+<p>Pillow中最重要的就是Image类，该类存在于同名的模块中。我们本次用到的实例化方式是直接创建一个图片。</p>
+<p><strong>生成画布</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">image = Image.new(<span class="string">"L"</span>,(<span class="number">3000</span>,<span class="number">3000</span>),<span class="string">"white"</span>)</span><br></pre></td></tr></table></figure>
+<p>ImageDraw类，从名字中不难看出他的作用，那么接下来就开始画图吧。</p>
+<p>顺便说一下，word字段里面，<span class="math inline">\(;\)</span>分割的是点，<span class="math inline">\(,\)</span>分割的是x和y，<span class="math inline">\(#\)</span>分割的是笔画，所以根据这个层级关系，三层嵌套的方式就可以将这些笔画刻画出来。</p>
+<p><strong>生成画笔</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">draw = ImageDraw.Draw(image)</span><br></pre></td></tr></table></figure>
+<p><strong>画图</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lines = [[[int(x) <span class="keyword">for</span> x <span class="keyword">in</span> point.split(<span class="string">','</span>)] <span class="keyword">for</span> point <span class="keyword">in</span> line.split(<span class="string">';'</span>)] <span class="keyword">for</span> line <span class="keyword">in</span> fileJson[<span class="string">'word'</span>].split(<span class="string">'#'</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">            <span class="keyword">if</span>(len(line)&gt;<span class="number">1</span>):</span><br><span class="line">                draw.line((line[<span class="number">0</span>][<span class="number">0</span>], -line[<span class="number">0</span>][<span class="number">1</span>], line[<span class="number">1</span>][<span class="number">0</span>], -line[<span class="number">1</span>][<span class="number">1</span>]),fill=<span class="string">'black'</span>,width=<span class="number">18</span>)</span><br><span class="line">                temp = [line[<span class="number">1</span>][<span class="number">0</span>],line[<span class="number">1</span>][<span class="number">1</span>]]</span><br><span class="line">                <span class="keyword">for</span> point <span class="keyword">in</span> line:</span><br><span class="line">                    draw.line((temp[<span class="number">0</span>],temp[<span class="number">1</span>],point[<span class="number">0</span>],point[<span class="number">1</span>]),fill=<span class="string">'black'</span>,width=<span class="number">18</span>)</span><br><span class="line">                    temp=[point[<span class="number">0</span>],point[<span class="number">1</span>]]</span><br></pre></td></tr></table></figure>
+<p><strong>裁剪</strong></p>
+<p>计算出横向纵向上的最大最小值，进行裁剪。（之所以加30，是因为有白边的情况下看着比较舒服，但是min的值并没有加，原因是容易产生黑杠）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">box = (hor_min  , ver_min , hor_max + <span class="number">30</span> , ver_max + <span class="number">30</span>)</span><br><span class="line">b = image.crop(box)</span><br></pre></td></tr></table></figure>
+<p><strong>resize并保存</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = b.resize((<span class="number">32</span>,length),Image.ANTIALIAS)</span><br><span class="line">a.save(path)</span><br></pre></td></tr></table></figure>
+<p>本次实验很简单，用到了Pillow中不多的函数，其实Pillow中还有很多有趣的操作，请大家自行研究它的中文文档。</p>
+<p><strong>效果</strong></p>
+<p>最后给大家看下效果：</p>
+<p><img src="https://i.loli.net/2018/05/17/5afd163532d24.bmp" alt="593d584661d6b6417c2b19d6.bmp"></p>
+<p><img src="https://i.loli.net/2018/05/17/5afd1695ae569.bmp" alt="58dba09d2398b78ed0c9a7ac.bmp"></p>
 
         </div>
         <footer class="article-footer">
@@ -283,20 +302,10 @@
         
 <nav id="article-nav">
     
-        <a href="/posts/a751f7e5/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">下一篇</strong>
-        <p class="article-nav-title">
-        
-            文本聚类系列教程：（三）构建词袋空间VSM（Vector Space Model）
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/posts/5dd0238f/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/posts/112d613e/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">如何理解描述符</p>
+        <p class="article-nav-title">asyncio 不完全指北（五）</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
