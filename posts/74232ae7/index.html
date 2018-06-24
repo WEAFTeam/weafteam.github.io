@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>asyncio 不完全指北（六） | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="前言 前五篇文章介绍了 asyncio 的 API，从这篇开始，就要讲一些 Real World（并不）的东西了。 使用 aiohttp 作为 HTTP 客户端 aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是 asyncio 生态中发展最迅速的第三方库之一。在这一节，我们使用 aiohttp 作为 HTTP 客户端来比较一下同步、基于线程的异步和基于 a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="asyncio 不完全指北（六）">
+<meta property="og:url" content="http://weafteam.github.io/posts/74232ae7/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="前言 前五篇文章介绍了 asyncio 的 API，从这篇开始，就要讲一些 Real World（并不）的东西了。 使用 aiohttp 作为 HTTP 客户端 aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是 asyncio 生态中发展最迅速的第三方库之一。在这一节，我们使用 aiohttp 作为 HTTP 客户端来比较一下同步、基于线程的异步和基于 a">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg">
+<meta property="og:updated_time" content="2018-06-23T11:04:29.831Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="asyncio 不完全指北（六）">
+<meta name="twitter:description" content="前言 前五篇文章介绍了 asyncio 的 API，从这篇开始，就要讲一些 Real World（并不）的东西了。 使用 aiohttp 作为 HTTP 客户端 aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是 asyncio 生态中发展最迅速的第三方库之一。在这一节，我们使用 aiohttp 作为 HTTP 客户端来比较一下同步、基于线程的异步和基于 a">
+<meta name="twitter:image" content="http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    未分类
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-05-21/guide-to-asyncio-6" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        asyncio 不完全指北（六）
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/74232ae7/" class="article-date">
+            <time datetime="2018-05-27T10:39:08.000Z" itemprop="datePublished">2018-05-27</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        MisLink
+    </div>
+
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h2 id="前言">前言</h2>
+<p>前五篇文章介绍了 <code>asyncio</code> 的 API，从这篇开始，就要讲一些 Real World（并不）的东西了。</p>
+<h2 id="使用-aiohttp-作为-http-客户端">使用 aiohttp 作为 HTTP 客户端</h2>
+<p><a href="https://docs.aiohttp.org/en/stable/index.html" target="_blank" rel="noopener">aiohttp</a> 是一个基于 <code>asyncio</code> 的异步 HTTP 客户端和服务器库，也是 <code>asyncio</code> 生态中发展最迅速的第三方库之一。在这一节，我们使用 aiohttp 作为 HTTP 客户端来比较一下同步、基于线程的异步和基于 <code>asyncio</code> 的异步的差别。</p>
+<h3 id="准备工作">准备工作</h3>
+<p>首先我们安装好所需的第三方库：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install requests</span><br><span class="line">pip install aiohttp</span><br></pre></td></tr></table></figure>
+<p>准备一些用于并发请求的 url，共 45 个：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># url.py</span></span><br><span class="line">urls = [</span><br><span class="line">    <span class="string">'http://caipiao.hao123.com/'</span>, <span class="string">'http://game.hao123.com/'</span>,</span><br><span class="line">    <span class="string">'http://mail.10086.cn/'</span>, <span class="string">'http://mail.126.com/'</span>, <span class="string">'http://mail.163.com/'</span>,</span><br><span class="line">    <span class="string">'http://mail.aliyun.com/'</span>, <span class="string">'http://mail.qq.com/'</span>,</span><br><span class="line">    <span class="string">'http://mail.sina.com.cn/'</span>, <span class="string">'http://music.163.com/'</span>,</span><br><span class="line">    <span class="string">'http://tuijian.hao123.com/'</span>, <span class="string">'http://www.12306.cn/'</span>, <span class="string">'http://www.163.com/'</span>,</span><br><span class="line">    <span class="string">'http://www.37.com/'</span>, <span class="string">'http://www.4399.com/'</span>, <span class="string">'http://www.abchina.com/'</span>,</span><br><span class="line">    <span class="string">'http://www.baidu.com/'</span>, <span class="string">'http://www.bankcomm.com/'</span>, <span class="string">'http://www.boc.cn/'</span>,</span><br><span class="line">    <span class="string">'http://www.ccb.com/'</span>, <span class="string">'http://www.chsi.com.cn/'</span>,</span><br><span class="line">    <span class="string">'http://www.cmbchina.com/'</span>, <span class="string">'http://www.cnki.net/'</span>,</span><br><span class="line">    <span class="string">'http://www.eastmoney.com/'</span>, <span class="string">'http://www.fang.com/'</span>,</span><br><span class="line">    <span class="string">'http://www.icbc.com.cn/icbc/'</span>, <span class="string">'http://www.ifeng.com'</span>,</span><br><span class="line">    <span class="string">'http://www.iqiyi.com/'</span>, <span class="string">'http://www.psbc.com/'</span>, <span class="string">'http://www.qq.com/'</span>,</span><br><span class="line">    <span class="string">'http://www.sina.com.cn/'</span>, <span class="string">'http://www.sohu.com/'</span>, <span class="string">'http://www.tianya.cn/'</span>,</span><br><span class="line">    <span class="string">'http://www.zhihu.com/'</span>, <span class="string">'http://wyyx.hao123.com/'</span>, <span class="string">'https://mail.qq.com/'</span>,</span><br><span class="line">    <span class="string">'https://mail.sohu.com/'</span>, <span class="string">'https://tieba.baidu.com/'</span>, <span class="string">'https://weibo.com/'</span>,</span><br><span class="line">    <span class="string">'https://www.autohome.com.cn/'</span>, <span class="string">'https://www.bilibili.com/'</span>,</span><br><span class="line">    <span class="string">'https://www.booking.com/'</span>, <span class="string">'https://www.douyu.com/'</span>,</span><br><span class="line">    <span class="string">'https://www.qunar.com/'</span>, <span class="string">'https://www.suning.com/'</span>,</span><br><span class="line">    <span class="string">'https://www.taobao.com/'</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="同步的请求">同步的请求</h3>
+<p>首先导入所需的库：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> url <span class="keyword">import</span> urls</span><br></pre></td></tr></table></figure>
+<p>完成请求单个 url 的函数，这个函数会以 <code>bytes</code> 形式返回网站内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(session, url)</span>:</span></span><br><span class="line">    resp = session.get(url)</span><br><span class="line">    <span class="keyword">return</span> resp.content</span><br></pre></td></tr></table></figure>
+<p>同步请求所有的 url，打印出字节的长度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    session = requests.Session()</span><br><span class="line">    <span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">        data = fetch(session, url)</span><br><span class="line">        print(<span class="string">f'<span class="subst">&#123;url&#125;</span>: <span class="subst">&#123;len(data)&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>记录完成请求所需的时间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    start = time.time()</span><br><span class="line">    main()</span><br><span class="line">    print(time.time() - start)</span><br></pre></td></tr></table></figure>
+<p>上述代码的结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">http://caipiao.hao123.com/: 109299</span><br><span class="line">http://game.hao123.com/: 179707</span><br><span class="line">http://mail.10086.cn/: 52500</span><br><span class="line">http://mail.126.com/: 13063</span><br><span class="line">http://mail.163.com/: 137118</span><br><span class="line">http://mail.aliyun.com/: 725</span><br><span class="line">http://mail.qq.com/: 8206</span><br><span class="line">http://mail.sina.com.cn/: 2837</span><br><span class="line">http://music.163.com/: 92606</span><br><span class="line">...</span><br><span class="line">https://www.autohome.com.cn/: 656200</span><br><span class="line">https://www.bilibili.com/: 26642</span><br><span class="line">https://www.booking.com/: 457842</span><br><span class="line">https://www.douyu.com/: 75286</span><br><span class="line">https://www.qunar.com/: 140898</span><br><span class="line">https://www.suning.com/: 188523</span><br><span class="line">https://www.taobao.com/: 126283</span><br><span class="line">24.28531312942505</span><br></pre></td></tr></table></figure>
+<p>可以看出打印的顺序是和 url 列表的顺序完全一致的，同步的代码耗时约 24s。</p>
+<h3 id="基于线程的请求">基于线程的请求</h3>
+<p>首先导入所需的库：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor, as_completed</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> url <span class="keyword">import</span> urls</span><br></pre></td></tr></table></figure>
+<p>完成单个请求的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(session, url)</span>:</span></span><br><span class="line">    resp = session.get(url)</span><br><span class="line">    <span class="keyword">return</span> resp.content</span><br></pre></td></tr></table></figure>
+<p>使用线程池请求所有的 url：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    session = requests.Session()</span><br><span class="line">    <span class="keyword">with</span> ThreadPoolExecutor() <span class="keyword">as</span> executor:</span><br><span class="line">        tasks = &#123;executor.submit(fetch, session, url): url <span class="keyword">for</span> url <span class="keyword">in</span> urls&#125;</span><br><span class="line">        <span class="keyword">for</span> task <span class="keyword">in</span> as_completed(tasks.keys()):</span><br><span class="line">            data = task.result()</span><br><span class="line">            print(<span class="string">f'<span class="subst">&#123;tasks[task]&#125;</span>: <span class="subst">&#123;len(data)&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>记录完成所需的时间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    start = time.time()</span><br><span class="line">    main()</span><br><span class="line">    print(time.time() - start)</span><br></pre></td></tr></table></figure>
+<p>上述代码的结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">http://www.ccb.com/: 276</span><br><span class="line">http://www.12306.cn/: 1480</span><br><span class="line">http://www.cnki.net/: 59235</span><br><span class="line">http://mail.aliyun.com/: 725</span><br><span class="line">http://www.tianya.cn/: 7867</span><br><span class="line">http://www.icbc.com.cn/icbc/: 157227</span><br><span class="line">http://www.bankcomm.com/: 3473</span><br><span class="line">http://www.chsi.com.cn/: 34188</span><br><span class="line">http://mail.sina.com.cn/: 2837</span><br><span class="line">...</span><br><span class="line">http://www.sina.com.cn/: 584540</span><br><span class="line">https://tieba.baidu.com/: 137714</span><br><span class="line">https://www.autohome.com.cn/: 656154</span><br><span class="line">https://www.taobao.com/: 126283</span><br><span class="line">https://www.booking.com/: 457849</span><br><span class="line">http://www.iqiyi.com/: 599940</span><br><span class="line">http://tuijian.hao123.com/: 511465</span><br><span class="line">9.722297191619873</span><br></pre></td></tr></table></figure>
+<p>可以看到返回结果的顺序并不和 url 列表一致，准确的说，是按照请求完成的顺序排列的。同时，请求所需的时间大幅缩短，降到了约 9s。</p>
+<h3 id="基于-asyncio-的请求">基于 <code>asyncio</code> 的请求</h3>
+<p>首先导入所需的库：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> aiohttp</span><br><span class="line"><span class="keyword">from</span> url <span class="keyword">import</span> urls</span><br></pre></td></tr></table></figure>
+<p>完成单个请求的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(session, url)</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> session.get(url) <span class="keyword">as</span> resp:</span><br><span class="line">        <span class="keyword">return</span> url, <span class="keyword">await</span> resp.read()</span><br></pre></td></tr></table></figure>
+<p>这里同时返回了请求的 url 和网站内容，是因为后面的代码不容易在请求完成后获得请求的 url。</p>
+<p>使用 <code>aiohttp</code> 请求所有的 url：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> session:</span><br><span class="line">        tasks = [fetch(session, url) <span class="keyword">for</span> url <span class="keyword">in</span> urls]</span><br><span class="line">        <span class="keyword">for</span> task <span class="keyword">in</span> asyncio.as_completed(tasks):</span><br><span class="line">            url, data = <span class="keyword">await</span> task</span><br><span class="line">            print(<span class="string">f'<span class="subst">&#123;url&#125;</span>: <span class="subst">&#123;len(data)&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>开启事件循环，并记录所需的时间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    start = time.time()</span><br><span class="line">    loop = asyncio.get_event_loop()</span><br><span class="line">    loop.run_until_complete(main())</span><br><span class="line">    print(time.time() - start)</span><br></pre></td></tr></table></figure>
+<p>上述代码的结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">http://www.psbc.com/: 404</span><br><span class="line">http://www.eastmoney.com/: 392883</span><br><span class="line">http://www.icbc.com.cn/icbc/: 157227</span><br><span class="line">http://www.ifeng.com: 438464</span><br><span class="line">http://mail.aliyun.com/: 725</span><br><span class="line">http://www.tianya.cn/: 7867</span><br><span class="line">...</span><br><span class="line">http://tuijian.hao123.com/: 510052</span><br><span class="line">http://mail.qq.com/: 8023</span><br><span class="line">http://game.hao123.com/: 179707</span><br><span class="line">https://tieba.baidu.com/: 137723</span><br><span class="line">http://www.iqiyi.com/: 599830</span><br><span class="line">https://www.taobao.com/: 126283</span><br><span class="line">https://weibo.com/: 6117</span><br><span class="line">http://www.zhihu.com/: 22696</span><br><span class="line">https://www.booking.com/: 457851</span><br><span class="line">2.0516560077667236</span><br></pre></td></tr></table></figure>
+<p>和使用线程一样，返回结果是按照请求完成顺序排列的。请求的时间比线程更短，只用了约 2s 就完成了所有的请求。和使用线程的方式相比，<code>asyncio</code> 避免了创建线程的开销。</p>
+<h4 id="保存请求的结果">保存请求的结果</h4>
+<p>需要注意的是，上述请求只是简单的获取了内容，这些 bytes 只在内存中存在。一旦我们需要把结果保存到磁盘，就会有另一个会导致异步代码退化到同步的地方：磁盘 I / O。</p>
+<p>现在我们增加一个保存请求内容到磁盘的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> quote_plus</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_to_file</span><span class="params">(filename, data)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">f'async_data/<span class="subst">&#123;quote_plus(filename)&#125;</span>.html'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(data)</span><br></pre></td></tr></table></figure>
+<p>同时增加一个函数，用来同时发起请求并把结果保存到文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">fetch_and_save</span><span class="params">(session, url)</span>:</span></span><br><span class="line">    url, data = <span class="keyword">await</span> fetch(session, url)</span><br><span class="line">    save_to_file(url, data * <span class="number">500</span>)  <span class="comment"># 把文件大小扩大 500 倍，使结果更明显</span></span><br><span class="line">    <span class="keyword">return</span> url</span><br></pre></td></tr></table></figure>
+<p>同时更新一下 <code>main()</code> 函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> session:</span><br><span class="line">        tasks = [fetch_and_save(session, url) <span class="keyword">for</span> url <span class="keyword">in</span> urls]</span><br><span class="line">        <span class="keyword">for</span> task <span class="keyword">in</span> asyncio.as_completed(tasks):</span><br><span class="line">            url = <span class="keyword">await</span> task</span><br><span class="line">            print(<span class="string">f'save: <span class="subst">&#123;url&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+<p>上述代码的结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">save: http://www.psbc.com/</span><br><span class="line">save: http://www.cnki.net/</span><br><span class="line">save: http://www.eastmoney.com/</span><br><span class="line">save: http://tuijian.hao123.com/</span><br><span class="line">save: http://caipiao.hao123.com/</span><br><span class="line">save: http://www.ifeng.com</span><br><span class="line">save: http://www.fang.com/</span><br><span class="line">save: http://www.qq.com/</span><br><span class="line">...</span><br><span class="line">save: https://www.bilibili.com/</span><br><span class="line">save: https://www.autohome.com.cn/</span><br><span class="line">save: https://www.booking.com/</span><br><span class="line">save: https://mail.sohu.com/</span><br><span class="line">save: https://weibo.com/</span><br><span class="line">save: http://mail.qq.com/</span><br><span class="line">save: http://mail.10086.cn/</span><br><span class="line">save: http://www.zhihu.com/</span><br><span class="line">10.63579511642456</span><br></pre></td></tr></table></figure>
+<p>可以看到消耗的时间增加到了约 10s。</p>
+<p>有没有什么方法可以将同步的文件系统操作变为异步的呢？答案就是结合使用线程和 <code>asyncio</code>。修改一下 <code>fetch_and_save()</code> 函数，使其在其他线程中执行保存操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">fetch_and_save</span><span class="params">(session, url)</span>:</span></span><br><span class="line">    url, data = <span class="keyword">await</span> fetch(session, url)</span><br><span class="line">    loop = asyncio.get_event_loop()</span><br><span class="line">    loop.run_in_executor(<span class="keyword">None</span>, save_to_file, url, data * <span class="number">500</span>)  <span class="comment"># 默认使用 ThreadPoolExecutor</span></span><br><span class="line">    <span class="keyword">return</span> url</span><br></pre></td></tr></table></figure>
+<p>修改后的结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">save: http://www.psbc.com/</span><br><span class="line">save: http://www.12306.cn/</span><br><span class="line">save: http://www.ccb.com/</span><br><span class="line">save: http://www.cnki.net/</span><br><span class="line">save: http://www.sohu.com/</span><br><span class="line">save: http://www.37.com/</span><br><span class="line">save: http://www.icbc.com.cn/icbc/</span><br><span class="line">save: http://mail.sina.com.cn/</span><br><span class="line">save: http://www.ifeng.com</span><br><span class="line">...</span><br><span class="line">save: https://mail.qq.com/</span><br><span class="line">save: http://mail.163.com/</span><br><span class="line">save: https://mail.sohu.com/</span><br><span class="line">save: https://weibo.com/</span><br><span class="line">save: http://mail.qq.com/</span><br><span class="line">save: http://mail.10086.cn/</span><br><span class="line">save: http://www.zhihu.com/</span><br><span class="line">save: https://www.booking.com/</span><br><span class="line">4.817075967788696</span><br></pre></td></tr></table></figure>
+<p>效果很明显，所需的时间缩短到了约 5s。</p>
+<p><strong>NOTE：</strong>需要注意的是，大多数操作系统上并未提供文件系统的异步 I / O 操作（Linux kernel 提供了文件系统异步 I / O，不过它需要一个额外的库 <a href="http://lse.sourceforge.net/io/aio.html" target="_blank" rel="noopener">aio</a>），大部分的异步框架都是使用线程处理文件系统 I / O 的。如果需要统一的 API，可以选择 <a href="https://github.com/Tinche/aiofiles/" target="_blank" rel="noopener">aiofiles</a>。</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/45d29694/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            chapter-11-AIR
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/78b2bf24/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">chapter-10-AIR</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/e85880/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/06/23/5b2e336b43133.png)" alt="Java中List和ArrayList的区别" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/e85880/" class="title">Java中List和ArrayList的区别</a></p>
+                            <p class="item-date"><time datetime="2018-06-23T11:10:07.000Z" itemprop="datePublished">2018-06-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/a6235d78/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（七）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/a6235d78/" class="title">asyncio 不完全指北（七）</a></p>
+                            <p class="item-date"><time datetime="2018-06-09T09:35:25.000Z" itemprop="datePublished">2018-06-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/45d29694/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-11-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/45d29694/" class="title">chapter-11-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-29T03:27:34.000Z" itemprop="datePublished">2018-05-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/74232ae7/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（六）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/74232ae7/" class="title">asyncio 不完全指北（六）</a></p>
+                            <p class="item-date"><time datetime="2018-05-27T10:39:08.000Z" itemprop="datePublished">2018-05-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/78b2bf24/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-10-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/78b2bf24/" class="title">chapter-10-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-20T11:52:00.000Z" itemprop="datePublished">2018-05-20</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
