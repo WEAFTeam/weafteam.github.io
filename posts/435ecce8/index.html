@@ -3,26 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Linux下MySQL安装 | WEAF 周刊</title>
+    <title>Spring中@transactional的使用 | WEAF 周刊</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="Linux运维" />
+        <meta name="keywords" content="JAVA" />
     
-    <meta name="description" content="Linux下MySQL安装">
-<meta name="keywords" content="Linux运维">
+    <meta name="description" content="Spring中@transactional的使用">
+<meta name="keywords" content="JAVA">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux下MySQL安装">
-<meta property="og:url" content="http://weafteam.github.io/posts/2cd32dfc/index.html">
+<meta property="og:title" content="Spring中@transactional的使用">
+<meta property="og:url" content="http://weafteam.github.io/posts/435ecce8/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
-<meta property="og:description" content="Linux下MySQL安装">
+<meta property="og:description" content="Spring中@transactional的使用">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://labs.mysql.com/common/logos/mysql-logo.svg?v2">
-<meta property="og:updated_time" content="2018-04-22T07:28:18.414Z">
+<meta property="og:image" content="https://spring.io/img/homepage/icon-spring-framework.svg">
+<meta property="og:updated_time" content="2018-07-17T08:28:11.664Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux下MySQL安装">
-<meta name="twitter:description" content="Linux下MySQL安装">
-<meta name="twitter:image" content="https://labs.mysql.com/common/logos/mysql-logo.svg?v2">
+<meta name="twitter:title" content="Spring中@transactional的使用">
+<meta name="twitter:description" content="Spring中@transactional的使用">
+<meta name="twitter:image" content="https://spring.io/img/homepage/icon-spring-framework.svg">
     
 
     
@@ -129,18 +129,18 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <a class="page-title-link" href="/categories/Linux/">Linux</a>
+    <a class="page-title-link" href="/categories/JAVA/">JAVA</a>
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-2018-04-09/three-method-for-install-mysql" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-2018-05-21/Spring中@transactional的使用" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        Linux下MySQL安装
+        Spring中@transactional的使用
         </h1>
     
 
@@ -150,8 +150,8 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/posts/2cd32dfc/" class="article-date">
-            <time datetime="2018-04-17T04:07:12.000Z" itemprop="datePublished">2018-04-17</time>
+        <a href="/posts/435ecce8/" class="article-date">
+            <time datetime="2018-05-20T18:04:44.000Z" itemprop="datePublished">2018-05-21</time>
         </a>
     </div>
 
@@ -165,77 +165,99 @@
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Linux运维/">Linux运维</a>
+        <a class="tag-link" href="/tags/JAVA/">JAVA</a>
     </div>
 
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <p>接下来我将介绍3种方法安装MySQL</p>
-<h1 id="第一种">第一种</h1>
-<h2 id="一查看是否安装了mysql">一、查看是否安装了MySQL</h2>
-<p>使用命令： <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep -i mysql</span><br></pre></td></tr></table></figure></p>
-<p>如果使用centos，可能会出现冲突，解决冲突需要卸载mariadb 首先查看是否安装了Mariadb <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep mariadb</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>然后卸载 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e mariadb-libs-5.5.56-2.el7.x86_64</span><br></pre></td></tr></table></figure></p>
-<p>强制卸载(可选): <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps mariadb-libs-5.5.56-2.el7.x86_64</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://us-forever.com/img/linuxMySQL-1.png" alt="mysql-1"> 二、如果安装了需删除已安装版本 —— 删除命令： <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps 包名</span><br><span class="line">( rpm -ev mysql-4.1.12-3.RHEL4.1 )</span><br></pre></td></tr></table></figure></p>
-<p>删除老版本mysql的开发头文件和库 命令： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -fr /usr/lib/mysql</span><br><span class="line">rm -fr /usr/include/mysql</span><br></pre></td></tr></table></figure></p>
-<p>注意：卸载后/var/lib/mysql中的数据及/etc/my.cnf不会删除，如果确定没用后就手工删除 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -f /etc/my.cnf</span><br><span class="line">rm -fr /var/lib/mysql</span><br></pre></td></tr></table></figure></p>
-<h2 id="三安装mysql准备环境">三、安装mysql准备环境</h2>
-<p>我自mysql官网下载通用的Linux版本安装包 mysql-5.7.20-linux-glibc2.12-x86_64.tar.gz 将下载好的包放在 /usr/local 目录下，或者执行命令： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.20-linux-glibc2.12-x86_64.tar.gz</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://us-forever.com/img/linuxMySQL-2.png" alt="mysql-2"></p>
-<p>解压下载的文件 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf mysql-5.7.20-linux-glibc2.12-x86_64.tar.gz</span><br></pre></td></tr></table></figure></p>
-<p>将解压之后的所有文件移动到/usr/local/mysql <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv ./mysql-5.7.20-linux-glibc2.12-x86_64/* ./mysql</span><br></pre></td></tr></table></figure></p>
-<p>为mysql创建系统用户(可选，新版本会自动创建相应用户) <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">groupadd mysql</span><br><span class="line">useradd -r -g mysql mysql</span><br></pre></td></tr></table></figure></p>
-<p>//-r参数表示mysql用户是系统用户，不可用于登录系统 并变更mysql安装目录的所属用户和用户组 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chown -R mysql:mysql mysql</span><br><span class="line">// -R 迭代处理</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://us-forever.com/img/linuxMySQL-3.png" alt="mysql-3"> 四、 安装和初始化 ——</p>
-<p>初始化数据库 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/mysqld --initialize --user=mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data --lc_messages_dir=/usr/local/mysql/share --lc_messages=en_US</span><br></pre></td></tr></table></figure></p>
-<p>记录刚刚输出的密码： jk9tEao&lt;94MC <img src="http://us-forever.com/img/linuxMySQL-4.png" alt="mysql-4"></p>
-<p>配置/etc/my.cnf</p>
-<p><a href="http://us-forever.com/file/my.cnf" target="_blank" rel="noopener">my.cnf</a></p>
-<h2 id="五-启动登录和设置密码">五、 启动登录和设置密码</h2>
-<p>切换到mysql安装目录的bin下启动 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mysqld_safe --user=mysql</span><br></pre></td></tr></table></figure></p>
-<p>启动后可能无法使用当前窗口</p>
-<p>登录进去设置新的密码： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mysql -u root -p</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">password</span>=<span class="keyword">password</span>(<span class="string">"root"</span>);</span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure>
-<p><img src="http://us-forever.com/img/linuxMySQL-5.png" alt="mysql-5"></p>
-<p>六、 添加到服务</p>
-<p>切换到 support-files目录下，并执行以下命令 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp mysql.server /etc/init.d/mysql</span><br></pre></td></tr></table></figure></p>
-<p>然后停止当前进程，使用服务启动mysql <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysql start</span><br></pre></td></tr></table></figure></p>
-<p>并添加mysql环境变量 在 /etc/profile 的文件末尾追加： export PATH=$PATH:/usr/local/mysql/bin 保存后执行 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
-<p>最后使用新密码登录到mysql <img src="http://us-forever.com/img/linuxMySQL-6.png" alt="mysql-6"></p>
-<h1 id="第二种">第二种</h1>
-<h2 id="一查看是否安装了mysql-1">一、查看是否安装了MySQL</h2>
-<p>使用命令： <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep -i mysql</span><br></pre></td></tr></table></figure></p>
-<p>如果使用centos，可能会出现冲突，解决冲突需要卸载mariadb 首先查看是否安装了Mariadb <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep mariadb</span><br></pre></td></tr></table></figure></p>
-<!--more-->
-<p>然后卸载 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e mariadb-libs-5.5.56-2.el7.x86_64</span><br></pre></td></tr></table></figure></p>
-<p>强制卸载(可选): <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps mariadb-libs-5.5.56-2.el7.x86_64</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://us-forever.com/img/linuxMySQL-1.png" alt="mysql-1"> 二、如果安装了需删除已安装版本 —— 删除命令： <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps 包名</span><br><span class="line">( rpm -ev mysql-4.1.12-3.RHEL4.1 )</span><br></pre></td></tr></table></figure></p>
-<p>删除老版本mysql的开发头文件和库 命令： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -fr /usr/lib/mysql</span><br><span class="line">rm -fr /usr/include/mysql</span><br></pre></td></tr></table></figure></p>
-<p>注意：卸载后/var/lib/mysql中的数据及/etc/my.cnf不会删除，如果确定没用后就手工删除 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -f /etc/my.cnf</span><br><span class="line">rm -fr /var/lib/mysql</span><br></pre></td></tr></table></figure></p>
-<p>三、准备安装的环境 wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.20-1.el7.x86_64.rpm-bundle.tar 或者用自己准备好的包 mysql-5.7.20-1.el7.x86_64.rpm-bundle.tar 解压包 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf mysql-5.7.20-1.el7.x86_64.rpm-bundle.tar</span><br></pre></td></tr></table></figure></p>
-<p>然后按照以下顺序安装 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh mysql-community-common-5.7.20-1.el7.x86_64.rpm </span><br><span class="line">rpm -ivh mysql-community-libs-5.7.20-1.el7.x86_64.rpm </span><br><span class="line">rpm -ivh mysql-community-client-5.7.20-1.el7.x86_64.rpm </span><br><span class="line">rpm -ivh mysql-community-server-5.7.20-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
-<p>四、启动并修改密码 安装完成后就可以启动服务了 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld start</span><br></pre></td></tr></table></figure></p>
-<p>启动后查看配置文件 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://us-forever.com/img/linuxMySQL-1-2.png" alt="linuxMySQL-1-2.png"> 找打log文件 进入查找默认root密码 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/log/mysqld.log</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://us-forever.com/img/linuxMySQL-1-3.png"></p>
-<p>使用一下命令登录并修改密码 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure></p>
-<p>修改密码 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SET PASSWORD FOR &apos;root&apos;@&apos;localhost&apos; = PASSWORD(&apos;newpass&apos;);</span><br><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://us-forever.com/img/linuxMySQL-1-4.png"></p>
-<h1 id="第三种">第三种</h1>
-<h2 id="一查看是否安装了mysql数据库">一、查看是否安装了MySQL数据库</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep mysql</span><br></pre></td></tr></table></figure>
-<p><img src="http://us-forever.com/img/mysql1.png"> 卸载 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps mysql-libs-5.1.71-1.el6.x86_64</span><br></pre></td></tr></table></figure></p>
-<p>二、安装 安装一下包 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh MySQL-devel-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br><span class="line">rpm -ivh MySQL-client-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br><span class="line">rpm -ivh MySQL-server-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br><span class="line">rpm -ivh MySQL-embedded-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br><span class="line">rpm -ivh MySQL-shared-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br><span class="line">rpm -ivh MySQL-shared-compat-5.6.23-1.linux_glibc2.5.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
-<p>三、启动登录设置密码 使用以下命令开启服务</p>
-<pre><code>service mysql start</code></pre>
-<p>获取初始密码： <img src="http://us-forever.com/img/mysql2.png"> 使用root登录</p>
-<pre><code>mysql -uroot -p</code></pre>
-<p>然后试用一下命令设置密码</p>
-<pre><code>SET PASSWORD = PASSWORD(&#39;123456&#39;);</code></pre>
+            <h1 id="一简介">一、简介</h1>
+<p>我们在工作中多多少少会使用到和事务相关的，但是程序运行总不会一定不出现任何异常。一旦整个流程中出现一个异常，也许我们就需要整个操作不继续进行下去，并且需要之前做过的操作都不起作用。那么我们就需要使用事务来控制。</p>
+<p>在Spring中，我们通过@transactional来启用事务。</p>
+<h1 id="二transactional详解">二、<span class="citation" data-cites="transactional详解">@transactional详解</span></h1>
+<h3 id="transactional注解中常用参数说明"><span class="citation" data-cites="Transactional注解中常用参数说明">@Transactional注解中常用参数说明</span></h3>
+<table>
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rollbackFor</td>
+<td>该属性用于设置需要进行回滚的异常类数组，当方法中抛出指定异常数组中的异常时，则进行事务回滚。例如：指定单一异常类：<span class="citation" data-cites="Transactional">@Transactional</span>(rollbackFor=RuntimeException.class)指定多个异常类：<span class="citation" data-cites="Transactional">@Transactional</span>(rollbackFor={RuntimeException.class, Exception.class})</td>
+</tr>
+<tr class="even">
+<td>rollbackForClassName</td>
+<td>该属性用于设置需要进行回滚的异常类名称数组，当方法中抛出指定异常名称数组中的异常时，则进行事务回滚。例如：指定单一异常类名称：<span class="citation" data-cites="Transactional">@Transactional</span>(rollbackForClassName=“RuntimeException”)指定多个异常类名称：<span class="citation" data-cites="Transactional">@Transactional</span>(rollbackForClassName={“RuntimeException”,“Exception”})</td>
+</tr>
+<tr class="odd">
+<td>noRollbackFor</td>
+<td>该属性用于设置不需要进行回滚的异常类数组，当方法中抛出指定异常数组中的异常时，不进行事务回滚。例如：指定单一异常类：<span class="citation" data-cites="Transactional">@Transactional</span>(noRollbackFor=RuntimeException.class)指定多个异常类：<span class="citation" data-cites="Transactional">@Transactional</span>(noRollbackFor={RuntimeException.class, Exception.class})</td>
+</tr>
+<tr class="even">
+<td>noRollbackForClassName</td>
+<td>该属性用于设置不需要进行回滚的异常类名称数组，当方法中抛出指定异常名称数组中的异常时，不进行事务回滚。例如：指定单一异常类名称：<span class="citation" data-cites="Transactional">@Transactional</span>(noRollbackForClassName=“RuntimeException”)指定多个异常类名称：<span class="citation" data-cites="Transactional">@Transactional</span>(noRollbackForClassName={“RuntimeException”,“Exception”})</td>
+</tr>
+<tr class="odd">
+<td>propagation</td>
+<td>该属性用于设置事务的传播行为，具体取值可参考表6-7。例如：<span class="citation" data-cites="Transactional">@Transactional</span>(propagation=Propagation.NOT_SUPPORTED,readOnly=true)</td>
+</tr>
+<tr class="even">
+<td>isolation</td>
+<td>该属性用于设置底层数据库的事务隔离级别，事务隔离级别用于处理多事务并发的情况，通常使用数据库的默认隔离级别即可，基本不需要进行设置</td>
+</tr>
+<tr class="odd">
+<td>timeout</td>
+<td>该属性用于设置事务的超时秒数，默认值为-1表示永不超时</td>
+</tr>
+<tr class="even">
+<td>readOnly</td>
+<td>该属性用于设置当前事务是否为只读事务，设置为true表示只读，false则表示可读写，默认值为false。例如：<span class="citation" data-cites="Transactional">@Transactional</span>(readOnly=true)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="事物传播行为介绍">事物传播行为介绍:</h3>
+<ul>
+<li><strong><span class="citation" data-cites="Transactional">@Transactional</span>(propagation=Propagation.REQUIRED)</strong> ：如果有事务, 那么加入事务, 没有的话新建一个(默认情况下)</li>
+<li><strong><span class="citation" data-cites="Transactional">@Transactional</span>(propagation=Propagation.NOT_SUPPORTED)</strong> ：容器不为这个方法开启事务</li>
+<li><strong><span class="citation" data-cites="Transactional">@Transactional</span>(propagation=Propagation.REQUIRES_NEW)</strong> ：不管是否存在事务,都创建一个新的事务,原来的挂起,新的执行完毕,继续执行老的事务</li>
+<li><strong><span class="citation" data-cites="Transactional">@Transactional</span>(propagation=Propagation.MANDATORY)</strong> ：必须在一个已有的事务中执行,否则抛出异常</li>
+<li><strong><span class="citation" data-cites="Transactional">@Transactional</span>(propagation=Propagation.NEVER)</strong> ：必须在一个没有的事务中执行,否则抛出异常(与Propagation.MANDATORY相反)</li>
+<li><strong><span class="citation" data-cites="Transactional">@Transactional</span>(propagation=Propagation.SUPPORTS)</strong> ：如果其他bean调用这个方法,在其他bean中声明事务,那就用事务.如果其他bean没有声明事务,那就不用事务.</li>
+</ul>
+<h3 id="事物超时设置">事物超时设置:</h3>
+<ul>
+<li><strong><span class="citation" data-cites="Transactional">@Transactional</span>(timeout=30)</strong> //默认是30秒</li>
+</ul>
+<h3 id="事务隔离级别">事务隔离级别:</h3>
+<ul>
+<li><strong><span class="citation" data-cites="Transactional">@Transactional</span>(isolation = Isolation.READ_UNCOMMITTED)</strong>：读取未提交数据(会出现脏读, 不可重复读) 基本不使用</li>
+<li><strong><span class="citation" data-cites="Transactional">@Transactional</span>(isolation = Isolation.READ_COMMITTED)</strong>：读取已提交数据(会出现不可重复读和幻读)</li>
+<li><strong><span class="citation" data-cites="Transactional">@Transactional</span>(isolation = Isolation.REPEATABLE_READ)</strong>：可重复读(会出现幻读)</li>
+<li><p><strong><span class="citation" data-cites="Transactional">@Transactional</span>(isolation = Isolation.SERIALIZABLE)</strong>：串行化</p></li>
+<li>MYSQL: 默认为REPEATABLE_READ级别</li>
+<li><p>SQLSERVER: 默认为READ_COMMITTED</p></li>
+<li><strong>脏读</strong> : 一个事务读取到另一事务未提交的更新数据</li>
+<li><strong>不可重复读</strong> : 在同一事务中, 多次读取同一数据返回的结果有所不同, 换句话说, 后续读取可以读到另一事务已提交的更新数据. 相反, “可重复读”在同一事务中多次 读取数据时, 能够保证所读数据一样, 也就是后续读取不能读到另一事务已提交的更新数据</li>
+<li><p><strong>幻读</strong> : 一个事务读到另一个事务已提交的insert数据</p></li>
+</ul>
+<h1 id="三特别需要注意的几点">三、特别需要注意的几点</h1>
+<ol type="1">
+<li>spring 事务管理器,由spring来负责数据库的打开,提交,回滚.默认遇到运行期例外(throw new RuntimeException(“注释”);)会回滚，即遇到不受检查（unchecked）的例外时回滚；而遇到需要捕获的例外(throw new Exception(“注释”);)不会回滚,即遇到受检查的例外（就是非运行时抛出的异常，编译器会检查到的异常叫受检查例外或说受检查异常）时，需我们指定方式来让事务回滚要想所有异常都回滚,要加上 <span class="citation" data-cites="Transactional">@Transactional</span>( rollbackFor={Exception.class,其它异常}) .如果让unchecked例外不回滚</li>
+<li><span class="citation" data-cites="Transactional">@Transactional</span> 注解应该只被应用到 public 可见度的方法上。 如果你在 protected、private 或者 package-visible 的方法上使用 <span class="citation" data-cites="Transactional">@Transactional</span> 注解，它也不会报错， 但是这个被注解的方法将不会展示已配置的事务设置。</li>
+<li><span class="citation" data-cites="Transactional">@Transactional</span> 注解可以被应用于接口定义和接口方法、类定义和类的 public 方法上。然而，请注意仅仅 <span class="citation" data-cites="Transactional">@Transactional</span> 注解的出现不足于开启事务行为，它仅仅 是一种元数据，能够被可以识别 <span class="citation" data-cites="Transactional">@Transactional</span> 注解和上述的配置适当的具有事务行为的beans所使用。上面的例子中，其实正是 元素的出现 开启 了事务行为。</li>
+<li>Spring团队的建议是你在具体的类（或类的方法）上使用 <span class="citation" data-cites="Transactional">@Transactional</span> 注解，而不要使用在类所要实现的任何接口上。你当然可以在接口上使用 <span class="citation" data-cites="Transactional">@Transactional</span> 注解，但是这将只能当你设置了基于接口的代理时它才生效。因为注解是不能继承的，这就意味着如果你正在使用基于类的代理时，那么事务的设置将不能被基于类的代理所识别，而且对象也将不会被事务代理所包装（将被确认为严重的）。因此，请接受Spring团队的建议并且在具体的类上使用 <span class="citation" data-cites="Transactional">@Transactional</span> 注解。</li>
+<li>如果异常被try｛｝catch｛｝了，事务就不回滚了，如果想让事务回滚必须再往外抛try｛｝catch｛throw Exception｝。</li>
+<li>使用了@Transactional的方法，对同一个类里面的方法调用， <span class="citation" data-cites="Transactional无效">@Transactional无效</span>。比如有一个类Test，它的一个方法A，A再调用Test本类的方法B（不管B是否public还是private），但A没有声明注解事务，而B有。则外部调用A之后，B的事务是不会起作用的。（经常在这里出错）</li>
+<li>放在方法上的注解会覆盖类上边的注解的参数属性。</li>
+</ol>
 
         </div>
         <footer class="article-footer">
@@ -336,20 +358,20 @@
         
 <nav id="article-nav">
     
-        <a href="/posts/2b2e3e2f/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/posts/74232ae7/" id="article-nav-newer" class="article-nav-link-wrap">
         <strong class="article-nav-caption">下一篇</strong>
         <p class="article-nav-title">
         
-            Redis在SpringBoot 2.0中的整合
+            asyncio 不完全指北（六）
         
         </p>
         <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
     </a>
     
     
-        <a href="/posts/7b0ee3f1/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/posts/78b2bf24/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">chapter-05-AIR</p>
+        <p class="article-nav-title">chapter-10-AIR</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
