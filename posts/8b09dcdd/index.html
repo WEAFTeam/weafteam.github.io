@@ -3,26 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Java中String、StringBuffer与StringBuilder的区别 | WEAF 周刊</title>
+    <title>StackOverflow上简单数字识别案例学习 | WEAF 周刊</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="面试" />
+        <meta name="keywords" content="OpenCV-Python" />
     
-    <meta name="description" content="最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。  下面开始本次的内容整理吧~ String 首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存">
-<meta name="keywords" content="面试">
+    <meta name="description" content="正如题目那样，这次的学习是StackOverflow上的一个案例，它的地址为https://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python，但是源地址上的代码略微有点旧，很多函数在OpenCV3中有了些许的改动，所以我还是会贴上我自己改正过后的代码，然后附上我对作者的思路的理解整">
+<meta name="keywords" content="OpenCV-Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java中String、StringBuffer与StringBuilder的区别">
-<meta property="og:url" content="http://weafteam.github.io/posts/2870b42a/index.html">
+<meta property="og:title" content="StackOverflow上简单数字识别案例学习">
+<meta property="og:url" content="http://weafteam.github.io/posts/8b09dcdd/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
-<meta property="og:description" content="最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。  下面开始本次的内容整理吧~ String 首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存">
+<meta property="og:description" content="正如题目那样，这次的学习是StackOverflow上的一个案例，它的地址为https://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python，但是源地址上的代码略微有点旧，很多函数在OpenCV3中有了些许的改动，所以我还是会贴上我自己改正过后的代码，然后附上我对作者的思路的理解整">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://i.loli.net/2018/05/06/5aee68d9a096b.png">
-<meta property="og:updated_time" content="2018-05-06T02:35:14.424Z">
+<meta property="og:image" content="https://i.loli.net/2018/07/24/5b56e06b958cf.png">
+<meta property="og:updated_time" content="2018-07-24T08:16:53.881Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java中String、StringBuffer与StringBuilder的区别">
-<meta name="twitter:description" content="最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。  下面开始本次的内容整理吧~ String 首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存">
-<meta name="twitter:image" content="https://i.loli.net/2018/05/06/5aee68d9a096b.png">
+<meta name="twitter:title" content="StackOverflow上简单数字识别案例学习">
+<meta name="twitter:description" content="正如题目那样，这次的学习是StackOverflow上的一个案例，它的地址为https://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python，但是源地址上的代码略微有点旧，很多函数在OpenCV3中有了些许的改动，所以我还是会贴上我自己改正过后的代码，然后附上我对作者的思路的理解整">
+<meta name="twitter:image" content="https://i.loli.net/2018/07/24/5b56e06b958cf.png">
     
 
     
@@ -129,18 +129,18 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <a class="page-title-link" href="/categories/JAVA/">JAVA</a>
+    <a class="page-title-link" href="/categories/OCR/">OCR</a>
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-2018-04-23/Java中String、StringBuffer与StringBuilder的区别" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-2018-05-21/StackOverflow上简单数字识别案例学习" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        Java中String、StringBuffer与StringBuilder的区别
+        StackOverflow上简单数字识别案例学习
         </h1>
     
 
@@ -150,8 +150,8 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/posts/2870b42a/" class="article-date">
-            <time datetime="2018-05-03T07:39:02.000Z" itemprop="datePublished">2018-05-03</time>
+        <a href="/posts/8b09dcdd/" class="article-date">
+            <time datetime="2018-07-24T04:59:38.000Z" itemprop="datePublished">2018-07-24</time>
         </a>
     </div>
 
@@ -165,7 +165,7 @@
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/面试/">面试</a>
+        <a class="tag-link" href="/tags/OpenCV-Python/">OpenCV-Python</a>
     </div>
 
             </div>
@@ -173,36 +173,41 @@
         
         <div class="article-entry" itemprop="articleBody">
             <blockquote>
-<p>最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。</p>
+<p>正如题目那样，这次的学习是StackOverflow上的一个案例，它的地址为<a href="https://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python" class="uri" target="_blank" rel="noopener">https://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python</a>，但是源地址上的代码略微有点旧，很多函数在OpenCV3中有了些许的改动，所以我还是会贴上我自己改正过后的代码，然后附上我对作者的思路的理解整理以及对所有代码的理解，如有问题，欢迎和我进行沟通交流，邮箱地址：cliugeek@us-forever.com</p>
 </blockquote>
-<p>下面开始本次的内容整理吧~</p>
-<h1 id="string">String</h1>
-<p>首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存重新申请一块地方存放改变之后的字符串。很显然，String是字符串常量，字符长度不可变。其实这是一件很恐怖的事情，当你需要多次改变时，多次的改变产生的代价不言而喻。</p>
-<h1 id="stringbuffer">StringBuffer</h1>
-<p>StringBuffer是字符串变量，支持多线程进行字符操作，而且是线程安全的，适合在多线程中使用。原因是在源代码中StringBuilder的很多方法都被关键字synchronized修饰了，这也是StringBuffer和StringBuilder的最大区别的地方。</p>
-<h1 id="stringbuilder">StringBuilder</h1>
-<p>StringBuilder也是字符串变量，但是区别于StringBuffer，它并不支持并发操作，非线程安全，不适合在多线程中使用，但是其在单线程中的性能比StringBuffer高。</p>
-<h1 id="测试">测试</h1>
-<h2 id="代码">代码</h2>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringTest</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> EchoNum = <span class="number">10000</span>;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TestStr</span><span class="params">()</span></span>&#123;</span><br><span class="line">        String A = <span class="keyword">new</span> String(<span class="string">"AAA"</span>);</span><br><span class="line">        <span class="keyword">long</span> StartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;EchoNum;i++)&#123;</span><br><span class="line">            A+=<span class="string">"A"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> EndTime = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"String: "</span>+ (EndTime-StartTime)+<span class="string">" millis has been used"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TestStrBuffer</span><span class="params">()</span></span>&#123;</span><br><span class="line">        StringBuffer A = <span class="keyword">new</span> StringBuffer(<span class="string">"AAA"</span>);</span><br><span class="line">        <span class="keyword">long</span> StartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;EchoNum;i++)&#123;</span><br><span class="line">            A = A.append(<span class="string">"A"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> EndTime = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"StringBuffer: "</span>+ (EndTime-StartTime)+<span class="string">" millis has been used"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TestStrBuilder</span><span class="params">()</span></span>&#123;</span><br><span class="line">        StringBuilder A = <span class="keyword">new</span> StringBuilder(<span class="string">"AAA"</span>);</span><br><span class="line">        <span class="keyword">long</span> StartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;EchoNum;i++)&#123;</span><br><span class="line">            A = A.append(<span class="string">"A"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> EndTime = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"StringBuilder: "</span>+ (EndTime-StartTime)+<span class="string">" millis has been used"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        TestStr();</span><br><span class="line">        TestStrBuffer();</span><br><span class="line">        TestStrBuilder();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="结果">结果</h2>
-<p><img src="https://i.loli.net/2018/05/06/5aee5e758b3a0.png" alt="StringsResult.png"></p>
-<p>结果就很明显了，String的效率最低下，只考虑单线程的话，推荐使用StringBuilder；但是如果是要保证线程安全的话，肯定要使用StringBuffer。</p>
-<p>稍微总结一下：</p>
-<ul>
-<li>如果我们需要一个在整个程序中不需要修改的字符串，<strong>String</strong>是首选。</li>
-<li>如果我们需要一个在多线程之间共享的动态字符串，<strong>StringBuffer</strong>是我们的选择。</li>
-<li>如果以上两种情况都不存在，<strong>StringBuilder</strong>是一个不错的选择。</li>
-</ul>
-<h1 id="练手">练手</h1>
-<p>然后来看一道阿里巴巴的面试题吧，题目内容如下：</p>
-<p><strong>题目：</strong> (单选题)Java中，StringBuilder和StringBuffer的区别，下面说法错误的是？</p>
-<p><strong>A：</strong> StringBuffer是线程安全的。</p>
-<p><strong>B：</strong> StringBuilder是非线程安全的。</p>
-<p><strong>C：</strong> StringBuffer对String类型进行改变的时候，其实都等同于生成了一个新的String对象，然后将指针指向新的String对象。</p>
-<p><strong>D：</strong> 效率比较 String &lt; StringBuffer &lt; StringBuilder，但是在 String S1 = “This is only a” + &quot; simple&quot; + &quot; test“时，String的效率最高。</p>
-<p><strong>分析：</strong></p>
-<p>A，B就不用多说了，肯定是正确的。C项一眼其实就能看出来是错误的，StringBuffer和StringBuilder都是字符串变量，并不需要重新申请内存存放新的对象。D项中的后一部分<strong>String S1 = “This is only a”+ “Simple”+“Test”</strong>，其实这个地方并没有字符串操作处理，只是简单的<strong>String S1 = “This is only a simple test”</strong>，所以效率最高。</p>
+<h1 id="思路">思路：</h1>
+<p>整体的思路：我们需要有一个训练（其实严格意义上说不上是训练，其实我们最终要做的是每个数字的特征提取并且将他们与实际的数字字符一一对应起来，姑且就称这个过程为“训练”吧）的图像，然后我们提取其中所有的数字的特征，然后根据一一对应的的关系，将特征和对应的字符存储起来，以便我们后续做其他图像中的数字识别使用。</p>
+<p>所以先贴一下训练用到的数据图：</p>
+<p><img src="https://i.loli.net/2018/07/24/5b56be2a72945.png" alt="digit.png"></p>
+<p>其实这样的训练数据存在着一个问题，那就是所有的字母都是相同的字体和大小，所以整体的鲁棒性很受影响。所以这是本程序需要做继续优化的地方。</p>
+<p>接下来我们讲具体的训练过程：</p>
+<pre><code>1 加载图像
+
+2 检测数字（通过轮廓查找找，并且通过对检测到的字母的面积和高度做相应的约束，来避免错误的检测）
+
+3 对检测到的字母绘制边框
+
+4 每绘制出一个边框，我们就需要在键盘上键入相应的数字键，这一步很关键，否则会导致我们训练过程无效，导致后面一系列的工作无法进行
+
+5 当我们按下相应的数字键之后，边框里面的东西便会进行重新的resize，变成10x10的大小，然后将其存入到一个100维的数组中（其实就是将这些像素值都存了进去作为我们的特征提取），相应的也会将我们键入的数字存到另一个data文件当中去
+
+6 训练过程完成之后，系统生成两个data文件。</code></pre>
+<p>在手动数字分类结束时，训练数据（其实就是上面给大家的那张图像）中所有的数字，都已经由我们手工标记，结果如下：</p>
+<p><img src="https://i.loli.net/2018/07/24/5b56bf1d8d153.png" alt="norm.png"></p>
+<p>下面就是针对上述过程的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line">im = cv2.imread(<span class="string">'digit.png'</span>)</span><br><span class="line">im3 = im.copy()</span><br><span class="line"></span><br><span class="line">gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)</span><br><span class="line">blur = cv2.GaussianBlur(gray, (<span class="number">5</span>, <span class="number">5</span>), <span class="number">0</span>)</span><br><span class="line">thresh = cv2.adaptiveThreshold(blur, <span class="number">255</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">11</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#################      Now finding Contours         ###################</span></span><br><span class="line"></span><br><span class="line">image, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line"></span><br><span class="line">samples = np.empty((<span class="number">0</span>, <span class="number">100</span>))</span><br><span class="line">responses = []</span><br><span class="line">keys = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">48</span>, <span class="number">58</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> cnt <span class="keyword">in</span> contours:</span><br><span class="line">    <span class="keyword">if</span> cv2.contourArea(cnt) &gt; <span class="number">50</span>:</span><br><span class="line">        [x, y, w, h] = cv2.boundingRect(cnt)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> h &gt; <span class="number">28</span>:</span><br><span class="line">            cv2.rectangle(im, (x, y), (x + w, y + h), (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line">            roi = thresh[y:y + h, x:x + w]</span><br><span class="line">            roismall = cv2.resize(roi, (<span class="number">10</span>, <span class="number">10</span>))</span><br><span class="line">            cv2.imshow(<span class="string">'norm'</span>, im)</span><br><span class="line">            key = cv2.waitKey(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> key == <span class="number">27</span>:  <span class="comment"># (escape to quit)</span></span><br><span class="line">                sys.exit()</span><br><span class="line">            <span class="keyword">elif</span> key <span class="keyword">in</span> keys:</span><br><span class="line">                responses.append(int(chr(key)))</span><br><span class="line">                sample = roismall.reshape((<span class="number">1</span>, <span class="number">100</span>))</span><br><span class="line">                samples = np.append(samples, sample, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">responses = np.array(responses, np.float32)</span><br><span class="line">responses = responses.reshape((responses.size, <span class="number">1</span>))</span><br><span class="line">print(<span class="string">"training complete"</span>)</span><br><span class="line"></span><br><span class="line">np.savetxt(<span class="string">'generalsamples.data'</span>, samples)</span><br><span class="line">np.savetxt(<span class="string">'generalresponses.data'</span>, responses)</span><br></pre></td></tr></table></figure>
+<p>代码其实也很简单，所以简单的说一下，首先对图像进行灰度化，然后进行高斯去噪，再然后做二值化。接下来进行轮廓检测，然后对每个检测到的轮廓在面积和高度上进行控制，如果符合设定的标准就进行画框、resize和display，同时将输入的key进行相应的存储，到最后进行save，将他们分别存到generalsamples.data和generalresponses.data中。</p>
+<p>接下来进行测试部分，同样先给出测试所用的图像：</p>
+<p><img src="https://i.loli.net/2018/07/24/5b56ca87860f9.png" alt="dig.png"></p>
+<p>再然后就是测试部分的步骤：首先将刚才我们生成的data文件load进来，也就是将刚才的模型加载到内存中，然后我们用KNN（K邻近值法，选取与当前的测试图像中最相近的作为我们预测出来的值）做预测，然后针对于检测出来的每个轮廓都进行这样的操作，预测出来的图像，我们通过puttext方法放到将要生成的图像out上，最后将原图im和生成图out显示出来。</p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment">#######   training part    ###############</span></span><br><span class="line">samples = np.loadtxt(<span class="string">'generalsamples.data'</span>, np.float32)</span><br><span class="line">responses = np.loadtxt(<span class="string">'generalresponses.data'</span>, np.float32)</span><br><span class="line">responses = responses.reshape((responses.size, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">model = cv2.ml.KNearest_create()</span><br><span class="line">model.train(samples, cv2.ml.ROW_SAMPLE, responses)</span><br><span class="line"><span class="comment"># model.train(samples,responses)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">############################# testing part  #########################</span></span><br><span class="line"></span><br><span class="line">im = cv2.imread(<span class="string">'dig.png'</span>)</span><br><span class="line">out = np.zeros(im.shape, np.uint8)</span><br><span class="line">gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)</span><br><span class="line">thresh = cv2.adaptiveThreshold(gray, <span class="number">255</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">11</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">image, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> cnt <span class="keyword">in</span> contours:</span><br><span class="line">    <span class="keyword">if</span> cv2.contourArea(cnt) &gt; <span class="number">50</span>:</span><br><span class="line">        [x, y, w, h] = cv2.boundingRect(cnt)</span><br><span class="line">        <span class="keyword">if</span> h &gt; <span class="number">28</span>:</span><br><span class="line">            cv2.rectangle(im, (x, y), (x + w, y + h), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line">            roi = thresh[y:y + h, x:x + w]</span><br><span class="line">            roismall = cv2.resize(roi, (<span class="number">10</span>, <span class="number">10</span>))</span><br><span class="line">            roismall = roismall.reshape((<span class="number">1</span>, <span class="number">100</span>))</span><br><span class="line">            roismall = np.float32(roismall)</span><br><span class="line">            retval, results, neigh_resp, dists = model.findNearest(roismall, k=<span class="number">1</span>)</span><br><span class="line">            string = str(int((results[<span class="number">0</span>][<span class="number">0</span>])))</span><br><span class="line">            cv2.putText(out, string, (x, y + h), <span class="number">0</span>, <span class="number">1</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">cv2.imshow(<span class="string">'im'</span>, im)</span><br><span class="line">cv2.imshow(<span class="string">'out'</span>, out)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>这部分的代码其实按照刚才的流程理解就可以，所以不再赘述。</p>
+<p>最后给大家看下效果：</p>
+<p><img src="https://i.loli.net/2018/07/24/5b56dd88da6ad.png" alt="im.png"></p>
+<p><img src="https://i.loli.net/2018/07/24/5b56dd88c14c9.png" alt="out.png"></p>
+<p>我仔细对比了一遍，准确率可以达到100%。对于这个简单的例子，这样的结果可以称得上完美吧。</p>
+<p>以上就是本次学习的所有内容。感谢驻足~</p>
 
         </div>
         <footer class="article-footer">
@@ -303,20 +308,10 @@
         
 <nav id="article-nav">
     
-        <a href="/posts/7eb3a479/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">下一篇</strong>
-        <p class="article-nav-title">
-        
-            asyncio 不完全指北（四）
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/posts/637facd6/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/posts/42fb2e58/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">微信公众号后台在SpringBoot2.0中的实现（上）</p>
+        <p class="article-nav-title">Thread和Runnable的区别</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
