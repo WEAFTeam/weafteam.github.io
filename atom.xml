@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://weafteam.github.io/"/>
-  <updated>2018-07-24T08:16:53.881Z</updated>
+  <updated>2018-07-30T03:03:32.894Z</updated>
   <id>http://weafteam.github.io/</id>
   
   <author>
@@ -15,6 +15,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Lombok的使用</title>
+    <link href="http://weafteam.github.io/posts/3859dc89/"/>
+    <id>http://weafteam.github.io/posts/3859dc89/</id>
+    <published>2018-07-30T03:03:32.894Z</published>
+    <updated>2018-07-30T03:03:32.894Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="一简介">一、简介</h1><p>使用lombok减少代码冗余（Reducing Boilerplate Code with Project Lombok）。“Boilerplate”是用来描述许多部分重复的代码的术语。这也是Java语言最常提出批评之一,是大多数项目中都存在此类代码而且数量很多。这个问题经常是各种库中设计决策的结果，但是由于语言本身的限制而导致的。Lombok 旨在通过一组简单的注释取代这些问题。 虽然注释用于指示用法，实现绑定甚至生成框架使用的代码并不罕见，但它们通常不用于生成应用程序直接使用的代码。 部分原因是这样做需要在开发时急切地处理注释。 Lombok正是这样做的。 通过集成到IDE中，Project Lombok能够注入开发人员可立即使用的代码。 例如，简单地将@Data注释添加到数据类（如下所示）会在IDE中生成许多新方法：</p><p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/lombok-1.png" alt="lombok-1"> 二、安装 ======= 1.eclipse可以使用以下方法安装 ————– ### 1) 下载lombok.jar包https://projectlombok.org/download.html</p><h3 id="运行lombok.jar-java--jar-d.jar-d.jar这是windows下lombok.jar所在的位置">2) 运行Lombok.jar: Java -jar D:.jar D:.jar这是windows下lombok.jar所在的位置</h3><pre><code>数秒后将弹出一框，以确认eclipse的安装路径</code></pre><h3 id="确认完eclipse的安装路径后点击installupdate按钮即可安装完成">3) 确认完eclipse的安装路径后，点击install/update按钮，即可安装完成</h3><h3 id="安装完成之后请确认eclipse安装路径下是否多了一个lombok.jar包并且其">4) 安装完成之后，请确认eclipse安装路径下是否多了一个lombok.jar包，并且其</h3><pre><code>配置文件eclipse.ini中是否 添加了如下内容:     -javaagent:lombok.jar     -Xbootclasspath/a:lombok.jar 如果上面的答案均为true，那么恭喜你已经安装成功，否则将缺少的部分添加到相应的位置即可 </code></pre><h3 id="重启eclipse或myeclipse">5) 重启eclipse或myeclipse</h3><p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/lombok-2.png" alt="lombok-2"> 2.IntelliJ IDEA安装 ——— ### 1）按照以下步骤打开设置Settings安装 <img src="https://weaf.oss-cn-beijing.aliyuncs.com/lombok-3.png" alt="lombok-3"> ### 2）安装后重启</p><h2 id="最后需要在项目中引入jar包或者使用maven配置好坐标">3.最后需要在项目中引入jar包或者，使用maven配置好坐标。</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;0.9.2&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br><span class="line">&lt;repositories&gt;</span><br><span class="line">    &lt;repository&gt;</span><br><span class="line">        &lt;id&gt;projectlombok.org&lt;/id&gt;</span><br><span class="line">        &lt;url&gt;http://projectlombok.org/mavenrepo&lt;/url&gt;</span><br><span class="line">    &lt;/repository&gt;</span><br><span class="line">&lt;/repositories&gt;</span><br></pre></td></tr></table></figure><h1 id="三lombok的注解有哪些">三、Lombok的注解有哪些</h1><ol type="1"><li><span class="citation" data-cites="Getter">@Getter</span></li><li><span class="citation" data-cites="Setter">@Setter</span></li><li><span class="citation" data-cites="Data">@Data</span></li><li><span class="citation" data-cites="NonNull">@NonNull</span></li><li><span class="citation" data-cites="ToString">@ToString</span></li><li><span class="citation" data-cites="EqualsAndHashCode">@EqualsAndHashCode</span></li><li><span class="citation" data-cites="Cleanup">@Cleanup</span></li><li><span class="citation" data-cites="Synchronized">@Synchronized</span></li><li><span class="citation" data-cites="SneakyThrows">@SneakyThrows</span></li><li><span class="citation" data-cites="AllArgsConstructor">@AllArgsConstructor</span></li><li><span class="citation" data-cites="Builder">@Builder</span></li><li><span class="citation" data-cites="Generated">@Generated</span></li><li><span class="citation" data-cites="NoArgsConstructor">@NoArgsConstructor</span></li><li><span class="citation" data-cites="RequiredArgsConstructor">@RequiredArgsConstructor</span></li><li><span class="citation" data-cites="Singular">@Singular</span></li><li><span class="citation" data-cites="val">@val</span></li><li><span class="citation" data-cites="var">@var</span></li><li><span class="citation" data-cites="Value">@Value</span></li><li><span class="citation" data-cites="FieldNameConstants">@FieldNameConstants</span></li><li><span class="citation" data-cites="Log">@Log</span>, <span class="citation" data-cites="Log4j">@Log4j</span>, <span class="citation" data-cites="Log4j2">@Log4j2</span>, <span class="citation" data-cites="Slf4j">@Slf4j</span>, <span class="citation" data-cites="XSlf4j">@XSlf4j</span>, <span class="citation" data-cites="CommonsLog">@CommonsLog</span>, <span class="citation" data-cites="JBossLog">@JBossLog</span>, <span class="citation" data-cites="Flogger">@Flogger</span></li><li><span class="citation" data-cites="Delegate">@Delegate</span></li><li><span class="citation" data-cites="Wither">@Wither</span></li></ol><h1 id="四lombok注解的使用">四、Lombok注解的使用</h1><h2 id="getter">1 <span class="citation" data-cites="Getter">@Getter</span></h2><p>生成相应的get方法,其中boolean类型会生成 isFoo(); 并且可以配合AccessLevel使用</p><h2 id="setter">2 <span class="citation" data-cites="Setter">@Setter</span></h2><p>生成相应的set方法,其中boolean类型会生产 setFoo();</p><h2 id="data">3 <span class="citation" data-cites="Data">@Data</span></h2><p>生成get、set、toString、equals、hashCode等方法。</p><h2 id="nonnull">4 <span class="citation" data-cites="NonNull">@NonNull</span></h2><p>可以再方法引用、和传参时如果值为null,抛出空指针异常。</p><h2 id="tostring">5 <span class="citation" data-cites="ToString">@ToString</span></h2><p>生成toString方法</p><h2 id="equalsandhashcode">6 <span class="citation" data-cites="EqualsAndHashCode">@EqualsAndHashCode</span></h2><p>生成equals和hashCode方法</p><h2 id="cleanup">7 <span class="citation" data-cites="Cleanup">@Cleanup</span></h2><p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/lombok-4.png" alt="lombok-4"></p><p>参考地址：<a href="http://jnb.ociweb.com/jnb/jnbJan2010.html" class="uri" target="_blank" rel="noopener">http://jnb.ociweb.com/jnb/jnbJan2010.html</a></p>]]></content>
+    
+    <summary type="html">
+    
+      Lombok的使用
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>内存中的栈、堆和静态区的用法</title>
+    <link href="http://weafteam.github.io/posts/978fb366/"/>
+    <id>http://weafteam.github.io/posts/978fb366/</id>
+    <published>2018-07-29T09:46:14.000Z</published>
+    <updated>2018-07-30T03:03:02.479Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>本周的第三篇博客，这个题目应该也是老生常谈的问题。</p></blockquote><h2 id="堆区">1 堆区</h2><p>先了解下Heap的作用，堆区是专门用来存储对象的实例的，也就是我们平时通过new出来的对象，但是实际上这里面也只是保存了对象实例的属性值，属性的类型和对象本身的标记等一些内容，其中值得注意的是它里面并不保存对象的方法（方法也可以理解成指令，保存在stack中）</p><p>所以我们加以总结和延伸下：</p><p><strong>1</strong> 它存储的都是对象，而且每个对象都包含一个与之对应的class的信息。这样做的目的是能够让对象得到操作的指令集。</p><p><strong>2</strong> 需要注意的是JVM中只有一块堆区（Heap），而且它是被所有线程共享的。堆区中存放的只有对象本身，不存放基本数据类型和对象的引用。</p><p><strong>3</strong> 关于堆区的分配和释放一般是由程序员做这个操作。其实这一点很好理解，程序员new一个对象相当于对这块区域做了分配的工作，而当程序员做delete操作时，相当于释放了这部分空间，同时如果程序员的习惯不好，不对无用的对象进行释放的话，当程序结束时，也会由OS做这个工作。</p><h2 id="栈">2 栈</h2><p>然后我们再了解下Stack的作用，当我们在堆区中为我们new出来的对象分配好空间之后，我们需要在栈中保存一个4字节的Heap的地址，用来定位该对象实例在Heap中的位置，便于找到该对象实例。</p><p>其实Stack的功能不止于此：</p><p><strong>1</strong> 不同于Heap，Stack的个数是和线程挂钩的，每个线程都包含一个Stack，而且栈中只包含了基本的数据类型的变量和对象的引用。</p><p><strong>2</strong> 栈之间是相互独立的，所以栈中的数据都是私有的，其他的栈不能访问。</p><p><strong>3</strong> 栈可以分为三个部分：基本数据类型变量区、执行环境的上下文、操作指令区</p><p><strong>4</strong> 栈相对于堆区，它的分配和释放的工作是系统自己做的</p><h2 id="静态区方法区">3 静态区/方法区</h2><p>类似于堆区，而且是被所有线程所共享的。方法区中存放了整个程序中所有的永远唯一的变量，例如：class信息和static变量等。</p><p>它也是分了三块：全局变量和静态变量的存储是放在一块的，初始化的全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。</p><h2 id="注意">注意</h2><p><strong>栈是运行时的单位，而堆是存储时的单位</strong></p><p>值得注意的是：堆和栈不都可以存储数据吗，为什么要将这两者区分开来？</p><p>** 1 ** 首先从软件设计的角度来看这个问题，栈其实代表了处理逻辑，而堆代表了数据存储。这种分而治之的思想，使得我们的处理逻辑更为清晰。</p><p>** 2 ** 因为堆是共享的，所以堆中的内容也是被多个栈共享的。这样做的收益有两个方面：一方面这种共享提供了一种有效的数据交互方式，另一方面，堆中的共享常量和缓存可以被所有的栈访问到。</p><p>以上。感谢驻足~</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本周的第三篇博客，这个题目应该也是老生常谈的问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;堆区&quot;&gt;1
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+    
+    
+      <category term="面试" scheme="http://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
   
   <entry>
     <title>StackOverflow上简单数字识别案例学习</title>
