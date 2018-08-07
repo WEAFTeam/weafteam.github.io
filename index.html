@@ -143,6 +143,56 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
+        <a href="/posts/978fb366/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/07/29/5b5dc7d9647ea.png)" alt="内存中的栈、堆和静态区的用法" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
+            </div>
+            <div class="date"><time datetime="2018-07-29T09:46:14.000Z" itemprop="datePublished">2018-07-29</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/posts/978fb366/">内存中的栈、堆和静态区的用法</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            
+本周的第三篇博客，这个题目应该也是老生常谈的问题。
+
+1 堆区
+先了解下Heap的作用，堆区是专门用来存储对象的实例的，也就是我们平时通过new出来的对象，但是实际上这里面也只是保存了对象实例的属性值，属性的类型和对象本身的标记等一些内容，其中值得注意的是它里面并不保存对象的方法（方法也可以理解成指令，保存在stack中）
+所以我们加以总结和延伸下：
+1 它存储的都是对象，而且每个对
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
         <a href="/posts/8b09dcdd/" class="thumbnail">
     
     
@@ -175,15 +225,19 @@
 
         <p class="article-excerpt">
             
-正如题目那样，这次的学习是StackOverflow上的一个案例，它的地址为https://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python，但是源地址上的代码略微有点旧，很多函数在OpenCV3中有了些许的改动，所以我还是会贴上我自己改正过后的代码，然后附上我对作者的思路的理解整理
+正如题目那样，这次的学习是StackOverflow上的一个案例，它的地址为https://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python，但是源地址上的代码略微有点旧，很多函数在OpenCV3中有了些许的改动，所以我还是会贴上我自己改正过后的代码，然后附上我对作者的思路的理解整
         </p>
     </div>
 </article>
+    
+        </div>
     
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -226,19 +280,15 @@
 1 继承Thread类，并且重写其中的run()方法
 
 2 实现Runnable接口，重写其中的run()方法
-但是在实现应用时，我们多用实现Runnable接口的方式，这是因为Java的单继承多实现的机制，这样一来就可以避免由于这个机制代码的局限性。其实我们用Runnable的原因不止于此，
+但是在实现应用时，我们多用实现Runnable接口的方式，这是因为Java的单继承多实现的机制，这样一来就可以避免由于这个机制代码的局限性。其实我们用Runnable的
         </p>
     </div>
 </article>
-    
-        </div>
     
 
     
     
     
-    
-        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -279,15 +329,19 @@
 
 区别
 这俩个的区别很明显，List是一个接口，而ArrayList是一个类，它继承AbstractList抽象类并且实现了List接口。
-所以当我们需要实例化一个List的时候，我们并不能直接的new一个List（显然是废话，接口肯定是不能通过new实例化的），而只能是实例化一个继承并实现它的类的实例并将这个实例化的值赋值给
+所以当我们需要实例化一个List的时候，我们并不能直接的new一个List（显然是废话，接口肯定是不能通过new实例化的），而只能是实例化一个继承并实现它的类的实例并将这个实例化
         </p>
     </div>
 </article>
+    
+        </div>
     
 
     
     
     
+    
+        <div class="article-row">
     
         <article class="article article-summary">
     <div class="article-summary-inner">
@@ -329,7 +383,52 @@
 准备工作
 首先安装我们需要的第三方库：
 12pip install aiohttppip install flask
-然后准备好要使用的 W
+然后准备好
+        </p>
+    </div>
+</article>
+    
+
+    
+    
+    
+    
+        <article class="article article-summary">
+    <div class="article-summary-inner">
+        
+        <a href="/posts/eae731fe/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://redisson.org/assets/logos/logo.png)" alt="Redisson 的介绍与使用" class="thumbnail-image"></span>
+    
+    
+        
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    
+</span>
+
+
+    
+</a>
+
+        
+        <div class="article-meta">
+            <div class="category">
+            <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
+            </div>
+            <div class="date"><time datetime="2018-06-04T18:04:44.000Z" itemprop="datePublished">2018-06-05</time></div>
+        </div>
+        
+    
+        <h1 class="article-title" itemprop="name">
+        <a href="/posts/eae731fe/">Redisson 的介绍与使用</a>
+        </h1>
+    
+
+        <p class="article-excerpt">
+            一、简介
+ Redisson是一个在Redis的基础上实现的Java驻内存数据网格（In-Memory Data Grid）。它不仅提供了一系列的分布式的Java常用对象，还提供了许多分布式服务。其中包括(BitSet, Set, Multimap, SortedSet, Map, List, Queue, BlockingQueue, Deque, BlockingDeque, Semapho
         </p>
     </div>
 </article>
@@ -382,7 +481,7 @@
 这次我们来实现一个基于lenet的Siamese Network，大家如果想了解Siamese Network，给大家推荐Andrew NG的课deeplearning.ai作为了解
 接下来我们直接上code：大家也可以直接移步到我的github 仓库里面找代码代码
 
-123456789代码目录组织结构：siameasenetwork	_
+123456789代码目录组织结构：siameasenetw
         </p>
     </div>
 </article>
@@ -429,7 +528,7 @@
             前言
 前五篇文章介绍了 asyncio 的 API，从这篇开始，就要讲一些 Real World（并不）的东西了。
 使用 aiohttp 作为 HTTP 客户端
-aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是 asyncio 生态中发展最迅速的第三方库之一。在这一节，我们使用 aiohttp 作为 HTTP 客户端来比较一下同步、基于线程的异步和基于 asyn
+aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是 asyncio 生态中发展最迅速的第三方库之一。在这一节，我们使用 aiohttp 作为 HTTP 客户端来比较一下同步、基于线程的异步和基于 a
         </p>
     </div>
 </article>
@@ -478,7 +577,7 @@ aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是
 
         <p class="article-excerpt">
             一、简介
-使用lombok减少代码冗余（Reducing Boilerplate Code with Project Lombok）。“Boilerplate”是用来描述许多部分重复的代码的术语。这也是Java语言最常提出批评之一,是大多数项目中都存在此类代码而且数量很多。这个问题经常是各种库中设计决策的结果，但是由于语言本身的限制而导致的。Lombok 旨在通过一组简单的注释取代这些问题。 虽然
+使用lombok减少代码冗余（Reducing Boilerplate Code with Project Lombok）。“Boilerplate”是用来描述许多部分重复的代码的术语。这也是Java语言最常提出批评之一,是大多数项目中都存在此类代码而且数量很多。这个问题经常是各种库中设计决策的结果，但是由于语言本身的限制而导致的。Lombok 旨在通过一组简单的注释取代这些问题。 虽
         </p>
     </div>
 </article>
@@ -531,109 +630,6 @@ aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是
 
 
 
-
-
-
-参数名称
-
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/78b2bf24/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-10-AIR" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a>
-            </div>
-            <div class="date"><time datetime="2018-05-20T11:52:00.000Z" itemprop="datePublished">2018-05-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/78b2bf24/">chapter-10-AIR</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            TensorFlow SVM
-
-简单的介绍一下Support Vector Machine，SVM是一个二分类机器学习算法，目的就是为了让两类之间的margin更大，SVM还可以实现多分类任务，那么需要扩展非线性kernels进去，接下来逐渐介绍SVM
-和线性回归一起工作的SVM,使用得数据是IRIS数据集，取两个特征维度。
-
-12345678910111213141516171819202122
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/befe0ef0/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-09-AIR" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a>
-            </div>
-            <div class="date"><time datetime="2018-05-20T11:31:09.000Z" itemprop="datePublished">2018-05-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/befe0ef0/">chapter-09-AIR</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            TensorFlow Logistic Regression
-还是得先和大家开个头，我最近有点忙，所以有时候需要抽开时间补上拉下的博客，这是我2018年5月20号补5月七号那个月的博客，先来介绍一下逻辑回归的概念，也就是相对于线性回归，其实逻辑回归就是一个分类问题，大家可以这么理解，也就是最后将值得分布确定在几类当中，就像我们最开始在博客一开始学习得fashion mnist一样，只不过，我们这节
         </p>
     </div>
 </article>
@@ -686,6 +682,26 @@ aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是
         <h3 class="widget-title">最新文章</h3>
         <div class="widget">
             <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/978fb366/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/07/29/5b5dc7d9647ea.png)" alt="内存中的栈、堆和静态区的用法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/978fb366/" class="title">内存中的栈、堆和静态区的用法</a></p>
+                            <p class="item-date"><time datetime="2018-07-29T09:46:14.000Z" itemprop="datePublished">2018-07-29</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -767,26 +783,6 @@ aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/45d29694/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-11-AIR" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
-                            <p class="item-title"><a href="/posts/45d29694/" class="title">chapter-11-AIR</a></p>
-                            <p class="item-date"><time datetime="2018-05-29T03:27:34.000Z" itemprop="datePublished">2018-05-29</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -796,7 +792,7 @@ aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -806,7 +802,7 @@ aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
         </div>
     </div>
 
@@ -816,7 +812,7 @@ aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">3</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
         </div>
     </div>
 

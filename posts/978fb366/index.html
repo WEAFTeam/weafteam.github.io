@@ -3,26 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Java中String、StringBuffer与StringBuilder的区别 | WEAF 周刊</title>
+    <title>内存中的栈、堆和静态区的用法 | WEAF 周刊</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
         <meta name="keywords" content="面试" />
     
-    <meta name="description" content="最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。  下面开始本次的内容整理吧~ String 首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存">
+    <meta name="description" content="本周的第三篇博客，这个题目应该也是老生常谈的问题。  1 堆区 先了解下Heap的作用，堆区是专门用来存储对象的实例的，也就是我们平时通过new出来的对象，但是实际上这里面也只是保存了对象实例的属性值，属性的类型和对象本身的标记等一些内容，其中值得注意的是它里面并不保存对象的方法（方法也可以理解成指令，保存在stack中） 所以我们加以总结和延伸下： 1 它存储的都是对象，而且每个对">
 <meta name="keywords" content="面试">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java中String、StringBuffer与StringBuilder的区别">
-<meta property="og:url" content="http://weafteam.github.io/posts/2870b42a/index.html">
+<meta property="og:title" content="内存中的栈、堆和静态区的用法">
+<meta property="og:url" content="http://weafteam.github.io/posts/978fb366/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
-<meta property="og:description" content="最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。  下面开始本次的内容整理吧~ String 首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存">
+<meta property="og:description" content="本周的第三篇博客，这个题目应该也是老生常谈的问题。  1 堆区 先了解下Heap的作用，堆区是专门用来存储对象的实例的，也就是我们平时通过new出来的对象，但是实际上这里面也只是保存了对象实例的属性值，属性的类型和对象本身的标记等一些内容，其中值得注意的是它里面并不保存对象的方法（方法也可以理解成指令，保存在stack中） 所以我们加以总结和延伸下： 1 它存储的都是对象，而且每个对">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://i.loli.net/2018/05/06/5aee68d9a096b.png">
-<meta property="og:updated_time" content="2018-05-06T02:35:14.424Z">
+<meta property="og:image" content="https://i.loli.net/2018/07/29/5b5dc7d9647ea.png">
+<meta property="og:updated_time" content="2018-08-07T08:56:15.425Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java中String、StringBuffer与StringBuilder的区别">
-<meta name="twitter:description" content="最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。  下面开始本次的内容整理吧~ String 首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存">
-<meta name="twitter:image" content="https://i.loli.net/2018/05/06/5aee68d9a096b.png">
+<meta name="twitter:title" content="内存中的栈、堆和静态区的用法">
+<meta name="twitter:description" content="本周的第三篇博客，这个题目应该也是老生常谈的问题。  1 堆区 先了解下Heap的作用，堆区是专门用来存储对象的实例的，也就是我们平时通过new出来的对象，但是实际上这里面也只是保存了对象实例的属性值，属性的类型和对象本身的标记等一些内容，其中值得注意的是它里面并不保存对象的方法（方法也可以理解成指令，保存在stack中） 所以我们加以总结和延伸下： 1 它存储的都是对象，而且每个对">
+<meta name="twitter:image" content="https://i.loli.net/2018/07/29/5b5dc7d9647ea.png">
     
 
     
@@ -133,14 +133,14 @@
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-2018-04-23/Java中String、StringBuffer与StringBuilder的区别" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-2018-05-28/内存中的栈、堆和静态区的用法" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        Java中String、StringBuffer与StringBuilder的区别
+        内存中的栈、堆和静态区的用法
         </h1>
     
 
@@ -150,8 +150,8 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/posts/2870b42a/" class="article-date">
-            <time datetime="2018-05-03T07:39:02.000Z" itemprop="datePublished">2018-05-03</time>
+        <a href="/posts/978fb366/" class="article-date">
+            <time datetime="2018-07-29T09:46:14.000Z" itemprop="datePublished">2018-07-29</time>
         </a>
     </div>
 
@@ -173,36 +173,30 @@
         
         <div class="article-entry" itemprop="articleBody">
             <blockquote>
-<p>最近准备开始刷牛客网上的题目，为找工作面试做准备，今后我会将其中感觉比较不错的知识点总结出来形成博客，贴出来与大家共同学习，如果其中存在什么问题，也希望大家不吝指教，邮箱地址为well@weaf.top。</p>
+<p>本周的第三篇博客，这个题目应该也是老生常谈的问题。</p>
 </blockquote>
-<p>下面开始本次的内容整理吧~</p>
-<h1 id="string">String</h1>
-<p>首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存重新申请一块地方存放改变之后的字符串。很显然，String是字符串常量，字符长度不可变。其实这是一件很恐怖的事情，当你需要多次改变时，多次的改变产生的代价不言而喻。</p>
-<h1 id="stringbuffer">StringBuffer</h1>
-<p>StringBuffer是字符串变量，支持多线程进行字符操作，而且是线程安全的，适合在多线程中使用。原因是在源代码中StringBuilder的很多方法都被关键字synchronized修饰了，这也是StringBuffer和StringBuilder的最大区别的地方。</p>
-<h1 id="stringbuilder">StringBuilder</h1>
-<p>StringBuilder也是字符串变量，但是区别于StringBuffer，它并不支持并发操作，非线程安全，不适合在多线程中使用，但是其在单线程中的性能比StringBuffer高。</p>
-<h1 id="测试">测试</h1>
-<h2 id="代码">代码</h2>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringTest</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> EchoNum = <span class="number">10000</span>;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TestStr</span><span class="params">()</span></span>&#123;</span><br><span class="line">        String A = <span class="keyword">new</span> String(<span class="string">"AAA"</span>);</span><br><span class="line">        <span class="keyword">long</span> StartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;EchoNum;i++)&#123;</span><br><span class="line">            A+=<span class="string">"A"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> EndTime = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"String: "</span>+ (EndTime-StartTime)+<span class="string">" millis has been used"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TestStrBuffer</span><span class="params">()</span></span>&#123;</span><br><span class="line">        StringBuffer A = <span class="keyword">new</span> StringBuffer(<span class="string">"AAA"</span>);</span><br><span class="line">        <span class="keyword">long</span> StartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;EchoNum;i++)&#123;</span><br><span class="line">            A = A.append(<span class="string">"A"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> EndTime = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"StringBuffer: "</span>+ (EndTime-StartTime)+<span class="string">" millis has been used"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TestStrBuilder</span><span class="params">()</span></span>&#123;</span><br><span class="line">        StringBuilder A = <span class="keyword">new</span> StringBuilder(<span class="string">"AAA"</span>);</span><br><span class="line">        <span class="keyword">long</span> StartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;EchoNum;i++)&#123;</span><br><span class="line">            A = A.append(<span class="string">"A"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> EndTime = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"StringBuilder: "</span>+ (EndTime-StartTime)+<span class="string">" millis has been used"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        TestStr();</span><br><span class="line">        TestStrBuffer();</span><br><span class="line">        TestStrBuilder();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="结果">结果</h2>
-<p><img src="https://i.loli.net/2018/05/06/5aee5e758b3a0.png" alt="StringsResult.png"></p>
-<p>结果就很明显了，String的效率最低下，只考虑单线程的话，推荐使用StringBuilder；但是如果是要保证线程安全的话，肯定要使用StringBuffer。</p>
-<p>稍微总结一下：</p>
-<ul>
-<li>如果我们需要一个在整个程序中不需要修改的字符串，<strong>String</strong>是首选。</li>
-<li>如果我们需要一个在多线程之间共享的动态字符串，<strong>StringBuffer</strong>是我们的选择。</li>
-<li>如果以上两种情况都不存在，<strong>StringBuilder</strong>是一个不错的选择。</li>
-</ul>
-<h1 id="练手">练手</h1>
-<p>然后来看一道阿里巴巴的面试题吧，题目内容如下：</p>
-<p><strong>题目：</strong> (单选题)Java中，StringBuilder和StringBuffer的区别，下面说法错误的是？</p>
-<p><strong>A：</strong> StringBuffer是线程安全的。</p>
-<p><strong>B：</strong> StringBuilder是非线程安全的。</p>
-<p><strong>C：</strong> StringBuffer对String类型进行改变的时候，其实都等同于生成了一个新的String对象，然后将指针指向新的String对象。</p>
-<p><strong>D：</strong> 效率比较 String &lt; StringBuffer &lt; StringBuilder，但是在 String S1 = “This is only a” + &quot; simple&quot; + &quot; test“时，String的效率最高。</p>
-<p><strong>分析：</strong></p>
-<p>A，B就不用多说了，肯定是正确的。C项一眼其实就能看出来是错误的，StringBuffer和StringBuilder都是字符串变量，并不需要重新申请内存存放新的对象。D项中的后一部分<strong>String S1 = “This is only a”+ “Simple”+“Test”</strong>，其实这个地方并没有字符串操作处理，只是简单的<strong>String S1 = “This is only a simple test”</strong>，所以效率最高。</p>
+<h2 id="堆区">1 堆区</h2>
+<p>先了解下Heap的作用，堆区是专门用来存储对象的实例的，也就是我们平时通过new出来的对象，但是实际上这里面也只是保存了对象实例的属性值，属性的类型和对象本身的标记等一些内容，其中值得注意的是它里面并不保存对象的方法（方法也可以理解成指令，保存在stack中）</p>
+<p>所以我们加以总结和延伸下：</p>
+<p><strong>1</strong> 它存储的都是对象，而且每个对象都包含一个与之对应的class的信息。这样做的目的是能够让对象得到操作的指令集。</p>
+<p><strong>2</strong> 需要注意的是JVM中只有一块堆区（Heap），而且它是被所有线程共享的。堆区中存放的只有对象本身，不存放基本数据类型和对象的引用。</p>
+<p><strong>3</strong> 关于堆区的分配和释放一般是由程序员做这个操作。其实这一点很好理解，程序员new一个对象相当于对这块区域做了分配的工作，而当程序员做delete操作时，相当于释放了这部分空间，同时如果程序员的习惯不好，不对无用的对象进行释放的话，当程序结束时，也会由OS做这个工作。</p>
+<h2 id="栈">2 栈</h2>
+<p>然后我们再了解下Stack的作用，当我们在堆区中为我们new出来的对象分配好空间之后，我们需要在栈中保存一个4字节的Heap的地址，用来定位该对象实例在Heap中的位置，便于找到该对象实例。</p>
+<p>其实Stack的功能不止于此：</p>
+<p><strong>1</strong> 不同于Heap，Stack的个数是和线程挂钩的，每个线程都包含一个Stack，而且栈中只包含了基本的数据类型的变量和对象的引用。</p>
+<p><strong>2</strong> 栈之间是相互独立的，所以栈中的数据都是私有的，其他的栈不能访问。</p>
+<p><strong>3</strong> 栈可以分为三个部分：基本数据类型变量区、执行环境的上下文、操作指令区</p>
+<p><strong>4</strong> 栈相对于堆区，它的分配和释放的工作是系统自己做的</p>
+<h2 id="静态区方法区">3 静态区/方法区</h2>
+<p>类似于堆区，而且是被所有线程所共享的。方法区中存放了整个程序中所有的永远唯一的变量，例如：class信息和static变量等。</p>
+<p>它也是分了三块：全局变量和静态变量的存储是放在一块的，初始化的全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。</p>
+<h2 id="注意">注意</h2>
+<p><strong>栈是运行时的单位，而堆是存储时的单位</strong></p>
+<p>值得注意的是：堆和栈不都可以存储数据吗，为什么要将这两者区分开来？</p>
+<p>** 1 ** 首先从软件设计的角度来看这个问题，栈其实代表了处理逻辑，而堆代表了数据存储。这种分而治之的思想，使得我们的处理逻辑更为清晰。</p>
+<p>** 2 ** 因为堆是共享的，所以堆中的内容也是被多个栈共享的。这样做的收益有两个方面：一方面这种共享提供了一种有效的数据交互方式，另一方面，堆中的共享常量和缓存可以被所有的栈访问到。</p>
+<p>以上。感谢驻足~</p>
 
         </div>
         <footer class="article-footer">
@@ -303,20 +297,10 @@
         
 <nav id="article-nav">
     
-        <a href="/posts/7eb3a479/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">下一篇</strong>
-        <p class="article-nav-title">
-        
-            asyncio 不完全指北（四）
-        
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
     
-    
-        <a href="/posts/637facd6/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/posts/8b09dcdd/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">微信公众号后台在SpringBoot2.0中的实现（上）</p>
+        <p class="article-nav-title">StackOverflow上简单数字识别案例学习</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
