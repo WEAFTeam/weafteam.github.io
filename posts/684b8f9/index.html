@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Python 类型系统的下一步 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="写在前面 本文翻译自 Next Steps with Python Type System。 自豪的采用搜狗翻译。 这是 Python 类型系统的第二篇文章。这篇文章中，我将展示 Python 类型的一些更高级的特性。此外也会包括一些关于使用特定类型功能的提示，和一个如何将类型系统引入你的代码库中的简短指南。 1. 约束类型 在上一篇博客文章中描述了 Optional 类型。让我们回到展">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 类型系统的下一步">
+<meta property="og:url" content="http://weafteam.github.io/posts/684b8f9/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="写在前面 本文翻译自 Next Steps with Python Type System。 自豪的采用搜狗翻译。 这是 Python 类型系统的第二篇文章。这篇文章中，我将展示 Python 类型的一些更高级的特性。此外也会包括一些关于使用特定类型功能的提示，和一个如何将类型系统引入你的代码库中的简短指南。 1. 约束类型 在上一篇博客文章中描述了 Optional 类型。让我们回到展">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://user-images.githubusercontent.com/8280169/43972489-202ddfbc-9d07-11e8-80f9-bba30285b5b9.png">
+<meta property="og:updated_time" content="2018-08-12T09:51:01.089Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python 类型系统的下一步">
+<meta name="twitter:description" content="写在前面 本文翻译自 Next Steps with Python Type System。 自豪的采用搜狗翻译。 这是 Python 类型系统的第二篇文章。这篇文章中，我将展示 Python 类型的一些更高级的特性。此外也会包括一些关于使用特定类型功能的提示，和一个如何将类型系统引入你的代码库中的简短指南。 1. 约束类型 在上一篇博客文章中描述了 Optional 类型。让我们回到展">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/8280169/43972489-202ddfbc-9d07-11e8-80f9-bba30285b5b9.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    未分类
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-06-18/next-steps-with-python-type-system" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Python 类型系统的下一步
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/684b8f9/" class="article-date">
+            <time datetime="2018-08-10T17:35:33.000Z" itemprop="datePublished">2018-08-11</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        MisLink
+    </div>
+
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h2 id="写在前面">写在前面</h2>
+<p>本文翻译自 <a href="https://blog.daftcode.pl/next-steps-with-python-type-system-efc4df5251c9" target="_blank" rel="noopener">Next Steps with Python Type System</a>。</p>
+<p>自豪的采用搜狗翻译。</p>
+<p>这是 Python 类型系统的第二篇文章。这篇文章中，我将展示 Python 类型的一些更高级的特性。此外也会包括一些关于使用特定类型功能的提示，和一个如何将类型系统引入你的代码库中的简短指南。</p>
+<h2 id="约束类型">1. 约束类型</h2>
+<p>在上一篇博客文章中描述了 <code>Optional</code> 类型。让我们回到展示其用法的片段：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Optional</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_user_id</span><span class="params">()</span> -&gt; Optional[int]:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_user_id</span><span class="params">(user_id: int)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">user_id = get_user_id()</span><br><span class="line">process_user_id(user_id)  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Argument 1 to "process_user_id" has incompatible type "Optional[int]"; expected "int"</span></span><br></pre></td></tr></table></figure>
+<p>mypy 类型检查器报告的错误确实是正确和有用的。但是如果你真的知道在当前上下文中 <code>get_user_id()</code> 会返回一个 <code>int</code>，而你只想把它传递给 <code>process_user_id()</code> 怎么办？首先，考虑一下你的程序结构是否不复杂，是否需要重构。你还想这么做吗？嗯，我们需要以某种方式通知mypy 类型已经改变了。在我们的例子中，这种变化实际上是限制性的：从 <code>Optional[int]</code> （即 <code>Union[int, None]</code>）到 <code>int</code>。首先，让我们尝试最显而易见的方法来实现它。</p>
+<h3 id="具有新的类型注解的类型约束-不正确">1.1 具有新的类型注解的类型约束 [不正确]</h3>
+<p>最简单的方法似乎是用更严格的类型注解变量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">user_id: int = get_user_id()  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Incompatible types in assignment (expression has type "Optional[int]",</span></span><br><span class="line"><span class="comment">#   variable has type "int")</span></span><br><span class="line"></span><br><span class="line">process_user_id(user_id)</span><br></pre></td></tr></table></figure>
+<p>然而我们不能这样做。为什么？因为类型注解不会强制变量使用类型，它告知类型。如果有任何不一致，类型检查器会报告它。事实上，如果这种方法是正确的，整个类型检查思想就会崩溃。</p>
+<p>类型检查思想会崩溃，特别是当一个新类型不是旧类型的子类型时（如 <code>int</code> 和 <code>str</code>）。我们可以想象一种假设的情况，在这种情况下，mypy 会接受类型约束（通过使用注解将类型从更一般的类型变为不太一般的类型）。在我们的例子中，它将会从 <code>Union[int, None]</code> 约束到 <code>int</code>。但是，目前它不受支持。</p>
+<p>至少有两种正确的方法可以通知 mypy 类型检查器不同于预期的类型。</p>
+<h3 id="具有类型检查的类型约束-正确">1.2 具有类型检查的类型约束 [正确]</h3>
+<p>更改类型的正确方法是确保新类型的 <code>isinstance</code> 返回 <code>True</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">user_id = get_user_id()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> isinstance(user_id, int):</span><br><span class="line">    process_user_id(user_id)  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line"><span class="keyword">assert</span> isinstance(user_id, int)</span><br><span class="line">process_user_id(user_id)  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在我们的例子中可以</span></span><br><span class="line"><span class="keyword">if</span> user_id <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">    process_user_id(user_id)  <span class="comment"># 没有错误</span></span><br></pre></td></tr></table></figure>
+<p>现在，mypy 确信 <code>user_id</code> 具有正确的类型——否则，将不会执行对 <code>process_user_id</code> 的调用。</p>
+<p>请注意，使用 <code>isinstance</code> 会带来少量运行时开销。另外，我们还会得到额外的运行时检查，这可能会很有用。</p>
+<h3 id="具有强制类型转换的类型约束-正确">1.3 具有强制类型转换的类型约束 [正确]</h3>
+<p>告诉 mypy 该类型受到约束（或以其他方式更改）的另一个正确方法是使用 <code>cast</code> 函数。这在 <a href="https://www.python.org/dev/peps/pep-0484/#casts" target="_blank" rel="noopener">PEP 484</a> 中有明确描述。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> cast</span><br><span class="line"></span><br><span class="line">user_id = cast(int, get_user_id())</span><br><span class="line">process_user_id(user_id)  <span class="comment"># 没有错误</span></span><br></pre></td></tr></table></figure>
+<p>正如我们所见，这个函数是在 <code>typing</code> 模块中定义的。类型系统不应对运行时产生任何影响，这个函数保持了这个承诺（除了空函数调用）——在 Python 的源代码中，它被定义为一个身份函数 （删除了 docstring）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cast</span><span class="params">(typ, val)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> val</span><br></pre></td></tr></table></figure>
+<p>因此不执行运行时检查。当使用 <code>cast</code> 时，对于类型检查者来说，盲目相信这种新类型是一条命令。</p>
+<p>请注意，使用 <code>cast</code> 可能会掩盖错误：前一种类型——可能是正确的——会被忽略。因此，在某种程度上，它的工作方式类似于 <code>Any</code> 和 <code>#type: ignore</code>（见下文），因此要小心使用。</p>
+<h2 id="组合类型并定义类型别名">2. 组合类型并定义类型别名</h2>
+<p>Python 的类型可以自由组合。想要一个整数、浮点数、字符串或 <code>None</code> 的列表吗？只需使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List[Union[int, float, str, <span class="keyword">None</span>]]</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List[Optional[Union[int, float, str]]]</span><br></pre></td></tr></table></figure>
+<p>随便你。</p>
+<p>由字符串组成的元组和由整数组成的元组列表以及由整数、字符串和字符串列表组成的元组列表怎么样？也很直白😅：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Tuple[str, List[Tuple[int, List[Tuple[int, str, List[str]]]]]]</span><br></pre></td></tr></table></figure>
+<p>看起来很有趣！不是吗？事实上，我们有时会在程序中使用这些复杂的数据类型。如何将类型注解与它们一起使用，并且不要失去理智？</p>
+<p>要使类型更易于管理和阅读，请使用类型别名。要创建别名，只需为变量分配一个类型：<code>alias = T</code>。现在我们可以使用 <code>alias</code> 代替 <code>T</code>。</p>
+<p>这里的关键是正确命名别名。大多数情况下，创建反映命名类型结构的别名，如 <code>ListOfListsOfDictsFromStrToIntOrFloat</code>，并没有真正意义。要使用内部反映“业务对象”的名称。同样，相应地嵌套别名。像这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List, Tuple</span><br><span class="line"></span><br><span class="line">ItemId = int</span><br><span class="line">ItemName = str</span><br><span class="line">ItemTag = str</span><br><span class="line">ItemTags = List[ItemTag]</span><br><span class="line">Item = Tuple[ItemId, ItemName, ItemTags]</span><br><span class="line">Items = List[Item]</span><br><span class="line"></span><br><span class="line">OrderId = int</span><br><span class="line">Order = Tuple[OrderId, Items]</span><br><span class="line">Orders = List[Order]</span><br><span class="line"></span><br><span class="line">ShipmentId = str</span><br><span class="line">Shipment = Tuple[ShipmentId, Orders]</span><br></pre></td></tr></table></figure>
+<p>使用 <code>NamedTuple</code> 来定义 <code>Item</code>、<code>Order</code> 和 <code>Shipment</code> 将会进一步提高我们代码的可读性。另外，在现实的代码中，我们可能会使用自定义类来代替。尽管如此，类型别名仍然是有用的。</p>
+<p><code>Shipment</code> 看起来比 <code>Tuple[str, List[Tuple[int, List[Tuple[int, str, List[str]]]]]]</code> 好得多，不是吗？需要键入的字符也少得多。</p>
+<p>现在，我们的代码可以用业务相关的类型注解，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_item_id</span><span class="params">()</span> -&gt; ItemId:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_item</span><span class="params">(name: ItemName, tags: ItemTags)</span> -&gt; Item:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_order</span><span class="params">(items: Items)</span> -&gt; Order:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_order</span><span class="params">(order: Order)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 等等</span></span><br></pre></td></tr></table></figure>
+<p>代码更清晰，业务逻辑明显。此外，类型注解和类型本身的错误更容易被发现。</p>
+<h2 id="newtype-函数">3. NewType 函数</h2>
+<p>在最后一节中，我们看到为一个简单的类型分配了别名，如 <code>ItemId = int</code>。即使是这个简单的别名也有意义，因为它表示这个特定整数的“意义”。尽管如此，它并不能保护我们免受以下错误的影响：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ItemId = int</span><br><span class="line">OrderId = int</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_last_item_id</span><span class="params">()</span> -&gt; ItemId:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_last_order_id</span><span class="params">()</span> -&gt; OrderId:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_order</span><span class="params">(id_: OrderId)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">order_id = get_last_item_id()</span><br><span class="line">order = get_order(order_id)  <span class="comment"># 没有错误</span></span><br></pre></td></tr></table></figure>
+<p>mypy 很开心，IDE 很开心，我们也很开心。让我们祈祷进行代码审查的人会发现错误！</p>
+<p>为了防止这种情况，我们可以额外定义直接从 <code>int</code> 继承的子类（子类型）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ItemId</span><span class="params">(int)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderId</span><span class="params">(int)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_last_item_id</span><span class="params">()</span> -&gt; ItemId:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_last_order_id</span><span class="params">()</span> -&gt; OrderId:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_order</span><span class="params">(id_: OrderId)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">order_id = get_last_item_id()</span><br><span class="line">order = get_order(order_id)  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Argument 1 to "get_order" has incompatible type "ItemId"; expected "OrderId"</span></span><br></pre></td></tr></table></figure>
+<p>很好，错误被发现了。不幸的是，通过额外的构造函数传递值会带来运行时开销。当我们必须处理许多实例时，这尤其痛苦。为了解决这个问题，<code>typing</code> 模块具有 <code>NewType</code> 函数。它用于定义不同的子类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> NewType</span><br><span class="line"></span><br><span class="line">ItemId = NewType(<span class="string">"ItemId"</span>, int)</span><br><span class="line">OrderId = NewType(<span class="string">"OrderId"</span>, int)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_last_item_id</span><span class="params">()</span> -&gt; ItemId:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_last_order_id</span><span class="params">()</span> -&gt; OrderId:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_order</span><span class="params">(id_: OrderId)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">order_id = get_last_item_id()</span><br><span class="line">order = get_order(order_id)  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Argument 1 to "get_order" has incompatible type "ItemId"; expected "OrderId"</span></span><br></pre></td></tr></table></figure>
+<p><code>NewType</code> 只是返回一个身份函数，因此在运行时没有定义子类。此外，这只会带来最小的开销。请参见<a href="https://github.com/python/typing/blob/master/src/typing.py#L2210-L2234" target="_blank" rel="noopener">这里</a>的源代码。</p>
+<p>使用用 <code>NewType</code> 定义的类型，我们可以在代码中添加额外的类型“跟踪”。这在安全环境中可能很方便——例如区分安全和（潜在的）不安全字符串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> NewType</span><br><span class="line"></span><br><span class="line">SafeStr = NewType(<span class="string">'SafeStr'</span>, str)</span><br><span class="line"></span><br><span class="line">safe_code = SafeStr(<span class="string">'2 + 2'</span>)</span><br><span class="line">user_provided_code = <span class="string">'import sys; sys.melt_cpu()'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exec_code</span><span class="params">(string: SafeStr)</span>:</span></span><br><span class="line">    exec(string)</span><br><span class="line"></span><br><span class="line">exec_code(safe_code)</span><br><span class="line">exec_code(user_provided_code)  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Argument 1 to "exec_code" has incompatible type "str"; expected "SafeStr"</span></span><br></pre></td></tr></table></figure>
+<p>请注意，获取 <code>user_provided_code</code> 的值可能离对 <code>exec_code</code> 的调用很远，因此如果没有 mypy 帮助，很难发现它是不安全的。</p>
+<p>在运行时，通过 <code>NewType</code>——在我们的例子中是 <code>SafeStr('2 + 2')</code>（第 5 行）——传递值几乎没有开销，实际上没有任何变化。对 mypy 来说，它的工作方式就像 <code>cast(SafeStr, '2 + 2')</code>。</p>
+<h2 id="可调用类型">4. 可调用类型</h2>
+<p>到目前为止，我们定义了函数的参数类型和返回类型。但是，如果我们想将一个函数本身传递给另一个函数（在 Python 中，函数是第一类对象，所以可以这样做）怎么办——我们如何表达传递函数的类型？</p>
+<p>让我们离题一会儿……在 Python 的类型系统中，函数的类型就像任何其他类型一样（记住：函数是第一类对象，就像整数或字符串一样）。起初这可能令人惊讶，但如果你仔细想想，这是很自然的。例如，这样注解的函数类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">(arg: str)</span> -&gt; int:</span> ...</span><br></pre></td></tr></table></figure>
+<p>可以被认为是“<code>str</code> 到 <code>int</code>”。事实上，函数的类型在某种程度上非常类似于 <code>Dict</code> 类型，它将一个值“映射”到另一个值；像 <code>Dict[str, int]</code> 将 <code>str</code> 映射到 <code>int</code>。从类型的角度来看，函数更复杂——可以没有、一个或多个参数，字典只有一个键。然而，映射的思想是一样的。</p>
+<p>在 Python 中，描述函数类型（和其他可调用类型）时使用 <code>Callable</code> 类型。它的定义如下：</p>
+<blockquote>
+<p><code>Callable[[t1, t2, …, tn], tr]</code> 具有位置参数类型 <code>t1</code> 等的函数，返回类型 <code>tr</code>。[<a href="https://www.python.org/dev/peps/pep-0483/#fundamental-building-blocks" target="_blank" rel="noopener">来源</a>]</p>
+</blockquote>
+<p>让我们看看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Callable, List</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">apply_function_on_value</span><span class="params">(func: Callable[[str], int], value: str)</span> -&gt; int:</span></span><br><span class="line">    <span class="keyword">return</span> func(value)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">text_length</span><span class="params">(text: str)</span> -&gt; int:</span></span><br><span class="line">    <span class="keyword">return</span> len(text)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">result1 = apply_function_on_value(</span><br><span class="line">    func=text_length, value=<span class="string">"I know a dead parrot when I see one."</span></span><br><span class="line">)  <span class="comment"># 没有错误</span></span><br></pre></td></tr></table></figure>
+<p><code>apply_function_on_value</code> 将一个函数 <code>func</code> 作为它第一个参数并将它应用于其第二个参数 <code>value</code>。这个函数的类型为“<code>str</code> 到 <code>int</code>”，或者 <code>Callable[[str], int]</code>。所以将 <code>text_length</code> 函数（它只是定义在字符串上的 <code>len</code> 函数）传递给它是正确的，因为 <code>func</code> 被定义为获取 <code>str</code> 并返回 <code>int</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">append_parrot</span><span class="params">(text: str)</span> -&gt; str:</span></span><br><span class="line">    <span class="keyword">return</span> text + <span class="string">' Parrot!'</span></span><br><span class="line"></span><br><span class="line">result2 = apply_function_on_value(</span><br><span class="line">    func=append_parrot,</span><br><span class="line">    value=<span class="string">"Now that's what I call a dead parrot."</span>,</span><br><span class="line">)  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Argument "func" to "apply_function_on_value" has incompatible type</span></span><br><span class="line"><span class="comment">#   "Callable[[str], str]"; expected "Callable[[str], int]"</span></span><br></pre></td></tr></table></figure>
+<p><code>append_parrot</code> 无法正确传递给 <code>apply_function_on_value</code>，因为它与 <code>func</code> 类型不兼容：返回一个 <code>str</code>，而不是 <code>int</code>。</p>
+<h2 id="any-类型与关闭-mypy-检查">5. Any 类型与关闭 mypy 检查</h2>
+<p>Python 的类型规则非常严格，但是 Python 为你不想让 mypy 抱怨某个类型的情况提供了漏洞。这个漏洞是 <code>Any</code> 类型。<code>Any</code> 与每种类型都一致，每种类型都与 <code>Any</code> 一致。</p>
+<blockquote>
+<p>当一个值具有类型 <code>Any</code> 时，类型检查器将允许对其进行所有操作，并且类型 <code>Any</code> 的值可以分配给一个更受约束类型的变量（或者用作返回值）。[<a href="https://www.python.org/dev/peps/pep-0484/#the-any-type" target="_blank" rel="noopener">来源</a>]</p>
+</blockquote>
+<p>让我们证明一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Any</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>:</span> ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查类型</span></span><br><span class="line">lassie: Dog</span><br><span class="line">anything1: Any</span><br><span class="line">lassie = anything1  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line">scooby: Dog</span><br><span class="line">anything2: Any</span><br><span class="line">anything2 = scooby  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查属性</span></span><br><span class="line">anything3: Any</span><br><span class="line">anything3.enter_hiperspace()  <span class="comment"># 没有错误</span></span><br></pre></td></tr></table></figure>
+<p>正如文档所述：</p>
+<blockquote>
+<p><code>Any</code> 可以被认为是具有所有值和所有方法的类型。结合上面的子类型定义，这将 <code>Any</code> 部分的放在类型层次结构的顶部（它有所有值）和底部（它有所有方法）。<a href="https://www.python.org/dev/peps/pep-0483/#summary-of-gradual-typing" target="_blank" rel="noopener">来源</a></p>
+</blockquote>
+<p>可以这样表示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">                      Any                     &lt;- 所有类型都是 Any</span><br><span class="line">                      / \                        (就像 `object`</span><br><span class="line">                     /*  \*                       -- 所有对象都是 `object`)</span><br><span class="line">                    /     \</span><br><span class="line">            SomeType1     SomeType2</span><br><span class="line">           /       |       |       \</span><br><span class="line">          /        |       |        \</span><br><span class="line">         /         |       |         \</span><br><span class="line"> Subtype1_1  Subtype1_2  Subtype2_1  Subtype2_2</span><br><span class="line">     |          |           |           |</span><br><span class="line">     |*         |*          |*          |*</span><br><span class="line">     |          |           |           |</span><br><span class="line">    Any        Any         Any         Any       &lt;- Any 有所有属性</span><br><span class="line">                                                     (不像 `object`</span><br><span class="line">                                                      -- `object` 没有属性)</span><br><span class="line">* 一致性关系，不是子类型，见下文</span><br></pre></td></tr></table></figure>
+<p>请注意，严格来说，<code>Any</code> 类型和其他类型之间的关系不是微妙的关系，而是保持一致的关系。有关正式定义和更多上下文，请参见<a href="https://www.python.org/dev/peps/pep-0483/#summary-of-gradual-typing" target="_blank" rel="noopener">这里</a>。</p>
+<p>实际上，<code>Any</code> 只是关闭它正在注解的项目的 mypy 检查。禁用 mypy 检查的另一种更残酷的方法是使用 <code># type: ignore</code>。在你想让 mypy 错误消失的行上使用它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">height: int</span><br><span class="line">height = <span class="string">'25'</span>  <span class="comment"># type: ignore</span></span><br><span class="line"><span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>:</span> <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">lassie: Dog</span><br><span class="line">lassie.fly()  <span class="comment"># type: ignore</span></span><br><span class="line"><span class="comment"># 没有错误</span></span><br></pre></td></tr></table></figure>
+<p><code>Any</code> 的使用应该尽可能少，而使用 <code># type: ignore</code> 应该是最后一招。尤其是当你认真对待整个类型工作的时候。</p>
+<p>你绝对不应该在下列情况下使用它们：</p>
+<ul>
+<li>你想推迟注解一些东西。如果你现在不想添加一个类型，就让这个东西没有类型。Python 类型系统是完全可选的——您可以自由注解代码的一部分，而不注解另一部分。</li>
+<li>你不理解 mypy 的错误信息，只想摆脱它。有时候它可能是太神秘或者太普通了，但是真的值得深入研究这个问题。在我的经验中，几乎每次 mypy 都发现了什么。</li>
+</ul>
+<p><code>Any</code> 在哪可能有用？</p>
+<ul>
+<li>当你真的不知道变量的类型时，使用 <code>Any</code>。典型的例子是从外部提供的 JSON 创建的数据。这样创建的变量的类型是什么？它是一个 <code>list</code>，<code>dict</code>，<code>int</code>，<code>float</code>，<code>bool</code> 还是 <code>None</code>？也可以是 <code>Any</code>。请注意，使用嵌套类型（<code>Dict</code>、<code>List</code> 等）正确定义 JSON 格式是不可能的（或者至少非常困难），因为 <a href="https://www.json.org/" target="_blank" rel="noopener">JSON 的递归结构</a>。</li>
+</ul>
+<p><code># type: ignore</code> 在哪可能有用？</p>
+<ul>
+<li>当 mypy 不知道发生了什么。例如，运行时发生了一些变化——就像方法被动态添加到类中或者类层次结构发生了变化。如果 mypy 的错误真的不太胜任，并且你无法想出另一种方法来处理这个问题，使用 <code># type: ignore</code> 。但是首先，试着理解为什么 mypy 在抱怨。事实上，mypy 是一个非常好的坏味道代码检测器。</li>
+<li>当某些东西还不兼容 mypy 时（比如 <a href="https://docs.python.org/3.6/library/enum.html" target="_blank" rel="noopener">enums</a>，一开始不支持）。</li>
+<li>mypy 中有 bug。记得在 <a href="https://github.com/python/mypy/issues" target="_blank" rel="noopener">github</a> 上提出这件事！</li>
+</ul>
+<h2 id="qa">Q&amp;A</h2>
+<p>如果你还不能被说服开始使用 Python 类型系统，请继续阅读。</p>
+<h3 id="我喜欢我的-python-代码具有动态性和鸭子类型类型会毁了这一切是吗">我喜欢我的 Python 代码具有动态性和鸭子类型。类型会毁了这一切。是吗？</h3>
+<p>首先，mypy 确实不会理解一些与语言的动态特性相关的运行时黑科技。然而，作为回报，你会得到更可靠的代码。</p>
+<p>其次，Python 类型系统<a href="https://www.python.org/dev/peps/pep-0544/" target="_blank" rel="noopener">支持协议</a>（也称为“鸭子类型”），既支持内置协议，也支持用户定义的协议 （本主题不在此讨论）。所以不用担心。</p>
+<h3 id="坦白地说我不喜欢这整件类型系统的事情是不是慢慢地将-python-变成了-java">坦白地说，我不喜欢这整件类型系统的事情。是不是慢慢地将 Python 变成了 Java？</h3>
+<p>不要担心，与 Java 不同，Python 的类型系统：</p>
+<ul>
+<li>完全可选（*），</li>
+<li>不会影响运行时（**）。</li>
+</ul>
+<p>（*）好吧，不完全是，<code>dataclasses</code> <a href="https://docs.python.org/3/library/dataclasses.html" target="_blank" rel="noopener">强迫你使用类型</a>。希望这是一个异端。</p>
+<p>（**）好吧，不完全是…… 首先，从 <code>typing</code> 中导入会影响。其次，一些值——例如 <code>cast</code> 和 <code>NewType</code> ——通过身份函数传递。第三，<a href="https://docs.python.org/3/library/typing.html#typing.Generic" target="_blank" rel="noopener">泛型类型</a>（本文中未涵盖）使用自定义元类，这可能与用户定义的元类冲突；<a href="https://www.python.org/dev/peps/pep-0560/" target="_blank" rel="noopener">在 Python 3.7 中，这不再是一个问题</a>。</p>
+<h3 id="没错但是看看类型化的-python-代码更像-java而不是好的老-python">没错，但是看看类型化的 Python 代码：更像 Java，而不是好的老 Python。</h3>
+<p>这可能是第一印象，但是你真的看过企业 Java 代码库吗？我不否认类型化的 Python 代码看起来与非类型化代码不同，你需要习惯阅读它。但是当你这样做的时候——并且代码本身是以一种聪明的方式具有类型的（例如，通过使用别名）——它会变得比添加类型之前更加易读易懂。它仍然是 Pythonic 的，因为它增加了代码的清晰性和可读性。</p>
+<h3 id="好吧让我试试这个-我如何开始在代码库中使用类型注解">好吧，让我试试这个… 我如何开始在代码库中使用类型注解？</h3>
+<p>我推荐以下步骤：</p>
+<ol type="1">
+<li>从在你的非类型化代码上运行 mypy 开始，看看会发生什么。你可能会惊讶于它已经理解了这么多。（您可能希望首先使用 <code>--ignore-missing-imports</code> 和 <code>--follow-imports skip</code> 参数来运行它。）</li>
+<li>修复所有初始的 mypy 错误。</li>
+<li>现在，只需开始向代码中添加类型注解。你可以从任何地方开始，但是我认为最好从最重要的代码开始。这样，你的代码库将会更可靠。不要担心错误的类型注解会破坏你的代码：类型会尽可能少地影响 Python 的运行时。</li>
+<li>继续添加类型注解。过了一段时间，添加类型注解将开始见效。你可能会收到越来越多的捕捉到真正错误的 mypy 错误。（只是不要忘记运行 mypy。）</li>
+<li>下一步是将 mypy 检查添加到 CI 流程（也许是预提交钩子）中，并使代码始终更加可靠。</li>
+</ol>
+<p>一般来说，如果你致力于类型，最好注解所有新代码。另一种方法是，当您只想快速原型化功能时，跳过注解阶段。当你知道代码会稳定下来，你可以添加类型注解。</p>
+<p>您也可以尝试从使用自动工具添加类型注解开始。<a href="https://github.com/dropbox/pyannotate" target="_blank" rel="noopener">pyannotate</a> 库从运行时观察实际类型中获取类型信息。类似地，<a href="https://github.com/kensho-technologies/pytest-annotate" target="_blank" rel="noopener">pytest-annotate</a> 通过运行测试和观察类型添加类型注解。另外，<a href="https://github.com/google/pytype" target="_blank" rel="noopener">pytype</a> 可以基于代码的静态分析添加注解。我没有使用这些工具的经验，但是我认为仔细验证其中任何一个工具给出的注解是一个好主意。研究这些注解甚至可能导致发现代码中的一些错误。</p>
+<h3 id="当我没有时间理解-mypy-的错误时该怎么办">当我没有时间理解 mypy 的错误时该怎么办？</h3>
+<p>找到时间，它可能会有回报。不要用 <code># type: ignore</code>，但是先试着理解这个问题（有时在 <a href="https://github.com/python/mypy/issues" target="_blank" rel="noopener">mypy 问题页面</a>上搜索是唯一的方法），只有当你确信没有好的选择时，才使用它。mypy 可能，很可能，发现了什么东西。</p>
+<p>另一方面，无论代价是什么，不要试图取悦 mypy。经验法则是：不要仅仅为了抑制 mypy 错误而让代码变得更糟。它仍然只是一种工具。</p>
+<p>请记住，mypy 正在不断发展。它的错误信息越来越好，误报（不时被发现）也越来越少。所以，记得在新版本发布时更新 mypy。</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/e0818c8b/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            TensorRT-开发入门
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/cde2bcff/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">Python 类型系统的第一步</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/e0818c8b/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/08/12/PcyZQ0.png)" alt="TensorRT-开发入门" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorRT/">TensorRT</a></p>
+                            <p class="item-title"><a href="/posts/e0818c8b/" class="title">TensorRT-开发入门</a></p>
+                            <p class="item-date"><time datetime="2018-08-12T09:56:37.000Z" itemprop="datePublished">2018-08-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/684b8f9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43972489-202ddfbc-9d07-11e8-80f9-bba30285b5b9.png)" alt="Python 类型系统的下一步" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/684b8f9/" class="title">Python 类型系统的下一步</a></p>
+                            <p class="item-date"><time datetime="2018-08-10T17:35:33.000Z" itemprop="datePublished">2018-08-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cde2bcff/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43841718-6529b0e4-9b56-11e8-8e2f-f944101765ab.png)" alt="Python 类型系统的第一步" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/cde2bcff/" class="title">Python 类型系统的第一步</a></p>
+                            <p class="item-date"><time datetime="2018-08-08T13:52:35.000Z" itemprop="datePublished">2018-08-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/978fb366/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/07/29/5b5dc7d9647ea.png)" alt="内存中的栈、堆和静态区的用法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/978fb366/" class="title">内存中的栈、堆和静态区的用法</a></p>
+                            <p class="item-date"><time datetime="2018-07-29T09:46:14.000Z" itemprop="datePublished">2018-07-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/8b09dcdd/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/07/24/5b56e06b958cf.png)" alt="StackOverflow上简单数字识别案例学习" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/OCR/">OCR</a></p>
+                            <p class="item-title"><a href="/posts/8b09dcdd/" class="title">StackOverflow上简单数字识别案例学习</a></p>
+                            <p class="item-date"><time datetime="2018-07-24T04:59:38.000Z" itemprop="datePublished">2018-07-24</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

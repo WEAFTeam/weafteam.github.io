@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Python 类型系统的第一步 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="写在前面 本文翻译自 First Steps with Python Type System。 自豪的采用搜狗翻译。 这是什么玩意？ 在过去几年中，类型注解的语法和语义逐渐被引入 Python 语言。类型在 Python 中仍然是一个非常新颖并且经常被误解的主题。在这篇文章中，我会介绍它的基础知识，而一些更高级的功能将出现在本文的后续部分中。 这篇文章基于 PEP 483: The Th">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 类型系统的第一步">
+<meta property="og:url" content="http://weafteam.github.io/posts/cde2bcff/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="写在前面 本文翻译自 First Steps with Python Type System。 自豪的采用搜狗翻译。 这是什么玩意？ 在过去几年中，类型注解的语法和语义逐渐被引入 Python 语言。类型在 Python 中仍然是一个非常新颖并且经常被误解的主题。在这篇文章中，我会介绍它的基础知识，而一些更高级的功能将出现在本文的后续部分中。 这篇文章基于 PEP 483: The Th">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://user-images.githubusercontent.com/8280169/43841718-6529b0e4-9b56-11e8-8e2f-f944101765ab.png">
+<meta property="og:updated_time" content="2018-08-12T09:51:01.082Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python 类型系统的第一步">
+<meta name="twitter:description" content="写在前面 本文翻译自 First Steps with Python Type System。 自豪的采用搜狗翻译。 这是什么玩意？ 在过去几年中，类型注解的语法和语义逐渐被引入 Python 语言。类型在 Python 中仍然是一个非常新颖并且经常被误解的主题。在这篇文章中，我会介绍它的基础知识，而一些更高级的功能将出现在本文的后续部分中。 这篇文章基于 PEP 483: The Th">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/8280169/43841718-6529b0e4-9b56-11e8-8e2f-f944101765ab.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    未分类
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-06-11/first-steps-with-python-type-system" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Python 类型系统的第一步
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/cde2bcff/" class="article-date">
+            <time datetime="2018-08-08T13:52:35.000Z" itemprop="datePublished">2018-08-08</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        MisLink
+    </div>
+
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h2 id="写在前面">写在前面</h2>
+<p>本文翻译自 <a href="https://blog.daftcode.pl/first-steps-with-python-type-system-30e4296722af" target="_blank" rel="noopener">First Steps with Python Type System</a>。</p>
+<p>自豪的采用搜狗翻译。</p>
+<h2 id="这是什么玩意">这是什么玩意？</h2>
+<p>在过去几年中，类型注解的语法和语义逐渐被引入 Python 语言。类型在 Python 中仍然是一个非常新颖并且经常被误解的主题。在这篇文章中，我会介绍它的基础知识，而一些更高级的功能将出现在本文的后续部分中。</p>
+<p>这篇文章基于 <a href="https://www.python.org/dev/peps/pep-0483" target="_blank" rel="noopener">PEP 483: The Theory of Type Hints</a>，<a href="https://www.python.org/dev/peps/pep-0484" target="_blank" rel="noopener">PEP 484: Type Hints</a>，Python 类型<a href="https://docs.python.org/3/library/typing.html" target="_blank" rel="noopener">文档</a>，mypy 的 <a href="https://github.com/python/mypy/issues" target="_blank" rel="noopener">github issues</a>，和我个人对于类型在现实代码方面的经验。我在使用的版本为 Python 3.6 和 mypy 0.620。</p>
+<h2 id="类型和类">1. 类型和类</h2>
+<p>为了更好地掌握 Python 的类型系统，我们需要区分类型和类。在发布 PEP 483 和 484 之前，这两个概念有些混乱。现在，一般来说，类型是类型检查器概念，类是运行时概念。在这两者的基本描述中，我们已经获得了关键信息：类型不在运行时的 “领域” 中。实际上，类型是程序的另一个 “层” 上的东西，一个用于类型检查的层。</p>
+<p>但是什么是类型检查器？这是一个分析我们代码的工具（类似于 flake8，但更智能）。它不以任何方式运行我们的代码，只会静态检查代码的类型一致性。Python 社区的官方类型检查器是 mypy。此外还有 Facebook 的 <a href="https://github.com/facebook/pyre-check" target="_blank" rel="noopener">pyre-check</a> 和谷歌的 <a href="https://github.com/google/pytype" target="_blank" rel="noopener">pytype</a>。</p>
+<h3 id="如何定义类型">1.1 如何定义类型？</h3>
+<p>类型检查器需要关于类型的信息来检查我们的程序。定义类型有三种基本方法：</p>
+<ol type="1">
+<li>通过定义一个类，</li>
+<li>通过指定使用类型变量的函数，</li>
+<li>通过使用更基本的类型来创建更复杂的类型。</li>
+</ol>
+<p>第一种情况中，语句 <code>class Animal: …</code> 同时定义了 <code>Animal</code> 类和 <code>Animal</code> 类型。这也适用于内置类型：<code>int</code>，<code>float</code>，<code>str</code>，<code>list</code>，<code>dict</code> 等等，它们也同时是类和类型。在这种情况下，类之间的继承关系被一一映射到子类型关系。因此，如果 <code>Dog</code> 是 <code>Animal</code> 的一个子类，那么 <code>Dog</code> 就是 <code>Animal</code> 的一个子类型，等等。这种处理类型的方法被称为“命名子类型”。一会儿，我将展示它在类型检查的情境中是如何工作的。</p>
+<p>第二种情况是鸭子类型的精神：我们通过指定哪些函数/方法使用此类型的变量来定义类型。例如，如果一个对象有 <code>__len__</code> 方法，那么它具有 <code>Sized</code> 类型。这种处理类型的方法被称为“结构子类型”。这本身就是一个话题，在这篇文章中只会略加讨论。</p>
+<p>在第三种情况中，我们使用早期定义的类型（以任何方式）来定义更复杂的类型。例如，我们可以定义以下类型：“仅包含整数或字符串实例的列表”。稍后将介绍这些类型。</p>
+<h2 id="类型注解语法">2. 类型注解语法</h2>
+<p>为了用类型信息给我们的代码做注解，我们需要一种特殊的语法。这种语法逐渐被引入到语言中，但是现在只关注它的当前（也很可能是最终）状态。</p>
+<h3 id="注解变量">2.1 注解变量</h3>
+<p>要注解变量，我们使用变量名后跟冒号和类型名。变量初始化是可选的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name: Type</span><br></pre></td></tr></table></figure>
+<p>类型注解与初始化变量，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name: Type = initial_value</span><br></pre></td></tr></table></figure>
+<p>所以从现在开始，mypy 知道，在这个范围内，<code>name</code> 应该具有 <code>Type</code> 类型，并将检查是否确实如此。事实上，第一次检查是在赋值阶段进行的：<code>initial_value</code> 是 <code>Type</code> 类型的吗？</p>
+<p>如果一个变量没有初始化，我们就不能使用它（会引发 <code>NameError</code>），但是稍后，在我们初始化它之后，mypy 会用声明的变量类型来检查值的类型。</p>
+<p>让我们看看它是什么样的。为了方便起见，我会把所有的 mypy 错误放在注释中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">width: int</span><br><span class="line">width = <span class="number">15</span>  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line">height: int</span><br><span class="line">height = <span class="string">"25"</span>  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Incompatible types in assignment (expression has type "str", variable has type "int")</span></span><br><span class="line"></span><br><span class="line">depth: int = <span class="number">15.5</span>  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># error:Incompatible types in assignment (expression has type "float", variable has type "int")</span></span><br></pre></td></tr></table></figure>
+<p>所以即使在这些简单的情况下，mypy 也已经很有用了。</p>
+<h3 id="注解函数">2.2 注解函数</h3>
+<p>我们还可以注解函数的参数类型和返回值类型。使用以下语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">function</span><span class="params">(arg1: Type1, arg2: Type2)</span> -&gt; ReturnType:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>让我们看看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_ints</span><span class="params">(x: int, y: int)</span> -&gt; int:</span></span><br><span class="line">    <span class="keyword">return</span> x + y  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">add_ints(<span class="number">1</span>, <span class="number">2</span>)  <span class="comment"># 没有错误</span></span><br><span class="line">add_ints(<span class="number">1</span>, <span class="number">2.0</span>)  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Argument 2 to "add_ints" has incompatible type "float"; expected "int"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">broken_add</span><span class="params">(x: int, y: int)</span> -&gt; str:</span></span><br><span class="line">    <span class="keyword">return</span> x + y  <span class="comment"># 错误:</span></span><br><span class="line">    <span class="comment"># Incompatible return value type (got "int", expected "str")</span></span><br></pre></td></tr></table></figure>
+<p>在第二个例子中，mypy 通过检查 <code>+</code> 运算符（实际上是 <code>__add__</code> 方法）的返回类型知道 <code>broken_add</code> 在两个 <code>int</code> 上使用时有错误的返回类型：它是一个 <code>int</code>，而不是 <code>str</code>，所以函数的返回类型声明不正确。</p>
+<h2 id="子类型">3. 子类型</h2>
+<p>在我们开始尝试所有关于 Python 类型的东西之前，我们需要更好地理解基本的子类型关系。</p>
+<p>让我们来看看这两个类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>基本上，子类型是一种不太普遍的类型。在我们的例子中，<code>Dog</code> 没有 <code>Animal</code> 一般，所以它是 <code>Animal</code> 的一个子类型。但是让我们深入一点，看看 Python 中如何定义子类型关系。这个定义将决定赋值规则和属性规则的使用，这些规则是 mypy 在代码上强制执行的。</p>
+<h3 id="定义">3.1 定义</h3>
+<p>我们用 <code>&lt;:</code> 表示子类型关系。（例如 <code>B &lt;: A</code> 表示 <code>B</code> 是 <code>A</code> 的子类型。）</p>
+<p>现在，<code>B &lt;: A</code> 当且仅当：</p>
+<ol type="1">
+<li>类型 <code>B</code> 的每个值也在类型 <code>A</code> 的值的集合中；并且</li>
+<li>类型 <code>A</code> 的每个函数也在类型 <code>B</code> 的函数的集合中。</li>
+</ol>
+<p>（“类型 <code>A</code> 的函数” 基本上意味着“接受类型 <code>A</code> 的对象作为其参数的函数”。因此，它可以是一个具有 <code>A</code> 类型参数的独立函数，也可以是在 <code>A</code> 类上定义的方法。）</p>
+<p>因此，在子类型化过程中，值集合变得更小，而函数集合变得更大（参见<a href="https://www.python.org/dev/peps/pep-0483/#subtype-relationships" target="_blank" rel="noopener">文档</a>和<a href="https://www.stephanboyer.com/post/132/what-are-covariance-and-contravariance" target="_blank" rel="noopener">这个博客</a>，它启发了符号和示例）。</p>
+<p>就我们的两种类型而言，<code>Dog &lt;: Animal</code> 意味着：</p>
+<ol type="1">
+<li>一组 <code>Dog</code> 是 <code>Animal</code> 的子集（每只 <code>Dog</code> 都是 <code>Animal</code>，但不是每只 <code>Animal</code> 都是 <code>Dog</code>）。这基本上意味着 <code>Dog</code> 比 <code>Animal</code> 少。</li>
+<li><code>Animal</code> 的一组函数是 <code>Dog</code> 的函数的子集（<code>Dog</code> 可以做任何 <code>Animal</code> 能做的事情，但是 <code>Animal</code> 不能做任何 <code>Dog</code> 能做的事情）。基本上，<code>Animal</code> 能做的比 <code>Dog</code> 少。</li>
+</ol>
+<h3 id="赋值规则">3.2 赋值规则</h3>
+<p>这个定义决定了哪些赋值是可接受的，哪些是不可接受的。让我们尝试将一种类型的变量分配给另一种类型的变量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Dog &lt;: Animal</span></span><br><span class="line">scooby: Dog</span><br><span class="line">an_animal: Animal</span><br><span class="line"></span><br><span class="line">an_animal = scooby  <span class="comment"># 没有错误</span></span><br></pre></td></tr></table></figure>
+<p>将 <code>scooby</code> 赋值给 <code>an_animal</code> 是类型安全的，因为 <code>scooby</code> 被保证是一只 <code>Animal</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Dog &lt;: Animal</span></span><br><span class="line">scooby: Dog</span><br><span class="line">an_animal: Animal</span><br><span class="line"></span><br><span class="line">scooby = an_animal  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Incompatible types in assignment (expression has type "Animal", variable has type "Dog")</span></span><br></pre></td></tr></table></figure>
+<p>把 <code>an_animal</code> 赋值给 <code>scooby</code> 不是类型安全的，因为 <code>an_animal</code> 可能不是 <code>Dog</code>。</p>
+<p>检查继承关系是命名子类型化方法的一部分。</p>
+<h3 id="属性规则">3.3 属性规则</h3>
+<p>mypy 不仅关注赋值，还关注属性的使用。更准确地说，它检查属性是否实际定义在对象上。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span> ...</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span> ...</span><br></pre></td></tr></table></figure>
+<p>现在 <code>Animal</code> 可以 <code>eat</code>，<code>Dog</code> 可以 <code>eat</code> （通过继承）和 <code>bark</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Dog &lt;: Animal</span></span><br><span class="line">an_animal: Animal</span><br><span class="line">snoopy: Dog</span><br><span class="line"></span><br><span class="line">an_animal.eat()  <span class="comment"># 没有错误</span></span><br><span class="line">snoopy.eat()  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line">snoopy.bark()  <span class="comment"># 没有错误</span></span><br><span class="line">an_animal.bark()  <span class="comment"># 错误: "Animal" has no attribute "bark"</span></span><br></pre></td></tr></table></figure>
+<p>mypy 确保确实在相关对象上定义了方法。<code>an_animal</code> 没有定义 <code>bark</code> 方法，因此会报告一个错误。</p>
+<p>检查属性，特别是方法，是结构子类型化方法的一部分。在这种方法中，“子类型关系是从声明的方法中推导出来的”[<a href="https://www.python.org/dev/peps/pep-0483/#background" target="_blank" rel="noopener">来源</a>]。</p>
+<h2 id="定义复杂类型">4. 定义复杂类型</h2>
+<p>让我们看看如何使用更基本的类型来创建更复杂的类型。这是在 Python 中定义类型的第三种方法。我将集中讨论几个典型的复杂类型，而其余的工作方式基本相同。</p>
+<h3 id="列表">4.1 列表</h3>
+<p>其中最基本的是 <code>List</code>。除了大写字母 <code>L</code> 之外，它的拼写与内置 <code>list</code> 相同。语法如下：<code>List[TypeOfElements]</code>。所以整数列表是 <code>List[int]</code>，字符串列表是 <code>List[str]</code> 等等。让我们来看看代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List</span><br><span class="line"></span><br><span class="line">my_list: List[int] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line">my_other_list: List[int] = [<span class="number">1</span>, <span class="number">2</span>, <span class="string">"3"</span>]  <span class="comment">#  错误:</span></span><br><span class="line"><span class="comment"># List item 2 has incompatible type "str"; expected "int"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">scooby = Dog()</span><br><span class="line">lassie = Dog()</span><br><span class="line">pinky = Animal()</span><br><span class="line"></span><br><span class="line">my_dogs: List[Dog] = [scooby, lassie, pinky]  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># List item 2 has incompatible type "Animal"; expected "Dog"</span></span><br></pre></td></tr></table></figure>
+<p>这是有道理的，但是我们都知道，在 Python 列表中，我们可以放置多种类型的项目： <code>[1, 2, '3']</code> 仍然是有效的列表。一会儿，我们将看到如何表达像 “整数或字符串” 这样的类型。但是首先，让我们看看元组和字典类型。</p>
+<h3 id="元组">4.2 元组</h3>
+<p>在 Python 语言中，元组传统上有两个用途。首先，这是一个 “不可改变的列表”。第二，它是 “记录” 或 “一行值”，其中每个位置上的值通常都有特定定义的类型；把它想象成 SQL 数据库中的一行。<code>Tuple</code>（大写 <code>T</code> ）类型支持这两种方法。</p>
+<p>要将元组定义为记录，使用以下语法：<code>Tuple[Type1, Type2, Type3]</code>（等等）。</p>
+<p>要将元组定义为不可变列表，使用元组与省略号对象（用三个点拼写：<code>...</code>）：<code>Tuple[TypeOfAllElements, ...]</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Tuple</span><br><span class="line"></span><br><span class="line">bob: Tuple[str, str, int] = (<span class="string">"Bob"</span>, <span class="string">"Smith"</span>, <span class="number">25</span>)  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line">frank: Tuple[str, str, int] = (<span class="string">"Frank"</span>, <span class="string">"Brown"</span>, <span class="number">43.4</span>)  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Incompatible types in assignment (expression has type "Tuple[str, str, float]",</span></span><br><span class="line"><span class="comment">#   variable has type "Tuple[str, str, int]")</span></span><br><span class="line"></span><br><span class="line">ann: Tuple[str, str, int] = (<span class="string">"Ann"</span>, <span class="string">"X"</span>, <span class="number">1</span>, <span class="number">2</span>)  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Incompatible types in assignment (expression has type "Tuple[str, str, int, int]",</span></span><br><span class="line"><span class="comment">#   variable has type "Tuple[str, str, int]")</span></span><br><span class="line"></span><br><span class="line">scores1: Tuple[int, ...] = (<span class="number">5</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">-1</span>)  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line">scores2: Tuple[int, ...] = (<span class="number">5</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">-1</span>, <span class="keyword">None</span>, <span class="number">7</span>)  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Incompatible types in assignment (expression has type</span></span><br><span class="line"><span class="comment">#   "Tuple[int, int, int, int, None, int]", variable has type "Tuple[int, ...]")</span></span><br></pre></td></tr></table></figure>
+<h3 id="命名元组">4.3 命名元组</h3>
+<p>在 Python 中也有 <code>namedtuple</code>。即使不涉及类型，这也是一个非常方便的元组扩展。它增加了字段名查找和一个漂亮的字符串表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"></span><br><span class="line">    Person = namedtuple(<span class="string">'Person'</span>, <span class="string">'first_name last_name age'</span>)</span><br><span class="line"></span><br><span class="line">    bob = Person(first_name=<span class="string">'Bob'</span>, last_name=<span class="string">'Smith'</span>, age=<span class="number">41</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bob.age</span><br><span class="line"><span class="number">41</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bob</span><br><span class="line">Person(first_name=<span class="string">'Bob'</span>, last_name=<span class="string">'Smith'</span>, age=<span class="number">41</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 依然可以使用旧的访问方式：</span></span><br><span class="line">    bob[<span class="number">0</span>]</span><br><span class="line"><span class="string">'Bob'</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bob[<span class="number">1</span>:]</span><br><span class="line">(<span class="string">'Smith'</span>, <span class="number">41</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(bob)</span><br><span class="line">[<span class="string">'Bob'</span>, <span class="string">'Smith'</span>, <span class="number">41</span>]</span><br></pre></td></tr></table></figure>
+<p>在 Python 3 中，<code>namedtuple</code> 有一个更年轻的类型兄弟：<code>NamedTuple</code>（同样，用大写字母 <code>N</code> 和 <code>T</code> 拼写）。在运行时，它具有与 <code>namedtuple</code> 完全相同的 API，但是另外，它支持类型注解：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> NamedTuple</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(NamedTuple)</span>:</span></span><br><span class="line">    first_name: str</span><br><span class="line">    last_name: str</span><br><span class="line">    age: int</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Person(<span class="string">"Bob"</span>, <span class="string">"Smith"</span>, <span class="number">41</span>)  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line">Person(<span class="string">"Kate"</span>, <span class="string">"Smith"</span>, <span class="string">"32"</span>)  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Argument 3 to "Person" has incompatible type "str"; expected "int"</span></span><br></pre></td></tr></table></figure>
+<p>不错，易读，方便！</p>
+<h3 id="字典">4.4 字典</h3>
+<p>另一种重要的 Python 类型是字典。其类型的定义类似于元组：<code>Dict[KeyType, ValueType]</code>。因此，将整数键映射到字符串值的字典是 <code>Dict[int, str]</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Dict</span><br><span class="line"></span><br><span class="line">id_to_name: Dict[int, str] = &#123;<span class="number">1</span>: <span class="string">"Bob"</span>, <span class="number">23</span>: <span class="string">"Ann"</span>, <span class="number">7</span>: <span class="string">"Kate"</span>&#125;  <span class="comment"># 没有错误</span></span><br><span class="line">id_to_age: Dict[int, int] = &#123;<span class="string">"1"</span>: <span class="number">41</span>, <span class="number">2</span>: <span class="number">22</span>&#125;  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Dict entry 0 has incompatible type "str": "int"; expected "int": "int"</span></span><br><span class="line"></span><br><span class="line">name_to_phone_no: Dict[str, str] = &#123;<span class="string">"Bob"</span>: <span class="string">"55534534"</span>, <span class="string">"Ann"</span>: <span class="number">55599412</span>&#125;  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Dict entry 1 has incompatible type "str": "int"; expected "str": "str"</span></span><br></pre></td></tr></table></figure>
+<p>还有其他 Python 集合的类型：<code>Set</code>、<code>FrozenSet</code>、<code>DefaultDict</code>、<code>Counter</code>、<code>Deque</code> 和许多其他类型。有关完整列表，请参见<a href="https://docs.python.org/3/library/typing.html" target="_blank" rel="noopener">文档</a>。</p>
+<p>现在让我们关注另一种创建复杂类型的方法。</p>
+<h3 id="union">4.5 Union</h3>
+<p>假设我们有一个变量可以有 <code>str</code> 类型或 <code>int</code> 类型，这取决于情况（像不同的数据源）。为了定义这种类型，我们可以使用 <code>Union</code>。在我们的例子中，它将是<code>Union[str, int]</code>。在方括号中，我们可以根据需要放置任意多的类型：<code>Union[Type1, Type2, Type3, Type4]</code>（等等）。形式上：</p>
+<blockquote>
+<p><code>Union[t1, t2, ...]</code>. <code>t1, ...</code> 中至少一个的子类型是这个类型的子类型。[<a href="https://www.python.org/dev/peps/pep-0483/#fundamental-building-blocks" target="_blank" rel="noopener">来源</a>]</p>
+</blockquote>
+<p>一些例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Union</span><br><span class="line"></span><br><span class="line">width1: Union[int, float] = <span class="number">20</span>  <span class="comment"># 没有错误</span></span><br><span class="line">width2: Union[int, float] = <span class="number">20.5</span>  <span class="comment"># 没有错误</span></span><br><span class="line">width3: Union[int, float] = <span class="string">"44"</span>  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Incompatible types in assignment (expression has type "str",</span></span><br><span class="line"><span class="comment">#   variable has type "Union[int, float]")</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Lizard</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">restricted_eat</span><span class="params">(animal: Union[Dog, Cat])</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">    animal.eat()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a_dog: Dog</span><br><span class="line">restricted_eat(a_dog)  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line">a_cat: Cat</span><br><span class="line">restricted_eat(a_cat)  <span class="comment"># 没有错误</span></span><br><span class="line"></span><br><span class="line">a_lizard: Lizard</span><br><span class="line">restricted_eat(a_lizard)  <span class="comment"># 错误:</span></span><br><span class="line"><span class="comment"># Argument 1 to "restricted_eat" has incompatible type "Lizard";</span></span><br><span class="line"><span class="comment">#   expected "Union[Dog, Cat]"</span></span><br></pre></td></tr></table></figure>
+<h3 id="none-类型和可选类型">4.6 None 类型和可选类型</h3>
+<p>一种常见的编程模式是使用一个变量来表示具体的值，或者用一个符号来表示没有值（当值丢失、损坏、还不可用、在当前上下文中不充分等等）。在 Python 中，为了表示没有值，<code>None</code> 是最常用的对象。</p>
+<p>None 的类型是 <code>NoneType</code>，但是在类型系统中，它有一个别名，即… <code>None</code> 本身。别名非常有用，因为它不涉及导入任何内容。因此，表达 <code>T</code> 类型或 <code>None</code> 类型的值的最自然方式是 <code>Union[T, None]</code>。所以整型或无应该是 <code>Union[int, None]</code>。</p>
+<p>这种类型或无的模式非常普遍，以至于在 Python 的类型系统中 <code>Union[T, None]</code> 有一个别名：<code>Optional[T]</code>。例如，要想表达 <code>Union[int, None]</code> 应该使用 <code>Optional[int]</code>。</p>
+<p>忘记变量的“可选性”常常会导致错误。mypy 真的可以帮到我们。</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/684b8f9/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            Python 类型系统的下一步
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/978fb366/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">内存中的栈、堆和静态区的用法</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/e0818c8b/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/08/12/PcyZQ0.png)" alt="TensorRT-开发入门" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorRT/">TensorRT</a></p>
+                            <p class="item-title"><a href="/posts/e0818c8b/" class="title">TensorRT-开发入门</a></p>
+                            <p class="item-date"><time datetime="2018-08-12T09:56:37.000Z" itemprop="datePublished">2018-08-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/684b8f9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43972489-202ddfbc-9d07-11e8-80f9-bba30285b5b9.png)" alt="Python 类型系统的下一步" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/684b8f9/" class="title">Python 类型系统的下一步</a></p>
+                            <p class="item-date"><time datetime="2018-08-10T17:35:33.000Z" itemprop="datePublished">2018-08-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cde2bcff/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43841718-6529b0e4-9b56-11e8-8e2f-f944101765ab.png)" alt="Python 类型系统的第一步" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/cde2bcff/" class="title">Python 类型系统的第一步</a></p>
+                            <p class="item-date"><time datetime="2018-08-08T13:52:35.000Z" itemprop="datePublished">2018-08-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/978fb366/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/07/29/5b5dc7d9647ea.png)" alt="内存中的栈、堆和静态区的用法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/978fb366/" class="title">内存中的栈、堆和静态区的用法</a></p>
+                            <p class="item-date"><time datetime="2018-07-29T09:46:14.000Z" itemprop="datePublished">2018-07-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/8b09dcdd/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/07/24/5b56e06b958cf.png)" alt="StackOverflow上简单数字识别案例学习" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/OCR/">OCR</a></p>
+                            <p class="item-title"><a href="/posts/8b09dcdd/" class="title">StackOverflow上简单数字识别案例学习</a></p>
+                            <p class="item-date"><time datetime="2018-07-24T04:59:38.000Z" itemprop="datePublished">2018-07-24</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

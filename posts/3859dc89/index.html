@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Lombok的使用 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="JAVA" />
+    
+    <meta name="description" content="Lombok的使用">
+<meta name="keywords" content="JAVA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lombok的使用">
+<meta property="og:url" content="http://weafteam.github.io/posts/3859dc89/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="Lombok的使用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/lombok-logo.png">
+<meta property="og:updated_time" content="2018-08-08T11:54:45.488Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lombok的使用">
+<meta name="twitter:description" content="Lombok的使用">
+<meta name="twitter:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/lombok-logo.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/JAVA/">JAVA</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-05-28/Lombok使用" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Lombok的使用
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/3859dc89/" class="article-date">
+            <time datetime="2018-05-26T18:04:44.000Z" itemprop="datePublished">2018-05-27</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        earth
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/JAVA/">JAVA</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="一简介">一、简介</h1>
+<p>使用lombok减少代码冗余（Reducing Boilerplate Code with Project Lombok）。“Boilerplate”是用来描述许多部分重复的代码的术语。这也是Java语言最常提出批评之一,是大多数项目中都存在此类代码而且数量很多。这个问题经常是各种库中设计决策的结果，但是由于语言本身的限制而导致的。Lombok 旨在通过一组简单的注释取代这些问题。 虽然注释用于指示用法，实现绑定甚至生成框架使用的代码并不罕见，但它们通常不用于生成应用程序直接使用的代码。 部分原因是这样做需要在开发时急切地处理注释。 Lombok正是这样做的。 通过集成到IDE中，Project Lombok能够注入开发人员可立即使用的代码。 例如，简单地将@Data注释添加到数据类（如下所示）会在IDE中生成许多新方法：</p>
+<p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/lombok-1.png" alt="lombok-1"> 二、安装 ======= 1.eclipse可以使用以下方法安装 ————– ### 1) 下载lombok.jar包https://projectlombok.org/download.html</p>
+<h3 id="运行lombok.jar-java--jar-d.jar-d.jar这是windows下lombok.jar所在的位置">2) 运行Lombok.jar: Java -jar D:.jar D:.jar这是windows下lombok.jar所在的位置</h3>
+<pre><code>数秒后将弹出一框，以确认eclipse的安装路径</code></pre>
+<h3 id="确认完eclipse的安装路径后点击installupdate按钮即可安装完成">3) 确认完eclipse的安装路径后，点击install/update按钮，即可安装完成</h3>
+<h3 id="安装完成之后请确认eclipse安装路径下是否多了一个lombok.jar包并且其">4) 安装完成之后，请确认eclipse安装路径下是否多了一个lombok.jar包，并且其</h3>
+<pre><code>配置文件eclipse.ini中是否 添加了如下内容:
+    -javaagent:lombok.jar
+    -Xbootclasspath/a:lombok.jar
+如果上面的答案均为true，那么恭喜你已经安装成功，否则将缺少的部分添加到相应的位置即可</code></pre>
+<h3 id="重启eclipse或myeclipse">5) 重启eclipse或myeclipse</h3>
+<p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/lombok-2.png" alt="lombok-2"> 2.IntelliJ IDEA安装 ——— ### 1）按照以下步骤打开设置Settings安装 <img src="https://weaf.oss-cn-beijing.aliyuncs.com/lombok-3.png" alt="lombok-3"> ### 2）安装后重启</p>
+<h2 id="最后需要在项目中引入jar包或者使用maven配置好坐标">3.最后需要在项目中引入jar包或者，使用maven配置好坐标。</h2>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;0.9.2&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br><span class="line">&lt;repositories&gt;</span><br><span class="line">    &lt;repository&gt;</span><br><span class="line">        &lt;id&gt;projectlombok.org&lt;/id&gt;</span><br><span class="line">        &lt;url&gt;http://projectlombok.org/mavenrepo&lt;/url&gt;</span><br><span class="line">    &lt;/repository&gt;</span><br><span class="line">&lt;/repositories&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="三lombok的注解有哪些">三、Lombok的注解有哪些</h1>
+<ol type="1">
+<li><span class="citation" data-cites="Getter">@Getter</span></li>
+<li><span class="citation" data-cites="Setter">@Setter</span></li>
+<li><span class="citation" data-cites="Data">@Data</span></li>
+<li><span class="citation" data-cites="NonNull">@NonNull</span></li>
+<li><span class="citation" data-cites="ToString">@ToString</span></li>
+<li><span class="citation" data-cites="EqualsAndHashCode">@EqualsAndHashCode</span></li>
+<li><span class="citation" data-cites="Cleanup">@Cleanup</span></li>
+<li><span class="citation" data-cites="Synchronized">@Synchronized</span></li>
+<li><span class="citation" data-cites="SneakyThrows">@SneakyThrows</span></li>
+<li><span class="citation" data-cites="AllArgsConstructor">@AllArgsConstructor</span></li>
+<li><span class="citation" data-cites="Builder">@Builder</span></li>
+<li><span class="citation" data-cites="Generated">@Generated</span></li>
+<li><span class="citation" data-cites="NoArgsConstructor">@NoArgsConstructor</span></li>
+<li><span class="citation" data-cites="RequiredArgsConstructor">@RequiredArgsConstructor</span></li>
+<li><span class="citation" data-cites="Singular">@Singular</span></li>
+<li><span class="citation" data-cites="val">@val</span></li>
+<li><span class="citation" data-cites="var">@var</span></li>
+<li><span class="citation" data-cites="Value">@Value</span></li>
+<li><span class="citation" data-cites="FieldNameConstants">@FieldNameConstants</span></li>
+<li><span class="citation" data-cites="Log">@Log</span>, <span class="citation" data-cites="Log4j">@Log4j</span>, <span class="citation" data-cites="Log4j2">@Log4j2</span>, <span class="citation" data-cites="Slf4j">@Slf4j</span>, <span class="citation" data-cites="XSlf4j">@XSlf4j</span>, <span class="citation" data-cites="CommonsLog">@CommonsLog</span>, <span class="citation" data-cites="JBossLog">@JBossLog</span>, <span class="citation" data-cites="Flogger">@Flogger</span></li>
+<li><span class="citation" data-cites="Delegate">@Delegate</span></li>
+<li><span class="citation" data-cites="Wither">@Wither</span></li>
+</ol>
+<h1 id="四lombok注解的使用">四、Lombok注解的使用</h1>
+<h2 id="getter">1 <span class="citation" data-cites="Getter">@Getter</span></h2>
+<p>生成相应的get方法,其中boolean类型会生成 isFoo(); 并且可以配合AccessLevel使用</p>
+<h2 id="setter">2 <span class="citation" data-cites="Setter">@Setter</span></h2>
+<p>生成相应的set方法,其中boolean类型会生产 setFoo();</p>
+<h2 id="data">3 <span class="citation" data-cites="Data">@Data</span></h2>
+<p>生成get、set、toString、equals、hashCode等方法。</p>
+<h2 id="nonnull">4 <span class="citation" data-cites="NonNull">@NonNull</span></h2>
+<p>可以再方法引用、和传参时如果值为null,抛出空指针异常。</p>
+<h2 id="tostring">5 <span class="citation" data-cites="ToString">@ToString</span></h2>
+<p>生成toString方法</p>
+<h2 id="equalsandhashcode">6 <span class="citation" data-cites="EqualsAndHashCode">@EqualsAndHashCode</span></h2>
+<p>生成equals和hashCode方法</p>
+<h2 id="cleanup">7 <span class="citation" data-cites="Cleanup">@Cleanup</span></h2>
+<p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/lombok-4.png" alt="lombok-4"></p>
+<p>参考地址：<a href="http://jnb.ociweb.com/jnb/jnbJan2010.html" class="uri" target="_blank" rel="noopener">http://jnb.ociweb.com/jnb/jnbJan2010.html</a></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/74232ae7/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            asyncio 不完全指北（六）
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/435ecce8/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">Spring中@transactional的使用</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/e0818c8b/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/08/12/PcyZQ0.png)" alt="TensorRT-开发入门" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorRT/">TensorRT</a></p>
+                            <p class="item-title"><a href="/posts/e0818c8b/" class="title">TensorRT-开发入门</a></p>
+                            <p class="item-date"><time datetime="2018-08-12T09:56:37.000Z" itemprop="datePublished">2018-08-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/684b8f9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43972489-202ddfbc-9d07-11e8-80f9-bba30285b5b9.png)" alt="Python 类型系统的下一步" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/684b8f9/" class="title">Python 类型系统的下一步</a></p>
+                            <p class="item-date"><time datetime="2018-08-10T17:35:33.000Z" itemprop="datePublished">2018-08-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cde2bcff/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43841718-6529b0e4-9b56-11e8-8e2f-f944101765ab.png)" alt="Python 类型系统的第一步" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/cde2bcff/" class="title">Python 类型系统的第一步</a></p>
+                            <p class="item-date"><time datetime="2018-08-08T13:52:35.000Z" itemprop="datePublished">2018-08-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/978fb366/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/07/29/5b5dc7d9647ea.png)" alt="内存中的栈、堆和静态区的用法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/978fb366/" class="title">内存中的栈、堆和静态区的用法</a></p>
+                            <p class="item-date"><time datetime="2018-07-29T09:46:14.000Z" itemprop="datePublished">2018-07-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/8b09dcdd/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/07/24/5b56e06b958cf.png)" alt="StackOverflow上简单数字识别案例学习" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/OCR/">OCR</a></p>
+                            <p class="item-title"><a href="/posts/8b09dcdd/" class="title">StackOverflow上简单数字识别案例学习</a></p>
+                            <p class="item-date"><time datetime="2018-07-24T04:59:38.000Z" itemprop="datePublished">2018-07-24</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
