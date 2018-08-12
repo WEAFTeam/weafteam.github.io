@@ -65,7 +65,7 @@
                                     <a class="main-nav-list-link" href="/">主页</a>
                                 </li>
                             
-                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
                                     
                         </ul>
                         <nav id="sub-nav">
@@ -143,160 +143,6 @@
         <article class="article article-summary">
     <div class="article-summary-inner">
         
-        <a href="/posts/978fb366/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://i.loli.net/2018/07/29/5b5dc7d9647ea.png)" alt="内存中的栈、堆和静态区的用法" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
-            </div>
-            <div class="date"><time datetime="2018-07-29T09:46:14.000Z" itemprop="datePublished">2018-07-29</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/978fb366/">内存中的栈、堆和静态区的用法</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-本周的第三篇博客，这个题目应该也是老生常谈的问题。
-
-1 堆区
-先了解下Heap的作用，堆区是专门用来存储对象的实例的，也就是我们平时通过new出来的对象，但是实际上这里面也只是保存了对象实例的属性值，属性的类型和对象本身的标记等一些内容，其中值得注意的是它里面并不保存对象的方法（方法也可以理解成指令，保存在stack中）
-所以我们加以总结和延伸下：
-1 它存储的都是对象，而且每个对象都包含一个
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/42fb2e58/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://i.loli.net/2018/07/23/5b558a1894a20.png)" alt="Thread和Runnable的区别" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
-            </div>
-            <div class="date"><time datetime="2018-07-23T07:32:42.000Z" itemprop="datePublished">2018-07-23</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/42fb2e58/">Thread和Runnable的区别</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-两周的小暑假也算是过完了，接下来得好好做东西了，博客从今天开始也要跟上进度了。
-
-1. 两种创建的方式
-1 继承Thread类，并且重写其中的run()方法
-
-2 实现Runnable接口，重写其中的run()方法
-但是在实现应用时，我们多用实现Runnable接口的方式，这是因为Java的单继承多实现的机制，这样一来就可以避免由于这个机制代码的局限性。其实我们用Runnable的原因不止于此，
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/e85880/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://i.loli.net/2018/06/23/5b2e336b43133.png)" alt="Java中List和ArrayList的区别" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
-            </div>
-            <div class="date"><time datetime="2018-06-23T11:10:07.000Z" itemprop="datePublished">2018-06-23</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/e85880/">Java中List和ArrayList的区别</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-开始补博客了从5月初到现在应该有8篇博客需要补，废话不多说，开始写吧
-
-区别
-这俩个的区别很明显，List是一个接口，而ArrayList是一个类，它继承AbstractList抽象类并且实现了List接口。
-所以当我们需要实例化一个List的时候，我们并不能直接的new一个List（显然是废话，接口肯定是不能通过new实例化的），而只能是实例化一个继承并实现它的类的实例并将这个实例化的值赋值给
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
         <a href="/posts/2870b42a/" class="thumbnail">
     
     
@@ -333,7 +179,7 @@
 
 下面开始本次的内容整理吧~
 String
-首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存重新申请一
+首先说一下String类的声明,通过查阅源码可知它的声明是public final，所以也就是说我们的字符串的值一旦改变，我们就得再向内存
         </p>
     </div>
 </article>
@@ -385,10 +231,30 @@ String
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/posts/684b8f9/" class="thumbnail">
+                            <a href="/posts/45d29694/" class="thumbnail">
     
     
-        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43972489-202ddfbc-9d07-11e8-80f9-bba30285b5b9.png)" alt="Python 类型系统的下一步" class="thumbnail-image"></span>
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-11-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/45d29694/" class="title">chapter-11-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-29T03:27:34.000Z" itemprop="datePublished">2018-05-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/74232ae7/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://ourm7pfm2.bkt.clouddn.com/18-4-16/9617370.jpg)" alt="asyncio 不完全指北（六）" class="thumbnail-image"></span>
     
     
 </a>
@@ -397,18 +263,58 @@ String
                         
                         <div class="item-inner">
                             <p class="item-category"></p>
-                            <p class="item-title"><a href="/posts/684b8f9/" class="title">Python 类型系统的下一步</a></p>
-                            <p class="item-date"><time datetime="2018-08-10T17:35:33.000Z" itemprop="datePublished">2018-08-11</time></p>
+                            <p class="item-title"><a href="/posts/74232ae7/" class="title">asyncio 不完全指北（六）</a></p>
+                            <p class="item-date"><time datetime="2018-05-27T10:39:08.000Z" itemprop="datePublished">2018-05-27</time></p>
                         </div>
                     </li>
                 
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/posts/cde2bcff/" class="thumbnail">
+                            <a href="/posts/78b2bf24/" class="thumbnail">
     
     
-        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43841718-6529b0e4-9b56-11e8-8e2f-f944101765ab.png)" alt="Python 类型系统的第一步" class="thumbnail-image"></span>
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-10-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/78b2bf24/" class="title">chapter-10-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-20T11:52:00.000Z" itemprop="datePublished">2018-05-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/befe0ef0/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="chapter-09-AIR" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/befe0ef0/" class="title">chapter-09-AIR</a></p>
+                            <p class="item-date"><time datetime="2018-05-20T11:31:09.000Z" itemprop="datePublished">2018-05-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/33d9791f/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/05/17/5afd173867a78.png)" alt="Pillow的简单使用" class="thumbnail-image"></span>
     
     
 </a>
@@ -417,68 +323,8 @@ String
                         
                         <div class="item-inner">
                             <p class="item-category"></p>
-                            <p class="item-title"><a href="/posts/cde2bcff/" class="title">Python 类型系统的第一步</a></p>
-                            <p class="item-date"><time datetime="2018-08-08T13:52:35.000Z" itemprop="datePublished">2018-08-08</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/978fb366/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://i.loli.net/2018/07/29/5b5dc7d9647ea.png)" alt="内存中的栈、堆和静态区的用法" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
-                            <p class="item-title"><a href="/posts/978fb366/" class="title">内存中的栈、堆和静态区的用法</a></p>
-                            <p class="item-date"><time datetime="2018-07-29T09:46:14.000Z" itemprop="datePublished">2018-07-29</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/8b09dcdd/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://i.loli.net/2018/07/24/5b56e06b958cf.png)" alt="StackOverflow上简单数字识别案例学习" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/OCR/">OCR</a></p>
-                            <p class="item-title"><a href="/posts/8b09dcdd/" class="title">StackOverflow上简单数字识别案例学习</a></p>
-                            <p class="item-date"><time datetime="2018-07-24T04:59:38.000Z" itemprop="datePublished">2018-07-24</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/42fb2e58/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://i.loli.net/2018/07/23/5b558a1894a20.png)" alt="Thread和Runnable的区别" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
-                            <p class="item-title"><a href="/posts/42fb2e58/" class="title">Thread和Runnable的区别</a></p>
-                            <p class="item-date"><time datetime="2018-07-23T07:32:42.000Z" itemprop="datePublished">2018-07-23</time></p>
+                            <p class="item-title"><a href="/posts/33d9791f/" class="title">Pillow的简单使用</a></p>
+                            <p class="item-date"><time datetime="2018-05-17T02:03:18.000Z" itemprop="datePublished">2018-05-17</time></p>
                         </div>
                     </li>
                 
@@ -491,7 +337,7 @@ String
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -501,7 +347,7 @@ String
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
         </div>
     </div>
 
@@ -511,7 +357,7 @@ String
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
