@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://weafteam.github.io/"/>
+  <link href="https://weafteam.github.io/"/>
   <updated>2018-08-12T11:04:18.448Z</updated>
-  <id>http://weafteam.github.io/</id>
+  <id>https://weafteam.github.io/</id>
   
   <author>
     <name>WEAF</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>TensorRT-开发入门</title>
-    <link href="http://weafteam.github.io/posts/e0818c8b/"/>
-    <id>http://weafteam.github.io/posts/e0818c8b/</id>
+    <link href="https://weafteam.github.io/posts/e0818c8b/"/>
+    <id>https://weafteam.github.io/posts/e0818c8b/</id>
     <published>2018-08-12T09:56:37.000Z</published>
     <updated>2018-08-12T11:04:18.448Z</updated>
     
@@ -39,17 +39,17 @@
     
     </summary>
     
-      <category term="TensorRT" scheme="http://weafteam.github.io/categories/TensorRT/"/>
+      <category term="TensorRT" scheme="https://weafteam.github.io/categories/TensorRT/"/>
     
     
-      <category term="TensorRT" scheme="http://weafteam.github.io/tags/TensorRT/"/>
+      <category term="TensorRT" scheme="https://weafteam.github.io/tags/TensorRT/"/>
     
   </entry>
   
   <entry>
     <title>Python 类型系统的下一步</title>
-    <link href="http://weafteam.github.io/posts/684b8f9/"/>
-    <id>http://weafteam.github.io/posts/684b8f9/</id>
+    <link href="https://weafteam.github.io/posts/684b8f9/"/>
+    <id>https://weafteam.github.io/posts/684b8f9/</id>
     <published>2018-08-10T17:35:33.000Z</published>
     <updated>2018-08-12T09:51:01.089Z</updated>
     
@@ -73,8 +73,8 @@
   
   <entry>
     <title>Python 类型系统的第一步</title>
-    <link href="http://weafteam.github.io/posts/cde2bcff/"/>
-    <id>http://weafteam.github.io/posts/cde2bcff/</id>
+    <link href="https://weafteam.github.io/posts/cde2bcff/"/>
+    <id>https://weafteam.github.io/posts/cde2bcff/</id>
     <published>2018-08-08T13:52:35.000Z</published>
     <updated>2018-08-12T09:51:01.082Z</updated>
     
@@ -98,8 +98,8 @@
   
   <entry>
     <title>内存中的栈、堆和静态区的用法</title>
-    <link href="http://weafteam.github.io/posts/978fb366/"/>
-    <id>http://weafteam.github.io/posts/978fb366/</id>
+    <link href="https://weafteam.github.io/posts/978fb366/"/>
+    <id>https://weafteam.github.io/posts/978fb366/</id>
     <published>2018-07-29T09:46:14.000Z</published>
     <updated>2018-08-08T06:25:10.793Z</updated>
     
@@ -120,17 +120,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="面试" scheme="http://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="面试" scheme="https://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>StackOverflow上简单数字识别案例学习</title>
-    <link href="http://weafteam.github.io/posts/8b09dcdd/"/>
-    <id>http://weafteam.github.io/posts/8b09dcdd/</id>
+    <link href="https://weafteam.github.io/posts/8b09dcdd/"/>
+    <id>https://weafteam.github.io/posts/8b09dcdd/</id>
     <published>2018-07-24T04:59:38.000Z</published>
     <updated>2018-08-07T08:56:41.652Z</updated>
     
@@ -149,17 +149,17 @@
     
     </summary>
     
-      <category term="OCR" scheme="http://weafteam.github.io/categories/OCR/"/>
+      <category term="OCR" scheme="https://weafteam.github.io/categories/OCR/"/>
     
     
-      <category term="OpenCV-Python" scheme="http://weafteam.github.io/tags/OpenCV-Python/"/>
+      <category term="OpenCV-Python" scheme="https://weafteam.github.io/tags/OpenCV-Python/"/>
     
   </entry>
   
   <entry>
     <title>Thread和Runnable的区别</title>
-    <link href="http://weafteam.github.io/posts/42fb2e58/"/>
-    <id>http://weafteam.github.io/posts/42fb2e58/</id>
+    <link href="https://weafteam.github.io/posts/42fb2e58/"/>
+    <id>https://weafteam.github.io/posts/42fb2e58/</id>
     <published>2018-07-23T07:32:42.000Z</published>
     <updated>2018-08-07T08:56:41.651Z</updated>
     
@@ -181,17 +181,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="面试" scheme="http://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="面试" scheme="https://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>Java中List和ArrayList的区别</title>
-    <link href="http://weafteam.github.io/posts/e85880/"/>
-    <id>http://weafteam.github.io/posts/e85880/</id>
+    <link href="https://weafteam.github.io/posts/e85880/"/>
+    <id>https://weafteam.github.io/posts/e85880/</id>
     <published>2018-06-23T11:10:07.000Z</published>
     <updated>2018-08-07T08:56:41.620Z</updated>
     
@@ -212,17 +212,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="面试" scheme="http://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="面试" scheme="https://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（七）</title>
-    <link href="http://weafteam.github.io/posts/a6235d78/"/>
-    <id>http://weafteam.github.io/posts/a6235d78/</id>
+    <link href="https://weafteam.github.io/posts/a6235d78/"/>
+    <id>https://weafteam.github.io/posts/a6235d78/</id>
     <published>2018-06-09T09:35:25.000Z</published>
     <updated>2018-08-07T08:56:41.657Z</updated>
     
@@ -247,8 +247,8 @@
   
   <entry>
     <title>Redisson 的介绍与使用</title>
-    <link href="http://weafteam.github.io/posts/eae731fe/"/>
-    <id>http://weafteam.github.io/posts/eae731fe/</id>
+    <link href="https://weafteam.github.io/posts/eae731fe/"/>
+    <id>https://weafteam.github.io/posts/eae731fe/</id>
     <published>2018-06-04T18:04:44.000Z</published>
     <updated>2018-08-08T11:54:45.491Z</updated>
     
@@ -260,17 +260,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>chapter-11-AIR</title>
-    <link href="http://weafteam.github.io/posts/45d29694/"/>
-    <id>http://weafteam.github.io/posts/45d29694/</id>
+    <link href="https://weafteam.github.io/posts/45d29694/"/>
+    <id>https://weafteam.github.io/posts/45d29694/</id>
     <published>2018-05-29T03:27:34.000Z</published>
     <updated>2018-08-12T11:03:56.319Z</updated>
     
@@ -290,17 +290,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（六）</title>
-    <link href="http://weafteam.github.io/posts/74232ae7/"/>
-    <id>http://weafteam.github.io/posts/74232ae7/</id>
+    <link href="https://weafteam.github.io/posts/74232ae7/"/>
+    <id>https://weafteam.github.io/posts/74232ae7/</id>
     <published>2018-05-27T10:39:08.000Z</published>
     <updated>2018-08-07T08:56:41.653Z</updated>
     
@@ -325,8 +325,8 @@
   
   <entry>
     <title>Lombok的使用</title>
-    <link href="http://weafteam.github.io/posts/3859dc89/"/>
-    <id>http://weafteam.github.io/posts/3859dc89/</id>
+    <link href="https://weafteam.github.io/posts/3859dc89/"/>
+    <id>https://weafteam.github.io/posts/3859dc89/</id>
     <published>2018-05-26T18:04:44.000Z</published>
     <updated>2018-08-08T11:54:45.488Z</updated>
     
@@ -338,17 +338,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>Spring中@transactional的使用</title>
-    <link href="http://weafteam.github.io/posts/435ecce8/"/>
-    <id>http://weafteam.github.io/posts/435ecce8/</id>
+    <link href="https://weafteam.github.io/posts/435ecce8/"/>
+    <id>https://weafteam.github.io/posts/435ecce8/</id>
     <published>2018-05-20T18:04:44.000Z</published>
     <updated>2018-08-07T08:56:41.651Z</updated>
     
@@ -360,17 +360,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>chapter-10-AIR</title>
-    <link href="http://weafteam.github.io/posts/78b2bf24/"/>
-    <id>http://weafteam.github.io/posts/78b2bf24/</id>
+    <link href="https://weafteam.github.io/posts/78b2bf24/"/>
+    <id>https://weafteam.github.io/posts/78b2bf24/</id>
     <published>2018-05-20T11:52:00.000Z</published>
     <updated>2018-05-29T03:28:39.852Z</updated>
     
@@ -390,17 +390,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>chapter-09-AIR</title>
-    <link href="http://weafteam.github.io/posts/befe0ef0/"/>
-    <id>http://weafteam.github.io/posts/befe0ef0/</id>
+    <link href="https://weafteam.github.io/posts/befe0ef0/"/>
+    <id>https://weafteam.github.io/posts/befe0ef0/</id>
     <published>2018-05-20T11:31:09.000Z</published>
     <updated>2018-05-29T01:27:49.900Z</updated>
     
@@ -418,17 +418,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>Pillow的简单使用</title>
-    <link href="http://weafteam.github.io/posts/33d9791f/"/>
-    <id>http://weafteam.github.io/posts/33d9791f/</id>
+    <link href="https://weafteam.github.io/posts/33d9791f/"/>
+    <id>https://weafteam.github.io/posts/33d9791f/</id>
     <published>2018-05-17T02:03:18.000Z</published>
     <updated>2018-05-29T01:27:49.882Z</updated>
     
@@ -450,14 +450,14 @@
     </summary>
     
     
-      <category term="Pillow Python OCR" scheme="http://weafteam.github.io/tags/Pillow-Python-OCR/"/>
+      <category term="Pillow Python OCR" scheme="https://weafteam.github.io/tags/Pillow-Python-OCR/"/>
     
   </entry>
   
   <entry>
     <title>Spring Boot 关乎java程序员</title>
-    <link href="http://weafteam.github.io/posts/1cf77d1e/"/>
-    <id>http://weafteam.github.io/posts/1cf77d1e/</id>
+    <link href="https://weafteam.github.io/posts/1cf77d1e/"/>
+    <id>https://weafteam.github.io/posts/1cf77d1e/</id>
     <published>2018-05-16T18:04:44.000Z</published>
     <updated>2018-08-07T08:56:41.650Z</updated>
     
@@ -469,17 +469,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（五）</title>
-    <link href="http://weafteam.github.io/posts/112d613e/"/>
-    <id>http://weafteam.github.io/posts/112d613e/</id>
+    <link href="https://weafteam.github.io/posts/112d613e/"/>
+    <id>https://weafteam.github.io/posts/112d613e/</id>
     <published>2018-05-13T15:09:56.000Z</published>
     <updated>2018-08-07T08:56:41.649Z</updated>
     
@@ -504,8 +504,8 @@
   
   <entry>
     <title>Kafka在SpringBoot 2.0中的整合-1</title>
-    <link href="http://weafteam.github.io/posts/6e26f2f1/"/>
-    <id>http://weafteam.github.io/posts/6e26f2f1/</id>
+    <link href="https://weafteam.github.io/posts/6e26f2f1/"/>
+    <id>https://weafteam.github.io/posts/6e26f2f1/</id>
     <published>2018-05-07T10:13:02.000Z</published>
     <updated>2018-08-12T09:51:01.075Z</updated>
     
@@ -517,17 +517,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>chapter-08-AIR</title>
-    <link href="http://weafteam.github.io/posts/839e2740/"/>
-    <id>http://weafteam.github.io/posts/839e2740/</id>
+    <link href="https://weafteam.github.io/posts/839e2740/"/>
+    <id>https://weafteam.github.io/posts/839e2740/</id>
     <published>2018-05-06T03:30:48.000Z</published>
     <updated>2018-05-29T01:27:49.888Z</updated>
     
@@ -549,17 +549,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>chapter-07-AIR</title>
-    <link href="http://weafteam.github.io/posts/1ceb091/"/>
-    <id>http://weafteam.github.io/posts/1ceb091/</id>
+    <link href="https://weafteam.github.io/posts/1ceb091/"/>
+    <id>https://weafteam.github.io/posts/1ceb091/</id>
     <published>2018-05-06T03:29:55.000Z</published>
     <updated>2018-05-29T01:27:49.874Z</updated>
     
@@ -577,17 +577,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（四）</title>
-    <link href="http://weafteam.github.io/posts/7eb3a479/"/>
-    <id>http://weafteam.github.io/posts/7eb3a479/</id>
+    <link href="https://weafteam.github.io/posts/7eb3a479/"/>
+    <id>https://weafteam.github.io/posts/7eb3a479/</id>
     <published>2018-05-04T14:32:16.000Z</published>
     <updated>2018-08-07T08:56:41.619Z</updated>
     
@@ -612,8 +612,8 @@
   
   <entry>
     <title>Java中String、StringBuffer与StringBuilder的区别</title>
-    <link href="http://weafteam.github.io/posts/2870b42a/"/>
-    <id>http://weafteam.github.io/posts/2870b42a/</id>
+    <link href="https://weafteam.github.io/posts/2870b42a/"/>
+    <id>https://weafteam.github.io/posts/2870b42a/</id>
     <published>2018-05-03T07:39:02.000Z</published>
     <updated>2018-05-29T01:27:49.865Z</updated>
     
@@ -634,17 +634,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="面试" scheme="http://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="面试" scheme="https://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>微信公众号后台在SpringBoot2.0中的实现（上）</title>
-    <link href="http://weafteam.github.io/posts/637facd6/"/>
-    <id>http://weafteam.github.io/posts/637facd6/</id>
+    <link href="https://weafteam.github.io/posts/637facd6/"/>
+    <id>https://weafteam.github.io/posts/637facd6/</id>
     <published>2018-05-01T10:13:02.000Z</published>
     <updated>2018-05-29T01:27:49.896Z</updated>
     
@@ -656,17 +656,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（三）</title>
-    <link href="http://weafteam.github.io/posts/c99ebd1c/"/>
-    <id>http://weafteam.github.io/posts/c99ebd1c/</id>
+    <link href="https://weafteam.github.io/posts/c99ebd1c/"/>
+    <id>https://weafteam.github.io/posts/c99ebd1c/</id>
     <published>2018-05-01T03:58:22.000Z</published>
     <updated>2018-08-07T08:56:41.618Z</updated>
     
@@ -691,8 +691,8 @@
   
   <entry>
     <title>asyncio 不完全指北（二）</title>
-    <link href="http://weafteam.github.io/posts/84801e4e/"/>
-    <id>http://weafteam.github.io/posts/84801e4e/</id>
+    <link href="https://weafteam.github.io/posts/84801e4e/"/>
+    <id>https://weafteam.github.io/posts/84801e4e/</id>
     <published>2018-04-24T15:43:20.000Z</published>
     <updated>2018-08-07T08:56:41.617Z</updated>
     
@@ -718,8 +718,8 @@
   
   <entry>
     <title>Kafka在SpringBoot 2.0中的整合</title>
-    <link href="http://weafteam.github.io/posts/23949c22/"/>
-    <id>http://weafteam.github.io/posts/23949c22/</id>
+    <link href="https://weafteam.github.io/posts/23949c22/"/>
+    <id>https://weafteam.github.io/posts/23949c22/</id>
     <published>2018-04-23T10:13:02.000Z</published>
     <updated>2018-08-12T09:51:01.068Z</updated>
     
@@ -731,17 +731,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>chapter-06-AIR</title>
-    <link href="http://weafteam.github.io/posts/3cae9921/"/>
-    <id>http://weafteam.github.io/posts/3cae9921/</id>
+    <link href="https://weafteam.github.io/posts/3cae9921/"/>
+    <id>https://weafteam.github.io/posts/3cae9921/</id>
     <published>2018-04-22T06:31:24.000Z</published>
     <updated>2018-05-29T01:27:49.852Z</updated>
     
@@ -759,17 +759,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>唯密文解密（针对Vigenere加密）</title>
-    <link href="http://weafteam.github.io/posts/899ccb0/"/>
-    <id>http://weafteam.github.io/posts/899ccb0/</id>
+    <link href="https://weafteam.github.io/posts/899ccb0/"/>
+    <id>https://weafteam.github.io/posts/899ccb0/</id>
     <published>2018-04-21T01:38:12.000Z</published>
     <updated>2018-05-29T01:27:49.860Z</updated>
     
@@ -790,17 +790,17 @@
     
     </summary>
     
-      <category term="密码学" scheme="http://weafteam.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+      <category term="密码学" scheme="https://weafteam.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
     
     
-      <category term="密码学" scheme="http://weafteam.github.io/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+      <category term="密码学" scheme="https://weafteam.github.io/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
     
   </entry>
   
   <entry>
     <title>Redis在SpringBoot 2.0中的整合</title>
-    <link href="http://weafteam.github.io/posts/2b2e3e2f/"/>
-    <id>http://weafteam.github.io/posts/2b2e3e2f/</id>
+    <link href="https://weafteam.github.io/posts/2b2e3e2f/"/>
+    <id>https://weafteam.github.io/posts/2b2e3e2f/</id>
     <published>2018-04-18T09:57:12.000Z</published>
     <updated>2018-05-29T01:27:49.847Z</updated>
     
@@ -812,17 +812,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>Linux下MySQL安装</title>
-    <link href="http://weafteam.github.io/posts/2cd32dfc/"/>
-    <id>http://weafteam.github.io/posts/2cd32dfc/</id>
+    <link href="https://weafteam.github.io/posts/2cd32dfc/"/>
+    <id>https://weafteam.github.io/posts/2cd32dfc/</id>
     <published>2018-04-17T04:07:12.000Z</published>
     <updated>2018-05-29T01:27:49.843Z</updated>
     
@@ -834,17 +834,17 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://weafteam.github.io/categories/Linux/"/>
+      <category term="Linux" scheme="https://weafteam.github.io/categories/Linux/"/>
     
     
-      <category term="Linux运维" scheme="http://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
+      <category term="Linux运维" scheme="https://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
     
   </entry>
   
   <entry>
     <title>chapter-05-AIR</title>
-    <link href="http://weafteam.github.io/posts/7b0ee3f1/"/>
-    <id>http://weafteam.github.io/posts/7b0ee3f1/</id>
+    <link href="https://weafteam.github.io/posts/7b0ee3f1/"/>
+    <id>https://weafteam.github.io/posts/7b0ee3f1/</id>
     <published>2018-04-15T14:14:23.000Z</published>
     <updated>2018-05-29T01:27:49.835Z</updated>
     
@@ -862,17 +862,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（一）</title>
-    <link href="http://weafteam.github.io/posts/b496f296/"/>
-    <id>http://weafteam.github.io/posts/b496f296/</id>
+    <link href="https://weafteam.github.io/posts/b496f296/"/>
+    <id>https://weafteam.github.io/posts/b496f296/</id>
     <published>2018-04-14T19:37:56.000Z</published>
     <updated>2018-08-07T08:56:41.616Z</updated>
     
@@ -896,8 +896,8 @@
   
   <entry>
     <title>Vigenere密码加密解密</title>
-    <link href="http://weafteam.github.io/posts/8b092926/"/>
-    <id>http://weafteam.github.io/posts/8b092926/</id>
+    <link href="https://weafteam.github.io/posts/8b092926/"/>
+    <id>https://weafteam.github.io/posts/8b092926/</id>
     <published>2018-04-14T14:11:24.000Z</published>
     <updated>2018-05-29T01:27:49.829Z</updated>
     
@@ -918,17 +918,17 @@
     
     </summary>
     
-      <category term="密码学" scheme="http://weafteam.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+      <category term="密码学" scheme="https://weafteam.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
     
     
-      <category term="密码学" scheme="http://weafteam.github.io/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+      <category term="密码学" scheme="https://weafteam.github.io/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
     
   </entry>
   
   <entry>
     <title>如何理解丘奇计数</title>
-    <link href="http://weafteam.github.io/posts/cd89a3b2/"/>
-    <id>http://weafteam.github.io/posts/cd89a3b2/</id>
+    <link href="https://weafteam.github.io/posts/cd89a3b2/"/>
+    <id>https://weafteam.github.io/posts/cd89a3b2/</id>
     <published>2018-04-07T19:39:29.000Z</published>
     <updated>2018-08-07T08:56:41.615Z</updated>
     
@@ -954,8 +954,8 @@
   
   <entry>
     <title>chapter-04-AIR</title>
-    <link href="http://weafteam.github.io/posts/466eca41/"/>
-    <id>http://weafteam.github.io/posts/466eca41/</id>
+    <link href="https://weafteam.github.io/posts/466eca41/"/>
+    <id>https://weafteam.github.io/posts/466eca41/</id>
     <published>2018-04-05T02:13:07.000Z</published>
     <updated>2018-05-29T01:27:49.820Z</updated>
     
@@ -973,17 +973,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>Nginx和Git的离线安装</title>
-    <link href="http://weafteam.github.io/posts/a86291b8/"/>
-    <id>http://weafteam.github.io/posts/a86291b8/</id>
+    <link href="https://weafteam.github.io/posts/a86291b8/"/>
+    <id>https://weafteam.github.io/posts/a86291b8/</id>
     <published>2018-04-01T04:07:12.000Z</published>
     <updated>2018-05-29T01:27:49.810Z</updated>
     
@@ -995,17 +995,17 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://weafteam.github.io/categories/Linux/"/>
+      <category term="Linux" scheme="https://weafteam.github.io/categories/Linux/"/>
     
     
-      <category term="Linux运维" scheme="http://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
+      <category term="Linux运维" scheme="https://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
     
   </entry>
   
   <entry>
     <title>TensorFlow 建立网络模型</title>
-    <link href="http://weafteam.github.io/posts/5b7df854/"/>
-    <id>http://weafteam.github.io/posts/5b7df854/</id>
+    <link href="https://weafteam.github.io/posts/5b7df854/"/>
+    <id>https://weafteam.github.io/posts/5b7df854/</id>
     <published>2018-03-31T10:23:35.000Z</published>
     <updated>2018-05-29T01:27:49.806Z</updated>
     
@@ -1023,17 +1023,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>文本聚类系列教程：（三）构建词袋空间VSM（Vector Space Model）</title>
-    <link href="http://weafteam.github.io/posts/a751f7e5/"/>
-    <id>http://weafteam.github.io/posts/a751f7e5/</id>
+    <link href="https://weafteam.github.io/posts/a751f7e5/"/>
+    <id>https://weafteam.github.io/posts/a751f7e5/</id>
     <published>2018-03-30T06:00:08.000Z</published>
     <updated>2018-05-29T01:27:49.814Z</updated>
     
@@ -1055,17 +1055,17 @@
     
     </summary>
     
-      <category term="文本聚类" scheme="http://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="https://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
     
-      <category term="文本聚类" scheme="http://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="https://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
   </entry>
   
   <entry>
     <title>修改pip全局镜像</title>
-    <link href="http://weafteam.github.io/posts/233074e6/"/>
-    <id>http://weafteam.github.io/posts/233074e6/</id>
+    <link href="https://weafteam.github.io/posts/233074e6/"/>
+    <id>https://weafteam.github.io/posts/233074e6/</id>
     <published>2018-03-27T12:29:36.000Z</published>
     <updated>2018-05-29T01:27:49.802Z</updated>
     
@@ -1083,17 +1083,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>如何理解描述符</title>
-    <link href="http://weafteam.github.io/posts/5dd0238f/"/>
-    <id>http://weafteam.github.io/posts/5dd0238f/</id>
+    <link href="https://weafteam.github.io/posts/5dd0238f/"/>
+    <id>https://weafteam.github.io/posts/5dd0238f/</id>
     <published>2018-03-25T15:52:32.000Z</published>
     <updated>2018-08-07T08:56:41.613Z</updated>
     
@@ -1119,8 +1119,8 @@
   
   <entry>
     <title>TensorFlow 初体验 （Fashion-mnist）</title>
-    <link href="http://weafteam.github.io/posts/b0821049/"/>
-    <id>http://weafteam.github.io/posts/b0821049/</id>
+    <link href="https://weafteam.github.io/posts/b0821049/"/>
+    <id>https://weafteam.github.io/posts/b0821049/</id>
     <published>2018-03-25T13:18:37.000Z</published>
     <updated>2018-05-29T01:27:49.784Z</updated>
     
@@ -1139,17 +1139,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>rsync的使用与配置</title>
-    <link href="http://weafteam.github.io/posts/cfc65600/"/>
-    <id>http://weafteam.github.io/posts/cfc65600/</id>
+    <link href="https://weafteam.github.io/posts/cfc65600/"/>
+    <id>https://weafteam.github.io/posts/cfc65600/</id>
     <published>2018-03-25T13:08:56.000Z</published>
     <updated>2018-05-29T01:27:49.793Z</updated>
     
@@ -1161,17 +1161,17 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://weafteam.github.io/categories/Linux/"/>
+      <category term="Linux" scheme="https://weafteam.github.io/categories/Linux/"/>
     
     
-      <category term="Linux运维" scheme="http://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
+      <category term="Linux运维" scheme="https://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
     
   </entry>
   
   <entry>
     <title>文本聚类系列教程：（二）jieba中文分词工具进阶</title>
-    <link href="http://weafteam.github.io/posts/931939a5/"/>
-    <id>http://weafteam.github.io/posts/931939a5/</id>
+    <link href="https://weafteam.github.io/posts/931939a5/"/>
+    <id>https://weafteam.github.io/posts/931939a5/</id>
     <published>2018-03-19T11:57:19.000Z</published>
     <updated>2018-05-29T01:27:49.796Z</updated>
     
@@ -1193,17 +1193,17 @@
     
     </summary>
     
-      <category term="文本聚类" scheme="http://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="https://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
     
-      <category term="文本聚类" scheme="http://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="https://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
   </entry>
   
   <entry>
     <title>普通的 SQLAlchemy ORM 使用姿势</title>
-    <link href="http://weafteam.github.io/posts/39277c31/"/>
-    <id>http://weafteam.github.io/posts/39277c31/</id>
+    <link href="https://weafteam.github.io/posts/39277c31/"/>
+    <id>https://weafteam.github.io/posts/39277c31/</id>
     <published>2018-03-18T13:38:54.000Z</published>
     <updated>2018-08-07T08:56:41.610Z</updated>
     
@@ -1227,8 +1227,8 @@
   
   <entry>
     <title>文本聚类系列教程：（一）jieba中文分词工具入门</title>
-    <link href="http://weafteam.github.io/posts/575e441b/"/>
-    <id>http://weafteam.github.io/posts/575e441b/</id>
+    <link href="https://weafteam.github.io/posts/575e441b/"/>
+    <id>https://weafteam.github.io/posts/575e441b/</id>
     <published>2018-03-17T09:20:22.000Z</published>
     <updated>2018-05-29T01:27:49.779Z</updated>
     
@@ -1251,17 +1251,17 @@
     
     </summary>
     
-      <category term="文本聚类" scheme="http://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="https://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
     
-      <category term="文本聚类" scheme="http://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="https://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
   </entry>
   
   <entry>
     <title>MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)</title>
-    <link href="http://weafteam.github.io/posts/2f5dded6/"/>
-    <id>http://weafteam.github.io/posts/2f5dded6/</id>
+    <link href="https://weafteam.github.io/posts/2f5dded6/"/>
+    <id>https://weafteam.github.io/posts/2f5dded6/</id>
     <published>2018-03-17T08:08:56.000Z</published>
     <updated>2018-05-29T01:27:49.771Z</updated>
     
@@ -1273,17 +1273,17 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://weafteam.github.io/categories/Linux/"/>
+      <category term="Linux" scheme="https://weafteam.github.io/categories/Linux/"/>
     
     
-      <category term="Linux运维" scheme="http://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
+      <category term="Linux运维" scheme="https://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
     
   </entry>
   
   <entry>
     <title>chapter-01-AIR</title>
-    <link href="http://weafteam.github.io/posts/8e8e4531/"/>
-    <id>http://weafteam.github.io/posts/8e8e4531/</id>
+    <link href="https://weafteam.github.io/posts/8e8e4531/"/>
+    <id>https://weafteam.github.io/posts/8e8e4531/</id>
     <published>2018-03-14T10:49:23.000Z</published>
     <updated>2018-05-29T01:27:49.767Z</updated>
     
@@ -1303,10 +1303,10 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
