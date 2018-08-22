@@ -3,26 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Java中List和ArrayList的区别 | WEAF 周刊</title>
+    <title>Android 混淆 | WEAF 周刊</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="面试" />
+        <meta name="keywords" content="ANDROID" />
     
-    <meta name="description" content="开始补博客了从5月初到现在应该有8篇博客需要补，废话不多说，开始写吧  区别 这俩个的区别很明显，List是一个接口，而ArrayList是一个类，它继承AbstractList抽象类并且实现了List接口。 所以当我们需要实例化一个List的时候，我们并不能直接的new一个List（显然是废话，接口肯定是不能通过new实例化的），而只能是实例化一个继承并实现它的类的实例并将这个实例化">
-<meta name="keywords" content="面试">
+    <meta name="description" content="Android 混淆">
+<meta name="keywords" content="ANDROID">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java中List和ArrayList的区别">
-<meta property="og:url" content="http://weafteam.github.io/posts/e85880/index.html">
+<meta property="og:title" content="Android 混淆">
+<meta property="og:url" content="http://weafteam.github.io/posts/df5d12f4/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
-<meta property="og:description" content="开始补博客了从5月初到现在应该有8篇博客需要补，废话不多说，开始写吧  区别 这俩个的区别很明显，List是一个接口，而ArrayList是一个类，它继承AbstractList抽象类并且实现了List接口。 所以当我们需要实例化一个List的时候，我们并不能直接的new一个List（显然是废话，接口肯定是不能通过new实例化的），而只能是实例化一个继承并实现它的类的实例并将这个实例化">
+<meta property="og:description" content="Android 混淆">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://i.loli.net/2018/06/23/5b2e336b43133.png">
-<meta property="og:updated_time" content="2018-08-07T08:56:41.620Z">
+<meta property="og:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/android.jpg">
+<meta property="og:updated_time" content="2018-08-22T14:45:52.634Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java中List和ArrayList的区别">
-<meta name="twitter:description" content="开始补博客了从5月初到现在应该有8篇博客需要补，废话不多说，开始写吧  区别 这俩个的区别很明显，List是一个接口，而ArrayList是一个类，它继承AbstractList抽象类并且实现了List接口。 所以当我们需要实例化一个List的时候，我们并不能直接的new一个List（显然是废话，接口肯定是不能通过new实例化的），而只能是实例化一个继承并实现它的类的实例并将这个实例化">
-<meta name="twitter:image" content="https://i.loli.net/2018/06/23/5b2e336b43133.png">
+<meta name="twitter:title" content="Android 混淆">
+<meta name="twitter:description" content="Android 混淆">
+<meta name="twitter:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/android.jpg">
     
 
     
@@ -129,18 +129,18 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <a class="page-title-link" href="/categories/JAVA/">JAVA</a>
+    <a class="page-title-link" href="/categories/ANDROID/">ANDROID</a>
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="post-2018-05-07/Java中List和ArrayList的区别" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-2018-08-13/android-1" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        Java中List和ArrayList的区别
+        Android 混淆
         </h1>
     
 
@@ -150,49 +150,131 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/posts/e85880/" class="article-date">
-            <time datetime="2018-06-23T11:10:07.000Z" itemprop="datePublished">2018-06-23</time>
+        <a href="/posts/df5d12f4/" class="article-date">
+            <time datetime="2018-08-10T18:04:44.000Z" itemprop="datePublished">2018-08-11</time>
         </a>
     </div>
 
                 
     <div>
         <i class="fa fa-user"></i>
-        Leno
+        夏沫
     </div>
 
 
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/面试/">面试</a>
+        <a class="tag-link" href="/tags/ANDROID/">ANDROID</a>
     </div>
 
             </div>
         
         
         <div class="article-entry" itemprop="articleBody">
-            <blockquote>
-<p>开始补博客了<sub>从5月初到现在应该有8篇博客需要补，废话不多说，开始写吧</sub></p>
-</blockquote>
-<h1 id="区别">区别</h1>
-<p>这俩个的区别很明显，List是一个接口，而ArrayList是一个类，它继承AbstractList抽象类并且实现了List接口。</p>
-<p>所以当我们需要实例化一个List的时候，我们并不能直接的new一个List（显然是废话，接口肯定是不能通过new实例化的），而只能是实例化一个继承并实现它的类的实例并将这个实例化的值赋值给我们的list实现List的实例化。说了这么多，其实可以用一行代码来表示（其实就是创建一个指向List对象的引用，这就是面向对象编程中多态的优势吧！）。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例如我们要拿来比较的ArrayList</span></span><br><span class="line">List list = <span class="keyword">new</span> ArrayList();</span><br><span class="line"></span><br><span class="line"><span class="comment">//或者继承List的其他类</span></span><br><span class="line">List b = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br></pre></td></tr></table></figure>
-<p>所以通过以上的代码，可以很清晰的看到，List的实例化的具体操作，当然你也可以直接的写一行</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List list;</span><br></pre></td></tr></table></figure>
-<p>只不过这样做出来的list是一个空的列表，你可以在后续的操作为它做填充。</p>
-<h2 id="注意事项">注意事项：</h2>
-<p>我们接着刚才的 List list = new ArrayList(); 来说。首先list是一个List类型的对象，虽然我们是new的一个ArrayList的，但是有些ArrayList具有的而List类中没有的属性和方法，list都不能再用了。</p>
-<p>那么如何才能保证ArrayList中独有的方法和属性都能被使用到呢？很简单，毕竟ArrayList是一个类，直接实例化是没问题的，这样它所有的属性和方法就都可以使用了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList A = <span class="keyword">new</span> ArrayList();</span><br></pre></td></tr></table></figure>
-<p>我们再接着讲List list = new ArrayList();如果List和ArrayList中存在相同的属性（例如：int i）和相同的方法（例如：f()），这时候list.i的时候，我们调用的是List中的属性，而a.f()调用的是ArrayList中的方法f()。</p>
-<h1 id="其他">其他</h1>
-<p>有关于List和ArrayList本文用到的是没有指定泛化类型的写法，这个也是一个很重要的点，有关实装箱和拆箱的内容，我这提供一个网址。</p>
-<p><a href="http://www.cnblogs.com/a164266729/p/4561651.html" class="uri" target="_blank" rel="noopener">http://www.cnblogs.com/a164266729/p/4561651.html</a></p>
-<h1 id="本文参考">本文参考</h1>
-<p><a href="http://www.cnblogs.com/aisiteru/articles/1151874.html" class="uri" target="_blank" rel="noopener">http://www.cnblogs.com/aisiteru/articles/1151874.html</a></p>
-<p><a href="https://blog.csdn.net/erlian1992/article/details/51298276" class="uri" target="_blank" rel="noopener">https://blog.csdn.net/erlian1992/article/details/51298276</a></p>
+            <h4 id="一开启混淆">一：开启混淆</h4>
+<p>Android studio中开启混淆很简单，找到build.gradle文件，设置minifyEnabled=true。如下：</p>
+<pre><code>     buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true   
+            proguardFiles getDefaultProguardFile(&#39;proguard-android.txt&#39;), &#39;proguard-rules.pro&#39;
+        }
+    }</code></pre>
+<p>shrinkResources设置为true可以在开启混淆后去掉无用的资源文件，减小应用的体积</p>
+<h4 id="二配置混淆文件">二：配置混淆文件</h4>
+<p>找到proguard-rules.pro文件，就可以开始我们的混淆规则了。 一些简单的规则需要我们了解下</p>
+<pre><code># 代表行注释符
+- 表示一条规则的开始
+keep 保留 ：
+dont 不要 : dontwarn：表示不要提示警告
+ignore 忽略，例如ignorewarning：表示忽略警告
+# 不优化
+-dontoptimize
+# 代码循环优化次数，0-7，默认为5
+-optimizationpasses 5
+# 不做预校验
+-dontpreverify</code></pre>
+<p>首先需要区分下 * 和 **；</p>
+<pre><code>-keep class xxxx.info.**
+-keep class xxxx.info.*</code></pre>
+<p>前者表示本包以及子包下的类名都保持，而后者表示本包不混淆，子包下的类名会被混淆。 当然这两者都是会混淆具体的方法名和变量的，所以你如果想要都保持，不被混淆处理的话，需要写成下面这种：</p>
+<pre><code>-keep class xxxx.info.* {*;}</code></pre>
+<p>另外我们还可以保留类中的某些部分不被混淆，如：</p>
+<pre><code>-keep class xxxx.info.One {
+     public &lt;methods&gt;;
+}</code></pre>
+<p>或许你觉得类名也不需要保留，那就不能使用keep了，这里还有几种别的，如</p>
+<pre><code>-keepclassmembers 不保留包名 防止成员被移除或者被重命名
+-keepclasseswithmembers 保留类名和成员名</code></pre>
+<h5 id="基本规则">1：基本规则</h5>
+<p>一般情况下我们需要保存四大组件，自定义view不被混淆，因为 这些子类都有可能被外部调用。</p>
+<pre><code>-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.support.multidex.MultiDexApplication
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class * extends android.view.View
+-keep class android.support.** {*;}</code></pre>
+<h5 id="反射">2：反射</h5>
+<p>反射用到的类一般需要保留，否则会出现问题。 实体类不被混淆</p>
+<pre><code> -keep class xxxx.info.Bean.** { *; }</code></pre>
+<h5 id="枚举不能被混淆">3：枚举不能被混淆</h5>
+<pre><code>-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}</code></pre>
+<h5 id="继承的保留">4：继承的保留</h5>
+<pre><code>-keep public class * extends android.support.v4.**
+-keep public class * extends android.support.v7.**
+-keep public class * extends android.support.annotation.**
+-keep class * implements android.os.Parcelable {
+     public static final android.os.Parcelable$Creator *;
+}</code></pre>
+<h5 id="jni-方法不可混淆">5：jni 方法不可混淆</h5>
+<pre><code>-keepclasseswithmembernames class * {
+        native &lt;methods&gt;;</code></pre>
+<p>}</p>
+<h5 id="资源文件不被混淆">6： 资源文件不被混淆</h5>
+<pre><code>-keep class **.R$* {
+    *;
+}
+-keepclassmembers class **.R$* {
+     public static &lt;fields&gt;;
+}</code></pre>
+<h5 id="webview的一些处理">7：webview的一些处理</h5>
+<pre><code>-keepclassmembers class fqcn.of.javascript.interface.for.Webview { 
+     public *; 
+}
+ -keepclassmembers class * extends android.webkit.WebViewClient {
+  public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
+  public boolean *(android.webkit.WebView, java.lang.String);
+}
+-keepclassmembers class * extends android.webkit.WebViewClient {
+ public void *(android.webkit.WebView, jav.lang.String);
+}</code></pre>
+<p>在app中与HTML5的JavaScript的交互进行特殊处理 我们需要确保这些js要调用的原生方法不能够被混淆，于是我们需要做如下处理：</p>
+<pre><code>-keepclassmembers class com.ljd.example.JSInterface {
+ &lt;methods&gt;;
+ }   </code></pre>
+<h5 id="其他的一些操作">8：其他的一些操作</h5>
+<p>删除代码中Log相关的代码</p>
+<pre><code>-assumenosideeffects class android.util.Log {
+    public static boolean isLoggable(java.lang.String, int);
+    public static int v(...); public static int i(...);
+    public static int w(...); public static int d(...);
+     public static int e(...);
+}</code></pre>
+<p>保留测试相关的代码</p>
+<pre><code> -dontnote junit.framework.**
+ -dontnote junit.runner.**
+ -dontwarn android.test.**
+ -dontwarn android.support.test.**
+ -dontwarn org.junit.**</code></pre>
+<p>另外还有一些第三方的我这里就不贴出来了，接入时文档都会给出混淆策略。</p>
 
         </div>
         <footer class="article-footer">
@@ -293,20 +375,20 @@
         
 <nav id="article-nav">
     
-        <a href="/posts/42fb2e58/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/posts/e0818c8b/" id="article-nav-newer" class="article-nav-link-wrap">
         <strong class="article-nav-caption">下一篇</strong>
         <p class="article-nav-title">
         
-            Thread和Runnable的区别
+            TensorRT-开发入门
         
         </p>
         <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
     </a>
     
     
-        <a href="/posts/d023fbc0/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/posts/684b8f9/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">SpringBoot使用Swagger2</p>
+        <p class="article-nav-title">Python 类型系统的下一步</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -507,11 +589,6 @@
     
         <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
     
-    
-        <script type="text/x-mathjax-config">
-            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     
 
 

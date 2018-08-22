@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://weafteam.github.io/"/>
-  <updated>2018-08-12T11:04:18.448Z</updated>
-  <id>https://weafteam.github.io/</id>
+  <link href="http://weafteam.github.io/"/>
+  <updated>2018-08-22T14:45:52.938Z</updated>
+  <id>http://weafteam.github.io/</id>
   
   <author>
     <name>WEAF</name>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>TensorRT-开发入门</title>
-    <link href="https://weafteam.github.io/posts/e0818c8b/"/>
-    <id>https://weafteam.github.io/posts/e0818c8b/</id>
+    <link href="http://weafteam.github.io/posts/e0818c8b/"/>
+    <id>http://weafteam.github.io/posts/e0818c8b/</id>
     <published>2018-08-12T09:56:37.000Z</published>
-    <updated>2018-08-12T11:04:18.448Z</updated>
+    <updated>2018-08-22T14:45:52.938Z</updated>
     
     <content type="html"><![CDATA[<h1 id="tensorrt-开发入门">TensorRT-开发入门</h1><h1 id="docker-for-ubuntu-16.04心路历程">Docker For Ubuntu 16.04（心路历程）</h1><h2 id="以及在ubuntu上docker中使用tensorrt的心路历程这也是我为以后像搭建出要给实实在在能用的深度学习应用而做的准备">以及在Ubuntu上Docker中使用TensorRT的心路历程，这也是我为以后像搭建出要给实实在在能用的深度学习应用而做的准备</h2><p>这篇记录在Ubuntu上安装Docker，并且安装nvidia-docker的心路历程，还有NGC（Nvidia GPU Cloud ）的里面的container的使用。（尤其是TensorRT container的一个使用）</p><h2 id="一在ubuntu上安装docker-ce">一、在Ubuntu上安装docker-ce</h2><p>这里的docker-ce是docker的社区版，因为社区版是不收费的，一般情况下已经够用了。先去官网，<a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/" target="_blank" rel="noopener">Docker For Ubuntu</a> 这里可以找到安装的教程，我这里使用deb文件安装。</p><ol type="1"><li><p>去（1）<a href="https://download.docker.com/linux/ubuntu/dists/" target="_blank" rel="noopener">ubuntu的docker deb文件</a>， 根据你的ubuntu的版本，查看Ubuntu版本命令， <code>cat /etc/issue</code> 会显示出ubuntu的版本号，根据版本号在这个网站上（2）<a href="https://blog.csdn.net/zhengmx100/article/details/78352773" target="_blank" rel="noopener">ubuntu版本号名字对应关系表</a>， 然后在（1）链接中找到自己系统的对应名字，点进去<code>名字/pool/stable/</code> 到了这一级目录，就到了选择主机位数的时候了，不清楚的小伙伴，使用<code>cat /proc/version</code> 命令查看，我的是amd64。（需要注意一点就是我的ubuntu的名字是xenial）。这里有一个小小的提示，在后面安装nvidia-docker2的时候，需要docker-ce 18.06的支持，所以大家在下载的时候，需要下载这个版本的。（一张图胜过千言万语，下面是deb文件展示，上面是路径，我下载的版本是红色箭头指向的那个版本）</p><p><img src="https://s1.ax1x.com/2018/08/12/PcyAWn.png" alt="1533028434101"></p></li><li><p>下面就开始安装了，安装之前需要废话两句，如果你的系统上已经有了docker怎么办，那要看你是通过apt还是apt-get安装的。命令如下：</p></li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 查看是否安装命令</span><br><span class="line">apt list --installed | grep docker</span><br><span class="line"><span class="meta">#</span> 或者</span><br><span class="line">apt-get list --installed | grep docker</span><br><span class="line"><span class="meta">#</span> 以上的两条命令可以查到安装信息，如果你的版本和这个系统的版本是冲突的，那么你可以通过卸载这个当前的版本，安装新的版本，但是前提是你有这个权利做这件事情，sudo权限，而且，你卸载了对其他用户不会造成影响的前提下，如果你卸载了，对其他用户产生影响，后果自负。</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 1 开始安装，如果你是root用户，则不需要加下面的sudo，如果你的用户没有sudo权限，那么需要你让管理员安装，或者，让管理员把你加载sudo组里。</span><br><span class="line">sudo dpkg -i docker-ce_18.06.0_ce_3-0_ubuntu_amd64.deb</span><br><span class="line"><span class="meta">#</span> 2 安装结束以后，需要测试一下安装是否成功</span><br><span class="line">sudo docker run hello-world</span><br><span class="line"><span class="meta">#</span> 如果以上命令出现一些图2的信息，那么就是成功了</span><br></pre></td></tr></table></figure><p><img src="C:\Users\milittle\AppData\Local\Temp\1533029081395.png" alt="1533029081395"></p><p>图2</p><h2 id="二在ubuntu上安装nvidia-docker和使用ngc-container">二、在ubuntu上安装nvidia-docker和使用NGC container</h2><p>这里有一个大前提是，你的主机上已经安装过nvidia的驱动了，详细的过程请查看<a href="https://docs.nvidia.com/ngc/ngc-titan-setup-guide/index.html#installing-nvidia-driver" target="_blank" rel="noopener">安装nvidia driver</a>。</p><ol type="1"><li>安装nvidia-docker(这个步骤一定要在安装docker之后)</li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl -s -L https://nvidia.github.io/nvidia-docker/gpkey | \</span><br><span class="line">sudo apt-key add -</span><br><span class="line"><span class="meta">#</span> 上面是一条命令</span><br><span class="line">curl -s -L https://nvidia.github.io/nvidia-docker/ubuntu16.04/amd64/nvidia-docker.list | \</span><br><span class="line">sudo tee /etc/apt/sources.list.d/nvidia-docker.list</span><br><span class="line"><span class="meta">#</span> 上面是一条命令</span><br><span class="line"><span class="meta">#</span># 上面的两条命令都是将源挂载在本地</span><br><span class="line">sudo apt-get update </span><br><span class="line">sudo apt-get install -y nvidia-docker2 # 这是安装命令</span><br><span class="line">sudo usermod -aG docker $USER # 这一条是将用户添加到docker组中</span><br></pre></td></tr></table></figure><ol type="1"><li>然后去注册NGC<a href="https://docs.nvidia.com/ngc/ngc-getting-started-guide/index.html" target="_blank" rel="noopener">注册教程</a></li></ol><p>上面的教程已经很清楚了。（最主要的是生成那个api key）</p><p><img src="https://s1.ax1x.com/2018/08/12/PcyEzq.png" alt="1533044008307"></p><p>附一张注册以后的主页</p><p>这里面是所有的container</p><p>后面运行示例的时候会下载TensorRT的样例。</p><ol type="1"><li>本地安装NGC image（这是Docker的镜像文件，可以当作一个application），以及运行image为container</li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">sudo docker login nvcr.io</span><br><span class="line"><span class="meta">#</span>上面的命令是登录nvcr image服务器</span><br><span class="line">sudo docker run --runtime=nvidia --rm nvcr.io/nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04 nvidia-smi</span><br><span class="line"><span class="meta">#</span> 上面这条命令是运行cuda环境，后面的那个nvidia-smi是查看GPU信息的，相比大家都很熟悉。</span><br><span class="line"><span class="meta">#</span> 这就测试了docker的环境是否是可运行了</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 下面是安装NGC 里面的那些image</span><br><span class="line"><span class="meta">#</span> 一下的示例是TensorRT的示例</span><br><span class="line">sudo docker pull nvcr.io/nvidia/tensorrt:18.07-py2</span><br><span class="line"><span class="meta">#</span> 上面的命令是将tensorrt的iamge文件下到本地，可能需要点时间。大约2.61G</span><br><span class="line"><span class="meta">#</span> 后面就是运行示例</span><br><span class="line">sudo nvidia-docker run -it --rm nvcr.io/nvidia/tensorrt:18.07-py2</span><br><span class="line"><span class="meta">#</span> 然后就会进入linux container，这里面已经含有tensorrt的示例了。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 下面是tensorrt的示例运行。</span><br><span class="line"><span class="meta">#</span> c++ example示例运行</span><br><span class="line"><span class="meta">#</span> 图4所示</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> python example示例运行</span><br><span class="line"><span class="meta">#</span> 图5所示</span><br></pre></td></tr></table></figure><p><img src="https://s1.ax1x.com/2018/08/12/PcykJs.png" alt="1533046538343"></p><p>图3</p><p><img src="https://s1.ax1x.com/2018/08/12/PcyeyV.png" alt="1533046802225"></p><p>图4</p><p><img src="https://s1.ax1x.com/2018/08/12/PcyFij.png" alt="1533047137981"></p><p>图5</p><h2 id="三到此我们就结束了可能有很多小伙伴说这些太简单了其实不简单这些内容是我花了一整天时间查各种文档最后简练的将这些东西整合到一起的如果大家有什么不明白的地方可以直接给我发邮件或者直接加我qq我或许可以解答你的疑惑">三、到此我们就结束了，可能有很多小伙伴说这些太简单了，其实不简单，这些内容是我花了一整天时间，查各种文档，最后简练的将这些东西整合到一起的。如果大家有什么不明白的地方，可以直接给我发邮件或者直接加我qq，我或许可以解答你的疑惑。</h2><p>qq：329804334</p><p>Email：air@weaf.top</p>]]></content>
     
@@ -39,17 +39,39 @@
     
     </summary>
     
-      <category term="TensorRT" scheme="https://weafteam.github.io/categories/TensorRT/"/>
+      <category term="TensorRT" scheme="http://weafteam.github.io/categories/TensorRT/"/>
     
     
-      <category term="TensorRT" scheme="https://weafteam.github.io/tags/TensorRT/"/>
+      <category term="TensorRT" scheme="http://weafteam.github.io/tags/TensorRT/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android 混淆</title>
+    <link href="http://weafteam.github.io/posts/df5d12f4/"/>
+    <id>http://weafteam.github.io/posts/df5d12f4/</id>
+    <published>2018-08-10T18:04:44.000Z</published>
+    <updated>2018-08-22T14:45:52.634Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="一开启混淆">一：开启混淆</h4><p>Android studio中开启混淆很简单，找到build.gradle文件，设置minifyEnabled=true。如下：</p><pre><code>     buildTypes {        release {            minifyEnabled true            shrinkResources true               proguardFiles getDefaultProguardFile(&#39;proguard-android.txt&#39;), &#39;proguard-rules.pro&#39;        }    }</code></pre><p>shrinkResources设置为true可以在开启混淆后去掉无用的资源文件，减小应用的体积</p><h4 id="二配置混淆文件">二：配置混淆文件</h4><p>找到proguard-rules.pro文件，就可以开始我们的混淆规则了。 一些简单的规则需要我们了解下</p><pre><code># 代表行注释符- 表示一条规则的开始keep 保留 ：dont 不要 : dontwarn：表示不要提示警告ignore 忽略，例如ignorewarning：表示忽略警告# 不优化-dontoptimize# 代码循环优化次数，0-7，默认为5-optimizationpasses 5# 不做预校验-dontpreverify</code></pre><p>首先需要区分下 * 和 **；</p><pre><code>-keep class xxxx.info.**-keep class xxxx.info.*</code></pre><p>前者表示本包以及子包下的类名都保持，而后者表示本包不混淆，子包下的类名会被混淆。 当然这两者都是会混淆具体的方法名和变量的，所以你如果想要都保持，不被混淆处理的话，需要写成下面这种：</p><pre><code>-keep class xxxx.info.* {*;}</code></pre><p>另外我们还可以保留类中的某些部分不被混淆，如：</p><pre><code>-keep class xxxx.info.One {     public &lt;methods&gt;;}</code></pre><p>或许你觉得类名也不需要保留，那就不能使用keep了，这里还有几种别的，如</p><pre><code>-keepclassmembers 不保留包名 防止成员被移除或者被重命名-keepclasseswithmembers 保留类名和成员名</code></pre><h5 id="基本规则">1：基本规则</h5><p>一般情况下我们需要保存四大组件，自定义view不被混淆，因为 这些子类都有可能被外部调用。</p><pre><code>-keep public class * extends android.app.Activity-keep public class * extends android.app.Application-keep public class * extends android.support.multidex.MultiDexApplication-keep public class * extends android.app.Service-keep public class * extends android.content.BroadcastReceiver-keep public class * extends android.content.ContentProvider-keep public class * extends android.app.backup.BackupAgentHelper-keep public class * extends android.preference.Preference-keep public class * extends android.view.View-keep class android.support.** {*;}</code></pre><h5 id="反射">2：反射</h5><p>反射用到的类一般需要保留，否则会出现问题。 实体类不被混淆</p><pre><code> -keep class xxxx.info.Bean.** { *; }</code></pre><h5 id="枚举不能被混淆">3：枚举不能被混淆</h5><pre><code>-keepclassmembers enum * {    public static **[] values();    public static ** valueOf(java.lang.String);}</code></pre><h5 id="继承的保留">4：继承的保留</h5><pre><code>-keep public class * extends android.support.v4.**-keep public class * extends android.support.v7.**-keep public class * extends android.support.annotation.**-keep class * implements android.os.Parcelable {     public static final android.os.Parcelable$Creator *;}</code></pre><h5 id="jni-方法不可混淆">5：jni 方法不可混淆</h5><pre><code>-keepclasseswithmembernames class * {        native &lt;methods&gt;;</code></pre><p>}</p><h5 id="资源文件不被混淆">6： 资源文件不被混淆</h5><pre><code>-keep class **.R$* {    *;}-keepclassmembers class **.R$* {     public static &lt;fields&gt;;}</code></pre><h5 id="webview的一些处理">7：webview的一些处理</h5><pre><code>-keepclassmembers class fqcn.of.javascript.interface.for.Webview {      public *; } -keepclassmembers class * extends android.webkit.WebViewClient {  public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);  public boolean *(android.webkit.WebView, java.lang.String);}-keepclassmembers class * extends android.webkit.WebViewClient { public void *(android.webkit.WebView, jav.lang.String);}</code></pre><p>在app中与HTML5的JavaScript的交互进行特殊处理 我们需要确保这些js要调用的原生方法不能够被混淆，于是我们需要做如下处理：</p><pre><code>-keepclassmembers class com.ljd.example.JSInterface { &lt;methods&gt;; }   </code></pre><h5 id="其他的一些操作">8：其他的一些操作</h5><p>删除代码中Log相关的代码</p><pre><code>-assumenosideeffects class android.util.Log {    public static boolean isLoggable(java.lang.String, int);    public static int v(...); public static int i(...);    public static int w(...); public static int d(...);     public static int e(...);}</code></pre><p>保留测试相关的代码</p><pre><code> -dontnote junit.framework.** -dontnote junit.runner.** -dontwarn android.test.** -dontwarn android.support.test.** -dontwarn org.junit.**</code></pre><p>另外还有一些第三方的我这里就不贴出来了，接入时文档都会给出混淆策略。</p>]]></content>
+    
+    <summary type="html">
+    
+      Android 混淆
+    
+    </summary>
+    
+      <category term="ANDROID" scheme="http://weafteam.github.io/categories/ANDROID/"/>
+    
+    
+      <category term="ANDROID" scheme="http://weafteam.github.io/tags/ANDROID/"/>
     
   </entry>
   
   <entry>
     <title>Python 类型系统的下一步</title>
-    <link href="https://weafteam.github.io/posts/684b8f9/"/>
-    <id>https://weafteam.github.io/posts/684b8f9/</id>
+    <link href="http://weafteam.github.io/posts/684b8f9/"/>
+    <id>http://weafteam.github.io/posts/684b8f9/</id>
     <published>2018-08-10T17:35:33.000Z</published>
     <updated>2018-08-12T09:51:01.089Z</updated>
     
@@ -73,8 +95,8 @@
   
   <entry>
     <title>Python 类型系统的第一步</title>
-    <link href="https://weafteam.github.io/posts/cde2bcff/"/>
-    <id>https://weafteam.github.io/posts/cde2bcff/</id>
+    <link href="http://weafteam.github.io/posts/cde2bcff/"/>
+    <id>http://weafteam.github.io/posts/cde2bcff/</id>
     <published>2018-08-08T13:52:35.000Z</published>
     <updated>2018-08-12T09:51:01.082Z</updated>
     
@@ -98,8 +120,8 @@
   
   <entry>
     <title>内存中的栈、堆和静态区的用法</title>
-    <link href="https://weafteam.github.io/posts/978fb366/"/>
-    <id>https://weafteam.github.io/posts/978fb366/</id>
+    <link href="http://weafteam.github.io/posts/978fb366/"/>
+    <id>http://weafteam.github.io/posts/978fb366/</id>
     <published>2018-07-29T09:46:14.000Z</published>
     <updated>2018-08-08T06:25:10.793Z</updated>
     
@@ -120,17 +142,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="面试" scheme="https://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="面试" scheme="http://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>StackOverflow上简单数字识别案例学习</title>
-    <link href="https://weafteam.github.io/posts/8b09dcdd/"/>
-    <id>https://weafteam.github.io/posts/8b09dcdd/</id>
+    <link href="http://weafteam.github.io/posts/8b09dcdd/"/>
+    <id>http://weafteam.github.io/posts/8b09dcdd/</id>
     <published>2018-07-24T04:59:38.000Z</published>
     <updated>2018-08-07T08:56:41.652Z</updated>
     
@@ -149,17 +171,17 @@
     
     </summary>
     
-      <category term="OCR" scheme="https://weafteam.github.io/categories/OCR/"/>
+      <category term="OCR" scheme="http://weafteam.github.io/categories/OCR/"/>
     
     
-      <category term="OpenCV-Python" scheme="https://weafteam.github.io/tags/OpenCV-Python/"/>
+      <category term="OpenCV-Python" scheme="http://weafteam.github.io/tags/OpenCV-Python/"/>
     
   </entry>
   
   <entry>
     <title>Thread和Runnable的区别</title>
-    <link href="https://weafteam.github.io/posts/42fb2e58/"/>
-    <id>https://weafteam.github.io/posts/42fb2e58/</id>
+    <link href="http://weafteam.github.io/posts/42fb2e58/"/>
+    <id>http://weafteam.github.io/posts/42fb2e58/</id>
     <published>2018-07-23T07:32:42.000Z</published>
     <updated>2018-08-07T08:56:41.651Z</updated>
     
@@ -181,17 +203,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="面试" scheme="https://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="面试" scheme="http://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>Java中List和ArrayList的区别</title>
-    <link href="https://weafteam.github.io/posts/e85880/"/>
-    <id>https://weafteam.github.io/posts/e85880/</id>
+    <link href="http://weafteam.github.io/posts/e85880/"/>
+    <id>http://weafteam.github.io/posts/e85880/</id>
     <published>2018-06-23T11:10:07.000Z</published>
     <updated>2018-08-07T08:56:41.620Z</updated>
     
@@ -212,17 +234,39 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="面试" scheme="https://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="面试" scheme="http://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringBoot使用Swagger2</title>
+    <link href="http://weafteam.github.io/posts/d023fbc0/"/>
+    <id>http://weafteam.github.io/posts/d023fbc0/</id>
+    <published>2018-06-10T18:04:44.000Z</published>
+    <updated>2018-08-22T14:45:52.634Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="一简介">一、简介</h1><p>Swagger2是一款可以生成RESTful接口文档的工具。而且书写起来很方便，开发人员只需维护代码，不用额外书写文档。使用起来更方便，而且呈现的方式很棒。还支持在线测试。</p><h1 id="二springboot集成">二、SpringBoot集成</h1><p>我这里时使用的最新版本2.9.2 我这里项目是使用Maven构建的。</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- start swagger --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- end swagger --&gt;</span></span><br></pre></td></tr></table></figure><p>配置文件 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xxx.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.ApiInfoBuilder;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.PathSelectors;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.RequestHandlerSelectors;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.service.ApiInfo;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.service.Contact;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.spi.DocumentationType;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.spring.web.plugins.Docket;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.swagger2.annotations.EnableSwagger2;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ：yaxuSong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 增加swagger的rest API查看</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 13:20 2018/8/20</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> by:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Swagger2Config</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//是否开启swagger，正式环境一般是需要关闭的，可根据springboot的多环境配置进行设置</span></span><br><span class="line">    <span class="meta">@Value</span>(value = <span class="string">"$&#123;swagger.enabled&#125;"</span>)</span><br><span class="line">    Boolean swaggerEnabled;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">createRestApi</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())</span><br><span class="line">            <span class="comment">// 是否开启</span></span><br><span class="line">            .enable(swaggerEnabled).select()</span><br><span class="line">            <span class="comment">// 扫描的路径包</span></span><br><span class="line">            .apis(RequestHandlerSelectors.basePackage(<span class="string">"com.xxx.controller"</span>))</span><br><span class="line">            <span class="comment">// 指定路径处理PathSelectors.any()代表所有的路径</span></span><br><span class="line">            .paths(PathSelectors.any()).build().pathMapping(<span class="string">"/"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiInfoBuilder()</span><br><span class="line">            .title(<span class="string">"后端服务接口详情"</span>)</span><br><span class="line">            .description(<span class="string">"yaxuSong"</span>)</span><br><span class="line">            <span class="comment">// 作者信息</span></span><br><span class="line">            .contact(<span class="keyword">new</span> Contact(<span class="string">"yaxuSong"</span>, <span class="string">"https://weaf.top"</span>, <span class="string">"earth@weaf.top"</span>))</span><br><span class="line">            .version(<span class="string">"1.0.0"</span>)</span><br><span class="line">            .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>部分项目配置不同可能需要配置访问静态文件的路径 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ：yaxuSong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 允许访问Swagger ui静态页面</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 13:20 2018/8/20</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> by:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebMvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addResourceHandlers</span><span class="params">(ResourceHandlerRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addResourceHandler(<span class="string">"/static/**"</span>).addResourceLocations(<span class="string">"classpath:/static/"</span>);</span><br><span class="line"></span><br><span class="line">        registry.addResourceHandler(<span class="string">"swagger-ui.html"</span>)</span><br><span class="line">                .addResourceLocations(<span class="string">"classpath:/META-INF/resources/"</span>);</span><br><span class="line"></span><br><span class="line">        registry.addResourceHandler(<span class="string">"/webjars/**"</span>)</span><br><span class="line">                .addResourceLocations(<span class="string">"classpath:/META-INF/resources/webjars/"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//跨域支持</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCorsMappings</span><span class="params">(CorsRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addMapping(<span class="string">"/**"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>设置文档内容</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xxx.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.xxx.annotation.EnableRequestLog;</span><br><span class="line"><span class="keyword">import</span> com.xxx.common.CommonConverter;</span><br><span class="line"><span class="keyword">import</span> com.xxx.common.Constants;</span><br><span class="line"><span class="keyword">import</span> com.xxxx.common.Restful;</span><br><span class="line"><span class="keyword">import</span> com.xxx.common.Restful.Result;</span><br><span class="line"> <span class="comment">//...........</span></span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.Api;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiImplicitParam;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiImplicitParams;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiOperation;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.format.annotation.DateTimeFormat;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.util.CollectionUtils;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestParam;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.multipart.MultipartFile;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ：yaxuSong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 17:17 2018/5/25</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> by:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"user"</span>)</span><br><span class="line"><span class="meta">@Api</span>(tags = <span class="string">"用户API"</span>)</span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  type = 0 为粉丝列表 1 - 为关注者列表 默认0</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> type</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@EnableRequestLog</span>(<span class="string">"查看粉丝，关注列表"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"list"</span>)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(value = <span class="string">"查看粉丝和关注列表"</span>,httpMethod = <span class="string">"POST"</span>,</span><br><span class="line">            notes = <span class="string">"type= 0,是查看粉丝列表，type =1 是查看关注列表，默认值是0"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Result <span class="title">list</span><span class="params">(@RequestParam(value = <span class="string">"type"</span>,defaultValue = <span class="string">"0"</span>,required = <span class="keyword">false</span>)</span> <span class="keyword">int</span> type</span></span><br><span class="line"><span class="function">            ,<span class="keyword">int</span> limit,<span class="keyword">int</span> offset,HttpServletRequest request)</span>&#123;</span><br><span class="line">        AppUser appUser = getUser(request);</span><br><span class="line">        <span class="keyword">if</span> (appUser == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> Restful.failure(RestfulResultEnum.USER_UNLOGIN);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (type == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> Restful.success(userService.getFollowList(appUser.getId(),limit,offset));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            List&lt;UserListVO&gt; list = userService.getFocusList(appUser.getId(), limit, offset);</span><br><span class="line">            <span class="keyword">if</span> (CollectionUtils.isEmpty(list)) &#123;</span><br><span class="line">                <span class="keyword">return</span> Restful.success(list);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;list.size();i++)&#123;</span><br><span class="line">                    list.get(i).setRank(Long.parseLong(rankService.getRank(list.get(i).getId())+<span class="string">""</span>));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> Restful.success(list);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@EnableRequestLog</span>(<span class="string">"同步微信信息"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@ApiOperation</span>(value = <span class="string">"同步微信信息"</span>)</span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"sync/wechat"</span>)</span><br><span class="line">    <span class="meta">@ApiImplicitParams</span>(&#123;</span><br><span class="line">            <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"id"</span>, value = <span class="string">"微信对象"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"WeChatDTO"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Result <span class="title">syncWechat</span><span class="params">(WeChatDTO weChatDTO,HttpServletRequest request)</span></span>&#123;</span><br><span class="line">        AppUser appUser = getUser(request);</span><br><span class="line">        <span class="keyword">if</span> (appUser == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> Restful.failure(RestfulResultEnum.USER_UNLOGIN);</span><br><span class="line">        &#125;</span><br><span class="line">        log.info(<span class="string">"【用户ID = &#123;&#125;,类名 = UserController,方法名 = syncWechat, 参数为 = &#123;&#125;】"</span>,appUser.getId(),weChatDTO.toString());</span><br><span class="line">        UserInfoVO vo = userService.syncWeChat(weChatDTO,appUser.getId());</span><br><span class="line">        <span class="keyword">if</span> (vo==<span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> Restful.failure(RestfulResultEnum.USER_SYNC_WECHAT_FAIL);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Restful.success(vo);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>实体对象</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xxx.entry.dto;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModel;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModelProperty;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ：yaxuSong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 11:32 2018/5/29</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> by:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ApiModel</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeChatDTO</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"手机号码"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"phone"</span>,example=<span class="string">"15300000000"</span>)</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"名称"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"name"</span>,example=<span class="string">"愿得一人心"</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"性别"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"gender"</span>,example=<span class="string">"男"</span>)</span><br><span class="line">    <span class="keyword">private</span> String gender;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"unionID"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"unionId"</span>,example=<span class="string">"o17g2621sE-9Ak-Nva2QbHzeF4"</span>)</span><br><span class="line">    <span class="keyword">private</span> String unionId;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"头像路径"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"avatar"</span>,example=<span class="string">"https://xxxx.png"</span>)</span><br><span class="line">    <span class="keyword">private</span> String avatar;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"openID"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"openId"</span>,example=<span class="string">"othzc0VW0T8yyEk52C3lh2H_lTE0"</span>)</span><br><span class="line">    <span class="keyword">private</span> String openId;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"省份"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"province"</span>,example=<span class="string">"北京"</span>)</span><br><span class="line">    <span class="keyword">private</span> String province;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"国家"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"country"</span>,example=<span class="string">"中国"</span>)</span><br><span class="line">    <span class="keyword">private</span> String country;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"验证码"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"code"</span>,example=<span class="string">"2341"</span>)</span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"邀请码"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"inviteCode"</span>,example=<span class="string">"LTEtNTQzMDMtRkUwQzQzNjE3NkE0NEM1MzAzNTBGRjk1NkU2QzQ4MkQ="</span>)</span><br><span class="line">    <span class="keyword">private</span> String inviteCode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="三结果展示">三、结果展示</h1><p>访问路径 <a href="http://127.0.0.1:10086/swagger-ui.html#/" class="uri" target="_blank" rel="noopener">http://127.0.0.1:10086/swagger-ui.html#/</a> <img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-1.png"></p><p>设置请求方法的“查看粉丝和关注列表”（<strong>设置了请求方法</strong>） <img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-3.png"></p><p>未设置请求方法的api <img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-4.png"></p><p>两种设置方法的详细内容（通过点击try it可以进行测试）这里我们也可以通过<strong>Postman</strong>进行测试 <img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-5.png"> <img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-6.png"></p><h1 id="四相关注解">四、相关注解</h1><p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-7.png"></p><p>参考文档：<a href="https://swagger.io/" class="uri" target="_blank" rel="noopener">https://swagger.io/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      SpringBoot使用Swagger2
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（七）</title>
-    <link href="https://weafteam.github.io/posts/a6235d78/"/>
-    <id>https://weafteam.github.io/posts/a6235d78/</id>
+    <link href="http://weafteam.github.io/posts/a6235d78/"/>
+    <id>http://weafteam.github.io/posts/a6235d78/</id>
     <published>2018-06-09T09:35:25.000Z</published>
     <updated>2018-08-07T08:56:41.657Z</updated>
     
@@ -247,8 +291,8 @@
   
   <entry>
     <title>Redisson 的介绍与使用</title>
-    <link href="https://weafteam.github.io/posts/eae731fe/"/>
-    <id>https://weafteam.github.io/posts/eae731fe/</id>
+    <link href="http://weafteam.github.io/posts/eae731fe/"/>
+    <id>http://weafteam.github.io/posts/eae731fe/</id>
     <published>2018-06-04T18:04:44.000Z</published>
     <updated>2018-08-08T11:54:45.491Z</updated>
     
@@ -260,17 +304,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>chapter-11-AIR</title>
-    <link href="https://weafteam.github.io/posts/45d29694/"/>
-    <id>https://weafteam.github.io/posts/45d29694/</id>
+    <link href="http://weafteam.github.io/posts/45d29694/"/>
+    <id>http://weafteam.github.io/posts/45d29694/</id>
     <published>2018-05-29T03:27:34.000Z</published>
     <updated>2018-08-12T11:03:56.319Z</updated>
     
@@ -290,17 +334,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（六）</title>
-    <link href="https://weafteam.github.io/posts/74232ae7/"/>
-    <id>https://weafteam.github.io/posts/74232ae7/</id>
+    <link href="http://weafteam.github.io/posts/74232ae7/"/>
+    <id>http://weafteam.github.io/posts/74232ae7/</id>
     <published>2018-05-27T10:39:08.000Z</published>
     <updated>2018-08-07T08:56:41.653Z</updated>
     
@@ -325,8 +369,8 @@
   
   <entry>
     <title>Lombok的使用</title>
-    <link href="https://weafteam.github.io/posts/3859dc89/"/>
-    <id>https://weafteam.github.io/posts/3859dc89/</id>
+    <link href="http://weafteam.github.io/posts/3859dc89/"/>
+    <id>http://weafteam.github.io/posts/3859dc89/</id>
     <published>2018-05-26T18:04:44.000Z</published>
     <updated>2018-08-08T11:54:45.488Z</updated>
     
@@ -338,17 +382,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>Spring中@transactional的使用</title>
-    <link href="https://weafteam.github.io/posts/435ecce8/"/>
-    <id>https://weafteam.github.io/posts/435ecce8/</id>
+    <link href="http://weafteam.github.io/posts/435ecce8/"/>
+    <id>http://weafteam.github.io/posts/435ecce8/</id>
     <published>2018-05-20T18:04:44.000Z</published>
     <updated>2018-08-07T08:56:41.651Z</updated>
     
@@ -360,17 +404,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>chapter-10-AIR</title>
-    <link href="https://weafteam.github.io/posts/78b2bf24/"/>
-    <id>https://weafteam.github.io/posts/78b2bf24/</id>
+    <link href="http://weafteam.github.io/posts/78b2bf24/"/>
+    <id>http://weafteam.github.io/posts/78b2bf24/</id>
     <published>2018-05-20T11:52:00.000Z</published>
     <updated>2018-05-29T03:28:39.852Z</updated>
     
@@ -390,17 +434,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>chapter-09-AIR</title>
-    <link href="https://weafteam.github.io/posts/befe0ef0/"/>
-    <id>https://weafteam.github.io/posts/befe0ef0/</id>
+    <link href="http://weafteam.github.io/posts/befe0ef0/"/>
+    <id>http://weafteam.github.io/posts/befe0ef0/</id>
     <published>2018-05-20T11:31:09.000Z</published>
     <updated>2018-05-29T01:27:49.900Z</updated>
     
@@ -418,17 +462,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>Pillow的简单使用</title>
-    <link href="https://weafteam.github.io/posts/33d9791f/"/>
-    <id>https://weafteam.github.io/posts/33d9791f/</id>
+    <link href="http://weafteam.github.io/posts/33d9791f/"/>
+    <id>http://weafteam.github.io/posts/33d9791f/</id>
     <published>2018-05-17T02:03:18.000Z</published>
     <updated>2018-05-29T01:27:49.882Z</updated>
     
@@ -450,14 +494,14 @@
     </summary>
     
     
-      <category term="Pillow Python OCR" scheme="https://weafteam.github.io/tags/Pillow-Python-OCR/"/>
+      <category term="Pillow Python OCR" scheme="http://weafteam.github.io/tags/Pillow-Python-OCR/"/>
     
   </entry>
   
   <entry>
     <title>Spring Boot 关乎java程序员</title>
-    <link href="https://weafteam.github.io/posts/1cf77d1e/"/>
-    <id>https://weafteam.github.io/posts/1cf77d1e/</id>
+    <link href="http://weafteam.github.io/posts/1cf77d1e/"/>
+    <id>http://weafteam.github.io/posts/1cf77d1e/</id>
     <published>2018-05-16T18:04:44.000Z</published>
     <updated>2018-08-07T08:56:41.650Z</updated>
     
@@ -469,17 +513,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（五）</title>
-    <link href="https://weafteam.github.io/posts/112d613e/"/>
-    <id>https://weafteam.github.io/posts/112d613e/</id>
+    <link href="http://weafteam.github.io/posts/112d613e/"/>
+    <id>http://weafteam.github.io/posts/112d613e/</id>
     <published>2018-05-13T15:09:56.000Z</published>
     <updated>2018-08-07T08:56:41.649Z</updated>
     
@@ -504,8 +548,8 @@
   
   <entry>
     <title>Kafka在SpringBoot 2.0中的整合-1</title>
-    <link href="https://weafteam.github.io/posts/6e26f2f1/"/>
-    <id>https://weafteam.github.io/posts/6e26f2f1/</id>
+    <link href="http://weafteam.github.io/posts/6e26f2f1/"/>
+    <id>http://weafteam.github.io/posts/6e26f2f1/</id>
     <published>2018-05-07T10:13:02.000Z</published>
     <updated>2018-08-12T09:51:01.075Z</updated>
     
@@ -517,17 +561,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>chapter-08-AIR</title>
-    <link href="https://weafteam.github.io/posts/839e2740/"/>
-    <id>https://weafteam.github.io/posts/839e2740/</id>
+    <link href="http://weafteam.github.io/posts/839e2740/"/>
+    <id>http://weafteam.github.io/posts/839e2740/</id>
     <published>2018-05-06T03:30:48.000Z</published>
     <updated>2018-05-29T01:27:49.888Z</updated>
     
@@ -549,17 +593,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>chapter-07-AIR</title>
-    <link href="https://weafteam.github.io/posts/1ceb091/"/>
-    <id>https://weafteam.github.io/posts/1ceb091/</id>
+    <link href="http://weafteam.github.io/posts/1ceb091/"/>
+    <id>http://weafteam.github.io/posts/1ceb091/</id>
     <published>2018-05-06T03:29:55.000Z</published>
     <updated>2018-05-29T01:27:49.874Z</updated>
     
@@ -577,17 +621,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（四）</title>
-    <link href="https://weafteam.github.io/posts/7eb3a479/"/>
-    <id>https://weafteam.github.io/posts/7eb3a479/</id>
+    <link href="http://weafteam.github.io/posts/7eb3a479/"/>
+    <id>http://weafteam.github.io/posts/7eb3a479/</id>
     <published>2018-05-04T14:32:16.000Z</published>
     <updated>2018-08-07T08:56:41.619Z</updated>
     
@@ -612,8 +656,8 @@
   
   <entry>
     <title>Java中String、StringBuffer与StringBuilder的区别</title>
-    <link href="https://weafteam.github.io/posts/2870b42a/"/>
-    <id>https://weafteam.github.io/posts/2870b42a/</id>
+    <link href="http://weafteam.github.io/posts/2870b42a/"/>
+    <id>http://weafteam.github.io/posts/2870b42a/</id>
     <published>2018-05-03T07:39:02.000Z</published>
     <updated>2018-05-29T01:27:49.865Z</updated>
     
@@ -634,17 +678,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="面试" scheme="https://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="面试" scheme="http://weafteam.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>微信公众号后台在SpringBoot2.0中的实现（上）</title>
-    <link href="https://weafteam.github.io/posts/637facd6/"/>
-    <id>https://weafteam.github.io/posts/637facd6/</id>
+    <link href="http://weafteam.github.io/posts/637facd6/"/>
+    <id>http://weafteam.github.io/posts/637facd6/</id>
     <published>2018-05-01T10:13:02.000Z</published>
     <updated>2018-05-29T01:27:49.896Z</updated>
     
@@ -656,17 +700,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（三）</title>
-    <link href="https://weafteam.github.io/posts/c99ebd1c/"/>
-    <id>https://weafteam.github.io/posts/c99ebd1c/</id>
+    <link href="http://weafteam.github.io/posts/c99ebd1c/"/>
+    <id>http://weafteam.github.io/posts/c99ebd1c/</id>
     <published>2018-05-01T03:58:22.000Z</published>
     <updated>2018-08-07T08:56:41.618Z</updated>
     
@@ -691,8 +735,8 @@
   
   <entry>
     <title>asyncio 不完全指北（二）</title>
-    <link href="https://weafteam.github.io/posts/84801e4e/"/>
-    <id>https://weafteam.github.io/posts/84801e4e/</id>
+    <link href="http://weafteam.github.io/posts/84801e4e/"/>
+    <id>http://weafteam.github.io/posts/84801e4e/</id>
     <published>2018-04-24T15:43:20.000Z</published>
     <updated>2018-08-07T08:56:41.617Z</updated>
     
@@ -718,8 +762,8 @@
   
   <entry>
     <title>Kafka在SpringBoot 2.0中的整合</title>
-    <link href="https://weafteam.github.io/posts/23949c22/"/>
-    <id>https://weafteam.github.io/posts/23949c22/</id>
+    <link href="http://weafteam.github.io/posts/23949c22/"/>
+    <id>http://weafteam.github.io/posts/23949c22/</id>
     <published>2018-04-23T10:13:02.000Z</published>
     <updated>2018-08-12T09:51:01.068Z</updated>
     
@@ -731,17 +775,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>chapter-06-AIR</title>
-    <link href="https://weafteam.github.io/posts/3cae9921/"/>
-    <id>https://weafteam.github.io/posts/3cae9921/</id>
+    <link href="http://weafteam.github.io/posts/3cae9921/"/>
+    <id>http://weafteam.github.io/posts/3cae9921/</id>
     <published>2018-04-22T06:31:24.000Z</published>
     <updated>2018-05-29T01:27:49.852Z</updated>
     
@@ -759,17 +803,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>唯密文解密（针对Vigenere加密）</title>
-    <link href="https://weafteam.github.io/posts/899ccb0/"/>
-    <id>https://weafteam.github.io/posts/899ccb0/</id>
+    <link href="http://weafteam.github.io/posts/899ccb0/"/>
+    <id>http://weafteam.github.io/posts/899ccb0/</id>
     <published>2018-04-21T01:38:12.000Z</published>
     <updated>2018-05-29T01:27:49.860Z</updated>
     
@@ -790,17 +834,17 @@
     
     </summary>
     
-      <category term="密码学" scheme="https://weafteam.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+      <category term="密码学" scheme="http://weafteam.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
     
     
-      <category term="密码学" scheme="https://weafteam.github.io/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+      <category term="密码学" scheme="http://weafteam.github.io/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
     
   </entry>
   
   <entry>
     <title>Redis在SpringBoot 2.0中的整合</title>
-    <link href="https://weafteam.github.io/posts/2b2e3e2f/"/>
-    <id>https://weafteam.github.io/posts/2b2e3e2f/</id>
+    <link href="http://weafteam.github.io/posts/2b2e3e2f/"/>
+    <id>http://weafteam.github.io/posts/2b2e3e2f/</id>
     <published>2018-04-18T09:57:12.000Z</published>
     <updated>2018-05-29T01:27:49.847Z</updated>
     
@@ -812,17 +856,17 @@
     
     </summary>
     
-      <category term="JAVA" scheme="https://weafteam.github.io/categories/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/categories/JAVA/"/>
     
     
-      <category term="JAVA" scheme="https://weafteam.github.io/tags/JAVA/"/>
+      <category term="JAVA" scheme="http://weafteam.github.io/tags/JAVA/"/>
     
   </entry>
   
   <entry>
     <title>Linux下MySQL安装</title>
-    <link href="https://weafteam.github.io/posts/2cd32dfc/"/>
-    <id>https://weafteam.github.io/posts/2cd32dfc/</id>
+    <link href="http://weafteam.github.io/posts/2cd32dfc/"/>
+    <id>http://weafteam.github.io/posts/2cd32dfc/</id>
     <published>2018-04-17T04:07:12.000Z</published>
     <updated>2018-05-29T01:27:49.843Z</updated>
     
@@ -834,17 +878,17 @@
     
     </summary>
     
-      <category term="Linux" scheme="https://weafteam.github.io/categories/Linux/"/>
+      <category term="Linux" scheme="http://weafteam.github.io/categories/Linux/"/>
     
     
-      <category term="Linux运维" scheme="https://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
+      <category term="Linux运维" scheme="http://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
     
   </entry>
   
   <entry>
     <title>chapter-05-AIR</title>
-    <link href="https://weafteam.github.io/posts/7b0ee3f1/"/>
-    <id>https://weafteam.github.io/posts/7b0ee3f1/</id>
+    <link href="http://weafteam.github.io/posts/7b0ee3f1/"/>
+    <id>http://weafteam.github.io/posts/7b0ee3f1/</id>
     <published>2018-04-15T14:14:23.000Z</published>
     <updated>2018-05-29T01:27:49.835Z</updated>
     
@@ -862,17 +906,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>asyncio 不完全指北（一）</title>
-    <link href="https://weafteam.github.io/posts/b496f296/"/>
-    <id>https://weafteam.github.io/posts/b496f296/</id>
+    <link href="http://weafteam.github.io/posts/b496f296/"/>
+    <id>http://weafteam.github.io/posts/b496f296/</id>
     <published>2018-04-14T19:37:56.000Z</published>
     <updated>2018-08-07T08:56:41.616Z</updated>
     
@@ -896,8 +940,8 @@
   
   <entry>
     <title>Vigenere密码加密解密</title>
-    <link href="https://weafteam.github.io/posts/8b092926/"/>
-    <id>https://weafteam.github.io/posts/8b092926/</id>
+    <link href="http://weafteam.github.io/posts/8b092926/"/>
+    <id>http://weafteam.github.io/posts/8b092926/</id>
     <published>2018-04-14T14:11:24.000Z</published>
     <updated>2018-05-29T01:27:49.829Z</updated>
     
@@ -918,17 +962,17 @@
     
     </summary>
     
-      <category term="密码学" scheme="https://weafteam.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+      <category term="密码学" scheme="http://weafteam.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
     
     
-      <category term="密码学" scheme="https://weafteam.github.io/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+      <category term="密码学" scheme="http://weafteam.github.io/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
     
   </entry>
   
   <entry>
     <title>如何理解丘奇计数</title>
-    <link href="https://weafteam.github.io/posts/cd89a3b2/"/>
-    <id>https://weafteam.github.io/posts/cd89a3b2/</id>
+    <link href="http://weafteam.github.io/posts/cd89a3b2/"/>
+    <id>http://weafteam.github.io/posts/cd89a3b2/</id>
     <published>2018-04-07T19:39:29.000Z</published>
     <updated>2018-08-07T08:56:41.615Z</updated>
     
@@ -954,8 +998,8 @@
   
   <entry>
     <title>chapter-04-AIR</title>
-    <link href="https://weafteam.github.io/posts/466eca41/"/>
-    <id>https://weafteam.github.io/posts/466eca41/</id>
+    <link href="http://weafteam.github.io/posts/466eca41/"/>
+    <id>http://weafteam.github.io/posts/466eca41/</id>
     <published>2018-04-05T02:13:07.000Z</published>
     <updated>2018-05-29T01:27:49.820Z</updated>
     
@@ -973,17 +1017,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>Nginx和Git的离线安装</title>
-    <link href="https://weafteam.github.io/posts/a86291b8/"/>
-    <id>https://weafteam.github.io/posts/a86291b8/</id>
+    <link href="http://weafteam.github.io/posts/a86291b8/"/>
+    <id>http://weafteam.github.io/posts/a86291b8/</id>
     <published>2018-04-01T04:07:12.000Z</published>
     <updated>2018-05-29T01:27:49.810Z</updated>
     
@@ -995,17 +1039,17 @@
     
     </summary>
     
-      <category term="Linux" scheme="https://weafteam.github.io/categories/Linux/"/>
+      <category term="Linux" scheme="http://weafteam.github.io/categories/Linux/"/>
     
     
-      <category term="Linux运维" scheme="https://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
+      <category term="Linux运维" scheme="http://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
     
   </entry>
   
   <entry>
     <title>TensorFlow 建立网络模型</title>
-    <link href="https://weafteam.github.io/posts/5b7df854/"/>
-    <id>https://weafteam.github.io/posts/5b7df854/</id>
+    <link href="http://weafteam.github.io/posts/5b7df854/"/>
+    <id>http://weafteam.github.io/posts/5b7df854/</id>
     <published>2018-03-31T10:23:35.000Z</published>
     <updated>2018-05-29T01:27:49.806Z</updated>
     
@@ -1023,17 +1067,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>文本聚类系列教程：（三）构建词袋空间VSM（Vector Space Model）</title>
-    <link href="https://weafteam.github.io/posts/a751f7e5/"/>
-    <id>https://weafteam.github.io/posts/a751f7e5/</id>
+    <link href="http://weafteam.github.io/posts/a751f7e5/"/>
+    <id>http://weafteam.github.io/posts/a751f7e5/</id>
     <published>2018-03-30T06:00:08.000Z</published>
     <updated>2018-05-29T01:27:49.814Z</updated>
     
@@ -1055,17 +1099,17 @@
     
     </summary>
     
-      <category term="文本聚类" scheme="https://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="http://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
     
-      <category term="文本聚类" scheme="https://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="http://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
   </entry>
   
   <entry>
     <title>修改pip全局镜像</title>
-    <link href="https://weafteam.github.io/posts/233074e6/"/>
-    <id>https://weafteam.github.io/posts/233074e6/</id>
+    <link href="http://weafteam.github.io/posts/233074e6/"/>
+    <id>http://weafteam.github.io/posts/233074e6/</id>
     <published>2018-03-27T12:29:36.000Z</published>
     <updated>2018-05-29T01:27:49.802Z</updated>
     
@@ -1083,17 +1127,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>如何理解描述符</title>
-    <link href="https://weafteam.github.io/posts/5dd0238f/"/>
-    <id>https://weafteam.github.io/posts/5dd0238f/</id>
+    <link href="http://weafteam.github.io/posts/5dd0238f/"/>
+    <id>http://weafteam.github.io/posts/5dd0238f/</id>
     <published>2018-03-25T15:52:32.000Z</published>
     <updated>2018-08-07T08:56:41.613Z</updated>
     
@@ -1119,8 +1163,8 @@
   
   <entry>
     <title>TensorFlow 初体验 （Fashion-mnist）</title>
-    <link href="https://weafteam.github.io/posts/b0821049/"/>
-    <id>https://weafteam.github.io/posts/b0821049/</id>
+    <link href="http://weafteam.github.io/posts/b0821049/"/>
+    <id>http://weafteam.github.io/posts/b0821049/</id>
     <published>2018-03-25T13:18:37.000Z</published>
     <updated>2018-05-29T01:27:49.784Z</updated>
     
@@ -1139,17 +1183,17 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   
   <entry>
     <title>rsync的使用与配置</title>
-    <link href="https://weafteam.github.io/posts/cfc65600/"/>
-    <id>https://weafteam.github.io/posts/cfc65600/</id>
+    <link href="http://weafteam.github.io/posts/cfc65600/"/>
+    <id>http://weafteam.github.io/posts/cfc65600/</id>
     <published>2018-03-25T13:08:56.000Z</published>
     <updated>2018-05-29T01:27:49.793Z</updated>
     
@@ -1161,17 +1205,17 @@
     
     </summary>
     
-      <category term="Linux" scheme="https://weafteam.github.io/categories/Linux/"/>
+      <category term="Linux" scheme="http://weafteam.github.io/categories/Linux/"/>
     
     
-      <category term="Linux运维" scheme="https://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
+      <category term="Linux运维" scheme="http://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
     
   </entry>
   
   <entry>
     <title>文本聚类系列教程：（二）jieba中文分词工具进阶</title>
-    <link href="https://weafteam.github.io/posts/931939a5/"/>
-    <id>https://weafteam.github.io/posts/931939a5/</id>
+    <link href="http://weafteam.github.io/posts/931939a5/"/>
+    <id>http://weafteam.github.io/posts/931939a5/</id>
     <published>2018-03-19T11:57:19.000Z</published>
     <updated>2018-05-29T01:27:49.796Z</updated>
     
@@ -1193,17 +1237,17 @@
     
     </summary>
     
-      <category term="文本聚类" scheme="https://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="http://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
     
-      <category term="文本聚类" scheme="https://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="http://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
   </entry>
   
   <entry>
     <title>普通的 SQLAlchemy ORM 使用姿势</title>
-    <link href="https://weafteam.github.io/posts/39277c31/"/>
-    <id>https://weafteam.github.io/posts/39277c31/</id>
+    <link href="http://weafteam.github.io/posts/39277c31/"/>
+    <id>http://weafteam.github.io/posts/39277c31/</id>
     <published>2018-03-18T13:38:54.000Z</published>
     <updated>2018-08-07T08:56:41.610Z</updated>
     
@@ -1227,8 +1271,8 @@
   
   <entry>
     <title>文本聚类系列教程：（一）jieba中文分词工具入门</title>
-    <link href="https://weafteam.github.io/posts/575e441b/"/>
-    <id>https://weafteam.github.io/posts/575e441b/</id>
+    <link href="http://weafteam.github.io/posts/575e441b/"/>
+    <id>http://weafteam.github.io/posts/575e441b/</id>
     <published>2018-03-17T09:20:22.000Z</published>
     <updated>2018-05-29T01:27:49.779Z</updated>
     
@@ -1251,17 +1295,17 @@
     
     </summary>
     
-      <category term="文本聚类" scheme="https://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="http://weafteam.github.io/categories/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
     
-      <category term="文本聚类" scheme="https://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
+      <category term="文本聚类" scheme="http://weafteam.github.io/tags/%E6%96%87%E6%9C%AC%E8%81%9A%E7%B1%BB/"/>
     
   </entry>
   
   <entry>
     <title>MySQL主从数据库的设置与Xtrabackup备份InnoDB(MySQL)</title>
-    <link href="https://weafteam.github.io/posts/2f5dded6/"/>
-    <id>https://weafteam.github.io/posts/2f5dded6/</id>
+    <link href="http://weafteam.github.io/posts/2f5dded6/"/>
+    <id>http://weafteam.github.io/posts/2f5dded6/</id>
     <published>2018-03-17T08:08:56.000Z</published>
     <updated>2018-05-29T01:27:49.771Z</updated>
     
@@ -1273,17 +1317,17 @@
     
     </summary>
     
-      <category term="Linux" scheme="https://weafteam.github.io/categories/Linux/"/>
+      <category term="Linux" scheme="http://weafteam.github.io/categories/Linux/"/>
     
     
-      <category term="Linux运维" scheme="https://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
+      <category term="Linux运维" scheme="http://weafteam.github.io/tags/Linux%E8%BF%90%E7%BB%B4/"/>
     
   </entry>
   
   <entry>
     <title>chapter-01-AIR</title>
-    <link href="https://weafteam.github.io/posts/8e8e4531/"/>
-    <id>https://weafteam.github.io/posts/8e8e4531/</id>
+    <link href="http://weafteam.github.io/posts/8e8e4531/"/>
+    <id>http://weafteam.github.io/posts/8e8e4531/</id>
     <published>2018-03-14T10:49:23.000Z</published>
     <updated>2018-05-29T01:27:49.767Z</updated>
     
@@ -1303,10 +1347,10 @@
     
     </summary>
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/categories/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/categories/TensorFlow/"/>
     
     
-      <category term="TensorFlow" scheme="https://weafteam.github.io/tags/TensorFlow/"/>
+      <category term="TensorFlow" scheme="http://weafteam.github.io/tags/TensorFlow/"/>
     
   </entry>
   

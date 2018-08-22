@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>SpringBoot使用Swagger2 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="JAVA" />
+    
+    <meta name="description" content="SpringBoot使用Swagger2">
+<meta name="keywords" content="JAVA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot使用Swagger2">
+<meta property="og:url" content="http://weafteam.github.io/posts/d023fbc0/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="SpringBoot使用Swagger2">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://swagger.io/swagger/media/assets/images/swagger_logo.svg">
+<meta property="og:updated_time" content="2018-08-22T14:45:52.634Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot使用Swagger2">
+<meta name="twitter:description" content="SpringBoot使用Swagger2">
+<meta name="twitter:image" content="https://swagger.io/swagger/media/assets/images/swagger_logo.svg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/ANDROID/">ANDROID</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/JAVA/">JAVA</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-06-11/SpringBoot-integration-with-Swagger2" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        SpringBoot使用Swagger2
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/d023fbc0/" class="article-date">
+            <time datetime="2018-06-10T18:04:44.000Z" itemprop="datePublished">2018-06-11</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        earth
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/JAVA/">JAVA</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="一简介">一、简介</h1>
+<p>Swagger2是一款可以生成RESTful接口文档的工具。而且书写起来很方便，开发人员只需维护代码，不用额外书写文档。使用起来更方便，而且呈现的方式很棒。还支持在线测试。</p>
+<h1 id="二springboot集成">二、SpringBoot集成</h1>
+<p>我这里时使用的最新版本2.9.2 我这里项目是使用Maven构建的。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- start swagger --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- end swagger --&gt;</span></span><br></pre></td></tr></table></figure>
+<p>配置文件 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xxx.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.ApiInfoBuilder;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.PathSelectors;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.builders.RequestHandlerSelectors;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.service.ApiInfo;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.service.Contact;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.spi.DocumentationType;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.spring.web.plugins.Docket;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.swagger2.annotations.EnableSwagger2;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ：yaxuSong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 增加swagger的rest API查看</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 13:20 2018/8/20</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> by:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Swagger2Config</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//是否开启swagger，正式环境一般是需要关闭的，可根据springboot的多环境配置进行设置</span></span><br><span class="line">    <span class="meta">@Value</span>(value = <span class="string">"$&#123;swagger.enabled&#125;"</span>)</span><br><span class="line">    Boolean swaggerEnabled;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">createRestApi</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())</span><br><span class="line">            <span class="comment">// 是否开启</span></span><br><span class="line">            .enable(swaggerEnabled).select()</span><br><span class="line">            <span class="comment">// 扫描的路径包</span></span><br><span class="line">            .apis(RequestHandlerSelectors.basePackage(<span class="string">"com.xxx.controller"</span>))</span><br><span class="line">            <span class="comment">// 指定路径处理PathSelectors.any()代表所有的路径</span></span><br><span class="line">            .paths(PathSelectors.any()).build().pathMapping(<span class="string">"/"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiInfoBuilder()</span><br><span class="line">            .title(<span class="string">"后端服务接口详情"</span>)</span><br><span class="line">            .description(<span class="string">"yaxuSong"</span>)</span><br><span class="line">            <span class="comment">// 作者信息</span></span><br><span class="line">            .contact(<span class="keyword">new</span> Contact(<span class="string">"yaxuSong"</span>, <span class="string">"https://weaf.top"</span>, <span class="string">"earth@weaf.top"</span>))</span><br><span class="line">            .version(<span class="string">"1.0.0"</span>)</span><br><span class="line">            .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>部分项目配置不同可能需要配置访问静态文件的路径 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ：yaxuSong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 允许访问Swagger ui静态页面</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 13:20 2018/8/20</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> by:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebMvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addResourceHandlers</span><span class="params">(ResourceHandlerRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addResourceHandler(<span class="string">"/static/**"</span>).addResourceLocations(<span class="string">"classpath:/static/"</span>);</span><br><span class="line"></span><br><span class="line">        registry.addResourceHandler(<span class="string">"swagger-ui.html"</span>)</span><br><span class="line">                .addResourceLocations(<span class="string">"classpath:/META-INF/resources/"</span>);</span><br><span class="line"></span><br><span class="line">        registry.addResourceHandler(<span class="string">"/webjars/**"</span>)</span><br><span class="line">                .addResourceLocations(<span class="string">"classpath:/META-INF/resources/webjars/"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//跨域支持</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCorsMappings</span><span class="params">(CorsRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addMapping(<span class="string">"/**"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>设置文档内容</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xxx.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.xxx.annotation.EnableRequestLog;</span><br><span class="line"><span class="keyword">import</span> com.xxx.common.CommonConverter;</span><br><span class="line"><span class="keyword">import</span> com.xxx.common.Constants;</span><br><span class="line"><span class="keyword">import</span> com.xxxx.common.Restful;</span><br><span class="line"><span class="keyword">import</span> com.xxx.common.Restful.Result;</span><br><span class="line"> <span class="comment">//...........</span></span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.Api;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiImplicitParam;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiImplicitParams;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiOperation;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.format.annotation.DateTimeFormat;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.util.CollectionUtils;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestParam;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.multipart.MultipartFile;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ：yaxuSong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 17:17 2018/5/25</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> by:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"user"</span>)</span><br><span class="line"><span class="meta">@Api</span>(tags = <span class="string">"用户API"</span>)</span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  type = 0 为粉丝列表 1 - 为关注者列表 默认0</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> type</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@EnableRequestLog</span>(<span class="string">"查看粉丝，关注列表"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"list"</span>)</span><br><span class="line">    <span class="meta">@ApiOperation</span>(value = <span class="string">"查看粉丝和关注列表"</span>,httpMethod = <span class="string">"POST"</span>,</span><br><span class="line">            notes = <span class="string">"type= 0,是查看粉丝列表，type =1 是查看关注列表，默认值是0"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Result <span class="title">list</span><span class="params">(@RequestParam(value = <span class="string">"type"</span>,defaultValue = <span class="string">"0"</span>,required = <span class="keyword">false</span>)</span> <span class="keyword">int</span> type</span></span><br><span class="line"><span class="function">            ,<span class="keyword">int</span> limit,<span class="keyword">int</span> offset,HttpServletRequest request)</span>&#123;</span><br><span class="line">        AppUser appUser = getUser(request);</span><br><span class="line">        <span class="keyword">if</span> (appUser == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> Restful.failure(RestfulResultEnum.USER_UNLOGIN);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (type == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> Restful.success(userService.getFollowList(appUser.getId(),limit,offset));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            List&lt;UserListVO&gt; list = userService.getFocusList(appUser.getId(), limit, offset);</span><br><span class="line">            <span class="keyword">if</span> (CollectionUtils.isEmpty(list)) &#123;</span><br><span class="line">                <span class="keyword">return</span> Restful.success(list);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;list.size();i++)&#123;</span><br><span class="line">                    list.get(i).setRank(Long.parseLong(rankService.getRank(list.get(i).getId())+<span class="string">""</span>));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> Restful.success(list);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@EnableRequestLog</span>(<span class="string">"同步微信信息"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@ApiOperation</span>(value = <span class="string">"同步微信信息"</span>)</span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"sync/wechat"</span>)</span><br><span class="line">    <span class="meta">@ApiImplicitParams</span>(&#123;</span><br><span class="line">            <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"id"</span>, value = <span class="string">"微信对象"</span>, required = <span class="keyword">true</span>, dataType = <span class="string">"WeChatDTO"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Result <span class="title">syncWechat</span><span class="params">(WeChatDTO weChatDTO,HttpServletRequest request)</span></span>&#123;</span><br><span class="line">        AppUser appUser = getUser(request);</span><br><span class="line">        <span class="keyword">if</span> (appUser == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> Restful.failure(RestfulResultEnum.USER_UNLOGIN);</span><br><span class="line">        &#125;</span><br><span class="line">        log.info(<span class="string">"【用户ID = &#123;&#125;,类名 = UserController,方法名 = syncWechat, 参数为 = &#123;&#125;】"</span>,appUser.getId(),weChatDTO.toString());</span><br><span class="line">        UserInfoVO vo = userService.syncWeChat(weChatDTO,appUser.getId());</span><br><span class="line">        <span class="keyword">if</span> (vo==<span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> Restful.failure(RestfulResultEnum.USER_SYNC_WECHAT_FAIL);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Restful.success(vo);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实体对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xxx.entry.dto;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModel;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModelProperty;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ：yaxuSong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 11:32 2018/5/29</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Modified</span> by:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ApiModel</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeChatDTO</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"手机号码"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"phone"</span>,example=<span class="string">"15300000000"</span>)</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"名称"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"name"</span>,example=<span class="string">"愿得一人心"</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"性别"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"gender"</span>,example=<span class="string">"男"</span>)</span><br><span class="line">    <span class="keyword">private</span> String gender;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"unionID"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"unionId"</span>,example=<span class="string">"o17g2621sE-9Ak-Nva2QbHzeF4"</span>)</span><br><span class="line">    <span class="keyword">private</span> String unionId;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"头像路径"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"avatar"</span>,example=<span class="string">"https://xxxx.png"</span>)</span><br><span class="line">    <span class="keyword">private</span> String avatar;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"openID"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"openId"</span>,example=<span class="string">"othzc0VW0T8yyEk52C3lh2H_lTE0"</span>)</span><br><span class="line">    <span class="keyword">private</span> String openId;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"省份"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"province"</span>,example=<span class="string">"北京"</span>)</span><br><span class="line">    <span class="keyword">private</span> String province;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"国家"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"country"</span>,example=<span class="string">"中国"</span>)</span><br><span class="line">    <span class="keyword">private</span> String country;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"验证码"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"code"</span>,example=<span class="string">"2341"</span>)</span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(value=<span class="string">"邀请码"</span>,dataType=<span class="string">"String"</span>,name=<span class="string">"inviteCode"</span>,example=<span class="string">"LTEtNTQzMDMtRkUwQzQzNjE3NkE0NEM1MzAzNTBGRjk1NkU2QzQ4MkQ="</span>)</span><br><span class="line">    <span class="keyword">private</span> String inviteCode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="三结果展示">三、结果展示</h1>
+<p>访问路径 <a href="http://127.0.0.1:10086/swagger-ui.html#/" class="uri" target="_blank" rel="noopener">http://127.0.0.1:10086/swagger-ui.html#/</a> <img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-1.png"></p>
+<p>设置请求方法的“查看粉丝和关注列表”（<strong>设置了请求方法</strong>） <img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-3.png"></p>
+<p>未设置请求方法的api <img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-4.png"></p>
+<p>两种设置方法的详细内容（通过点击try it可以进行测试）这里我们也可以通过<strong>Postman</strong>进行测试 <img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-5.png"> <img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-6.png"></p>
+<h1 id="四相关注解">四、相关注解</h1>
+<p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/swagger-7.png"></p>
+<p>参考文档：<a href="https://swagger.io/" class="uri" target="_blank" rel="noopener">https://swagger.io/</a></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/e85880/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            Java中List和ArrayList的区别
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/a6235d78/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">asyncio 不完全指北（七）</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/e0818c8b/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/08/12/PcyZQ0.png)" alt="TensorRT-开发入门" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorRT/">TensorRT</a></p>
+                            <p class="item-title"><a href="/posts/e0818c8b/" class="title">TensorRT-开发入门</a></p>
+                            <p class="item-date"><time datetime="2018-08-12T09:56:37.000Z" itemprop="datePublished">2018-08-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/df5d12f4/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/android.jpg)" alt="Android 混淆" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/ANDROID/">ANDROID</a></p>
+                            <p class="item-title"><a href="/posts/df5d12f4/" class="title">Android 混淆</a></p>
+                            <p class="item-date"><time datetime="2018-08-10T18:04:44.000Z" itemprop="datePublished">2018-08-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/684b8f9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43972489-202ddfbc-9d07-11e8-80f9-bba30285b5b9.png)" alt="Python 类型系统的下一步" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/684b8f9/" class="title">Python 类型系统的下一步</a></p>
+                            <p class="item-date"><time datetime="2018-08-10T17:35:33.000Z" itemprop="datePublished">2018-08-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cde2bcff/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43841718-6529b0e4-9b56-11e8-8e2f-f944101765ab.png)" alt="Python 类型系统的第一步" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/cde2bcff/" class="title">Python 类型系统的第一步</a></p>
+                            <p class="item-date"><time datetime="2018-08-08T13:52:35.000Z" itemprop="datePublished">2018-08-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/978fb366/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://i.loli.net/2018/07/29/5b5dc7d9647ea.png)" alt="内存中的栈、堆和静态区的用法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/978fb366/" class="title">内存中的栈、堆和静态区的用法</a></p>
+                            <p class="item-date"><time datetime="2018-07-29T09:46:14.000Z" itemprop="datePublished">2018-07-29</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
