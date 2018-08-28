@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>TensorFlow模型加载与转换详解 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="TensorFlow" />
+    
+    <meta name="description" content="TensorFlow模型加载与转换详解 本次讲解主要涉及到TensorFlow框架训练时候模型文件的管理以及转换。  首先我们需要明确TensorFlow模型文件的存储格式以及文件个数：  123456789model_folder:------checkpoint------model.meta------model.data-00000-of-00001------model.ind">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow模型加载与转换详解">
+<meta property="og:url" content="http://weafteam.github.io/posts/729c646d/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="TensorFlow模型加载与转换详解 本次讲解主要涉及到TensorFlow框架训练时候模型文件的管理以及转换。  首先我们需要明确TensorFlow模型文件的存储格式以及文件个数：  123456789model_folder:------checkpoint------model.meta------model.data-00000-of-00001------model.ind">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+<meta property="og:updated_time" content="2018-08-28T02:21:43.671Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow模型加载与转换详解">
+<meta name="twitter:description" content="TensorFlow模型加载与转换详解 本次讲解主要涉及到TensorFlow框架训练时候模型文件的管理以及转换。  首先我们需要明确TensorFlow模型文件的存储格式以及文件个数：  123456789model_folder:------checkpoint------model.meta------model.data-00000-of-00001------model.ind">
+<meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/ANDROID/">ANDROID</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/TensorFlow/">TensorFlow</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-08-13/TensorFlow模型加载与转换详解" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        TensorFlow模型加载与转换详解
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/729c646d/" class="article-date">
+            <time datetime="2018-08-28T01:27:11.000Z" itemprop="datePublished">2018-08-28</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        Milittle
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/TensorFlow/">TensorFlow</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="tensorflow模型加载与转换详解">TensorFlow模型加载与转换详解</h1>
+<h5 id="本次讲解主要涉及到tensorflow框架训练时候模型文件的管理以及转换">本次讲解主要涉及到TensorFlow框架训练时候模型文件的管理以及转换。</h5>
+<ol type="1">
+<li>首先我们需要明确TensorFlow模型文件的存储格式以及文件个数：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">model_folder:</span><br><span class="line">------checkpoint</span><br><span class="line">------model.meta</span><br><span class="line">------model.data-00000-of-00001</span><br><span class="line">------model.index</span><br><span class="line">以上是模型文件夹里面存在的所有文件：</span><br><span class="line">checkpoint文件是存储所有模型文件的名字，在使用tf.train.latest_checkpoint()的时候，该函数会借助此文件内容获取最新模型文件。</span><br><span class="line">model.meta文件是图的基本架构，pb格式文件，里面包含变量，操作，集合等数据。</span><br><span class="line">model.data-00000-of-00001文件和model.index文件就是ckpt文件，里面的内容存储的就是权重、偏置等内容。在TensorFlow0.11之前，使用ckpt一个后缀文件存储，以后的TensorFlow版本都是使用这两个文件共同存储模型参数。</span><br></pre></td></tr></table></figure>
+<p>明确了这一点以后，我们就开始创建计算图，也就是网络结构已经内部的运算。</p>
+<ol start="2" type="1">
+<li>网络的搭建，为了简单起见，我们搭建的网络就比较简单：input layer,conv_1,conv_2,fc1,dropout,fc2(输出层),具体搭建代码如下：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">network</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the placeholder by using feed the data</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'input_placeholder'</span>):</span><br><span class="line">        x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>], <span class="string">'x'</span>)  <span class="comment"># 28*28=784 dim</span></span><br><span class="line">        x_input = tf.reshape(x, [<span class="number">-1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>], <span class="string">'x_reshape'</span>)  <span class="comment"># reshape for conv, -1表示不固定数量，1为通道数</span></span><br><span class="line">        y_label = tf.placeholder(tf.float32, [<span class="keyword">None</span>, FLAGS.classes], <span class="string">'y_label'</span>)  <span class="comment"># label - 10 dim</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># define convolution layer1</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'conv_layer1'</span>):</span><br><span class="line">        W_conv1 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">32</span>], name=<span class="string">'w_conv_1'</span>)  <span class="comment"># Weight in:1  out:32</span></span><br><span class="line">        b_conv1 = bias_variable([<span class="number">32</span>], name=<span class="string">'b_conv_1'</span>)  <span class="comment"># bias</span></span><br><span class="line">        h_relu1 = tf.nn.relu(conv2d(x_input, W_conv1) + b_conv1, name=<span class="string">'relu_1'</span>)  <span class="comment"># relu</span></span><br><span class="line">        h_pool1 = max_pool_2(h_relu1, name=<span class="string">'pool_1'</span>)  <span class="comment"># pool after relu1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># define convolution layer2</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'conv_layer2'</span>):</span><br><span class="line">        W_conv2 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">32</span>, <span class="number">64</span>], name=<span class="string">'w_conv_2'</span>)  <span class="comment"># Weight in:32  out:64</span></span><br><span class="line">        b_conv2 = bias_variable([<span class="number">64</span>], name=<span class="string">'b_conv_2'</span>)  <span class="comment"># bias for 64 kernel</span></span><br><span class="line">        h_relu2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2, name=<span class="string">'relu_2'</span>)  <span class="comment"># relu</span></span><br><span class="line">        h_pool2 = max_pool_2(h_relu2, name=<span class="string">'pool_2'</span>)  <span class="comment"># pool after relu2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the first FC layer</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'fc1'</span>):</span><br><span class="line">        W_fc1 = weight_variable([<span class="number">7</span> * <span class="number">7</span> * <span class="number">64</span>, <span class="number">1024</span>], name=<span class="string">'w_fc1'</span>)  <span class="comment"># Weight in:7*7res*64  out:1024</span></span><br><span class="line">        b_fc1 = bias_variable([<span class="number">1024</span>], name=<span class="string">'b_fc1'</span>)  <span class="comment"># bias for 1024</span></span><br><span class="line">        h_pool2_flat = tf.reshape(h_pool2, [<span class="number">-1</span>, <span class="number">7</span> * <span class="number">7</span> * <span class="number">64</span>], name=<span class="string">'pool1'</span>)</span><br><span class="line">        h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1, name=<span class="string">'relu1'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># adding the dropout, in order to restrain overfitting</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'drop_out'</span>):</span><br><span class="line">        keep_prob = tf.placeholder(tf.float32, name=<span class="string">'drop_out_placeholder'</span>)</span><br><span class="line">        drop_fc1 = tf.nn.dropout(h_fc1, keep_prob, name=<span class="string">'drop_out_fc'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the second FC layer, by using softmax</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'fc2'</span>):</span><br><span class="line">        W_fc2 = weight_variable([<span class="number">1024</span>, FLAGS.classes], name=<span class="string">'w_fc2'</span>)  <span class="comment"># Weight in:1024  out:10</span></span><br><span class="line">        b_fc2 = bias_variable([FLAGS.classes], name=<span class="string">'b_fc2'</span>)  <span class="comment"># bias for 10, 10类划分</span></span><br><span class="line">        y = tf.nn.softmax(tf.matmul(drop_fc1, W_fc2) + b_fc2, name=<span class="string">'y_out'</span>)  <span class="comment"># 计算结果</span></span><br><span class="line"></span><br><span class="line">    global_step = tf.Variable(<span class="number">0</span>, trainable=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the loss</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'loss'</span>):</span><br><span class="line">        cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_label * tf.log(y), reduction_indices=[<span class="number">1</span>]), name=<span class="string">'cross_entropy'</span>)</span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'train_op'</span>):</span><br><span class="line">        train_step = tf.train.AdamOptimizer(FLAGS.lr).minimize(cross_entropy,</span><br><span class="line">                                                               global_step=global_step,</span><br><span class="line">                                                               name=<span class="string">'train_operation'</span>)  <span class="comment"># Adam 替代SGD</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the accuracy</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'accuracy'</span>):</span><br><span class="line">        correct_pred = tf.equal(tf.argmax(y, <span class="number">1</span>), tf.argmax(y_label, <span class="number">1</span>), name=<span class="string">'condition'</span>)</span><br><span class="line">        accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name=<span class="string">'accuracy'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x, y, keep_prob, y_label, train_step, accuracy, global_step</span><br></pre></td></tr></table></figure>
+<p>以上需要注意的地方是，我在每一层中都加入了name_scope，这样的好处就是可以更清楚的分清层与层之间的关系，以及对于后续我们直接通过tensor name来获取变量，而无须创建计算图架构做准备。</p>
+<ol start="3" type="1">
+<li>数据加载以及开始训练</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据加载</span></span><br><span class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>, one_hot=<span class="keyword">True</span>)</span><br><span class="line"><span class="comment"># 将数据全部加载在mnist中，供后需训练和测试使用</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模型训练，也可以看到模型保存的类</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># the sign which save the meta graph, just once.</span></span><br><span class="line">    a = <span class="keyword">False</span></span><br><span class="line">    x, y, keep_prob, y_label, train_step, accuracy, global_step = network()</span><br><span class="line"></span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line">    saver = tf.train.Saver(max_to_keep=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> FLAGS.use_model:</span><br><span class="line">        model_t = tf.train.latest_checkpoint(FLAGS.model_path)</span><br><span class="line">        saver.restore(sess, model_t)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(FLAGS.max_iter_step):</span><br><span class="line">        batch = mnist.train.next_batch(FLAGS.batch_size)  <span class="comment"># 每50个一个batch</span></span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">            <span class="comment"># eval执行过程－训练精度</span></span><br><span class="line">            train_accuracy = sess.run(accuracy, feed_dict=&#123;x: batch[<span class="number">0</span>], y_label: batch[<span class="number">1</span>], keep_prob: <span class="number">1.0</span>&#125;)</span><br><span class="line">            print(<span class="string">"step &#123;step&#125;, training accuracy &#123;acc&#125;"</span>.format(step=i, acc=train_accuracy))</span><br><span class="line">            <span class="keyword">if</span> (train_accuracy &gt; <span class="number">0.5</span>):</span><br><span class="line">                <span class="keyword">if</span> a == <span class="number">0</span>:</span><br><span class="line">                    saver.export_meta_graph(FLAGS.model_path + FLAGS.meta_graph_name)</span><br><span class="line">                    a = <span class="keyword">True</span></span><br><span class="line">                saver.save(sess, FLAGS.model_path + FLAGS.model_name, global_step=global_step, write_meta_graph=<span class="keyword">False</span>)</span><br><span class="line">        sess.run(train_step, feed_dict=&#123;x: batch[<span class="number">0</span>], y_label: batch[<span class="number">1</span>], keep_prob: FLAGS.keep_drop&#125;)</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>那么怎么构建模型保存呢？</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先，创建Saver对象</span></span><br><span class="line">saver = tf.train.Saver(max_to_keep=<span class="number">3</span>) <span class="comment"># 这里设置的模型文件最大保存个数是三个，也就是说checkpoint文件中始终有三个版本的模型文件</span></span><br><span class="line"><span class="comment"># 第二步，那就是根据不同的迭代或者epoch，你可以随心所欲的保存模型。</span></span><br><span class="line"><span class="comment"># 我这里处理的逻辑就是每训练一百次，然后train_accuracy的大小大于0.5，那么我就开始存储。</span></span><br><span class="line"><span class="comment"># 这里需要注意一点，那就是在保存模型文件的时候，完全没有必要每次都保存meta，所以，可以单独在第一次保存meta，因为meta是graph，所以后续训练不会对meta起作用，所以减少开销。</span></span><br><span class="line">saver.export_meta_graph(FLAGS.model_path + FLAGS.meta_graph_accuracy)</span><br><span class="line"><span class="comment"># 上面的代码只是在第一次保存模型的时候执行</span></span><br><span class="line">saver.save(sess, FLAGS.model_path + FLAGS.model_name, global_step=global_step, write_meta_graph=<span class="keyword">False</span>)</span><br><span class="line"><span class="comment"># 上面的代码每次都执行，但是不会保存meta数据，在一般的保存模型的时候，write_meta_graph标志位是True</span></span><br></pre></td></tr></table></figure>
+<ol start="5" type="1">
+<li>好，那么我们训练完成以后，模型文件已经有了，那么我们该如何导入刚才的模型文件执行测试呢？</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> FLAGS.use_model:</span><br><span class="line">        <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">            saver = tf.train.import_meta_graph(FLAGS.model_path + FLAGS.meta_graph_name)</span><br><span class="line">            saver.restore(sess, tf.train.latest_checkpoint(FLAGS.model_path))</span><br><span class="line"></span><br><span class="line">            graph = tf.get_default_graph()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="comment"># one operation possibly have many outputs, so you need specify the which output, such as "name:0"</span></span><br><span class="line">            x = graph.get_tensor_by_name(<span class="string">"input_placeholder/x:0"</span>)</span><br><span class="line">            y_label = graph.get_tensor_by_name(<span class="string">"input_placeholder/y_label:0"</span>)</span><br><span class="line">            keep_prob = graph.get_tensor_by_name(<span class="string">"drop_out/drop_out_placeholder:0"</span>)</span><br><span class="line">            accuracy = graph.get_tensor_by_name(<span class="string">"accuracy/accuracy:0"</span>)</span><br><span class="line"></span><br><span class="line">            feed_dict = &#123;x: mnist.test.images,</span><br><span class="line">                         y_label: mnist.test.labels,</span><br><span class="line">                         keep_prob: <span class="number">1.0</span>&#125;</span><br><span class="line"></span><br><span class="line">            acc = sess.run(accuracy, feed_dict=feed_dict)</span><br><span class="line">            print(<span class="string">"test accuracy &#123;acc:.4f&#125;"</span>.format(acc=acc))</span><br></pre></td></tr></table></figure>
+<p>上面的代码：</p>
+<p>首先判断是否使用模型文件，</p>
+<p>然后打开会话，在这里注意，我并没有创建网络结构，也就是说，在TensorFLow默认的图中是不存在我的计算图结构的。</p>
+<p>然后我们使用tf.train.import_meta_graph()方法将模型图，也就是meta文件导入给saver</p>
+<p>然后使用saver的restore方法将模型文件导入</p>
+<p>然后使用tf.get_default_graph()方法获取TensorFlow默认的计算图（这回会获取到那个我们保存的计算图）</p>
+<p>因为，我们没有定义网络结构中的变量，所以我们无法得到具体的网络执行变量，所以我们需要借助graph.get_tensor_by_name()方法来实现计算图变量的获取。</p>
+<p>然后通过sess.run()方法来运行想要的tenosr值</p>
+<p>（上面的代码中需要注意的是get_tensor_by_name的名字组成：（name_scope）/(tensor_name):第几个值）因为我们的运算是建立在tensor上的，但是每次运行的结果都是通过operation来实现的，也就是说，后面的那个index就是我们的第几个operation所要取的值。</p>
+<ol start="6" type="1">
+<li>好，这里把模型文件的特殊保存和加载都讲完了，所以需要转换成pb文件，因为在后续我们使用TensorRT部署TensorFLow模型文件的时候，是需要pb文件，然后将pb文件转换为uff文件或者onnx文件来实现TenorRT网络的构建。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_pb_file</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> FLAGS.use_model:</span><br><span class="line">        saver = tf.train.import_meta_graph(FLAGS.model_path + FLAGS.meta_graph_name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        model_t = tf.train.latest_checkpoint(FLAGS.model_path)</span><br><span class="line">        saver.restore(sess, model_t)</span><br><span class="line"></span><br><span class="line">        graphdef = tf.get_default_graph().as_graph_def()</span><br><span class="line"></span><br><span class="line">        frozen_graph = tf.graph_util.convert_variables_to_constants(sess, graphdef, [<span class="string">'fc2/y_out'</span>]) <span class="comment"># 这个地方需要注意，是最后一个输出节点的tenosr名字</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> tf.graph_util.remove_training_nodes(frozen_graph)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">graph_def = save_pb_file()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> graph_def <span class="keyword">is</span> <span class="keyword">False</span>:</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">"The meta graph do not exist!!!"</span>)</span><br><span class="line"></span><br><span class="line">    output_file = <span class="string">'./graph.pb'</span></span><br><span class="line">    <span class="keyword">with</span> tf.gfile.GFile(name = output_file, mode = <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        s = graph_def.SerializeToString()</span><br><span class="line">        f.write(s)</span><br></pre></td></tr></table></figure>
+<p>首先也是加载图，然后加载权重参数文件，然后将graph作为一个graphdef返回，然后通过tf.graph_util.convert_variables_to_constants将参数文件转换为常量，最后，使用tf.graph_util.remove_training_nodes(frozen_graph)将在训练阶段才使用的变量去除，也就是一些gradients。</p>
+<p>返回去除训练阶段的节点，然后通过tf.gfile.GFile写入到指定文件。</p>
+<ol start="7" type="1">
+<li>整体的代码：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># @Time    : 2018/4/24 20:08</span></span><br><span class="line"><span class="comment"># @Author  : milittle</span></span><br><span class="line"><span class="comment"># @Site    : www.weaf.top</span></span><br><span class="line"><span class="comment"># @File    : model.py</span></span><br><span class="line"><span class="comment"># @Software: PyCharm</span></span><br><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</span><br><span class="line"><span class="keyword">from</span> tensorflow.python.framework <span class="keyword">import</span> ops</span><br><span class="line"><span class="keyword">import</span> dataset</span><br><span class="line"></span><br><span class="line">ops.reset_default_graph()</span><br><span class="line">sess = tf.Session()</span><br><span class="line"></span><br><span class="line">FLAGS = tf.app.flags.FLAGS</span><br><span class="line">tf.app.flags.DEFINE_integer(<span class="string">'max_iter_step'</span>, <span class="number">1000</span>, <span class="string">'define iteration times'</span>)</span><br><span class="line">tf.app.flags.DEFINE_integer(<span class="string">'batch_size'</span>, <span class="number">128</span>, <span class="string">'define batch size'</span>)</span><br><span class="line">tf.app.flags.DEFINE_integer(<span class="string">'classes'</span>, <span class="number">10</span>, <span class="string">'define classes'</span>)</span><br><span class="line">tf.app.flags.DEFINE_float(<span class="string">'keep_drop'</span>, <span class="number">0.5</span>, <span class="string">'define keep dropout'</span>)</span><br><span class="line">tf.app.flags.DEFINE_float(<span class="string">'lr'</span>, <span class="number">0.001</span>, <span class="string">'define learning rate'</span>)</span><br><span class="line">tf.app.flags.DEFINE_string(<span class="string">'model_path'</span>, <span class="string">'model\\'</span>,<span class="string">'define model path'</span>)</span><br><span class="line">tf.app.flags.DEFINE_string(<span class="string">'model_name'</span>, <span class="string">'model.ckpt'</span>, <span class="string">'define model name'</span>)</span><br><span class="line">tf.app.flags.DEFINE_string(<span class="string">'meta_graph_name'</span>, <span class="string">'model.meta'</span>, <span class="string">'define model name'</span>)</span><br><span class="line">tf.app.flags.DEFINE_bool(<span class="string">'use_model'</span>, <span class="keyword">False</span>, <span class="string">'define use_model sign'</span>)</span><br><span class="line">tf.app.flags.DEFINE_bool(<span class="string">'is_train'</span>, <span class="keyword">True</span>, <span class="string">'define train sign'</span>)</span><br><span class="line">tf.app.flags.DEFINE_bool(<span class="string">'is_test'</span>, <span class="keyword">False</span>, <span class="string">'define train sign'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>, one_hot=<span class="keyword">True</span>)</span><br><span class="line"><span class="comment"># mnist_train = dataset.train("MNIST_data/")</span></span><br><span class="line"><span class="comment"># mnist_test = dataset.train("MNIST_data/")</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># define W &amp; b</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">weight_variable</span><span class="params">(para, name)</span>:</span></span><br><span class="line">    <span class="comment"># 采用截断的正态分布，标准差stddev＝0.1</span></span><br><span class="line">    initial = tf.truncated_normal(para,stddev=<span class="number">0.1</span>)</span><br><span class="line">    <span class="keyword">return</span> tf.Variable(initial, name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bias_variable</span><span class="params">(para, name)</span>:</span></span><br><span class="line">    initial = tf.constant(<span class="number">0.1</span>, shape=para)</span><br><span class="line">    <span class="keyword">return</span> tf.Variable(initial, name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># define conv &amp; pooling</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">conv2d</span><span class="params">(x,W)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.nn.conv2d( x,W,strides=[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],padding=<span class="string">'SAME'</span> )</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_pool_2</span><span class="params">(x, name)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.nn.max_pool(x,ksize=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>],strides=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>],padding=<span class="string">'SAME'</span>, name=name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">network</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the placeholder by using feed the data</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'input_placeholder'</span>):</span><br><span class="line">        x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>], <span class="string">'x'</span>)  <span class="comment"># 28*28=784 dim</span></span><br><span class="line">        x_input = tf.reshape(x, [<span class="number">-1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>], <span class="string">'x_reshape'</span>)  <span class="comment"># reshape for conv, -1表示不固定数量，1为通道数</span></span><br><span class="line">        y_label = tf.placeholder(tf.float32, [<span class="keyword">None</span>, FLAGS.classes], <span class="string">'y_label'</span>)  <span class="comment"># label - 10 dim</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># define convolution layer1</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'conv_layer1'</span>):</span><br><span class="line">        W_conv1 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">32</span>], name=<span class="string">'w_conv_1'</span>)  <span class="comment"># Weight in:1  out:32</span></span><br><span class="line">        b_conv1 = bias_variable([<span class="number">32</span>], name=<span class="string">'b_conv_1'</span>)  <span class="comment"># bias</span></span><br><span class="line">        h_relu1 = tf.nn.relu(conv2d(x_input, W_conv1) + b_conv1, name=<span class="string">'relu_1'</span>)  <span class="comment"># relu</span></span><br><span class="line">        h_pool1 = max_pool_2(h_relu1, name=<span class="string">'pool_1'</span>)  <span class="comment"># pool after relu1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># define convolution layer2</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'conv_layer2'</span>):</span><br><span class="line">        W_conv2 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">32</span>, <span class="number">64</span>], name=<span class="string">'w_conv_2'</span>)  <span class="comment"># Weight in:32  out:64</span></span><br><span class="line">        b_conv2 = bias_variable([<span class="number">64</span>], name=<span class="string">'b_conv_2'</span>)  <span class="comment"># bias for 64 kernel</span></span><br><span class="line">        h_relu2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2, name=<span class="string">'relu_2'</span>)  <span class="comment"># relu</span></span><br><span class="line">        h_pool2 = max_pool_2(h_relu2, name=<span class="string">'pool_2'</span>)  <span class="comment"># pool after relu2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the first FC layer</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'fc1'</span>):</span><br><span class="line">        W_fc1 = weight_variable([<span class="number">7</span> * <span class="number">7</span> * <span class="number">64</span>, <span class="number">1024</span>], name=<span class="string">'w_fc1'</span>)  <span class="comment"># Weight in:7*7res*64  out:1024</span></span><br><span class="line">        b_fc1 = bias_variable([<span class="number">1024</span>], name=<span class="string">'b_fc1'</span>)  <span class="comment"># bias for 1024</span></span><br><span class="line">        h_pool2_flat = tf.reshape(h_pool2, [<span class="number">-1</span>, <span class="number">7</span> * <span class="number">7</span> * <span class="number">64</span>], name=<span class="string">'pool1'</span>)</span><br><span class="line">        h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1, name=<span class="string">'relu1'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># adding the dropout, in order to restrain overfitting</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'drop_out'</span>):</span><br><span class="line">        keep_prob = tf.placeholder(tf.float32, name=<span class="string">'drop_out_placeholder'</span>)</span><br><span class="line">        drop_fc1 = tf.nn.dropout(h_fc1, keep_prob, name=<span class="string">'drop_out_fc'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the second FC layer, by using softmax</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'fc2'</span>):</span><br><span class="line">        W_fc2 = weight_variable([<span class="number">1024</span>, FLAGS.classes], name=<span class="string">'w_fc2'</span>)  <span class="comment"># Weight in:1024  out:10</span></span><br><span class="line">        b_fc2 = bias_variable([FLAGS.classes], name=<span class="string">'b_fc2'</span>)  <span class="comment"># bias for 10, 10类划分</span></span><br><span class="line">        y = tf.nn.softmax(tf.matmul(drop_fc1, W_fc2) + b_fc2, name=<span class="string">'y_out'</span>)  <span class="comment"># 计算结果</span></span><br><span class="line"></span><br><span class="line">    global_step = tf.Variable(<span class="number">0</span>, trainable=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the loss</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'loss'</span>):</span><br><span class="line">        cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_label * tf.log(y), reduction_indices=[<span class="number">1</span>]), name=<span class="string">'cross_entropy'</span>)</span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'train_op'</span>):</span><br><span class="line">        train_step = tf.train.AdamOptimizer(FLAGS.lr).minimize(cross_entropy,</span><br><span class="line">                                                               global_step=global_step,</span><br><span class="line">                                                               name=<span class="string">'train_operation'</span>)  <span class="comment"># Adam 替代SGD</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the accuracy</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'accuracy'</span>):</span><br><span class="line">        correct_pred = tf.equal(tf.argmax(y, <span class="number">1</span>), tf.argmax(y_label, <span class="number">1</span>), name=<span class="string">'condition'</span>)</span><br><span class="line">        accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name=<span class="string">'accuracy'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x, y, keep_prob, y_label, train_step, accuracy, global_step</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># the sign which save the meta graph, just once.</span></span><br><span class="line">    a = <span class="keyword">False</span></span><br><span class="line">    x, y, keep_prob, y_label, train_step, accuracy, global_step = network()</span><br><span class="line"></span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line">    saver = tf.train.Saver(max_to_keep=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> FLAGS.use_model:</span><br><span class="line">        model_t = tf.train.latest_checkpoint(FLAGS.model_path)</span><br><span class="line">        saver.restore(sess, model_t)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(FLAGS.max_iter_step):</span><br><span class="line">        batch = mnist.train.next_batch(FLAGS.batch_size)  <span class="comment"># 每50个一个batch</span></span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">            <span class="comment"># eval执行过程－训练精度</span></span><br><span class="line">            train_accuracy = sess.run(accuracy, feed_dict=&#123;x: batch[<span class="number">0</span>], y_label: batch[<span class="number">1</span>], keep_prob: <span class="number">1.0</span>&#125;)</span><br><span class="line">            print(<span class="string">"step &#123;step&#125;, training accuracy &#123;acc&#125;"</span>.format(step=i, acc=train_accuracy))</span><br><span class="line">            <span class="keyword">if</span> (train_accuracy &gt; <span class="number">0.5</span>):</span><br><span class="line">                <span class="keyword">if</span> a == <span class="number">0</span>:</span><br><span class="line">                    saver.export_meta_graph(FLAGS.model_path + FLAGS.meta_graph_name)</span><br><span class="line">                    a = <span class="keyword">True</span></span><br><span class="line">                saver.save(sess, FLAGS.model_path + FLAGS.model_name, global_step=global_step, write_meta_graph=<span class="keyword">False</span>)</span><br><span class="line">        sess.run(train_step, feed_dict=&#123;x: batch[<span class="number">0</span>], y_label: batch[<span class="number">1</span>], keep_prob: FLAGS.keep_drop&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> FLAGS.use_model:</span><br><span class="line">        <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">            saver = tf.train.import_meta_graph(FLAGS.model_path + FLAGS.meta_graph_name)</span><br><span class="line">            saver.restore(sess, tf.train.latest_checkpoint(FLAGS.model_path))</span><br><span class="line"></span><br><span class="line">            graph = tf.get_default_graph()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="comment"># one operation possibly have many outputs, so you need specify the which output, such as "name:0"</span></span><br><span class="line">            x = graph.get_tensor_by_name(<span class="string">"input_placeholder/x:0"</span>)</span><br><span class="line">            y_label = graph.get_tensor_by_name(<span class="string">"input_placeholder/y_label:0"</span>)</span><br><span class="line">            keep_prob = graph.get_tensor_by_name(<span class="string">"drop_out/drop_out_placeholder:0"</span>)</span><br><span class="line">            accuracy = graph.get_tensor_by_name(<span class="string">"accuracy/accuracy:0"</span>)</span><br><span class="line"></span><br><span class="line">            feed_dict = &#123;x: mnist.test.images,</span><br><span class="line">                         y_label: mnist.test.labels,</span><br><span class="line">                         keep_prob: <span class="number">1.0</span>&#125;</span><br><span class="line"></span><br><span class="line">            acc = sess.run(accuracy, feed_dict=feed_dict)</span><br><span class="line">            print(<span class="string">"test accuracy &#123;acc:.4f&#125;"</span>.format(acc=acc))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_pb_file</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> FLAGS.use_model:</span><br><span class="line">        saver = tf.train.import_meta_graph(FLAGS.model_path + FLAGS.meta_graph_name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        model_t = tf.train.latest_checkpoint(FLAGS.model_path)</span><br><span class="line">        saver.restore(sess, model_t)</span><br><span class="line"></span><br><span class="line">        graphdef = tf.get_default_graph().as_graph_def()</span><br><span class="line"></span><br><span class="line">        frozen_graph = tf.graph_util.convert_variables_to_constants(sess, graphdef, [<span class="string">'fc2/y_out'</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> tf.graph_util.remove_training_nodes(frozen_graph)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">if</span> FLAGS.is_train:</span><br><span class="line">        train()</span><br><span class="line">    <span class="keyword">elif</span> FLAGS.is_test:</span><br><span class="line">        test()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        graph_def = save_pb_file()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> graph_def <span class="keyword">is</span> <span class="keyword">False</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">"The meta graph do not exist!!!"</span>)</span><br><span class="line"></span><br><span class="line">        output_file = <span class="string">'./graph.pb'</span></span><br><span class="line">        <span class="keyword">with</span> tf.gfile.GFile(name = output_file, mode = <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            s = graph_def.SerializeToString()</span><br><span class="line">            f.write(s)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        main()</span><br><span class="line">    <span class="keyword">except</span> (ValueError, IndexError) <span class="keyword">as</span> ve:</span><br><span class="line">        print(ve)</span><br></pre></td></tr></table></figure>
+<p>今天的TensorFlow模型保存以及加载，以及将三个训练阶段使用的模型文件整合到一个pb文件中，这个pb文件不仅仅可以在构建TensorRT的网络中使用，也可以使用在部署TensorFlow serving中。整体的结构和存储过程就是这样。有什么问题，随时联系air@weaf.top。我一直都在。</p>
+<p>如果你觉得我的内容对你有帮助，可以关注以下公众号，了解更多相关信息：</p>
+<p><img src="https://s1.ax1x.com/2018/08/28/PLcufe.md.jpg"></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/posts/e0818c8b/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">TensorRT-开发入门</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/729c646d/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow模型加载与转换详解" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/729c646d/" class="title">TensorFlow模型加载与转换详解</a></p>
+                            <p class="item-date"><time datetime="2018-08-28T01:27:11.000Z" itemprop="datePublished">2018-08-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/e0818c8b/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/08/12/PcyZQ0.png)" alt="TensorRT-开发入门" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorRT/">TensorRT</a></p>
+                            <p class="item-title"><a href="/posts/e0818c8b/" class="title">TensorRT-开发入门</a></p>
+                            <p class="item-date"><time datetime="2018-08-12T09:56:37.000Z" itemprop="datePublished">2018-08-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/df5d12f4/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/android.jpg)" alt="Android 混淆" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/ANDROID/">ANDROID</a></p>
+                            <p class="item-title"><a href="/posts/df5d12f4/" class="title">Android 混淆</a></p>
+                            <p class="item-date"><time datetime="2018-08-10T18:04:44.000Z" itemprop="datePublished">2018-08-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/684b8f9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43972489-202ddfbc-9d07-11e8-80f9-bba30285b5b9.png)" alt="Python 类型系统的下一步" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/684b8f9/" class="title">Python 类型系统的下一步</a></p>
+                            <p class="item-date"><time datetime="2018-08-10T17:35:33.000Z" itemprop="datePublished">2018-08-11</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cde2bcff/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43841718-6529b0e4-9b56-11e8-8e2f-f944101765ab.png)" alt="Python 类型系统的第一步" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/posts/cde2bcff/" class="title">Python 类型系统的第一步</a></p>
+                            <p class="item-date"><time datetime="2018-08-08T13:52:35.000Z" itemprop="datePublished">2018-08-08</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
