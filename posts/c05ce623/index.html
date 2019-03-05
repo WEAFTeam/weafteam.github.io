@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>从源码构建TensorFlow2.0 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="TensorFlow" />
+    
+    <meta name="description" content="从源码安装TensorFlow（未发布版本2.0） 1. 今天想尝一尝tf2.0的鲜，就尝试去从源码构建TensorFlow2.0版本的GPU wheel包。 2.首先你需要准备一些什么：  Ubuntu16.04 bazel(这个安装见https://docs.bazel.build/versions/master/install-ubuntu.html)（so easy） gcc4">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从源码构建TensorFlow2.0">
+<meta property="og:url" content="http://weafteam.github.io/posts/c05ce623/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="从源码安装TensorFlow（未发布版本2.0） 1. 今天想尝一尝tf2.0的鲜，就尝试去从源码构建TensorFlow2.0版本的GPU wheel包。 2.首先你需要准备一些什么：  Ubuntu16.04 bazel(这个安装见https://docs.bazel.build/versions/master/install-ubuntu.html)（so easy） gcc4">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+<meta property="og:updated_time" content="2019-03-05T11:12:27.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从源码构建TensorFlow2.0">
+<meta name="twitter:description" content="从源码安装TensorFlow（未发布版本2.0） 1. 今天想尝一尝tf2.0的鲜，就尝试去从源码构建TensorFlow2.0版本的GPU wheel包。 2.首先你需要准备一些什么：  Ubuntu16.04 bazel(这个安装见https://docs.bazel.build/versions/master/install-ubuntu.html)（so easy） gcc4">
+<meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/ANDROID/">ANDROID</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/区块链/">区块链</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/TensorFlow/">TensorFlow</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2019-03-04/tf-build-form-source" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        从源码构建TensorFlow2.0
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/c05ce623/" class="article-date">
+            <time datetime="2019-03-05T11:07:57.000Z" itemprop="datePublished">2019-03-05</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        Milittle
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/TensorFlow/">TensorFlow</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h3 id="从源码安装tensorflow未发布版本2.0">从源码安装TensorFlow（未发布版本2.0）</h3>
+<h4 id="今天想尝一尝tf2.0的鲜就尝试去从源码构建tensorflow2.0版本的gpu-wheel包">1. 今天想尝一尝tf2.0的鲜，就尝试去从源码构建TensorFlow2.0版本的GPU wheel包。</h4>
+<h4 id="首先你需要准备一些什么">2.首先你需要准备一些什么：</h4>
+<ul>
+<li>Ubuntu16.04</li>
+<li>bazel(这个安装见https://docs.bazel.build/versions/master/install-ubuntu.html)（so easy）</li>
+<li>gcc4.8， g++4.8</li>
+<li>python3.6（包括six，numpy， wheel，mock，keras_applications, keras_preprocessing）具体的依赖版本可以在{tensorflow}/tensorflow/tools/pip_package/setup.py里面查看。</li>
+</ul>
+<h4 id="安装构建tensorflow依赖软件">3. 安装构建TensorFlow依赖软件</h4>
+<p>安装gcc和g++（TensorFlow使用gcc4.x构建，所以以下的gcc和g++版本都是4.8）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> install gcc and g++</span><br><span class="line"><span class="meta">$</span> sudo apt-get update</span><br><span class="line"><span class="meta">$</span> sudo apt-get install gcc-4.8 g++4.8</span><br><span class="line"><span class="meta">$</span> sudo rm /usr/bin/gcc </span><br><span class="line"><span class="meta">$</span> sudo rm /usr/bin/g++</span><br><span class="line"><span class="meta">$</span> sudo ln -s /usr/bin/gcc-4.8 /usr/bin/gcc</span><br><span class="line"><span class="meta">$</span> sudo ln -s /usr/bin/g++-4.8 /usr/bin/g++</span><br></pre></td></tr></table></figure>
+<p>安装python,你可以选择一个已经有的python环境，或者新建一个python环境，将以上描述的包依此安装。TensorFlow2.0版本依赖的python包版本为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">REQUIRED_PACKAGES = [</span><br><span class="line">    &apos;absl-py &gt;= 0.7.0&apos;,</span><br><span class="line">    &apos;astor &gt;= 0.6.0&apos;,</span><br><span class="line">    &apos;gast &gt;= 0.2.0&apos;,</span><br><span class="line">    &apos;google_pasta &gt;= 0.1.2&apos;,</span><br><span class="line">    &apos;keras_applications &gt;= 1.0.6&apos;,</span><br><span class="line">    &apos;keras_preprocessing &gt;= 1.0.5&apos;,</span><br><span class="line">    &apos;numpy &gt;= 1.14.5, &lt; 2.0&apos;,</span><br><span class="line">    &apos;six &gt;= 1.10.0&apos;,</span><br><span class="line">    &apos;protobuf &gt;= 3.6.1&apos;,</span><br><span class="line">    &apos;tb-nightly &gt;= 1.14.0a20190301, &lt; 1.14.0a20190302&apos;,</span><br><span class="line">    &apos;tf-estimator-nightly &gt;= 1.14.0.dev2019030115, &lt; 1.14.0.dev2019030116&apos;,</span><br><span class="line">    &apos;termcolor &gt;= 1.1.0&apos;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h4 id="克隆tensorflow库">4.克隆TensorFlow库。</h4>
+<p>首先，你需要git，然后根据以下命令clone，然后构建TensorFlow项目</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> git clone https://github.com/tensorflow/tensorflow.git</span><br><span class="line"><span class="meta">$</span> cd tensorflow</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span> git checkout branch_name  # 这里是r2.0</span><br><span class="line"><span class="meta">$</span> bazel test -c opt -- //tensorflow/... -//tensorflow/compiler/... -//tensorflow/lite/...</span><br></pre></td></tr></table></figure>
+<p>不出意外，测试结束以后，进行项目构建</p>
+<h4 id="配置项目">5. 配置项目</h4>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ./configure</span><br></pre></td></tr></table></figure>
+<p>以下是项目配置的一个过程：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">Please specify the location of python.[Default is /home/milittle/anaconda3/bin/python] # 注意这个就是你刚才安装的python环境</span><br><span class="line">Found possible Python library paths:</span><br><span class="line">/home/milittle/anaconda/lib/python3.6/site-packages</span><br><span class="line">Please input the desired Python library path to use. Default is [/home/milittle/anaconda3/lib/python3.6/site-packages]</span><br><span class="line">Do you wish to build TensorFlow with XLA JIT support? [Y/n]:Y</span><br><span class="line">Do you wish to build TensorFlow with OpenCL SUCL support?[y/N]:N</span><br><span class="line">Do you wish to build TensorFlow with ROCm support?[y/N]:N</span><br><span class="line">Do you wish to build TensorFlow with CUDA support?[y/N]:y</span><br><span class="line">Please specify the CUDA SDK version you want to use.[Leave empty to default to CUDA 10.0]:9.0</span><br><span class="line">Please specify the location where CUDA 9.0 toolkit is installed. Refer to README.md for more details.[Default is /usr/local/cuda]:/home/milittle/cuda-9.0</span><br><span class="line">Please specify the cuDNN version you want to use.[Leave empty to default to cuDNN 7]:7.1.4</span><br><span class="line">Please specifu the location where cuDNN 7 library is installed.Refer to README.md for more details.[Default is /home/milittle/cuda-9.0]:</span><br><span class="line">Do you wish to build TensorFlow with TensorRT support?[y/N]:N</span><br><span class="line">Please specify the locally installed NCCL version you want to use. [Default is to use hppts://github.com/nvidia/nccl]:</span><br><span class="line">Please specify a list of comma-separated Cuda compute capabilities you want to build with.</span><br><span class="line">You can find the compute capability of your device at: https://developer.nvidia.com/cuda-gpus.</span><br><span class="line">Please note that each additional compute capability significantly increases your</span><br><span class="line">build time and binary size. [Default is: 6.1, 6.1, 6.1, 6.1]:6.1</span><br><span class="line">Do you want to use clang as CUDA compiler? [y/N]:</span><br><span class="line">nvcc will be used as CUDA compiler.</span><br><span class="line">Please specify which gcc should be used by nvcc as the host compiler. [Default is /usr/bin/gcc]:</span><br><span class="line">Do you wish to build TensorFlow with MPI support? [y/N]:</span><br><span class="line">No MPI support will be enabled for TensorFlow.</span><br><span class="line">Please specify optimization flags to use during compilation when bazel option "--config=opt" is specified [Default is -march=native]:</span><br><span class="line"></span><br><span class="line">Would you like to interactively configure ./WORKSPACE for Android builds? [y/N]:</span><br><span class="line">Not configuring the WORKSPACE for Android builds.</span><br><span class="line"></span><br><span class="line">Preconfigured Bazel build configs. You can use any of the below by adding "--config=&lt;&gt;" to your build command. See .bazelrc for more details.</span><br><span class="line">    --config=mkl            # Build with MKL support.</span><br><span class="line">    --config=monolithic     # Config for mostly static monolithic build.</span><br><span class="line">    --config=gdr			# Build with GDR support</span><br><span class="line">    --config=verbs			# Build with libverbs support</span><br><span class="line">    --config=ngraph			# BUild with Intel nGraph support</span><br><span class="line">    --config=numa			# Build with NUMA suuport</span><br><span class="line">    --config=dynamic_kernels # (Experimental) Build kernels into separate shared objects.</span><br><span class="line">Preconfigured Bazel build configs to DISABLE default on feature :</span><br><span class="line">	--config=noaws			# Disable AWS S3 filesystem support</span><br><span class="line">	--config=nogcp			# Disable GCP support</span><br><span class="line">	--config=nohdfs			# Disable HDFS support</span><br><span class="line">	--config=noignite		# Disable Apache Ignite support</span><br><span class="line">	--config=nokafka		# Disable Apache Kafka support</span><br><span class="line">	--config=nonccl			# Disable NVIDIA NCCL support</span><br><span class="line">Configuration finished</span><br></pre></td></tr></table></figure>
+<p>以上配置结束，需要注意的是，一个python的环境，还有python的包路径，CUDA的安装路径，cuDNN的路径，一般是要放在CUDA路径里面的，还有就是你的GPU的算力，还有就是gcc的位置，这个也很关键。</p>
+<h4 id="构建pip安装包">6. 构建pip安装包</h4>
+<p>仅仅支持CPU</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package</span><br></pre></td></tr></table></figure>
+<p>支持GPU</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bazel build --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package</span><br></pre></td></tr></table></figure>
+<p>以上命令构建好了pip构建命令，通过以下就可以生成wheel包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg</span><br></pre></td></tr></table></figure>
+<p>以上的命令就在/tmp/tensorflow_pkg中生成了要的.whl包。</p>
+<p>尽管可以在同一个源代码树下构建 CUDA 和非 CUDA 配置，但建议您在同一个源代码树中的这两种配置之间切换时运行 <code>bazel clean</code>。</p>
+<h4 id="安装.whl包">7. 安装.whl包</h4>
+<p>当然是在你的python环境（这个环境和上面依赖的环境可以不是同一个）中，使用pip直接安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install /tmp/tensorflow_pkg/tensorflow-version-tags.whl</span><br></pre></td></tr></table></figure>
+<h4 id="结语">8. 结语</h4>
+<p>今天为了尝试一下从源码安装TensorFlow，这样的好处是以后可以根据自己的需求定制编译，然后使得自己的机器性能达到最大化，在这个过程中也学到了很多。大家有什么问题可以联系我：</p>
+<p>QQ：329804334</p>
+<p>Mail： mizeshuang@gmail.com</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/posts/5e9a3b51/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">微信公众号后台在SpringBoot2.0中的实现（中）</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c05ce623/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="从源码构建TensorFlow2.0" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/c05ce623/" class="title">从源码构建TensorFlow2.0</a></p>
+                            <p class="item-date"><time datetime="2019-03-05T11:07:57.000Z" itemprop="datePublished">2019-03-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5e9a3b51/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/wechat-logo.png)" alt="微信公众号后台在SpringBoot2.0中的实现（中）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/5e9a3b51/" class="title">微信公众号后台在SpringBoot2.0中的实现（中）</a></p>
+                            <p class="item-date"><time datetime="2019-02-19T10:13:02.000Z" itemprop="datePublished">2019-02-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/2f6d1543/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg)" alt="EOS智能合约从零到一-2" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/2f6d1543/" class="title">EOS智能合约从零到一-2</a></p>
+                            <p class="item-date"><time datetime="2019-01-25T05:49:23.000Z" itemprop="datePublished">2019-01-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b66444f9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg)" alt="EOS智能合约从零到一-1" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/b66444f9/" class="title">EOS智能合约从零到一-1</a></p>
+                            <p class="item-date"><time datetime="2019-01-24T08:21:58.000Z" itemprop="datePublished">2019-01-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cd4b7340/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/web3j.png)" alt="Solidity书写智能合约-1" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/cd4b7340/" class="title">Solidity书写智能合约-1</a></p>
+                            <p class="item-date"><time datetime="2019-01-14T10:35:58.000Z" itemprop="datePublished">2019-01-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2019 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

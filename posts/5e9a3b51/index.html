@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>微信公众号后台在SpringBoot2.0中的实现（中） | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="JAVA" />
+    
+    <meta name="description" content="微信公众号后台在SpringBoot2.0中的实现（中）">
+<meta name="keywords" content="JAVA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信公众号后台在SpringBoot2.0中的实现（中）">
+<meta property="og:url" content="http://weafteam.github.io/posts/5e9a3b51/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="微信公众号后台在SpringBoot2.0中的实现（中）">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/wechat-logo.png">
+<meta property="og:updated_time" content="2019-03-05T11:12:27.110Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信公众号后台在SpringBoot2.0中的实现（中）">
+<meta name="twitter:description" content="微信公众号后台在SpringBoot2.0中的实现（中）">
+<meta name="twitter:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/wechat-logo.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/ANDROID/">ANDROID</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/区块链/">区块链</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/JAVA/">JAVA</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2019-02-19/wechat-for-java-backend" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        微信公众号后台在SpringBoot2.0中的实现（中）
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/5e9a3b51/" class="article-date">
+            <time datetime="2019-02-19T10:13:02.000Z" itemprop="datePublished">2019-02-19</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        earth
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/JAVA/">JAVA</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>继之前的微信公众号实现，现在第二篇来袭，写了一些最基本的使用和配置。</p>
+<h2 id="一申请公众号">一、申请公众号</h2>
+<p>此次我们开发使用的是服务号，大部分微信接口都是拥有权限的。 <img src="https://weaf.oss-cn-beijing.aliyuncs.com/wechat-1.png" alt="wechat-1"> 不同的账户拥有的权限不尽相同。 这个我们可以根据权限文档进行查看！</p>
+<p><a href="https://mp.weixin.qq.com/advanced/advanced?action=table&amp;token=1776791094&amp;lang=zh_CN" target="_blank" rel="noopener">接口权限：https://mp.weixin.qq.com/advanced/advanced?action=table&amp;token=1776791094&amp;lang=zh_CN</a></p>
+<h2 id="二设置基本配置">二、设置基本配置</h2>
+<p>这里最基本的<strong>基本配置</strong>在上一节中我们已经说到了，这里我们需要配置一些其他的东西。 首先我们需要绑定开发者，开发者绑定位置可已在<strong>开发者工具</strong>-&gt;<strong>web开发者工具</strong>里边进行绑定，这样我们就可以使用web开发工具，并调试自己的界面 具体文档和下载位置：<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1455784140" class="uri" target="_blank" rel="noopener">https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1455784140</a></p>
+<p>另外我们需要配置<strong>公众号设置</strong>-&gt;<strong>功能设置</strong>，这里边的<em>业务域名</em>、<em>JS接口安全域名</em>、<em>网页授权域名</em>，这样我们的工作好就可以使用js-sdk，网页授权等功能。</p>
+<p>还要记得在<strong>基本配置</strong>里边配置好<strong>IP白名单</strong>哦。</p>
+<h2 id="三个性化菜单">三、个性化菜单</h2>
+<p>因为打开开发者中心， 导致自定义菜单不可用，这样我们需要通过接口定义菜单， 具体我们可以通过<a href="https://mp.weixin.qq.com/debug?token=1185341662&amp;lang=zh_CN" target="_blank" rel="noopener">微信公众平台接口调试工具：https://mp.weixin.qq.com/debug?token=1185341662&amp;lang=zh_CN</a>进行设置就可以了。</p>
+<p>菜单定义可以通过定义好的json数据进行配置 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">     <span class="attr">"button"</span>:[</span><br><span class="line">     &#123;    </span><br><span class="line">        <span class="attr">"type"</span>:<span class="string">"click"</span>,</span><br><span class="line">        <span class="attr">"name"</span>:<span class="string">"今日歌曲"</span>,</span><br><span class="line">         <span class="attr">"key"</span>:<span class="string">"V1001_TODAY_MUSIC"</span> &#125;,</span><br><span class="line">    &#123;     <span class="attr">"name"</span>:<span class="string">"菜单"</span>,</span><br><span class="line">        <span class="attr">"sub_button"</span>:[</span><br><span class="line">        &#123;            </span><br><span class="line">            <span class="attr">"type"</span>:<span class="string">"view"</span>,</span><br><span class="line">            <span class="attr">"name"</span>:<span class="string">"搜索"</span>,</span><br><span class="line">            <span class="attr">"url"</span>:<span class="string">"http://www.soso.com/"</span>&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                         <span class="attr">"type"</span>:<span class="string">"miniprogram"</span>,</span><br><span class="line">                         <span class="attr">"name"</span>:<span class="string">"wxa"</span>,</span><br><span class="line">                         <span class="attr">"url"</span>:<span class="string">"http://mp.weixin.qq.com"</span>,</span><br><span class="line">                         <span class="attr">"appid"</span>:<span class="string">"wx286b93c14bbf93aa"</span>,</span><br><span class="line">                         <span class="attr">"pagepath"</span>:<span class="string">"pages/lunar/index"</span></span><br><span class="line">            &#125;,</span><br><span class="line">             &#123;</span><br><span class="line">        <span class="attr">"type"</span>:<span class="string">"click"</span>,</span><br><span class="line">        <span class="attr">"name"</span>:<span class="string">"赞一下我们"</span>,</span><br><span class="line">        <span class="attr">"key"</span>:<span class="string">"V1001_GOOD"</span></span><br><span class="line">           &#125;]</span><br><span class="line"> &#125;],</span><br><span class="line"><span class="attr">"matchrule"</span>:&#123;</span><br><span class="line">  <span class="attr">"tag_id"</span>:<span class="string">"2"</span>,</span><br><span class="line">  <span class="attr">"sex"</span>:<span class="string">"1"</span>,</span><br><span class="line">  <span class="attr">"country"</span>:<span class="string">"中国"</span>,</span><br><span class="line">  <span class="attr">"province"</span>:<span class="string">"广东"</span>,</span><br><span class="line">  <span class="attr">"city"</span>:<span class="string">"广州"</span>,</span><br><span class="line">  <span class="attr">"client_platform_type"</span>:<span class="string">"2"</span>,</span><br><span class="line">  <span class="attr">"language"</span>:<span class="string">"zh_CN"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/we-chat-1.png" alt="wechat-2"></p>
+<p>更多参数请看文档：<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1455782296" class="uri" target="_blank" rel="noopener">https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1455782296</a></p>
+<h2 id="四代码的实现">四、代码的实现</h2>
+<p>之前代码实现，只是实现了最近本的接入，其他相关的都没有涉及。 这次我们涉及的比较多哦。</p>
+<h3 id="请求触发响应">1.请求触发响应</h3>
+<p>通过第三步，我们设置了个性化菜单，有部分我们添加的按钮，是需要触发事件的，那么我们如何响应，并处理呢？</p>
+<p>上代码,这里我们配置成功后就可以修改响应接受微信得到消息了。具体修改如下↓。 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"verification"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">weChatVerification</span><span class="params">(String signature, String timestamp, String nonce, String echostr, HttpServletRequest request)</span> <span class="keyword">throws</span> AesException </span>&#123;</span><br><span class="line">    log.info(<span class="string">"微信校验参数：signature=&#123;&#125;，timestamp=&#123;&#125;，nonce=&#123;&#125;，echostr=&#123;&#125;"</span>, signature, timestamp, nonce, echostr);</span><br><span class="line">    String res = weChatService.processRequest(request);</span><br><span class="line">    log.info(<span class="string">"微信消息回复体：&#123;&#125;"</span>, res);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>处理请求代码 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">processRequest</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">    String respMessage = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 默认返回的文本消息内容</span></span><br><span class="line">        String respContent = <span class="string">"请求处理异常，请稍候尝试！"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// xml请求解析</span></span><br><span class="line">        Map&lt;String, String&gt; requestMap = MessageUtil.getInstance().parseXml(request);</span><br><span class="line">        log.info(<span class="string">"微信消息体：&#123;&#125;"</span>, requestMap);</span><br><span class="line">        <span class="comment">// 发送方帐号（open_id）</span></span><br><span class="line">        String fromUserName = requestMap.get(<span class="string">"FromUserName"</span>);</span><br><span class="line">        <span class="comment">// 公众帐号</span></span><br><span class="line">        String toUserName = requestMap.get(<span class="string">"ToUserName"</span>);</span><br><span class="line">        <span class="comment">// 消息类型</span></span><br><span class="line">        String msgType = requestMap.get(<span class="string">"MsgType"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 回复文本消息</span></span><br><span class="line">        TextMessage textMessage = <span class="keyword">new</span> TextMessage();</span><br><span class="line">        textMessage.setToUserName(fromUserName);</span><br><span class="line">        textMessage.setFromUserName(toUserName);</span><br><span class="line">        textMessage.setCreateTime(System.currentTimeMillis());</span><br><span class="line">        textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 文本消息</span></span><br><span class="line">        <span class="keyword">if</span> (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) &#123;</span><br><span class="line">            respContent = <span class="string">"谢谢您的关注，您可以通过点击下方“扫码入群”来加入我们的社群了解更多资讯和新闻哦(●'◡'●)！"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 图片消息</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) &#123;</span><br><span class="line">            respContent = <span class="string">"谢谢您的关注，您可以通过点击下方“扫码入群”来加入我们的社群了解更多资讯和新闻哦(●'◡'●)！"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 地理位置消息</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_LOCATION)) &#123;</span><br><span class="line">            respContent = <span class="string">"谢谢您的关注，您可以通过点击下方“扫码入群”来加入我们的社群了解更多资讯和新闻哦(●'◡'●)！"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 链接消息</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_LINK)) &#123;</span><br><span class="line">            respContent = <span class="string">"谢谢您的关注，您可以通过点击下方“扫码入群”来加入我们的社群了解更多资讯和新闻哦(●'◡'●)！"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 音频消息</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VOICE)) &#123;</span><br><span class="line">            respContent = <span class="string">"谢谢您的关注，您可以通过点击下方“扫码入群”来加入我们的社群了解更多资讯和新闻哦(●'◡'●)！"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 事件推送</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) &#123;</span><br><span class="line">            <span class="comment">// 事件类型</span></span><br><span class="line">            log.info(<span class="string">"微信公众平台接收到事件：&#123;&#125;"</span>, msgType);</span><br><span class="line">            String eventType = requestMap.get(<span class="string">"Event"</span>);</span><br><span class="line">            <span class="comment">// 订阅</span></span><br><span class="line">            <span class="keyword">if</span> (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) &#123;</span><br><span class="line">                respContent = <span class="string">"谢谢您的关注，您可以通过点击下方“扫码入群”来加入我们的社群了解更多资讯和新闻哦(●'◡'●)！"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 取消订阅</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) &#123;</span><br><span class="line">                <span class="comment">// TODO 取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 自定义菜单点击事件</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) &#123;</span><br><span class="line">                <span class="comment">// 事件KEY值，与创建自定义菜单时指定的KEY值对应</span></span><br><span class="line">                String eventKey = requestMap.get(<span class="string">"EventKey"</span>);</span><br><span class="line">                log.info(<span class="string">"微信公众平台接收到自定义菜单事件：eventType=&#123;&#125;,key=&#123;&#125;"</span>, eventType, eventKey);</span><br><span class="line">                <span class="keyword">if</span> (eventKey.equals(<span class="string">"JOIN_US"</span>)) &#123;</span><br><span class="line">                    PicMessage picMessage = <span class="keyword">new</span> PicMessage();</span><br><span class="line">                    picMessage.setToUserName(fromUserName);</span><br><span class="line">                    picMessage.setFromUserName(toUserName);</span><br><span class="line">                    picMessage.setCreateTime(<span class="keyword">new</span> Date().getTime());</span><br><span class="line">                    picMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_IMAGE);</span><br><span class="line">                    picMessage.setMediaId(<span class="string">"6X_RduJsEvCbkeXlbtbMS61PHRQtMBRMf52oTpzBj8k"</span>);</span><br><span class="line">                    <span class="keyword">return</span> picMessage.toXMLMessag();</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    respContent = <span class="string">"点击了按钮"</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        textMessage.setContent(respContent);</span><br><span class="line">        respMessage = MessageUtil.getInstance().textMessageToXml(textMessage);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> respMessage;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>具体实现的代码整理好后我会通过github上传，届时请关注仓库<a href="https://github.com/songyaxu/wechat-service" class="uri" target="_blank" rel="noopener">https://github.com/songyaxu/wechat-service</a></p>
+<h3 id="access_token刷新实现">2.access_token刷新实现</h3>
+<p>我们使用公众号过程中会通过access_token获取相关信息，而access_token还具有实效性，那么我们该如何实现实时获取，且正确呢?</p>
+<p>我这里实现的方式是最简单的方式，就是使用redis缓存起来，获取不到时重新获取。因为业务小的原因，我这里选用内存存储缓存GuavaCache进行缓存。</p>
+<p>具体实现↓： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value</span>(<span class="string">"$&#123;wechat.appId&#125;"</span>)</span><br><span class="line"><span class="keyword">private</span> String appId;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Value</span>(<span class="string">"$&#123;wechat.appSecret&#125;"</span>)</span><br><span class="line"><span class="keyword">private</span> String appSecret;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> GuavaCacheService&lt;String,String&gt; guavaCacheService;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> String ACCESS_KEY = <span class="string">"ACCESS_KEY_YUNCAIYUAN"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> String GET_ACCESS_TOKEN_URL=<span class="string">"https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential"</span>;</span><br><span class="line">   </span><br><span class="line">	</span><br><span class="line">		...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getAccessToken</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String value = guavaCacheService.getIfPresent(ACCESS_KEY);</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isNotBlank(value))&#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">    String accessToken = <span class="keyword">null</span>;</span><br><span class="line">    String getUrl = GET_ACCESS_TOKEN_URL + <span class="string">"&amp;appid="</span> + appId + <span class="string">"&amp;secret="</span> + appSecret;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        String result = HttpUtil.get(getUrl);</span><br><span class="line">        JSONObject jsonObject = JSONObject.parseObject(result);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != jsonObject) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                accessToken = jsonObject.getString(<span class="string">"access_token"</span>);</span><br><span class="line">                <span class="comment">//Long expiresIn = jsonObject.getLong("expires_in");</span></span><br><span class="line">                guavaCacheService.put(ACCESS_KEY,accessToken);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JSONException e) &#123;</span><br><span class="line">                accessToken = StringUtils.EMPTY;</span><br><span class="line">                log.error(<span class="string">"获取token失败 errcode:&#123;&#125; errmsg:&#123;&#125;"</span>, jsonObject.getIntValue(<span class="string">"errcode"</span>), jsonObject.getString(<span class="string">"errmsg"</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        log.info(<span class="string">"获取了微信AccessToken：&#123;&#125;"</span>, accessToken);</span><br><span class="line">        <span class="keyword">return</span> accessToken;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        log.error(<span class="string">"请求失败"</span> + e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> StringUtils.EMPTY;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>具体GuavaCache实现内存缓存机制可以查看:<a href="https://github.com/songyaxu/guava-cache" class="uri" target="_blank" rel="noopener">https://github.com/songyaxu/guava-cache</a></p>
+<h2 id="五参考链接">五、参考链接</h2>
+<p>1.微信工作平台技术文档：<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1445241432" class="uri" target="_blank" rel="noopener">https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1445241432</a></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/c05ce623/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            从源码构建TensorFlow2.0
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/2f6d1543/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">EOS智能合约从零到一-2</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c05ce623/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="从源码构建TensorFlow2.0" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/c05ce623/" class="title">从源码构建TensorFlow2.0</a></p>
+                            <p class="item-date"><time datetime="2019-03-05T11:07:57.000Z" itemprop="datePublished">2019-03-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5e9a3b51/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/wechat-logo.png)" alt="微信公众号后台在SpringBoot2.0中的实现（中）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/5e9a3b51/" class="title">微信公众号后台在SpringBoot2.0中的实现（中）</a></p>
+                            <p class="item-date"><time datetime="2019-02-19T10:13:02.000Z" itemprop="datePublished">2019-02-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/2f6d1543/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg)" alt="EOS智能合约从零到一-2" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/2f6d1543/" class="title">EOS智能合约从零到一-2</a></p>
+                            <p class="item-date"><time datetime="2019-01-25T05:49:23.000Z" itemprop="datePublished">2019-01-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b66444f9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg)" alt="EOS智能合约从零到一-1" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/b66444f9/" class="title">EOS智能合约从零到一-1</a></p>
+                            <p class="item-date"><time datetime="2019-01-24T08:21:58.000Z" itemprop="datePublished">2019-01-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cd4b7340/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/web3j.png)" alt="Solidity书写智能合约-1" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/cd4b7340/" class="title">Solidity书写智能合约-1</a></p>
+                            <p class="item-date"><time datetime="2019-01-14T10:35:58.000Z" itemprop="datePublished">2019-01-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2019 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

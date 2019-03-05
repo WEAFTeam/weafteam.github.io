@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>EOS智能合约从零到一-1 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="区块链" />
+    
+    <meta name="description" content="EOS智能合约从零到一-1">
+<meta name="keywords" content="区块链">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EOS智能合约从零到一-1">
+<meta property="og:url" content="http://weafteam.github.io/posts/b66444f9/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="EOS智能合约从零到一-1">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg">
+<meta property="og:updated_time" content="2019-03-05T11:12:27.107Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="EOS智能合约从零到一-1">
+<meta name="twitter:description" content="EOS智能合约从零到一-1">
+<meta name="twitter:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/ANDROID/">ANDROID</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/区块链/">区块链</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/区块链/">区块链</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2019-01-24/eos-1" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        EOS智能合约从零到一-1
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/b66444f9/" class="article-date">
+            <time datetime="2019-01-24T08:21:58.000Z" itemprop="datePublished">2019-01-24</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        earth
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/区块链/">区块链</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="一简介">一、简介</h1>
+<p>之前写过关于Solidity的只能合约，但是现在因为公司的业务的原因，我们又要搞eos合约的开发，所以我就开始搞eos只能合约相关的开发，其实之前也是知道使用的是C++写的，但是没有真正看过，这次马上就要开始了。</p>
+<h1 id="二了解eos">二、了解EOS</h1>
+<p>EOS，可以理解为Enterprise Operation System，即为商用分布式应用设计的一款区块链操作系统。EOS是引入的一种新的区块链架构，旨在实现分布式应用的性能扩展。注意，它并不是像比特币和以太坊那样的货币，而是基于EOS软件项目之上发布的代币，被称为区块链3.0。</p>
+<h1 id="三入门准备">三、入门准备</h1>
+<h3 id="开发环境本文开发环境">1.开发环境（本文开发环境）</h3>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>名称</th>
+<th>版本</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ubuntu</td>
+<td>18.04</td>
+<td>开发环境支持多种操作系统，但是不支持windows,因为我的电脑是安装的ubuntu/windows的双开发系统，所以无需顾虑</td>
+</tr>
+<tr class="even">
+<td>nodeos</td>
+<td>1.5.0</td>
+<td>eos本地搭建节点版本</td>
+</tr>
+<tr class="odd">
+<td>cleos</td>
+<td>1.5.1</td>
+<td>eos开发工具</td>
+</tr>
+<tr class="even">
+<td>keosd</td>
+<td>1.5.0</td>
+<td>eos钱包管理工具</td>
+</tr>
+<tr class="odd">
+<td>eosio.cdt</td>
+<td>1.5.0</td>
+<td>eos只能合约开发工具包（The EOSIO Contract Development Toolkit,CDT for short.）</td>
+</tr>
+<tr class="even">
+<td>eosio.contracts</td>
+<td>1.5.2</td>
+<td>eos本地智能合约系统使用合约</td>
+</tr>
+<tr class="odd">
+<td>Sublime Text3</td>
+<td>3.1.1</td>
+<td>编辑器</td>
+</tr>
+</tbody>
+</table>
+<p>这边也支持使用docker,如果你会docker,可以使用docker并使用windows开发，但是eos官方已经从2018年6月不再对docker镜像进行维护，所以我这边还是推荐使用linux和手里有mac的小伙伴去开发。</p>
+<h3 id="开发技能">2.开发技能</h3>
+<ol type="1">
+<li>至少需要了解一些区块链相关的知识</li>
+<li>有过开发语言的经验，最好是C/C++.</li>
+<li>使用过Linux/Mac OS系统的电脑等。</li>
+<li>有命令行相关知识。</li>
+</ol>
+<h3 id="可使用编译器">3.可使用编译器</h3>
+<ol type="1">
+<li><a href="https://www.sublimetext.com/" target="_blank" rel="noopener">Sublime Text:https://www.sublimetext.com/</a></li>
+<li><a href="https://atom.io/" target="_blank" rel="noopener">Atom Editor:https://atom.io/</a></li>
+<li><a href="https://www.jetbrains.com/clion/" target="_blank" rel="noopener">CLion:https://www.jetbrains.com/clion/</a></li>
+<li><a href="http://www.eclipse.org/downloads/packages/release/oxygen/1a/eclipse-ide-cc-developers" target="_blank" rel="noopener">Eclipse:http://www.eclipse.org/downloads/packages/release/oxygen/1a/eclipse-ide-cc-developers</a></li>
+<li><a href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code:https://code.visualstudio.com/</a></li>
+</ol>
+<p>我这边使用的是一个编辑器，并没有使用编译器，配置环境比较麻烦。 如果有需要我这里有两篇，大家可以借鉴：</p>
+<ol type="1">
+<li><a href="https://infinitexlabs.com/setup-ide-for-eos-development/" target="_blank" rel="noopener">Visual Studio Code Setup:https://infinitexlabs.com/setup-ide-for-eos-development/</a></li>
+<li><a href="https://infinitexlabs.com/setup-ide-for-eos-development/" target="_blank" rel="noopener">CLion Setup: https://infinitexlabs.com/setup-ide-for-eos-development/</a></li>
+</ol>
+<h1 id="四准备环境">四、准备环境</h1>
+<h3 id="创建一个开发相关的目录">1.创建一个开发相关的目录</h3>
+<p>这里我在当前用户根目录下创建一个eos目录，并在下边创建一个contracts目录存放合约文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">mkdir eos</span><br><span class="line">cd eos</span><br><span class="line">mkdir contracts</span><br></pre></td></tr></table></figure>
+<p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/eos-1.png" alt="eos-1"> ### 2.下载和安装 下载和安装eosio 这里我们在下载之前切换到我们创建的eos目录 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/eos</span><br><span class="line">wget https://github.com/eosio/eos/releases/download/v1.5.0/eosio_1.5.0-1-ubuntu-18.04_amd64.deb</span><br><span class="line">sudo apt install ./eosio_1.5.0-1-ubuntu-18.04_amd64.deb</span><br></pre></td></tr></table></figure></p>
+<p>然后启动钱包工具keosd <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keosd &amp;</span><br></pre></td></tr></table></figure></p>
+<p>启动成功你可以看到如下输出： <img src="https://weaf.oss-cn-beijing.aliyuncs.com/eos-2.png" alt="eos-2"> 然后我们还是在<strong>~/eos</strong>目录下启动我们的本地节点 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">nodeos -e -p eosio \</span><br><span class="line">--plugin eosio::producer_plugin \</span><br><span class="line">--plugin eosio::chain_api_plugin \</span><br><span class="line">--plugin eosio::http_plugin \</span><br><span class="line">--plugin eosio::history_plugin \</span><br><span class="line">--plugin eosio::history_api_plugin \</span><br><span class="line">--data-dir CONTRACTS_DIR/eosio/data \</span><br><span class="line">--config-dir CONTRACTS_DIR/eosio/config \</span><br><span class="line">--access-control-allow-origin='*' \</span><br><span class="line">--contracts-console \</span><br><span class="line">--http-validate-host=false \</span><br><span class="line">--verbose-http-errors \</span><br><span class="line">--filter-on='*' &gt;&gt; nodeos.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/eos-3.png" alt="eos-3"> 启动节点后我们可以看到当前目录下有一个<strong>nodeos.log</strong>的文件，这个是本地节点的log输出文件，我们使用<strong>tail</strong>命令来动态的查看输出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -fn 400 nodeos.log</span><br></pre></td></tr></table></figure>
+<p>可以看见生产区块的日志 <img src="https://weaf.oss-cn-beijing.aliyuncs.com/eos-5.png" alt="eos-5"></p>
+<p>有时候我们非关闭电脑，或者节点时，再次使用以上命令就会出现以下错误 <img src="https://weaf.oss-cn-beijing.aliyuncs.com/eos-4.png" alt="eos-4"> 出现当前问题我们可以加一个参数<strong>–replay-blockchain –hard-replay-blockchain</strong> 也就是使用如下命令来启动 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nodeos -e -p eosio --plugin eosio::producer_plugin --plugin eosio::chain_api_plugin --plugin eosio::http_plugin --plugin eosio::history_plugin --plugin eosio::history_api_plugin --data-dir CONTRACTS_DIR/eosio/data --config-dir CONTRACTS_DIR/eosio/config --access-control-allow-origin='*' --contracts-console --http-validate-host=false --verbose-http-errors --filter-on='*' --replay-blockchain --hard-replay-blockchain &gt;&gt; nodeos.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure></p>
+<p>通过脚本查看钱包账户的一些信息 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cleos wallet list</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/eos-6.png" alt="eos-6"></p>
+<p>可以看到没有钱包，或者都是非open状态（我们这里是因为没有钱包）</p>
+<p>检查eos节点 直接使用浏览器，或者使用命令行 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:8888/v1/chain/get_info</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/eos-7.png" alt="eos-7"></p>
+<p>安装CDT <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/eos</span><br><span class="line">wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.5.0/eosio.cdt_1.5.0-1_amd64.deb</span><br><span class="line">sudo apt install ./eosio.cdt_1.5.0-1_amd64.deb</span><br></pre></td></tr></table></figure></p>
+<p>卸载（可能不会用到） <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt remove eosio.cdt</span><br></pre></td></tr></table></figure></p>
+<p>安装Sublime Text3 如果有需要的小伙伴可以看看</p>
+<ul>
+<li><a href="http://www.sublimetext.com/docs/3/linux_repositories.html" target="_blank" rel="noopener">Linux instal setup</a></li>
+<li><a href="https://blog.csdn.net/lu_embedded/article/details/79558280" target="_blank" rel="noopener">解决ubuntu下sublime text3不能输入中文问题</a></li>
+</ul>
+<h1 id="五参考文章">五、参考文章</h1>
+<ol type="1">
+<li>百度百科-EOS：<a href="https://baike.baidu.com/item/EOS/20441174?fr=aladdin" class="uri" target="_blank" rel="noopener">https://baike.baidu.com/item/EOS/20441174?fr=aladdin</a></li>
+<li>设置eos开发环境ide：<a href="https://infinitexlabs.com/setup-ide-for-eos-development/" class="uri" target="_blank" rel="noopener">https://infinitexlabs.com/setup-ide-for-eos-development/</a></li>
+<li>eos 开发者：<a href="https://developers.eos.io/eosio-home/docs/introduction" class="uri" target="_blank" rel="noopener">https://developers.eos.io/eosio-home/docs/introduction</a></li>
+<li>EOS.GITHUB:<a href="https://github.com/EOSIO/eos" class="uri" target="_blank" rel="noopener">https://github.com/EOSIO/eos</a></li>
+<li><a href="http://www.sublimetext.com/docs/3/linux_repositories.html" target="_blank" rel="noopener">Linux install setup</a></li>
+<li><a href="https://blog.csdn.net/lu_embedded/article/details/79558280" target="_blank" rel="noopener">解决ubuntu下sublime text3不能输入中文问题</a></li>
+</ol>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/2f6d1543/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            EOS智能合约从零到一-2
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/cd4b7340/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">Solidity书写智能合约-1</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c05ce623/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="从源码构建TensorFlow2.0" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/c05ce623/" class="title">从源码构建TensorFlow2.0</a></p>
+                            <p class="item-date"><time datetime="2019-03-05T11:07:57.000Z" itemprop="datePublished">2019-03-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5e9a3b51/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/wechat-logo.png)" alt="微信公众号后台在SpringBoot2.0中的实现（中）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/5e9a3b51/" class="title">微信公众号后台在SpringBoot2.0中的实现（中）</a></p>
+                            <p class="item-date"><time datetime="2019-02-19T10:13:02.000Z" itemprop="datePublished">2019-02-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/2f6d1543/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg)" alt="EOS智能合约从零到一-2" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/2f6d1543/" class="title">EOS智能合约从零到一-2</a></p>
+                            <p class="item-date"><time datetime="2019-01-25T05:49:23.000Z" itemprop="datePublished">2019-01-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b66444f9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg)" alt="EOS智能合约从零到一-1" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/b66444f9/" class="title">EOS智能合约从零到一-1</a></p>
+                            <p class="item-date"><time datetime="2019-01-24T08:21:58.000Z" itemprop="datePublished">2019-01-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cd4b7340/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/web3j.png)" alt="Solidity书写智能合约-1" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/cd4b7340/" class="title">Solidity书写智能合约-1</a></p>
+                            <p class="item-date"><time datetime="2019-01-14T10:35:58.000Z" itemprop="datePublished">2019-01-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2019 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

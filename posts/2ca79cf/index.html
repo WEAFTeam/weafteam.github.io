@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>使用Web3j（JAVA）开发ETH钱包-2 | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="区块链" />
+    
+    <meta name="description" content="使用Web3j（JAVA）开发ETH钱包-2">
+<meta name="keywords" content="区块链">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Web3j（JAVA）开发ETH钱包-2">
+<meta property="og:url" content="http://weafteam.github.io/posts/2ca79cf/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="使用Web3j（JAVA）开发ETH钱包-2">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/web3j.png">
+<meta property="og:updated_time" content="2019-03-05T11:12:27.105Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Web3j（JAVA）开发ETH钱包-2">
+<meta name="twitter:description" content="使用Web3j（JAVA）开发ETH钱包-2">
+<meta name="twitter:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/web3j.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/ANDROID/">ANDROID</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/区块链/">区块链</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/区块链/">区块链</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2018-10-29/use-web3j-2" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        使用Web3j（JAVA）开发ETH钱包-2
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/2ca79cf/" class="article-date">
+            <time datetime="2018-10-29T10:04:44.000Z" itemprop="datePublished">2018-10-29</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        earth
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/区块链/">区块链</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h1 id="一简介">一、简介</h1>
+<p>上文中我们谈到了在测试环境中创建账户并使用 通过这样的方式 ，我们就可以创建自己的钱包地址，在测试环境中我们使用<a href="https://www.rinkeby.io/#faucet" class="uri" target="_blank" rel="noopener">https://www.rinkeby.io/#faucet</a>给自己充值测试币. 那么我们接下来的工作就是研究ETH的转账，并会在下一篇在讲述，如何使用基于ERC-20智能合约创建自己的Token和基于自己的合约的转账.</p>
+<h1 id="二eth转账的实现">二、ETH转账的实现</h1>
+<p>转账这里存在一些gas的问题，所谓gas我们都知道是转账时需要花费的旷工费。这里我们可以通过<strong>gasLimit</strong>和<strong>gasPrice</strong>来调整，当然我们肯定希望gas小，但是gas一味的小，会导致没有人愿意帮我们打包我们得到交易，导致交易最终无法成交，形成一个pending的状态。如果gas给的多，那么交易成交速度会比较快，但是我们花费的钱就会变多。</p>
+<p>在之前实现的基础上，我们可以拿到自己创建的钱包，和对应钱包的文件和密码。</p>
+<h2 id="方法1">方法1</h2>
+<p>这个方法需要使用自己的节点，目前Infura节点无法进行当前操作，对应的也是创建账户<strong>方法1</strong>的转账。 毕竟infura无法帮助我们存储钱包文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">private</span> BigInteger gNonce; <span class="comment">//每个账户发起的交易都会自动生成一个交易识别号，这个是一个递增的号码</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ...省略部分代码</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    EthGetTransactionCount ethGetTransactionCount = admin.ethGetTransactionCount(from, DefaultBlockParameterName.LATEST).sendAsync().get();</span><br><span class="line">    BigInteger nonce = ethGetTransactionCount.getTransactionCount();</span><br><span class="line">    PersonalUnlockAccount personalUnlockAccount = admin.personalUnlockAccount(from,password).send();</span><br><span class="line">    <span class="keyword">if</span> (personalUnlockAccount == <span class="keyword">null</span>)&#123;</span><br><span class="line">        log.error(<span class="string">"转账失败，账户地址错误，或者账户密码错误"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (gNonce == <span class="keyword">null</span>)&#123;</span><br><span class="line">        gNonce = nonce;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (personalUnlockAccount.accountUnlocked())</span><br><span class="line">    &#123;</span><br><span class="line">        BigInteger gasPrice = Contract.GAS_PRICE;</span><br><span class="line">        BigInteger gasLimit = Contract.GAS_LIMIT;</span><br><span class="line">        <span class="keyword">synchronized</span>(WalletService.class) &#123;</span><br><span class="line">            Transaction transaction = Transaction.createEtherTransaction(from,nonce,gasPrice,gasLimit,to,amount);</span><br><span class="line">            log.info(<span class="string">"转账序号：【&#123;&#125;】"</span>,gNonce);</span><br><span class="line">            gNonce = gNonce.add(<span class="keyword">new</span> BigInteger(<span class="string">"1"</span>));</span><br><span class="line">            EthSendTransaction transactionResponse = admin.ethSendTransaction(transaction).sendAsync().get();</span><br><span class="line">            <span class="keyword">if</span>(transactionResponse.hasError())&#123;</span><br><span class="line">                String message=transactionResponse.getError().getMessage();</span><br><span class="line">                log.error(<span class="string">"转账失败，错误信息&#123;&#125;"</span>,message);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                String hash=transactionResponse.getTransactionHash();</span><br><span class="line">                log.info(<span class="string">"转账成功，转账hash = &#123;&#125;"</span>,hash);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (InterruptedException | ExecutionException | IOException e) &#123;</span><br><span class="line">    log.error(<span class="string">"转账失败，失败原因&#123;&#125;"</span>,e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种种方式需要先解锁账户，有一定的安全问题，如果你的节点允许全网访问，会有一些人通过动态扫描以太坊节点，尝试连接这些节点，并通过节点发起资金转账的操作。</p>
+<p>如果你在测试中又发现自己的币无意间被转到一下地址，说明你的节点或者操作存在以上问题。</p>
+<ul>
+<li>Rinkeby: https://rinkeby.etherscan.io/address/0x7097f41f1c1847d52407c629d0e0ae0fdd24fd58</li>
+<li>Ropsten: https://ropsten.etherscan.io/address/0x7097f41F1C1847D52407C629d0E0ae0fDD24fd58</li>
+<li>Kovan: https://kovan.etherscan.io/address/0x7097f41F1C1847D52407C629d0E0ae0fDD24fd58</li>
+<li>Mainnet: https://etherscan.io/address/0x7097f41F1C1847D52407C629d0E0ae0fDD24fd58</li>
+</ul>
+<p>所以这里需要注意不要让你的API端口向全网开放。 这里特别注意一下代码中的 <em><strong>nonce</strong></em>.下边会讲一下它的其他作用。 其实还有还有其他一些类似上面转账的方法，可以自己去研究下。</p>
+<h2 id="方法2">方法2</h2>
+<p>这种方式需要使用钱包文件来发起交易。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    Credentials credentials = WalletUtils.loadCredentials(password,filePath);</span><br><span class="line">    TransactionReceipt transferReceipt = Transfer.sendFunds(web3j, credentials, to,amount, Convert.Unit.WEI).send();</span><br><span class="line">    String hash = transferReceipt.getTransactionHash();</span><br><span class="line">    log.info(<span class="string">"转账成功，转账hash = &#123;&#125;"</span>,hash);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    log.error(<span class="string">"转账失败，失败原因&#123;&#125;"</span>,e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方式相对安全一些，这里需要注意的是一些ETH的最小单位——<strong>WEI</strong>.</p>
+<p>1ETH = 1*10^18 wei;</p>
+<h1 id="三相关问题">三、相关问题</h1>
+<h3 id="eth交易模块的特点">1.ETH交易模块的特点</h3>
+<ol type="1">
+<li>必须按顺序处理事务（具有1的nonce为1的事务必须在具有2的nonce的事务之前处理）</li>
+<li>不跳过（具有4的nonce的事务不能包含在块中，直到具有1,2,3的nonce的事务</li>
+</ol>
+<p>通过这种方式，网络能够识别交易的重复并强制执行订单（这对于智能合约至关重要） 这也就上文中说过的<strong>nonce</strong>, ### 2.如何查看我们转账的状态 我们可以通过转账后拿到的TxHash去<a href="https://etherscan.io/" class="uri" target="_blank" rel="noopener">https://etherscan.io/</a>查询。</p>
+<h3 id="如何取消pending状态转账">3.如何取消Pending状态转账</h3>
+<p>上文说到了转账因为gas设置的比较小，可能造成无法成交，一直处于Pending状态。 然后我们可以通过<strong>nonce</strong>去取消Pending的转账， 我们通过nonce的机制可以得知，我们只要新创建一笔转账，其中nonce和Pending状态的订单的nonce一样就可以替换当前Pending状态得到转账。</p>
+<p>那么最好的操作来实现就是发起一笔向自己转账的订单，当然gas我们需要设置得到合理。 转账参考以上两种方法。</p>
+<h3 id="取消或者取代转账">4.取消或者取代转账</h3>
+<p>通过之前<strong>3</strong>中所提到了，我们可以知道，其实一个交易发出后，被覆盖，代替，取消等操作的几率很小。但是也不是不可能。只要当前交易不被挖矿和包含在区块中，是可以做相关关操作的。 具体操作方法还是和<strong>3</strong>相似，但是切记不可更改<strong>nonce</strong>.(具体情况还要和实际相比较，毕竟这种操作实现的概率几乎为0)</p>
+<h1 id="四转账状态查询代码实现">四、转账状态查询代码实现</h1>
+<p>我这里只能查洵成功的和失败的，但是有些转账会查不到，但是不能保证当前转账不存在，或者是pending状态。如果您发现了对应的方法请告知我，谢谢 具体实现 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    EthGetTransactionReceipt transactionReceipt = web3j.ethGetTransactionReceipt(transactionHash).send();</span><br><span class="line">    TransactionReceipt transactionReceipt1 = transactionReceipt.getResult();</span><br><span class="line">    <span class="keyword">if</span> (transactionReceipt1 == <span class="keyword">null</span>) &#123;</span><br><span class="line">        log.warn(<span class="string">"转账Hash内容为空，Hash = 【&#123;&#125;】"</span>,transactionHash);</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"0x1"</span>.equals(transactionReceipt1.getStatus()))&#123;</span><br><span class="line">            log.info(<span class="string">"转账成功！ Hash = &#123;&#125;"</span>,transactionHash)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"0x0"</span>.equals(transactionReceipt1.getStatus()))&#123;</span><br><span class="line">            log.error(<span class="string">"转账失败！ Hash = &#123;&#125;"</span>,transactionHash)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="五参考文章">五、参考文章</h1>
+<ol type="1">
+<li>Checking or Replacing a TX After it’s Been Sent：<a href="https://kb.myetherwallet.com/transactions/check-status-of-ethereum-transaction.html" class="uri" target="_blank" rel="noopener">https://kb.myetherwallet.com/transactions/check-status-of-ethereum-transaction.html</a></li>
+<li>Cancel pending transactions on Ethereum:<a href="https://jakubstefanski.com/post/2017/10/ethereum-cancel-pending-transaction/" class="uri" target="_blank" rel="noopener">https://jakubstefanski.com/post/2017/10/ethereum-cancel-pending-transaction/</a></li>
+<li>Node auto send a lot of transaction after call eth.sendTransaction() in one time:<a href="Node%20auto%20send%20a%20lot%20of%20transaction%20after%20call%20eth.sendTransaction()%20in%20one%20time">https://github.com/ethereum/go-ethereum/issues/16691</a></li>
+<li>Web3j：<a href="https://web3j.readthedocs.io/en/latest/" class="uri" target="_blank" rel="noopener">https://web3j.readthedocs.io/en/latest/</a></li>
+</ol>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/75cd4959/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            使用Web3j（JAVA）开发ETH钱包-3
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/9bc32875/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">使用Web3j（JAVA）开发ETH钱包-1</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c05ce623/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="从源码构建TensorFlow2.0" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/c05ce623/" class="title">从源码构建TensorFlow2.0</a></p>
+                            <p class="item-date"><time datetime="2019-03-05T11:07:57.000Z" itemprop="datePublished">2019-03-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5e9a3b51/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/wechat-logo.png)" alt="微信公众号后台在SpringBoot2.0中的实现（中）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/5e9a3b51/" class="title">微信公众号后台在SpringBoot2.0中的实现（中）</a></p>
+                            <p class="item-date"><time datetime="2019-02-19T10:13:02.000Z" itemprop="datePublished">2019-02-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/2f6d1543/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg)" alt="EOS智能合约从零到一-2" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/2f6d1543/" class="title">EOS智能合约从零到一-2</a></p>
+                            <p class="item-date"><time datetime="2019-01-25T05:49:23.000Z" itemprop="datePublished">2019-01-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b66444f9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg)" alt="EOS智能合约从零到一-1" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/b66444f9/" class="title">EOS智能合约从零到一-1</a></p>
+                            <p class="item-date"><time datetime="2019-01-24T08:21:58.000Z" itemprop="datePublished">2019-01-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/cd4b7340/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/web3j.png)" alt="Solidity书写智能合约-1" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/cd4b7340/" class="title">Solidity书写智能合约-1</a></p>
+                            <p class="item-date"><time datetime="2019-01-14T10:35:58.000Z" itemprop="datePublished">2019-01-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2019 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
