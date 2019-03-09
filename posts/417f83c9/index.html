@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>tf-2.0-effective-info | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="TensorFlow" />
+    
+    <meta name="description" content="如何高效使用TensorFlow2.0 Install: pip install tensorflow==2.0.0-alpha0 or Build From source https://www.weaf.top/posts/c05ce623/ ——————————————————-分割线—————————————————————————————– 首先在2.0中，为了使得用户效率提高有">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tf-2.0-effective-info">
+<meta property="og:url" content="http://weafteam.github.io/posts/417f83c9/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="如何高效使用TensorFlow2.0 Install: pip install tensorflow==2.0.0-alpha0 or Build From source https://www.weaf.top/posts/c05ce623/ ——————————————————-分割线—————————————————————————————– 首先在2.0中，为了使得用户效率提高有">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+<meta property="og:updated_time" content="2019-03-09T00:58:26.387Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tf-2.0-effective-info">
+<meta name="twitter:description" content="如何高效使用TensorFlow2.0 Install: pip install tensorflow==2.0.0-alpha0 or Build From source https://www.weaf.top/posts/c05ce623/ ——————————————————-分割线—————————————————————————————– 首先在2.0中，为了使得用户效率提高有">
+<meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/ANDROID/">ANDROID</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/区块链/">区块链</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/TensorFlow/">TensorFlow</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2019-03-04/tf-2-0-effective-info" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        tf-2.0-effective-info
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/417f83c9/" class="article-date">
+            <time datetime="2019-03-08T08:03:04.000Z" itemprop="datePublished">2019-03-08</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        Milittle
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/TensorFlow/">TensorFlow</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h2 id="如何高效使用tensorflow2.0">如何高效使用TensorFlow2.0</h2>
+<h4 id="install-pip-install-tensorflow2.0.0-alpha0">Install: <code>pip install tensorflow==2.0.0-alpha0</code></h4>
+<h4 id="or-build-from-source-httpswww.weaf.toppostsc05ce623">or Build From source https://www.weaf.top/posts/c05ce623/</h4>
+<p>——————————————————-分割线—————————————————————————————–</p>
+<h4 id="首先在2.0中为了使得用户效率提高有许多改变2.0中移除了许多冗余的apis使得更多的api一致而且很好的和python集成了eager-execution着实让人很舒服eager-execution">首先在2.0中，为了使得用户效率提高有许多改变。2.0中移除了许多冗余的APIs，使得更多的API一致，而且很好的和Python集成了Eager execution。（着实让人很舒服）<a href="https://www.tensorflow.org/guide/eager" target="_blank" rel="noopener">Eager execution</a></h4>
+<h4 id="许多的rfcs对于2.0做的改变都有详细的解释.rfcs-假定你已经对tensorflow1.x已经很熟悉的情况下我们来介绍一下tensorflow在开发中应该是什么样子的">许多的RFCs对于2.0做的改变都有详细的解释.<a href="https://github.com/tensorflow/community/pulls?utf8=%E2%9C%93&amp;q=is%3Apr" target="_blank" rel="noopener">RFCs</a> 假定你已经对TensorFlow1.x已经很熟悉的情况下，我们来介绍一下TensorFlow在开发中应该是什么样子的。</h4>
+<h3 id="主要修改的简单总结">主要修改的简单总结</h3>
+<h4 id="api-更加干净">API 更加干净</h4>
+<p>许多的APIs在TF2.0中已经被移出掉。一些主要的改变包括<code>tf.app</code>,<code>tf.flags</code>和<code>tf.logging</code>，赞成现在开源的项目<a href="https://github.com/abseil/abseil-py" target="_blank" rel="noopener">absl-py</a>, 重新安置了<code>tf.contrib</code>项目。清理了一些在<code>tf.*</code>模块到比如<code>tf.math</code>模块下。还有一些模块在TF2.0中具有相同的功能，比如<code>tf.summary</code>, <code>tf.keras.metrics</code>, 和 <code>tf.keras.optimizers</code>.最简单将这些名字命名为2.0的格式是通过<a href="https://www.tensorflow.org/alpha/guide/upgrade" target="_blank" rel="noopener">v2 upgrade script</a></p>
+<h4 id="eager-execution">Eager execution</h4>
+<p>TensorFlow1.x要求通过tf.* API用户手动去缝合一棵抽象的语法树（就是那个graph）。要求用户手动编译抽象的语法树，通过<code>session.run()</code>输入张量来得到输出张量。在TensorFlow2.0中，用户可以像Python一样，立马得到结果，graph和sessions这些要求是去实现一些细节时候所使用到的功能。</p>
+<h4 id="没有更多的global">没有更多的Global</h4>
+<p>TensorFlow1.x中都使用了隐式的全局空间。当你调用<code>tf.Variable()</code>.这样就会放入到默认的图中。他就会留在图中，即使你忘了将它赋值给一个Python变量保存。当然你可以通过<code>tf.Variable()</code>来恢复它，哈哈哈，但是你只有在知道它构建时候的名字才能找到它，所以之前我们在TensorFlow1.x中建议大家，尽可能给创建的变量一个名字，而且每一层次使用<code>tf.variable_scope()</code>去管理是多么的重要。这样导致的结果呢，就会有很多机制去帮助用户去找到他们的创建过的变量，并在框架中找到他们的变量。比如Variable scope， global collections，帮助的方法比如<code>tf.get_global_step()</code>, <code>tf.global_variables_initializer()</code> 而且优化器隐式的计算了所有变量的梯度等等。TensorFlow2.0将这些机制都去除了，所以，哥们们，实在是太难学了。<a href="https://github.com/tensorflow/community/pull/11" target="_blank" rel="noopener">Variables2.0RFC</a></p>
+<p>还是要遵循默认的机制，保留对变量的跟踪，如果你失去了你的变量<code>tf.Variable()</code>，那么你将永远试去它，请珍惜它。它会被当作垃圾回收。</p>
+<p>这样的话，我们就需要提出新的让用户跟踪自己变量的机制。但是只要是和Keras的对象打交道（随后会讲到），那么你会觉得很轻松。</p>
+<h4 id="functions-not-sessions">Functions， not sessions</h4>
+<p>一个<code>session.run()</code>的调用，类似于一个函数的调用。你给一个函数输入，这个函数将给你一个输出。在TensorFlow2.0中。你可以将你的Python函数使用<code>tf.function</code>装饰器装饰。将其标记为JIT编译。因此TensorFlow2.0会将它作为一个单个图运行<a href="https://github.com/tensorflow/community/pull/20" target="_blank" rel="noopener">Functions 2.0 RFC</a>,这种机制会让TensorFlow2.0获得所有图机制的好处（这个改进相当于将每一步运算可以加入到一个子图中，这样可以将所有的图联合起来就是一个模型，这个确实很牛叉）。</p>
+<ul>
+<li>性能：这个函数可以被优化（节点剪枝，核融合等等）</li>
+<li>可移植性：这个函数可以被导出核重导入（SavedModel 2.0 RFC）运行用户可以重用核共享模块函数。（我个人感觉这种方式重用性更高）</li>
+</ul>
+<p>运行方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># TensorFlow 1.X</span></span><br><span class="line">outputs = session.run(f(placeholder), feed_dict=&#123;placeholder: input&#125;)</span><br><span class="line"><span class="comment"># TensorFlow 2.0</span></span><br><span class="line">outputs = f(input)</span><br></pre></td></tr></table></figure>
+<p>这种方式可以让你在TF和Python中随意切换。我们希望用户可以充分的使用Python的表现力，但是方便的同时，在一些移动、c++、和JS中没有Python编译器时候，添加<code>@tf.function</code>这样的代码就需要用户重构许多代码。所以<a href="https://www.tensorflow.org/alpha/guide/autograph" target="_blank" rel="noopener">AutoGraph</a>将转换一个部分Python的子集到与TensorFlow等价的操作。</p>
+<ul>
+<li><code>for</code>/<code>while</code> -&gt; <code>tf.while_loop</code> (<code>break</code> and <code>continue</code> are supported)</li>
+<li><code>if</code> -&gt; <code>tf.cond</code></li>
+<li><code>for _ in dataset</code> -&gt; <code>dataset.reduce</code></li>
+</ul>
+<p>AutoGraph支持任意的嵌套控制流，它可以尽可能的简明扼要实现许多ML程序比如序列模型，强化学习模型，定制的训练循环等等。</p>
+<h3 id="tensorflow2.0中的惯用方式">TensorFlow2.0中的惯用方式</h3>
+<h4 id="将你的code重构到一些更加小的函数这是tf.function装饰器带来的趋势">将你的code重构到一些更加小的函数（这是tf.function装饰器带来的趋势）</h4>
+<p>在TensorFlow1.x中你习惯了“厨房水槽”方法。将所有的计算联合起来。然后选中Tensor，最后通过<code>session.run()</code>得到结果。在TensorFlow2.0中。用户应该将你们的代码重构到一些很小的函数中。只是在需要的时候调用。一般，没有必要将所有的函数都加上<code>tf.function</code>装饰器。你只需要给最高级的计算加上，直接调用即可。举例：一部的训练，或者你模型的一次前馈操作。</p>
+<h4 id="使用keras层和模型管理你的变量">使用Keras层和模型管理你的变量</h4>
+<p>Keras模型和层都提供了方便的<code>variables</code>和<code>trainable_variables</code>属性，以递归的方式收集所有依赖的变量。这使得变量管理变得十分简单。</p>
+<p>对比：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dense</span><span class="params">(x, W, b)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> tf.nn.sigmoid(tf.matmul(x, W) + b)</span><br><span class="line"></span><br><span class="line"><span class="meta">@tf.function</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">multilayer_perceptron</span><span class="params">(x, w0, b0, w1, b1, w2, b2 ...)</span>:</span></span><br><span class="line">  x = dense(x, w0, b0)</span><br><span class="line">  x = dense(x, w1, b1)</span><br><span class="line">  x = dense(x, w2, b2)</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># You still have to manage w_i and b_i, and their shapes are defined far away from the code.</span></span><br></pre></td></tr></table></figure>
+<p>with the Keras version:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Each layer can be called, with a signature equivalent to linear(x)</span></span><br><span class="line">layers = [tf.keras.layers.Dense(hidden_size, activation=tf.nn.sigmoid) <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]</span><br><span class="line">perceptron = tf.keras.Sequential(layers)</span><br><span class="line"></span><br><span class="line"><span class="comment"># layers[3].trainable_variables =&gt; returns [w3, b3]</span></span><br><span class="line"><span class="comment"># perceptron.trainable_variables =&gt; returns [w0, b0, ...]</span></span><br></pre></td></tr></table></figure>
+<p>Keras layers/models 都是继承自<code>tf.train.Checkpointable</code>也被集成了<code>@tf.function</code>, 这样可以使得直接从Keras 对象获取到checkpoint或者导出SavedModels。你都没有必要使用Keras的<code>fit()</code>API去获取这些集成特性。</p>
+<p>下面是一个迁移学习的例子，描述了怎么使用Keras方便的收集相关变量的子集。假设你在共享分支上训练一个多输入模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">trunk = tf.keras.Sequential([...]) <span class="comment"># shared trunk</span></span><br><span class="line">head1 = tf.keras.Sequential([...]) <span class="comment"># input one</span></span><br><span class="line">head2 = tf.keras.Sequential([...]) <span class="comment"># input two</span></span><br><span class="line"></span><br><span class="line">path1 = tf.keras.Sequential([trunk, head1])</span><br><span class="line">path2 = tf.keras.Sequential([trunk, head2])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train on primary dataset</span></span><br><span class="line"><span class="keyword">for</span> x, y <span class="keyword">in</span> main_dataset:</span><br><span class="line">  <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">    prediction = path1(x)</span><br><span class="line">    loss = loss_fn_head1(prediction, y)</span><br><span class="line">  <span class="comment"># Simultaneously optimize trunk and head1 weights.</span></span><br><span class="line">  gradients = tape.gradients(loss, path1.trainable_variables)</span><br><span class="line">  optimizer.apply_gradients(gradients, path1.trainable_variables)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fine-tune second head, reusing the trunk</span></span><br><span class="line"><span class="keyword">for</span> x, y <span class="keyword">in</span> small_dataset:</span><br><span class="line">  <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">    prediction = path2(x)</span><br><span class="line">    loss = loss_fn_head2(prediction, y)</span><br><span class="line">  <span class="comment"># Only optimize head2 weights, not trunk weights</span></span><br><span class="line">  gradients = tape.gradients(loss, head2.trainable_variables)</span><br><span class="line">  optimizer.apply_gradients(gradients, head2.trainable_variables)</span><br><span class="line"></span><br><span class="line"><span class="comment"># You can publish just the trunk computation for other people to reuse.</span></span><br><span class="line">tf.saved_model.save(trunk, output_path)</span><br></pre></td></tr></table></figure>
+<p>(上面的例子是在一个共享分支上训练两个模型，先使用一个主要的数据集，来训练trunk分支，然后再通过一个小的数据集来微调trunk分支，典型的迁移思想)。</p>
+<h4 id="将tf.data.datasets和tf.function结合">将<code>tf.data.Datasets</code>和<code>@tf.function</code>结合</h4>
+<p>当你迭代将训练数据填充到内存中，你可以随意使用Python规则的迭代。不然，你也可以使用<code>tf.data.Datasets</code>,这是一种最好的方式将训练数据从硬盘填充到内存中。Datasets是可迭代的不是迭代器<a href="https://docs.python.org/3/glossary.html#term-iterable" target="_blank" rel="noopener">iterables (not iterators)</a> 在Eager模型下，和Python迭代一样工作。你可以完全利用Dataset异步预装载/流特征通过<code>tf.funtion</code>来装饰你的code。它使用AutoGraph替换了Python迭代的等效图操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tf.function</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(model, dataset, optimizer)</span>:</span></span><br><span class="line">  <span class="keyword">for</span> x, y <span class="keyword">in</span> dataset:</span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">      prediction = model(x)</span><br><span class="line">      loss = loss_fn(prediction, y)</span><br><span class="line">    gradients = tape.gradients(loss, model.trainable_variables)</span><br><span class="line">    optimizer.apply_gradients(gradients, model.trainable_variables)</span><br></pre></td></tr></table></figure>
+<p>如果你使用Keras 的fit API，则你不用担心dataset的迭代：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model.compile(optimizer=optimizer, loss=loss_fn)</span><br><span class="line">model.fit(dataset)</span><br></pre></td></tr></table></figure>
+<h4 id="利用autograph来代替python的控制流">利用AutoGraph来代替Python的控制流</h4>
+<p>AutoGraph提供了一些方法，去转换数据依赖的依赖流进入图中，就像<code>tf.cond</code>和<code>tf.while_loop</code></p>
+<p>一个常用的数据依赖流出现的地方就是序列模型。<code>tf.keras.layers.RNN</code>封装了一个RNN单元，允许你静态或者动态的循环展开。为了示范，你可以重新实现如下动态展开：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DynamicRNN</span><span class="params">(tf.keras.Model)</span>:</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, rnn_cell)</span>:</span></span><br><span class="line">    super(DynamicRNN, self).__init__(self)</span><br><span class="line">    self.cell = rnn_cell</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, input_data)</span>:</span></span><br><span class="line">    <span class="comment"># [batch, time, features] -&gt; [time, batch, features]</span></span><br><span class="line">    input_data = tf.transpose(input_data, [<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>])</span><br><span class="line">    outputs = tf.TensorArray(tf.float32, input_data.shape[<span class="number">0</span>])</span><br><span class="line">    state = self.cell.zero_state(input_data.shape[<span class="number">1</span>], dtype=tf.float32)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> tf.range(input_data.shape[<span class="number">0</span>]):</span><br><span class="line">      output, state = self.cell(input_data[i], state)</span><br><span class="line">      outputs = outputs.write(i, output)</span><br><span class="line">    <span class="keyword">return</span> tf.transpose(outputs.stack(), [<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>]), state</span><br></pre></td></tr></table></figure>
+<p>有关更多详细的AutoGraph的功能，请看<a href="https://www.tensorflow.org/alpha/guide/autograph" target="_blank" rel="noopener">the guide</a></p>
+<h4 id="使用tf.metrics去集成data随后使用tf.summary去log它">使用<code>tf.metrics</code>去集成data，随后使用<code>tf.summary</code>去log它</h4>
+<p>为了log summary，使用<code>tf.summary.(scalar | histogram | ...)</code>需要重定位它到上下文管理器（如果你忘记了上下文管理器，将什么都不会被记录下来）不想TF1.x, 所有的summaries都会被直接写入到writer中，没有单独的merge操作，和add_summary()调用。这意味着step值必须在调用点提供。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">summary_writer = tf.summary.create_file_writer(<span class="string">'/tmp/summaries'</span>)</span><br><span class="line"><span class="keyword">with</span> summary_writer.as_default():</span><br><span class="line">  tf.summary.scalar(<span class="string">'loss'</span>, <span class="number">0.1</span>, step=<span class="number">42</span>)</span><br></pre></td></tr></table></figure>
+<p>在log他们为summary前为了聚合数据，使用<code>tf.metrics</code>。Metrics是有状态的，它可以累计数据然后当你调用<code>.result()</code>时返回一个累计的结果。使用<code>.reset_states()</code>去清除累计值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(model, optimizer, dataset, log_freq=<span class="number">10</span>)</span>:</span></span><br><span class="line">  avg_loss = tf.keras.metrics.Mean(name=<span class="string">'loss'</span>, dtype=tf.float32)</span><br><span class="line">  <span class="keyword">for</span> images, labels <span class="keyword">in</span> dataset:</span><br><span class="line">    loss = train_step(model, optimizer, images, labels)</span><br><span class="line">    avg_loss.update_state(loss)</span><br><span class="line">    <span class="keyword">if</span> tf.equal(optimizer.iterations % log_freq, <span class="number">0</span>):</span><br><span class="line">      tf.summary.scalar(<span class="string">'loss'</span>, avg_loss.result(), step=optimizer.iterations)</span><br><span class="line">      avg_loss.reset_states()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(model, test_x, test_y, step_num)</span>:</span></span><br><span class="line">  loss = loss_fn(model(test_x), test_y)</span><br><span class="line">  tf.summary.scalar(<span class="string">'loss'</span>, loss, step=step_num)</span><br><span class="line"></span><br><span class="line">train_summary_writer = tf.summary.create_file_writer(<span class="string">'/tmp/summaries/train'</span>)</span><br><span class="line">test_summary_writer = tf.summary.create_file_writer(<span class="string">'/tmp/summaries/test'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> train_summary_writer.as_default():</span><br><span class="line">  train(model, optimizer, dataset)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> test_summary_writer.as_default():</span><br><span class="line">  test(model, test_x, test_y, optimizer.iterations)</span><br></pre></td></tr></table></figure>
+<p>在log目录通过Tensorboard可视化生成的结果： <code>tensorboard --logdir /tmp/summaries</code>.</p>
+<p>QQ：329804334</p>
+<p>Mail：mizeshuang@gmail.com</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/posts/c05ce623/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">从源码构建TensorFlow2.0</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/417f83c9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="tf-2.0-effective-info" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/417f83c9/" class="title">tf-2.0-effective-info</a></p>
+                            <p class="item-date"><time datetime="2019-03-08T08:03:04.000Z" itemprop="datePublished">2019-03-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c05ce623/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="从源码构建TensorFlow2.0" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/c05ce623/" class="title">从源码构建TensorFlow2.0</a></p>
+                            <p class="item-date"><time datetime="2019-03-05T11:07:57.000Z" itemprop="datePublished">2019-03-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/5e9a3b51/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/wechat-logo.png)" alt="微信公众号后台在SpringBoot2.0中的实现（中）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
+                            <p class="item-title"><a href="/posts/5e9a3b51/" class="title">微信公众号后台在SpringBoot2.0中的实现（中）</a></p>
+                            <p class="item-date"><time datetime="2019-02-19T10:13:02.000Z" itemprop="datePublished">2019-02-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/2f6d1543/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg)" alt="EOS智能合约从零到一-2" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/2f6d1543/" class="title">EOS智能合约从零到一-2</a></p>
+                            <p class="item-date"><time datetime="2019-01-25T05:49:23.000Z" itemprop="datePublished">2019-01-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/b66444f9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/eos-logo.jpg)" alt="EOS智能合约从零到一-1" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/区块链/">区块链</a></p>
+                            <p class="item-title"><a href="/posts/b66444f9/" class="title">EOS智能合约从零到一-1</a></p>
+                            <p class="item-date"><time datetime="2019-01-24T08:21:58.000Z" itemprop="datePublished">2019-01-24</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2019 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
