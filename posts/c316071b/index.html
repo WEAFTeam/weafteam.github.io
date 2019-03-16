@@ -3,17 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>WEAF 周刊</title>
+    <title>TensorRT-量化指北 | WEAF 周刊</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta property="og:type" content="website">
-<meta property="og:title" content="WEAF 周刊">
-<meta property="og:url" content="http://weafteam.github.io/page/3/index.html">
+        <meta name="keywords" content="TensorRT" />
+    
+    <meta name="description" content="TensorRT量化指北  对称的线性量化：  \[ TensorValues = FP32\,scale\,factor\,*int8\,array \] One FP32 scale factor for the entire int8 tensor Q: 怎么设置scale factor？ 非饱和方式：映射|max|到127 下图所示   一般上面的方式映射就会出现精">
+<meta name="keywords" content="TensorRT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorRT-量化指北">
+<meta property="og:url" content="http://weafteam.github.io/posts/c316071b/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="TensorRT量化指北  对称的线性量化：  \[ TensorValues = FP32\,scale\,factor\,*int8\,array \] One FP32 scale factor for the entire int8 tensor Q: 怎么设置scale factor？ 非饱和方式：映射|max|到127 下图所示   一般上面的方式映射就会出现精">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s1.ax1x.com/2018/08/12/PcyZQ0.png">
+<meta property="og:updated_time" content="2019-03-16T07:55:02.615Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WEAF 周刊">
+<meta name="twitter:title" content="TensorRT-量化指北">
+<meta name="twitter:description" content="TensorRT量化指北  对称的线性量化：  \[ TensorValues = FP32\,scale\,factor\,*int8\,array \] One FP32 scale factor for the entire int8 tensor Q: 怎么设置scale factor？ 非饱和方式：映射|max|到127 下图所示   一般上面的方式映射就会出现精">
+<meta name="twitter:image" content="https://s1.ax1x.com/2018/08/12/PcyZQ0.png">
     
 
     
@@ -120,533 +129,192 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <em class="page-title-link" data-url="home">主页</em>
+    <a class="page-title-link" href="/categories/TensorRT/">TensorRT</a>
     </h1>
 </div>
                         <div class="main-body-content">
-                            
-
-    
-    
+                            <article id="post-2019-03-11/TensorRT-Quant" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
         
-        
-        <section class="archives-wrap">
-            <div class="archive-year-wrap">
-                <a href="/archives/2018" class="archive-year"><i class="icon fa fa-calendar-o"></i>2018</a>
-            </div>
-            <div class="archives">
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/42fb2e58/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://i.loli.net/2018/07/23/5b558a1894a20.png)" alt="Thread和Runnable的区别" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
-            </div>
-            <div class="date"><time datetime="2018-07-23T07:32:42.000Z" itemprop="datePublished">2018-07-23</time></div>
-        </div>
-        
+            <header class="article-header">
+                
     
         <h1 class="article-title" itemprop="name">
-        <a href="/posts/42fb2e58/">Thread和Runnable的区别</a>
+        TensorRT-量化指北
         </h1>
     
 
-        <p class="article-excerpt">
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/c316071b/" class="article-date">
+            <time datetime="2019-03-16T07:51:02.000Z" itemprop="datePublished">2019-03-16</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        Milittle
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/TensorRT/">TensorRT</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <h3 id="tensorrt量化指北">TensorRT量化指北</h3>
+<ol type="1">
+<li>对称的线性量化：</li>
+</ol>
+<p><span class="math display">\[
+TensorValues = FP32\,scale\,factor\,*int8\,array
+\]</span></p>
+<p>One FP32 scale factor for the entire int8 tensor</p>
+<p>Q: 怎么设置scale factor？</p>
+<p>非饱和方式：映射|max|到127 下图所示</p>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/1.jpg" alt="Quantization"></p>
+<ul>
+<li>一般上面的方式映射就会出现精确率严重降低。</li>
+<li>那么我们需要找一种饱和的方式去映射，如下图右边所示那样，你可以左右对比一下。</li>
+</ul>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/2.jpg" alt="Quantization"></p>
+<ul>
+<li>以上右边映射的方式，对于权重映射的方式精确率影响不大，但是对于激活值影响很大。（那么就会面临一个问题，就是这样一个饱和的T该怎么选择）</li>
+</ul>
+<ol start="2" type="1">
+<li>怎么选择一个合适的threshold呢？</li>
+</ol>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/3.jpg" alt="Quantization"></p>
+<ul>
+<li>我们通过转换要将int8数据的转换信息丢失最少，那么怎么度量信息的loss，答案是使用KL散度，也就是相对熵，也叫Kullback-Leibler divergence。下图是一个描述，详细请看信息熵，交叉熵和相对熵的关系以及计算方式，我们这里处理的是离散的问题。</li>
+</ul>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/4.jpg" alt="Quantization"></p>
+<ul>
+<li>下面展示一张在标定过程中，找到threshold的过程图：</li>
+</ul>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/5.jpg"></p>
+<p>上图描述了一个标定，也就是使用FP32精度，通过标定数据集来找到threshold的过程：</p>
+<p>对于每一层来说：</p>
+<p>第一步：收集统计激活的直方图</p>
+<p>第二步：对于不同的饱和threshold生成很多的量化分布</p>
+<p>第三步：挑一个threshold以后最小化KL_divergence(ref_distr, quant_distr)</p>
+<p>这样的过程只需要在一台桌面工作站几分钟就搞定了（完全是离线的方式）</p>
+<p>下图展示了标定数据集的规模以及注意事项：</p>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/6.jpg"></p>
+<p>需要有代表性，需要不同的样本，理想情况当然是验证集的一部分数据，大约需要1000左右的样本就够了。</p>
+<ol start="3" type="1">
+<li>下面讲讲TensorRT的量化工作流程。</li>
+</ol>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/7.jpg"></p>
+<p>上图展示了TensorRT的量化模型过程：你需要一个FP32的预训练模型和标定数据集：</p>
+<p>第一，你需要以FP32的方式运行标定数据集</p>
+<p>第二，你需要收集和统计数据，包括每一层的激活值</p>
+<p>第三，运行标定的算法，优化scale factor</p>
+<p>第四，量化FP32权重到INT8</p>
+<p>第五，生成标定表，然后使用INT8执行引擎执行推理。</p>
+<p>原理就是这么简单，下面展示一些benchmark：</p>
+<ol start="4" type="1">
+<li>benchmark</li>
+</ol>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/8.jpg"></p>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/9.jpg"></p>
+<ol start="5" type="1">
+<li>挑战和展望,结论</li>
+</ol>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/10.jpg"></p>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/11.jpg"></p>
+<ol start="6" type="1">
+<li>联系：</li>
+</ol>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/12.jpg"></p>
+<ol start="7" type="1">
+<li>伪代码</li>
+</ol>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/13.jpg"></p>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/14.jpg"></p>
+<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/15.jpg"></p>
+<p>最后的最后，加油执行，一致前行。fighting。</p>
+<p>QQ:329804334</p>
+<p>Website: www.weaf.top</p>
+<p>Mail: air@weaf.top</p>
+
+        </div>
+        <footer class="article-footer">
             
-两周的小暑假也算是过完了，接下来得好好做东西了，博客从今天开始也要跟上进度了。
 
-1. 两种创建的方式
-1 继承Thread类，并且重写其中的run()方法
 
-2 实现Runnable接口，重写其中的run()方法
-但是在实现应用时，我们多用实现Runnable接口的方式，这是因为Java的单继承多实现的机制，这样一来就可以避免由于这个机制代码的局限性。其实我们用Runnable的
-        </p>
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
     </div>
 </article>
-    
 
+    <section id="comments">
     
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/e85880/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://i.loli.net/2018/06/23/5b2e336b43133.png)" alt="Java中List和ArrayList的区别" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
+    </section>
 
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
-            </div>
-            <div class="date"><time datetime="2018-06-23T11:10:07.000Z" itemprop="datePublished">2018-06-23</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/e85880/">Java中List和ArrayList的区别</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            
-开始补博客了从5月初到现在应该有8篇博客需要补，废话不多说，开始写吧
-
-区别
-这俩个的区别很明显，List是一个接口，而ArrayList是一个类，它继承AbstractList抽象类并且实现了List接口。
-所以当我们需要实例化一个List的时候，我们并不能直接的new一个List（显然是废话，接口肯定是不能通过new实例化的），而只能是实例化一个继承并实现它的类的实例并将这个实例化
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/d023fbc0/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://swagger.io/swagger/media/assets/images/swagger_logo.svg)" alt="SpringBoot使用Swagger2" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
-            </div>
-            <div class="date"><time datetime="2018-06-10T18:04:44.000Z" itemprop="datePublished">2018-06-11</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/d023fbc0/">SpringBoot使用Swagger2</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            一、简介
-Swagger2是一款可以生成RESTful接口文档的工具。而且书写起来很方便，开发人员只需维护代码，不用额外书写文档。使用起来更方便，而且呈现的方式很棒。还支持在线测试。
-二、SpringBoot集成
-我这里时使用的最新版本2.9.2 我这里项目是使用Maven构建的。
-123456789101112&lt;!-- start swagger --&gt;&lt;depende
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/a6235d78/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43657842-879ee0e8-9789-11e8-9f1b-3ebbf9ceadc7.png)" alt="asyncio 不完全指北（七）" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            
-            </div>
-            <div class="date"><time datetime="2018-06-09T09:35:25.000Z" itemprop="datePublished">2018-06-09</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/a6235d78/">asyncio 不完全指北（七）</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            书接上文。
-使用 aiohttp 作为 Web 服务器
-上篇文章中提到，aiohttp 不仅仅是一个 http 客户端，同时也是一个 Web 服务器。在这一节，我们使用 aiohttp 实现一个简单的 Web 程序，同时与 flask 比较一下性能上的差别。
-准备工作
-首先安装我们需要的第三方库：
-12pip install aiohttppip install flask
-然后准备好
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/eae731fe/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://redisson.org/assets/logos/logo.png)" alt="Redisson 的介绍与使用" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
-            </div>
-            <div class="date"><time datetime="2018-06-04T18:04:44.000Z" itemprop="datePublished">2018-06-05</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/eae731fe/">Redisson 的介绍与使用</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            一、简介
- Redisson是一个在Redis的基础上实现的Java驻内存数据网格（In-Memory Data Grid）。它不仅提供了一系列的分布式的Java常用对象，还提供了许多分布式服务。其中包括(BitSet, Set, Multimap, SortedSet, Map, List, Queue, BlockingQueue, Deque, BlockingDeque, Semapho
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/45d29694/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow实现Siamese Network" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a>
-            </div>
-            <div class="date"><time datetime="2018-05-29T03:27:34.000Z" itemprop="datePublished">2018-05-29</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/45d29694/">TensorFlow实现Siamese Network</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            TensorFlow 实现Siamese Network
-
-这次我们来实现一个基于lenet的Siamese Network，大家如果想了解Siamese Network，给大家推荐Andrew NG的课deeplearning.ai作为了解
-接下来我们直接上code：大家也可以直接移步到我的github 仓库里面找代码代码
-
-123456789代码目录组织结构：siamese_netw
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/74232ae7/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://user-images.githubusercontent.com/8280169/43657842-879ee0e8-9789-11e8-9f1b-3ebbf9ceadc7.png)" alt="asyncio 不完全指北（六）" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            
-            </div>
-            <div class="date"><time datetime="2018-05-27T10:39:08.000Z" itemprop="datePublished">2018-05-27</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/74232ae7/">asyncio 不完全指北（六）</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            前言
-前五篇文章介绍了 asyncio 的 API，从这篇开始，就要讲一些 Real World（并不）的东西了。
-使用 aiohttp 作为 HTTP 客户端
-aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是 asyncio 生态中发展最迅速的第三方库之一。在这一节，我们使用 aiohttp 作为 HTTP 客户端来比较一下同步、基于线程的异步和基于 a
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/3859dc89/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/lombok-logo.png)" alt="Lombok的使用" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
-            </div>
-            <div class="date"><time datetime="2018-05-26T18:04:44.000Z" itemprop="datePublished">2018-05-27</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/3859dc89/">Lombok的使用</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            一、简介
-使用lombok减少代码冗余（Reducing Boilerplate Code with Project Lombok）。“Boilerplate”是用来描述许多部分重复的代码的术语。这也是Java语言最常提出批评之一,是大多数项目中都存在此类代码而且数量很多。这个问题经常是各种库中设计决策的结果，但是由于语言本身的限制而导致的。Lombok 旨在通过一组简单的注释取代这些问题。 虽
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-    
-    
-    
-    
-        <div class="article-row">
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/435ecce8/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://spring.io/img/homepage/icon-spring-framework.svg)" alt="Spring中@transactional的使用" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
-            </div>
-            <div class="date"><time datetime="2018-05-20T18:04:44.000Z" itemprop="datePublished">2018-05-21</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/435ecce8/">Spring中@transactional的使用</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            一、简介
-我们在工作中多多少少会使用到和事务相关的，但是程序运行总不会一定不出现任何异常。一旦整个流程中出现一个异常，也许我们就需要整个操作不继续进行下去，并且需要之前做过的操作都不起作用。那么我们就需要使用事务来控制。
-在Spring中，我们通过@transactional来启用事务。
-二、@transactional详解
-@Transactional注解中常用参数说明
-
-
-
-
-        </p>
-    </div>
-</article>
-    
-
-    
-    
-    
-    
-        <article class="article article-summary">
-    <div class="article-summary-inner">
-        
-        <a href="/posts/78b2bf24/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="TensorFlow SVM详解" class="thumbnail-image"></span>
-    
-    
-        
-<span class="comment-counter">
-    <i class="fa fa-comments-o"></i>
-    
-</span>
-
-
-    
-</a>
-
-        
-        <div class="article-meta">
-            <div class="category">
-            <a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a>
-            </div>
-            <div class="date"><time datetime="2018-05-20T11:52:00.000Z" itemprop="datePublished">2018-05-20</time></div>
-        </div>
-        
-    
-        <h1 class="article-title" itemprop="name">
-        <a href="/posts/78b2bf24/">TensorFlow SVM详解</a>
-        </h1>
-    
-
-        <p class="article-excerpt">
-            TensorFlow SVM
-
-简单的介绍一下Support Vector Machine，SVM是一个二分类机器学习算法，目的就是为了让两类之间的margin更大，SVM还可以实现多分类任务，那么需要扩展非线性kernels进去，接下来逐渐介绍SVM
-和线性回归一起工作的SVM,使用得数据是IRIS数据集，取两个特征维度。
-
-123456789101112131415161718192
-        </p>
-    </div>
-</article>
-    
-        </div>
-    
-
-
-    </div></section>
-
-
-    <nav id="page-nav">
-        <span class="pages">第 3 页，共 7 页</span>
-        <a class="extend prev" rel="prev" href="/page/2/">&laquo;</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">&raquo;</a>
-    </nav>
 
 
                         </div>
@@ -675,6 +343,19 @@ aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是
             
         </ul>
     </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/posts/f6579676/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">squeezeNet</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
     
     <div class="widgets-container">
         
@@ -870,6 +551,11 @@ aiohttp 是一个基于 asyncio 的异步 HTTP 客户端和服务器库，也是
     
         <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
     
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     
 
 

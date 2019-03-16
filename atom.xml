@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://weafteam.github.io/"/>
-  <updated>2019-03-12T02:54:30.328Z</updated>
+  <updated>2019-03-16T07:55:02.615Z</updated>
   <id>http://weafteam.github.io/</id>
   
   <author>
@@ -17,13 +17,13 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>squeezeNet</title>
-    <link href="http://weafteam.github.io/posts/f6579676/"/>
-    <id>http://weafteam.github.io/posts/f6579676/</id>
-    <published>2019-03-12T02:18:32.000Z</published>
-    <updated>2019-03-12T02:54:30.328Z</updated>
+    <title>TensorRT-量化指北</title>
+    <link href="http://weafteam.github.io/posts/c316071b/"/>
+    <id>http://weafteam.github.io/posts/c316071b/</id>
+    <published>2019-03-16T07:51:02.000Z</published>
+    <updated>2019-03-16T07:55:02.615Z</updated>
     
-    <content type="html"><![CDATA[<p><a href="">Milittle Github Repo</a></p><p><a href="https://github.com/Milittle/awesome-dl-network" target="_blank" rel="noopener">Milittle Github Repo</a> 系列Repo</p><h2 id="squeezenet">SqueezeNet</h2><p>Paper Site: <a href="https://arxiv.org/abs/1602.07360" target="_blank" rel="noopener">ICIR 2017</a></p><p>Source Code Github: <a href="https://github.com/DeepScale/SqueezeNet" target="_blank" rel="noopener">Github</a></p><p>DownLoad From This Repo: <a href="https://github.com/Milittle/awesome-dl-network/blob/master/paper/1602.07360_SQUEEZENET%20ALEXNET-LEVEL%20ACCURACY%20WITH%2050X%20FEWER%20PARAMETERS%20AND%200.5MB%20MODEL%20SIZE.pdf" target="_blank" rel="noopener">Paper PDF</a></p><p>SqueezeNet CNN Architectural Design Strategies:</p><p><strong>Strategy 1:</strong> Replace 3 X 3 filters with 1 X 1 filters.</p><p>替换3 X 3卷积核大小到1 X 1大小。</p><p><strong>Strategy 2: </strong> Decrease the number of input channels to 3 X 3 filters.</p><p>在使用3 X 3大小的卷积核中，减小输入通道。</p><p><strong>Strategy 3:</strong> Downsample late in the network so that convolution layers have activation maps.</p><p>在激活特征图上实现下采样。通常的做法有pool层，还有在卷积层加入stride&gt;1的配置。</p><h3 id="fire-module">Fire Module</h3><p><img src="https://s2.ax1x.com/2019/03/12/APyvB8.jpg" alt="Fire Module"></p><p>在以上的Fire Module中，有一个squeeze层核expand层。squeeze层只有1X1卷积核。（使用到了strategy1）expand层有1X1卷积核和3X3卷积核。文章中指出该Fire Module有三个超参配置分别为： <span class="math display">\[s_{1x1}:所有squeeze层的卷积核个数\\e_{1x1}:所有expand层1X1的卷积核个数\\e_{3x3}:所有expand层3X3的卷积核个数\]</span> 设定<span class="math inline">\(s_{1x1} 小于 e_{1x1} + e_{3x3}​\)</span>,这样就是strategy2。</p><h3 id="squeezenet-architecture">SqueezeNet Architecture</h3><p><img src="https://s2.ax1x.com/2019/03/12/AP6SAg.md.jpg" alt="Architecture"></p><ol type="1"><li>以上是SqueezeNet网络结构，第1层普通卷积层，2-9都是上述提到的Fire Module，第10层也是一个普通的卷积层。</li><li>在卷积层1、模块4、模块8、加入maxpool，步长为2。</li><li>在卷积层10加入global AvgPool。</li></ol><h3 id="网络整个架构维度表">网络整个架构维度表</h3><p><img src="https://s2.ax1x.com/2019/03/12/APyxHS.jpg"></p><h3 id="实现细节">实现细节</h3><ol type="1"><li>1X1和3X3卷积核输出的feature map大小一致，因为在3X3中加入了padding。</li><li>在squeeze层和expand层都加入了Relu激活函数。</li><li>在Fire9后面加入了Dropout层，丢弃概率为0.5。</li><li>squeezeNet没有全连接层。</li><li>初始学习率设置为0.04。在训练的过程中逐渐减小学习率。</li></ol><p>QQ: 329804334</p><p>Mail：milittle@stu.xjtu.edu.cn</p><p>备注： 文档中图都来自原论文。</p>]]></content>
+    <content type="html"><![CDATA[<h3 id="tensorrt量化指北">TensorRT量化指北</h3><ol type="1"><li>对称的线性量化：</li></ol><p><span class="math display">\[TensorValues = FP32\,scale\,factor\,*int8\,array\]</span></p><p>One FP32 scale factor for the entire int8 tensor</p><p>Q: 怎么设置scale factor？</p><p>非饱和方式：映射|max|到127 下图所示</p><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/1.jpg" alt="Quantization"></p><ul><li>一般上面的方式映射就会出现精确率严重降低。</li><li>那么我们需要找一种饱和的方式去映射，如下图右边所示那样，你可以左右对比一下。</li></ul><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/2.jpg" alt="Quantization"></p><ul><li>以上右边映射的方式，对于权重映射的方式精确率影响不大，但是对于激活值影响很大。（那么就会面临一个问题，就是这样一个饱和的T该怎么选择）</li></ul><ol start="2" type="1"><li>怎么选择一个合适的threshold呢？</li></ol><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/3.jpg" alt="Quantization"></p><ul><li>我们通过转换要将int8数据的转换信息丢失最少，那么怎么度量信息的loss，答案是使用KL散度，也就是相对熵，也叫Kullback-Leibler divergence。下图是一个描述，详细请看信息熵，交叉熵和相对熵的关系以及计算方式，我们这里处理的是离散的问题。</li></ul><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/4.jpg" alt="Quantization"></p><ul><li>下面展示一张在标定过程中，找到threshold的过程图：</li></ul><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/5.jpg"></p><p>上图描述了一个标定，也就是使用FP32精度，通过标定数据集来找到threshold的过程：</p><p>对于每一层来说：</p><p>第一步：收集统计激活的直方图</p><p>第二步：对于不同的饱和threshold生成很多的量化分布</p><p>第三步：挑一个threshold以后最小化KL_divergence(ref_distr, quant_distr)</p><p>这样的过程只需要在一台桌面工作站几分钟就搞定了（完全是离线的方式）</p><p>下图展示了标定数据集的规模以及注意事项：</p><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/6.jpg"></p><p>需要有代表性，需要不同的样本，理想情况当然是验证集的一部分数据，大约需要1000左右的样本就够了。</p><ol start="3" type="1"><li>下面讲讲TensorRT的量化工作流程。</li></ol><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/7.jpg"></p><p>上图展示了TensorRT的量化模型过程：你需要一个FP32的预训练模型和标定数据集：</p><p>第一，你需要以FP32的方式运行标定数据集</p><p>第二，你需要收集和统计数据，包括每一层的激活值</p><p>第三，运行标定的算法，优化scale factor</p><p>第四，量化FP32权重到INT8</p><p>第五，生成标定表，然后使用INT8执行引擎执行推理。</p><p>原理就是这么简单，下面展示一些benchmark：</p><ol start="4" type="1"><li>benchmark</li></ol><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/8.jpg"></p><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/9.jpg"></p><ol start="5" type="1"><li>挑战和展望,结论</li></ol><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/10.jpg"></p><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/11.jpg"></p><ol start="6" type="1"><li>联系：</li></ol><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/12.jpg"></p><ol start="7" type="1"><li>伪代码</li></ol><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/13.jpg"></p><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/14.jpg"></p><p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/15.jpg"></p><p>最后的最后，加油执行，一致前行。fighting。</p><p>QQ:329804334</p><p>Website: www.weaf.top</p><p>Mail: air@weaf.top</p>]]></content>
     
     <summary type="html">
     
@@ -31,8 +31,41 @@
       
         
         
-          &lt;p&gt;&lt;a href=&quot;&quot;&gt;Milittle Github Repo&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/Milittle/awesome-dl-network&quot; target=&quot;_blank&quot;
+          &lt;h3 id=&quot;tensorrt量化指北&quot;&gt;TensorRT量化指北&lt;/h3&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;对称的线性量化：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[
+TensorValues =
+        
+      
+    
+    </summary>
+    
+      <category term="TensorRT" scheme="http://weafteam.github.io/categories/TensorRT/"/>
+    
+    
+      <category term="TensorRT" scheme="http://weafteam.github.io/tags/TensorRT/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>squeezeNet</title>
+    <link href="http://weafteam.github.io/posts/f6579676/"/>
+    <id>http://weafteam.github.io/posts/f6579676/</id>
+    <published>2019-03-12T02:18:32.000Z</published>
+    <updated>2019-03-16T07:56:21.480Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://github.com/Milittle/awesome-dl-network" target="_blank" rel="noopener">Milittle Github Repo</a> 系列Repo</p><h2 id="squeezenet">SqueezeNet</h2><p>Paper Site: <a href="https://arxiv.org/abs/1602.07360" target="_blank" rel="noopener">ICIR 2017</a></p><p>Source Code Github: <a href="https://github.com/DeepScale/SqueezeNet" target="_blank" rel="noopener">Github</a></p><p>DownLoad From This Repo: <a href="https://github.com/Milittle/awesome-dl-network/blob/master/paper/1602.07360_SQUEEZENET%20ALEXNET-LEVEL%20ACCURACY%20WITH%2050X%20FEWER%20PARAMETERS%20AND%200.5MB%20MODEL%20SIZE.pdf" target="_blank" rel="noopener">Paper PDF</a></p><p>SqueezeNet CNN Architectural Design Strategies:</p><p><strong>Strategy 1:</strong> Replace 3 X 3 filters with 1 X 1 filters.</p><p>替换3 X 3卷积核大小到1 X 1大小。</p><p><strong>Strategy 2: </strong> Decrease the number of input channels to 3 X 3 filters.</p><p>在使用3 X 3大小的卷积核中，减小输入通道。</p><p><strong>Strategy 3:</strong> Downsample late in the network so that convolution layers have activation maps.</p><p>在激活特征图上实现下采样。通常的做法有pool层，还有在卷积层加入stride&gt;1的配置。</p><h3 id="fire-module">Fire Module</h3><p><img src="https://s2.ax1x.com/2019/03/12/APyvB8.jpg" alt="Fire Module"></p><p>在以上的Fire Module中，有一个squeeze层核expand层。squeeze层只有1X1卷积核。（使用到了strategy1）expand层有1X1卷积核和3X3卷积核。文章中指出该Fire Module有三个超参配置分别为： <span class="math display">\[s_{1x1}:所有squeeze层的卷积核个数\\e_{1x1}:所有expand层1X1的卷积核个数\\e_{3x3}:所有expand层3X3的卷积核个数\]</span> 设定<span class="math inline">\(s_{1x1} 小于 e_{1x1} + e_{3x3}​\)</span>,这样就是strategy2。</p><h3 id="squeezenet-architecture">SqueezeNet Architecture</h3><p><img src="https://s2.ax1x.com/2019/03/12/AP6SAg.md.jpg" alt="Architecture"></p><ol type="1"><li>以上是SqueezeNet网络结构，第1层普通卷积层，2-9都是上述提到的Fire Module，第10层也是一个普通的卷积层。</li><li>在卷积层1、模块4、模块8、加入maxpool，步长为2。</li><li>在卷积层10加入global AvgPool。</li></ol><h3 id="网络整个架构维度表">网络整个架构维度表</h3><p><img src="https://s2.ax1x.com/2019/03/12/APyxHS.jpg"></p><h3 id="实现细节">实现细节</h3><ol type="1"><li>1X1和3X3卷积核输出的feature map大小一致，因为在3X3中加入了padding。</li><li>在squeeze层和expand层都加入了Relu激活函数。</li><li>在Fire9后面加入了Dropout层，丢弃概率为0.5。</li><li>初始学习率设置为0.04。在训练的过程中逐渐减小学习率。</li></ol><p>QQ: 329804334</p><p>Website: www.weaf.top</p><p>Mail：air@weaf.top</p><p>备注： 文档中图都来自原论文。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;a href=&quot;https://github.com/Milittle/awesome-dl-network&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Milittle Github Repo&lt;/a&gt; 系列Repo&lt;/p&gt;
+&lt;h2
         
       
     
