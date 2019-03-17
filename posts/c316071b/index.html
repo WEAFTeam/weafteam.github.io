@@ -7,22 +7,22 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="TensorRT" />
+        <meta name="keywords" content="Quantization" />
     
     <meta name="description" content="TensorRT量化指北  对称的线性量化：  \[ TensorValues = FP32\,scale\,factor\,*int8\,array \] One FP32 scale factor for the entire int8 tensor Q: 怎么设置scale factor？ 非饱和方式：映射|max|到127 下图所示   一般上面的方式映射就会出现精">
-<meta name="keywords" content="TensorRT">
+<meta name="keywords" content="Quantization">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TensorRT-量化指北">
 <meta property="og:url" content="http://weafteam.github.io/posts/c316071b/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
 <meta property="og:description" content="TensorRT量化指北  对称的线性量化：  \[ TensorValues = FP32\,scale\,factor\,*int8\,array \] One FP32 scale factor for the entire int8 tensor Q: 怎么设置scale factor？ 非饱和方式：映射|max|到127 下图所示   一般上面的方式映射就会出现精">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://s1.ax1x.com/2018/08/12/PcyZQ0.png">
-<meta property="og:updated_time" content="2019-03-16T07:55:02.615Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/17/AeYUk4.png">
+<meta property="og:updated_time" content="2019-03-17T09:16:26.143Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorRT-量化指北">
 <meta name="twitter:description" content="TensorRT量化指北  对称的线性量化：  \[ TensorValues = FP32\,scale\,factor\,*int8\,array \] One FP32 scale factor for the entire int8 tensor Q: 怎么设置scale factor？ 非饱和方式：映射|max|到127 下图所示   一般上面的方式映射就会出现精">
-<meta name="twitter:image" content="https://s1.ax1x.com/2018/08/12/PcyZQ0.png">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/03/17/AeYUk4.png">
     
 
     
@@ -74,7 +74,7 @@
                                     <a class="main-nav-list-link" href="/">主页</a>
                                 </li>
                             
-                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/ANDROID/">ANDROID</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DL-Network/">DL-Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/区块链/">区块链</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/ANDROID/">ANDROID</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DL-Network/">DL-Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Quantization/">Quantization</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/区块链/">区块链</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
                                     
                         </ul>
                         <nav id="sub-nav">
@@ -129,7 +129,7 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <a class="page-title-link" href="/categories/TensorRT/">TensorRT</a>
+    <a class="page-title-link" href="/categories/Quantization/">Quantization</a>
     </h1>
 </div>
                         <div class="main-body-content">
@@ -165,7 +165,7 @@
                 
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/TensorRT/">TensorRT</a>
+        <a class="tag-link" href="/tags/Quantization/">Quantization</a>
     </div>
 
             </div>
@@ -182,27 +182,27 @@ TensorValues = FP32\,scale\,factor\,*int8\,array
 <p>One FP32 scale factor for the entire int8 tensor</p>
 <p>Q: 怎么设置scale factor？</p>
 <p>非饱和方式：映射|max|到127 下图所示</p>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/1.jpg" alt="Quantization"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJsoQ.jpg" alt="Quantization"></p>
 <ul>
 <li>一般上面的方式映射就会出现精确率严重降低。</li>
 <li>那么我们需要找一种饱和的方式去映射，如下图右边所示那样，你可以左右对比一下。</li>
 </ul>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/2.jpg" alt="Quantization"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJ2zq.jpg" alt="Quantization"></p>
 <ul>
 <li>以上右边映射的方式，对于权重映射的方式精确率影响不大，但是对于激活值影响很大。（那么就会面临一个问题，就是这样一个饱和的T该怎么选择）</li>
 </ul>
 <ol start="2" type="1">
 <li>怎么选择一个合适的threshold呢？</li>
 </ol>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/3.jpg" alt="Quantization"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJgWn.md.jpg" alt="Quantization"></p>
 <ul>
 <li>我们通过转换要将int8数据的转换信息丢失最少，那么怎么度量信息的loss，答案是使用KL散度，也就是相对熵，也叫Kullback-Leibler divergence。下图是一个描述，详细请看信息熵，交叉熵和相对熵的关系以及计算方式，我们这里处理的是离散的问题。</li>
 </ul>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/4.jpg" alt="Quantization"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJcJs.md.jpg" alt="Quantization"></p>
 <ul>
 <li>下面展示一张在标定过程中，找到threshold的过程图：</li>
 </ul>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/5.jpg"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJ6ij.md.jpg"></p>
 <p>上图描述了一个标定，也就是使用FP32精度，通过标定数据集来找到threshold的过程：</p>
 <p>对于每一层来说：</p>
 <p>第一步：收集统计激活的直方图</p>
@@ -210,12 +210,12 @@ TensorValues = FP32\,scale\,factor\,*int8\,array
 <p>第三步：挑一个threshold以后最小化KL_divergence(ref_distr, quant_distr)</p>
 <p>这样的过程只需要在一台桌面工作站几分钟就搞定了（完全是离线的方式）</p>
 <p>下图展示了标定数据集的规模以及注意事项：</p>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/6.jpg"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJfyV.md.jpg"></p>
 <p>需要有代表性，需要不同的样本，理想情况当然是验证集的一部分数据，大约需要1000左右的样本就够了。</p>
 <ol start="3" type="1">
 <li>下面讲讲TensorRT的量化工作流程。</li>
 </ol>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/7.jpg"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJWQ0.md.jpg"></p>
 <p>上图展示了TensorRT的量化模型过程：你需要一个FP32的预训练模型和标定数据集：</p>
 <p>第一，你需要以FP32的方式运行标定数据集</p>
 <p>第二，你需要收集和统计数据，包括每一层的激活值</p>
@@ -226,27 +226,24 @@ TensorValues = FP32\,scale\,factor\,*int8\,array
 <ol start="4" type="1">
 <li>benchmark</li>
 </ol>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/8.jpg"></p>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/9.jpg"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJhLT.md.jpg"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJoo4.md.jpg"></p>
 <ol start="5" type="1">
-<li>挑战和展望,结论</li>
+<li>挑战和展望,结论，这里面说了 对于Relu激活的量化，还有一些RNN的问题，结论中讲到这种方法是对称的线性量化方式。基本上通过这种量化性能是不会降低的。</li>
 </ol>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/10.jpg"></p>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/11.jpg"></p>
-<ol start="6" type="1">
-<li>联系：</li>
-</ol>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/12.jpg"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJ5eU.md.jpg"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJIwF.md.jpg"></p>
 <ol start="7" type="1">
-<li>伪代码</li>
+<li>伪代码，伪代码一出来，我想大家就会更清楚。展示了相对熵的求法，以及最后确定threshold的方法。</li>
 </ol>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/13.jpg"></p>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/14.jpg"></p>
-<p><img src="D:/workspace/OneDrive%20-%20stu.xjtu.edu.cn/study/ml%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E8%AE%BA%E4%B8%8E%E5%AE%9E%E8%B7%B5/%E9%87%8F%E5%8C%96%E6%80%BB%E7%BB%93/image/15.jpg"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJHY9.md.jpg"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJbWR.md.jpg"></p>
+<p><img src="https://s2.ax1x.com/2019/03/17/AeJXy6.md.jpg"></p>
 <p>最后的最后，加油执行，一致前行。fighting。</p>
-<p>QQ:329804334</p>
+<p>QQ: 329804334</p>
 <p>Website: www.weaf.top</p>
 <p>Mail: air@weaf.top</p>
+<p>Github: https://github.com/Milittle</p>
 
         </div>
         <footer class="article-footer">
@@ -347,6 +344,16 @@ TensorValues = FP32\,scale\,factor\,*int8\,array
         
 <nav id="article-nav">
     
+        <a href="/posts/a568820a/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            量化算法的一个总结
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
     
         <a href="/posts/f6579676/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
@@ -369,10 +376,10 @@ TensorValues = FP32\,scale\,factor\,*int8\,array
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/posts/c316071b/" class="thumbnail">
+                            <a href="/posts/483c820c/" class="thumbnail">
     
     
-        <span style="background-image:url(https://s1.ax1x.com/2018/08/12/PcyZQ0.png)" alt="TensorRT-量化指北" class="thumbnail-image"></span>
+        <span style="background-image:url(https://s2.ax1x.com/2019/03/17/AeYUk4.png)" alt="Gemmlowp" class="thumbnail-image"></span>
     
     
 </a>
@@ -380,7 +387,47 @@ TensorValues = FP32\,scale\,factor\,*int8\,array
                         </div>
                         
                         <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/TensorRT/">TensorRT</a></p>
+                            <p class="item-category"><a class="article-category-link" href="/categories/Quantization/">Quantization</a></p>
+                            <p class="item-title"><a href="/posts/483c820c/" class="title">Gemmlowp</a></p>
+                            <p class="item-date"><time datetime="2019-03-17T09:12:39.000Z" itemprop="datePublished">2019-03-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/a568820a/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s2.ax1x.com/2019/03/17/AeYUk4.png)" alt="量化算法的一个总结" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Quantization/">Quantization</a></p>
+                            <p class="item-title"><a href="/posts/a568820a/" class="title">量化算法的一个总结</a></p>
+                            <p class="item-date"><time datetime="2019-03-17T09:06:17.000Z" itemprop="datePublished">2019-03-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c316071b/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s2.ax1x.com/2019/03/17/AeYUk4.png)" alt="TensorRT-量化指北" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Quantization/">Quantization</a></p>
                             <p class="item-title"><a href="/posts/c316071b/" class="title">TensorRT-量化指北</a></p>
                             <p class="item-date"><time datetime="2019-03-16T07:51:02.000Z" itemprop="datePublished">2019-03-16</time></p>
                         </div>
@@ -392,7 +439,7 @@ TensorValues = FP32\,scale\,factor\,*int8\,array
                             <a href="/posts/f6579676/" class="thumbnail">
     
     
-        <span style="background-image:url(https://s2.ax1x.com/2019/03/12/APyGkQ.png)" alt="squeezeNet" class="thumbnail-image"></span>
+        <span style="background-image:url(https://s2.ax1x.com/2019/03/12/AP6SAg.md.jpg)" alt="squeezeNet" class="thumbnail-image"></span>
     
     
 </a>
@@ -426,46 +473,6 @@ TensorValues = FP32\,scale\,factor\,*int8\,array
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/c05ce623/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="从源码构建TensorFlow2.0" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
-                            <p class="item-title"><a href="/posts/c05ce623/" class="title">从源码构建TensorFlow2.0</a></p>
-                            <p class="item-date"><time datetime="2019-03-05T11:07:57.000Z" itemprop="datePublished">2019-03-05</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/posts/5e9a3b51/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://weaf.oss-cn-beijing.aliyuncs.com/wechat-logo.png)" alt="微信公众号后台在SpringBoot2.0中的实现（中）" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/JAVA/">JAVA</a></p>
-                            <p class="item-title"><a href="/posts/5e9a3b51/" class="title">微信公众号后台在SpringBoot2.0中的实现（中）</a></p>
-                            <p class="item-date"><time datetime="2019-02-19T10:13:02.000Z" itemprop="datePublished">2019-02-19</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -475,7 +482,7 @@ TensorValues = FP32\,scale\,factor\,*int8\,array
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL-Network/">DL-Network</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL-Network/">DL-Network</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Quantization/">Quantization</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -485,7 +492,7 @@ TensorValues = FP32\,scale\,factor\,*int8\,array
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
         </div>
     </div>
 
@@ -495,7 +502,7 @@ TensorValues = FP32\,scale\,factor\,*int8\,array
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DL-Network/">DL-Network</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DL-Network/">DL-Network</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quantization/">Quantization</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
         </div>
     </div>
 
