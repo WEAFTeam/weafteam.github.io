@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>微信公众号后台在SpringBoot2.0中的实现（下） | WEAF 周刊</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="JAVA" />
+    
+    <meta name="description" content="微信公众号后台在SpringBoot2.0中的实现（下）">
+<meta name="keywords" content="JAVA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信公众号后台在SpringBoot2.0中的实现（下）">
+<meta property="og:url" content="http://weafteam.github.io/posts/dbc3cbb3/index.html">
+<meta property="og:site_name" content="WEAF 周刊">
+<meta property="og:description" content="微信公众号后台在SpringBoot2.0中的实现（下）">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/wechat-logo.png">
+<meta property="og:updated_time" content="2019-03-21T09:27:10.195Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信公众号后台在SpringBoot2.0中的实现（下）">
+<meta name="twitter:description" content="微信公众号后台在SpringBoot2.0中的实现（下）">
+<meta name="twitter:image" content="https://weaf.oss-cn-beijing.aliyuncs.com/wechat-logo.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="WEAF 周刊" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/logo-small.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/ANDROID/">ANDROID</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DL-Network/">DL-Network</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/JAVA/">JAVA</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/OCR/">OCR</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Quantization/">Quantization</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorFlow/">TensorFlow</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/TensorRT/">TensorRT</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/区块链/">区块链</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/密码学/">密码学</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/文本聚类/">文本聚类</a></li></ul>
+                                    
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/JAVA/">JAVA</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-2019-03-04/wechat-for-java-backend" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        微信公众号后台在SpringBoot2.0中的实现（下）
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/dbc3cbb3/" class="article-date">
+            <time datetime="2019-03-04T14:21:34.000Z" itemprop="datePublished">2019-03-04</time>
+        </a>
+    </div>
+
+                
+    <div>
+        <i class="fa fa-user"></i>
+        earth
+    </div>
+
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/JAVA/">JAVA</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>之前我们讲述了简单的搭建，其实微信公众号中的很多用途我们都有可能用到，今天会继续《中篇》，讲述我们最后的几个内容，其他的我也不会在写了，毕竟现在还是有很多资源供我们使用，下边我给大家推荐以下资源(已经封装好的可以直接在spring boot中使用)：<a href="https://github.com/Wechat-Group/WxJava" class="uri" target="_blank" rel="noopener">https://github.com/Wechat-Group/WxJava</a></p>
+<h2 id="一微信授权网页">一、微信授权(网页)</h2>
+<p>之前我们都是做一下前期的工作，但是我们如果不进行授权，我们就没有凭证来区别用户，因为我们做的是微信公众号，所以使用微信网页授权，这里提供了以下2种方式的授权：</p>
+<h3 id="以snsapi_base为scope发起的网页授权">1、以snsapi_base为scope发起的网页授权</h3>
+<p>以snsapi_base为scope发起的网页授权，是用来获取进入页面的用户的openid的，并且是静默授权并自动跳转到回调页的。用户感知的就是直接进入了回调页（往往是业务页面），对于以snsapi_base为scope的网页授权，就静默授权的，用户无感知。</p>
+<h3 id="以snsapi_userinfo为scope发起的网页授权">2、以snsapi_userinfo为scope发起的网页授权</h3>
+<p>以snsapi_userinfo为scope发起的网页授权，是用来获取用户的基本信息的。但这种授权需要用户手动同意，并且由于用户同意过，所以无须关注，就可在授权后获取该用户的基本信息。对于已关注公众号的用户，如果用户从公众号的会话或者自定义菜单进入本公众号的网页授权页，即使是scope为snsapi_userinfo，也是静默授权，用户无感知。 授权界面：</p>
+<p><img src="https://weaf.oss-cn-beijing.aliyuncs.com/wechat-userinfo.jpg" alt="wechat-snsapi_userinfo"></p>
+<h3 id="授权步骤">3、授权步骤</h3>
+<ol type="1">
+<li>引导用户进入授权页面同意授权，获取code</li>
+<li>通过code换取网页授权access_token（与基础支持中的access_token不同）</li>
+<li>如果需要，开发者可以刷新网页授权access_token，避免过期</li>
+<li>通过网页授权access_token和openid获取用户基本信息（支持UnionID机制）</li>
+</ol>
+<h3 id="授权链接">4、授权链接</h3>
+<p>参考链接 https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx520c15f417810387&amp;redirect_uri=http%3a%2f%2fweaf.top&amp;response_type=code&amp;scope=snsapi_base#wechat_redirect ### 5、具体获取凭证代码</p>
+<p>controller <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"getOpenId"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Result <span class="title">getOpenId</span><span class="params">(String code)</span></span>&#123;</span><br><span class="line">    String openId = weChatService.getOpenId(code);</span><br><span class="line">    <span class="keyword">return</span> Result.success(openId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>service <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getOpenId</span><span class="params">(String code)</span></span>&#123;</span><br><span class="line">    String openId = <span class="string">""</span>;</span><br><span class="line">    String getUrl = GET_USER_OPENID_AND_TOKEN + <span class="string">"&amp;appid="</span> + appId + <span class="string">"&amp;secret="</span> + appSecret + <span class="string">"&amp;code="</span> + code;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        String result = HttpUtil.get(getUrl);</span><br><span class="line">        JSONObject jsonObject = JSONObject.parseObject(result);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != jsonObject) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                openId = jsonObject.getString(<span class="string">"openid"</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (JSONException e) &#123;</span><br><span class="line">                log.error(<span class="string">"获取token失败 errcode:&#123;&#125; errmsg:&#123;&#125;"</span>, jsonObject.getIntValue(<span class="string">"errcode"</span>), jsonObject.getString(<span class="string">"errmsg"</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        log.info(<span class="string">"获取了微信OpenId：&#123;&#125;"</span>, openId);</span><br><span class="line">        <span class="keyword">return</span> openId;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        log.error(<span class="string">"请求失败"</span> + e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> StringUtils.EMPTY;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>具体实现的代码,请关注仓库<a href="https://github.com/songyaxu/wechat-service" class="uri" target="_blank" rel="noopener">https://github.com/songyaxu/wechat-service</a></p>
+<h2 id="二使用js-sdk">二、使用js-sdk</h2>
+<p>这里将会涉及一些前端(vue+element)的实现和具体后端的实现也会给出。</p>
+<h3 id="微信扫一扫">1、微信扫一扫</h3>
+<p>使用的vue，所以我们需找到vue使用的js.</p>
+<h5 id="安装及使用js-sdk">1.安装及使用js-sdk</h5>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install weixin-js-sdk --save</span><br></pre></td></tr></table></figure>
+<p>导入 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import wx from &apos;weixin-js-sdk&apos;;</span><br></pre></td></tr></table></figure></p>
+<h5 id="使用微信扫一扫">2.使用微信扫一扫</h5>
+<p>编写_util.js <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> wx <span class="keyword">from</span> <span class="string">'weixin-js-sdk'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initWxConfig</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> url = <span class="built_in">encodeURIComponent</span>(location.href.split(<span class="string">'#'</span>)[<span class="number">0</span>])</span><br><span class="line">    axios(<span class="string">`http://us-forever.com/api/wx/jssdk?url=<span class="subst">$&#123;url&#125;</span>`</span>).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">let</span> data = res.data</span><br><span class="line">      wx.config(&#123;</span><br><span class="line">        debug: <span class="literal">false</span>,</span><br><span class="line">        appId: data.appId,</span><br><span class="line">        timestamp: data.timestamp,</span><br><span class="line">        nonceStr: data.nonceStr,</span><br><span class="line">        signature: data.signature,</span><br><span class="line">        jsApiList: [<span class="string">'scanQRCode'</span>]</span><br><span class="line">      &#125;)</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;).catch(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (res <span class="keyword">instanceof</span> <span class="built_in">Error</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res.message)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res.data)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> promise</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scanQRCode</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  wx.ready(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    wx.scanQRCode(&#123;</span><br><span class="line">        needResult : <span class="number">1</span>,</span><br><span class="line">        scanType : [<span class="string">"qrCode"</span>,<span class="string">"barCode"</span>],</span><br><span class="line">        success : <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> result = res.resultStr;</span><br><span class="line">            alert(result);</span><br><span class="line">          <span class="keyword">return</span> result</span><br><span class="line">            <span class="comment">//window.location.href = result;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  getWxConfig: initWxConfig,</span><br><span class="line">  setScanFunction: scanQRCode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在实现的界面使用以下方法： <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mounted () &#123;</span><br><span class="line">      Util.getWxConfig()</span><br><span class="line">    &#125;,</span><br><span class="line">methods: &#123;</span><br><span class="line">  scan() &#123;</span><br><span class="line">    <span class="keyword">const</span> orderNo = Util.setScanFunction()</span><br><span class="line">    <span class="built_in">console</span>.log(orderNo)</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure></p>
+<h5 id="后端实现">3.后端实现</h5>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"jssdk"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Map&lt;String, String&gt; <span class="title">sign</span><span class="params">(String url, HttpSession session)</span> </span>&#123;</span><br><span class="line">    log.info(<span class="string">"JSSDK请求参数URL:&#123;&#125;"</span>, url);</span><br><span class="line">    String accessToken = <span class="string">""</span>;</span><br><span class="line">    String jsapi_ticket = <span class="string">""</span>;</span><br><span class="line">    <span class="comment">//if(session.getAttribute("accessToken")==null)</span></span><br><span class="line">    accessToken = weChatService.getAccessToken();</span><br><span class="line">    <span class="keyword">if</span> (accessToken != <span class="string">""</span>) &#123;</span><br><span class="line">        String getUrl = getTicketUrl + <span class="string">"&amp;access_token="</span> + accessToken;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            String result = HttpUtil.get(getUrl);</span><br><span class="line">            JSONObject jsonObject = JSONObject.parseObject(result);</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != jsonObject) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    jsapi_ticket = jsonObject.getString(<span class="string">"ticket"</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (JSONException e) &#123;</span><br><span class="line">                    <span class="comment">// 获取jsapi_ticket失败</span></span><br><span class="line">                    log.error(<span class="string">"获取jsapi_ticket失败 errcode:&#123;&#125; errmsg:&#123;&#125;"</span>, jsonObject.getIntValue(<span class="string">"errcode"</span>), jsonObject.getString(<span class="string">"errmsg"</span>));</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            log.error(<span class="string">"请求失败"</span> + e.getMessage());</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Map&lt;String, String&gt; ret = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">        String nonce_str = create_nonce_str();</span><br><span class="line">        String timestamp = create_timestamp();</span><br><span class="line">        String string1;</span><br><span class="line">        String signature = <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//注意这里参数名必须全部小写，且必须有序</span></span><br><span class="line">        string1 = <span class="string">"jsapi_ticket="</span> + jsapi_ticket +</span><br><span class="line">                <span class="string">"&amp;noncestr="</span> + nonce_str +</span><br><span class="line">                <span class="string">"&amp;timestamp="</span> + timestamp +</span><br><span class="line">                <span class="string">"&amp;url="</span> + url;</span><br><span class="line">        log.info(<span class="string">"微信JSSDK元素：&#123;&#125;"</span>, string1);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            MessageDigest crypt = MessageDigest.getInstance(<span class="string">"SHA-1"</span>);</span><br><span class="line">            crypt.reset();</span><br><span class="line">            crypt.update(string1.getBytes(<span class="string">"UTF-8"</span>));</span><br><span class="line">            signature = byteToHex(crypt.digest());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchAlgorithmException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ret.put(<span class="string">"appId"</span>, appId);</span><br><span class="line">        ret.put(<span class="string">"jsapi_ticket"</span>, jsapi_ticket);</span><br><span class="line">        ret.put(<span class="string">"nonceStr"</span>, nonce_str);</span><br><span class="line">        ret.put(<span class="string">"timestamp"</span>, timestamp);</span><br><span class="line">        ret.put(<span class="string">"signature"</span>, signature);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="三参考链接">三、参考链接</h2>
+<ol type="1">
+<li>微信工作平台技术文档：<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1445241432" class="uri" target="_blank" rel="noopener">https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1445241432</a></li>
+<li>微信网页授权文档：<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842" class="uri" target="_blank" rel="noopener">https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842</a></li>
+<li>微信js-sdk：<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421141115" class="uri" target="_blank" rel="noopener">https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421141115</a></li>
+</ol>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我们 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/WEAFTeam" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/c05ce623/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            从源码构建TensorFlow2.0
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/5e9a3b51/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">微信公众号后台在SpringBoot2.0中的实现（中）</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/483c820c/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s2.ax1x.com/2019/03/17/AeYUk4.png)" alt="Gemmlowp" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Quantization/">Quantization</a></p>
+                            <p class="item-title"><a href="/posts/483c820c/" class="title">Gemmlowp</a></p>
+                            <p class="item-date"><time datetime="2019-03-17T09:12:39.000Z" itemprop="datePublished">2019-03-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/a568820a/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s2.ax1x.com/2019/03/17/AeYUk4.png)" alt="量化算法的一个总结" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Quantization/">Quantization</a></p>
+                            <p class="item-title"><a href="/posts/a568820a/" class="title">量化算法的一个总结</a></p>
+                            <p class="item-date"><time datetime="2019-03-17T09:06:17.000Z" itemprop="datePublished">2019-03-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/c316071b/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s2.ax1x.com/2019/03/17/AeYUk4.png)" alt="TensorRT-量化指北" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Quantization/">Quantization</a></p>
+                            <p class="item-title"><a href="/posts/c316071b/" class="title">TensorRT-量化指北</a></p>
+                            <p class="item-date"><time datetime="2019-03-16T07:51:02.000Z" itemprop="datePublished">2019-03-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/f6579676/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s2.ax1x.com/2019/03/12/AP6SAg.md.jpg)" alt="squeezeNet" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/DL-Network/">DL-Network</a></p>
+                            <p class="item-title"><a href="/posts/f6579676/" class="title">squeezeNet</a></p>
+                            <p class="item-date"><time datetime="2019-03-12T02:18:32.000Z" itemprop="datePublished">2019-03-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/417f83c9/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://s1.ax1x.com/2018/03/18/9oakkQ.png)" alt="如何高效使用TensorFlow2.0" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/TensorFlow/">TensorFlow</a></p>
+                            <p class="item-title"><a href="/posts/417f83c9/" class="title">如何高效使用TensorFlow2.0</a></p>
+                            <p class="item-date"><time datetime="2019-03-08T08:03:04.000Z" itemprop="datePublished">2019-03-08</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL-Network/">DL-Network</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Quantization/">Quantization</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DL-Network/">DL-Network</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quantization/">Quantization</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2019 WEAF</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

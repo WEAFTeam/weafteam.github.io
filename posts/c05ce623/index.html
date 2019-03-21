@@ -9,19 +9,19 @@
     
         <meta name="keywords" content="TensorFlow" />
     
-    <meta name="description" content="从源码安装TensorFlow（未发布版本2.0） 1. 今天想尝一尝tf2.0的鲜，就尝试去从源码构建TensorFlow2.0版本的GPU wheel包。 2.首先你需要准备一些什么：  Ubuntu16.04 bazel(这个安装见https://docs.bazel.build/versions/master/install-ubuntu.html)（so easy） gcc4">
+    <meta name="description" content="从源码安装TensorFlow（未发布版本2.0） 下面第8点有一个单独的补充，是我一开始发布文章时候没有加进去的，我们在tag2.0上编译的版本应该是还是v1的默认执行流程，所以需要打开v2的behavior，这样我们就可以享受tf2.0的eager excution了。 1. 今天想尝一尝tf2.0的鲜，就尝试去从源码构建TensorFlow2.0版本的GPU wheel包。 2.首先你">
 <meta name="keywords" content="TensorFlow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从源码构建TensorFlow2.0">
 <meta property="og:url" content="http://weafteam.github.io/posts/c05ce623/index.html">
 <meta property="og:site_name" content="WEAF 周刊">
-<meta property="og:description" content="从源码安装TensorFlow（未发布版本2.0） 1. 今天想尝一尝tf2.0的鲜，就尝试去从源码构建TensorFlow2.0版本的GPU wheel包。 2.首先你需要准备一些什么：  Ubuntu16.04 bazel(这个安装见https://docs.bazel.build/versions/master/install-ubuntu.html)（so easy） gcc4">
+<meta property="og:description" content="从源码安装TensorFlow（未发布版本2.0） 下面第8点有一个单独的补充，是我一开始发布文章时候没有加进去的，我们在tag2.0上编译的版本应该是还是v1的默认执行流程，所以需要打开v2的behavior，这样我们就可以享受tf2.0的eager excution了。 1. 今天想尝一尝tf2.0的鲜，就尝试去从源码构建TensorFlow2.0版本的GPU wheel包。 2.首先你">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
-<meta property="og:updated_time" content="2019-03-08T08:11:46.315Z">
+<meta property="og:updated_time" content="2019-03-21T07:48:15.657Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从源码构建TensorFlow2.0">
-<meta name="twitter:description" content="从源码安装TensorFlow（未发布版本2.0） 1. 今天想尝一尝tf2.0的鲜，就尝试去从源码构建TensorFlow2.0版本的GPU wheel包。 2.首先你需要准备一些什么：  Ubuntu16.04 bazel(这个安装见https://docs.bazel.build/versions/master/install-ubuntu.html)（so easy） gcc4">
+<meta name="twitter:description" content="从源码安装TensorFlow（未发布版本2.0） 下面第8点有一个单独的补充，是我一开始发布文章时候没有加进去的，我们在tag2.0上编译的版本应该是还是v1的默认执行流程，所以需要打开v2的behavior，这样我们就可以享受tf2.0的eager excution了。 1. 今天想尝一尝tf2.0的鲜，就尝试去从源码构建TensorFlow2.0版本的GPU wheel包。 2.首先你">
 <meta name="twitter:image" content="https://s1.ax1x.com/2018/03/18/9oakkQ.png">
     
 
@@ -173,6 +173,7 @@
         
         <div class="article-entry" itemprop="articleBody">
             <h3 id="从源码安装tensorflow未发布版本2.0">从源码安装TensorFlow（未发布版本2.0）</h3>
+<h3 id="下面第8点有一个单独的补充是我一开始发布文章时候没有加进去的我们在tag2.0上编译的版本应该是还是v1的默认执行流程所以需要打开v2的behavior这样我们就可以享受tf2.0的eager-excution了">下面第8点有一个单独的补充，是我一开始发布文章时候没有加进去的，我们在tag2.0上编译的版本应该是还是v1的默认执行流程，所以需要打开v2的behavior，这样我们就可以享受tf2.0的eager excution了。</h3>
 <h4 id="今天想尝一尝tf2.0的鲜就尝试去从源码构建tensorflow2.0版本的gpu-wheel包">1. 今天想尝一尝tf2.0的鲜，就尝试去从源码构建TensorFlow2.0版本的GPU wheel包。</h4>
 <h4 id="首先你需要准备一些什么">2.首先你需要准备一些什么：</h4>
 <ul>
@@ -207,7 +208,10 @@
 <h4 id="安装.whl包">7. 安装.whl包</h4>
 <p>当然是在你的python环境（这个环境和上面依赖的环境可以不是同一个）中，使用pip直接安装：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install /tmp/tensorflow_pkg/tensorflow-version-tags.whl</span><br></pre></td></tr></table></figure>
-<h4 id="结语">8. 结语</h4>
+<h4 id="补充一点">8. 补充一点</h4>
+<p>20190321 补充一点，在实验的时候，我们编译的版本默认没有开启eager execution，所以我们需要在使用的时候开启tf2.0 eager execution。以下方式是在命令行里使用的方式，在Pycharm IDE中，你可以直接在创建图之前，使用<code>tf.compat.v1.enable_v2_behavior()</code>来开启tf2.0的eager execution方式。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span>python</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; import tensorflow as tf</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; tf.compat.v1.enable_v2_behavior() #这样就开启了tf2.0默认的eager execution</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; tf.add(1, 2).numpy() # 你就可以直接得到1 + 2的值。</span><br></pre></td></tr></table></figure>
+<h4 id="结语">9. 结语</h4>
 <p>今天为了尝试一下从源码安装TensorFlow，这样的好处是以后可以根据自己的需求定制编译，然后使得自己的机器性能达到最大化，在这个过程中也学到了很多。大家有什么问题可以联系我：</p>
 <p>QQ：329804334</p>
 <p>Mail： mizeshuang@gmail.com</p>
@@ -322,9 +326,9 @@
     </a>
     
     
-        <a href="/posts/5e9a3b51/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/posts/dbc3cbb3/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">微信公众号后台在SpringBoot2.0中的实现（中）</p>
+        <p class="article-nav-title">微信公众号后台在SpringBoot2.0中的实现（下）</p>
         <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
         </a>
     
@@ -449,7 +453,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL-Network/">DL-Network</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Quantization/">Quantization</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ANDROID/">ANDROID</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL-Network/">DL-Network</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OCR/">OCR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Quantization/">Quantization</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorFlow/">TensorFlow</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/TensorRT/">TensorRT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/区块链/">区块链</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/密码学/">密码学</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/文本聚类/">文本聚类</a><span class="category-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -459,7 +463,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">11</span></li></ul>
         </div>
     </div>
 
@@ -469,7 +473,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">标签</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DL-Network/">DL-Network</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quantization/">Quantization</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ANDROID/">ANDROID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DL-Network/">DL-Network</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/">JAVA</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux运维/">Linux运维</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenCV-Python/">OpenCV-Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pillow-Python-OCR/">Pillow Python OCR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quantization/">Quantization</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorFlow/">TensorFlow</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TensorRT/">TensorRT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/区块链/">区块链</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码学/">密码学</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本聚类/">文本聚类</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">4</span></li></ul>
         </div>
     </div>
 
